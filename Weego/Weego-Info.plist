@@ -10,6 +10,11 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>united_appicon_57x57.png</string>
+		<string>united_appicon_114x114.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.weegoapp.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

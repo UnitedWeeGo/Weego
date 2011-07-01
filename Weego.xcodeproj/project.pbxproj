@@ -277,8 +277,6 @@
 		0176132613BE755900324EF9 /* button_green_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611DB13BE755800324EF9 /* button_green_default@2x.png */; };
 		0176132713BE755900324EF9 /* button_green_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611DC13BE755800324EF9 /* button_green_pressed.png */; };
 		0176132813BE755900324EF9 /* button_green_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611DD13BE755800324EF9 /* button_green_pressed@2x.png */; };
-		0176132913BE755900324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611DE13BE755800324EF9 /* united_appicon_114x114.png */; };
-		0176132A13BE755900324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611DF13BE755800324EF9 /* united_appicon_57x57.png */; };
 		0176132B13BE755900324EF9 /* topbar_logotype.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611E013BE755800324EF9 /* topbar_logotype.png */; };
 		0176132C13BE755900324EF9 /* topbar_logotype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611E113BE755800324EF9 /* topbar_logotype@2x.png */; };
 		0176132D13BE755900324EF9 /* icon_settings_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 017611E213BE755800324EF9 /* icon_settings_01.png */; };
@@ -543,6 +541,8 @@
 		0176156013BE793C00324EF9 /* CellPrefsLoginParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176152D13BE793C00324EF9 /* CellPrefsLoginParticipant.m */; };
 		0176156113BE793C00324EF9 /* Help.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176152F13BE793C00324EF9 /* Help.m */; };
 		0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176153113BE793C00324EF9 /* HelpDataParser.m */; };
+		0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156313BE7B5000324EF9 /* united_appicon_57x57.png */; };
+		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -824,8 +824,6 @@
 		017611DB13BE755800324EF9 /* button_green_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_green_default@2x.png"; sourceTree = "<group>"; };
 		017611DC13BE755800324EF9 /* button_green_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_green_pressed.png; sourceTree = "<group>"; };
 		017611DD13BE755800324EF9 /* button_green_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_green_pressed@2x.png"; sourceTree = "<group>"; };
-		017611DE13BE755800324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = united_appicon_114x114.png; sourceTree = "<group>"; };
-		017611DF13BE755800324EF9 /* united_appicon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = united_appicon_57x57.png; sourceTree = "<group>"; };
 		017611E013BE755800324EF9 /* topbar_logotype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topbar_logotype.png; sourceTree = "<group>"; };
 		017611E113BE755800324EF9 /* topbar_logotype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topbar_logotype@2x.png"; sourceTree = "<group>"; };
 		017611E213BE755800324EF9 /* icon_settings_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_settings_01.png; sourceTree = "<group>"; };
@@ -1196,6 +1194,8 @@
 		0176152F13BE793C00324EF9 /* Help.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Help.m; sourceTree = "<group>"; };
 		0176153013BE793C00324EF9 /* HelpDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpDataParser.h; sourceTree = "<group>"; };
 		0176153113BE793C00324EF9 /* HelpDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpDataParser.m; sourceTree = "<group>"; };
+		0176156313BE7B5000324EF9 /* united_appicon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_57x57.png; path = ../united_appicon_57x57.png; sourceTree = "<group>"; };
+		0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_114x114.png; path = ../united_appicon_114x114.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1362,6 +1362,8 @@
 		017610ED13BE753D00324EF9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */,
+				0176156313BE7B5000324EF9 /* united_appicon_57x57.png */,
 				017610EE13BE755800324EF9 /* icon_MyLocation_01.png */,
 				017610EF13BE755800324EF9 /* icon_MyLocation_01@2x.png */,
 				017610F013BE755800324EF9 /* icon_feed_pastfuture.png */,
@@ -1602,8 +1604,6 @@
 				017611DB13BE755800324EF9 /* button_green_default@2x.png */,
 				017611DC13BE755800324EF9 /* button_green_pressed.png */,
 				017611DD13BE755800324EF9 /* button_green_pressed@2x.png */,
-				017611DE13BE755800324EF9 /* united_appicon_114x114.png */,
-				017611DF13BE755800324EF9 /* united_appicon_57x57.png */,
 				017611E013BE755800324EF9 /* topbar_logotype.png */,
 				017611E113BE755800324EF9 /* topbar_logotype@2x.png */,
 				017611E213BE755800324EF9 /* icon_settings_01.png */,
@@ -2443,8 +2443,6 @@
 				0176132613BE755900324EF9 /* button_green_default@2x.png in Resources */,
 				0176132713BE755900324EF9 /* button_green_pressed.png in Resources */,
 				0176132813BE755900324EF9 /* button_green_pressed@2x.png in Resources */,
-				0176132913BE755900324EF9 /* united_appicon_114x114.png in Resources */,
-				0176132A13BE755900324EF9 /* united_appicon_57x57.png in Resources */,
 				0176132B13BE755900324EF9 /* topbar_logotype.png in Resources */,
 				0176132C13BE755900324EF9 /* topbar_logotype@2x.png in Resources */,
 				0176132D13BE755900324EF9 /* icon_settings_01.png in Resources */,
@@ -2605,6 +2603,8 @@
 				017614CD13BE78F100324EF9 /* grayArrow@2x.png in Resources */,
 				017614CE13BE78F100324EF9 /* whiteArrow.png in Resources */,
 				017614CF13BE78F100324EF9 /* whiteArrow@2x.png in Resources */,
+				0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */,
+				0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
