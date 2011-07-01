@@ -11,7 +11,6 @@
 #import "DashboardTVC.h"
 #import "EventDetailTVC.h"
 #import "CreateEventTVC.h"
-#import "EditEvent.h"
 #import "UINavigationBar+CustomBackground.h"
 #import "Feed.h"
 #import "KeychainManager.h"
@@ -58,7 +57,7 @@ static ViewController *sharedInstance;
 
 -(id) init {
     if (self == [super init]) {
-        appDelegate = (BigBabyAppDelegate *)[[UIApplication sharedApplication] delegate];
+        appDelegate = (WeegoAppDelegate *)[[UIApplication sharedApplication] delegate];
         nController = appDelegate.navigationController;
         navigationIndexingCollection = [[NSMutableArray alloc] init];
     }

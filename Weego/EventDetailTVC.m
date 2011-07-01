@@ -10,7 +10,6 @@
 #import "Event.h"
 #import "Location.h"
 #import "Participant.h"
-#import "EditEvent.h"
 #import "SubViewLabel.h"
 #import "CellLocation.h"
 #import "CellParticipant.h"

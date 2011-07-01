@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BigBabyAppDelegate.h"
+#import "WeegoAppDelegate.h"
 
 typedef enum {
 	NavStateLocationAddSearchOn = 0,
@@ -40,7 +40,7 @@ typedef enum {
 } ToolbarState;
 
 @interface NavigationSetter : NSObject {
-    BigBabyAppDelegate *appDelegate;
+    WeegoAppDelegate *appDelegate;
     UINavigationController *nController;
     UIButton *searchBtn; // pointer held to replace image in case of decided+ state
     UIButton *countMeInBtn;

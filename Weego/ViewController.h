@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BigBabyAppDelegate.h"
+#import "WeegoAppDelegate.h"
 #import "AddLocation.h"
 
 @interface ViewController : NSObject {
-    BigBabyAppDelegate *appDelegate;
+    WeegoAppDelegate *appDelegate;
     UINavigationController *nController;
     NSMutableArray *navigationIndexingCollection;
 }

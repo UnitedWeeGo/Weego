@@ -457,7 +457,7 @@ static DataParser *sharedInstance;
     
     NSLog(@"No RUID!!"); // Doing nothing about it for now.");
     
-    BigBabyAppDelegate *appDelegate = (BigBabyAppDelegate*)[[UIApplication sharedApplication] delegate];
+    WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
     if (!appDelegate.loggingInFacebook) {
         [[ViewController sharedInstance] enterOnEntryScreen];
         [appDelegate hideLoadView];

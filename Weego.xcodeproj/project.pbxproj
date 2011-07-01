@@ -336,8 +336,6 @@
 		0176136313BE755900324EF9 /* background_home_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121813BE755800324EF9 /* background_home_01@2x.png */; };
 		0176136413BE755900324EF9 /* icon_home_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121913BE755800324EF9 /* icon_home_01.png */; };
 		0176136513BE755900324EF9 /* icon_home_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121A13BE755800324EF9 /* icon_home_01@2x.png */; };
-		0176136613BE755900324EF9 /* icon_settings_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121B13BE755800324EF9 /* icon_settings_01.png */; };
-		0176136713BE755900324EF9 /* icon_settings_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121C13BE755800324EF9 /* icon_settings_01@2x.png */; };
 		0176136813BE755900324EF9 /* button_back_light_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121D13BE755800324EF9 /* button_back_light_default.png */; };
 		0176136913BE755900324EF9 /* button_back_light_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121E13BE755800324EF9 /* button_back_light_default@2x.png */; };
 		0176136A13BE755900324EF9 /* button_back_light_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176121F13BE755800324EF9 /* button_back_light_pressed.png */; };
@@ -517,7 +515,6 @@
 		0176154813BE793C00324EF9 /* CustomCellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614FD13BE793C00324EF9 /* CustomCellBackgroundView.m */; };
 		0176154913BE793C00324EF9 /* CellDashboardCallToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614FF13BE793C00324EF9 /* CellDashboardCallToAction.m */; };
 		0176154A13BE793C00324EF9 /* BBTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176150113BE793C00324EF9 /* BBTableViewCell.m */; };
-		0176154B13BE793C00324EF9 /* SubViewNoLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176150313BE793C00324EF9 /* SubViewNoLocations.m */; };
 		0176154C13BE793C00324EF9 /* CellEventCallToAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176150513BE793C00324EF9 /* CellEventCallToAction.m */; };
 		0176154D13BE793C00324EF9 /* LoadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176150713BE793C00324EF9 /* LoadView.m */; };
 		0176154E13BE793C00324EF9 /* HeaderViewDetailsEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176150913BE793C00324EF9 /* HeaderViewDetailsEvent.m */; };
@@ -543,6 +540,7 @@
 		0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176153113BE793C00324EF9 /* HelpDataParser.m */; };
 		0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156313BE7B5000324EF9 /* united_appicon_57x57.png */; };
 		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
+		0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176156A13BE8EEC00324EF9 /* SoundManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1196,6 +1194,8 @@
 		0176153113BE793C00324EF9 /* HelpDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpDataParser.m; sourceTree = "<group>"; };
 		0176156313BE7B5000324EF9 /* united_appicon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_57x57.png; path = ../united_appicon_57x57.png; sourceTree = "<group>"; };
 		0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_114x114.png; path = ../united_appicon_114x114.png; sourceTree = "<group>"; };
+		0176156913BE8EEC00324EF9 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
+		0176156A13BE8EEC00324EF9 /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1328,6 +1328,8 @@
 		017610D413BE725D00324EF9 /* SoundManager */ = {
 			isa = PBXGroup;
 			children = (
+				0176156913BE8EEC00324EF9 /* SoundManager.h */,
+				0176156A13BE8EEC00324EF9 /* SoundManager.m */,
 			);
 			name = SoundManager;
 			sourceTree = "<group>";
@@ -2173,6 +2175,9 @@
 /* Begin PBXProject section */
 		0176108B13BE6F3500324EF9 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 0176108E13BE6F3500324EF9 /* Build configuration list for PBXProject "Weego" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -2502,8 +2507,6 @@
 				0176136313BE755900324EF9 /* background_home_01@2x.png in Resources */,
 				0176136413BE755900324EF9 /* icon_home_01.png in Resources */,
 				0176136513BE755900324EF9 /* icon_home_01@2x.png in Resources */,
-				0176136613BE755900324EF9 /* icon_settings_01.png in Resources */,
-				0176136713BE755900324EF9 /* icon_settings_01@2x.png in Resources */,
 				0176136813BE755900324EF9 /* button_back_light_default.png in Resources */,
 				0176136913BE755900324EF9 /* button_back_light_default@2x.png in Resources */,
 				0176136A13BE755900324EF9 /* button_back_light_pressed.png in Resources */,
@@ -2698,7 +2701,6 @@
 				0176154813BE793C00324EF9 /* CustomCellBackgroundView.m in Sources */,
 				0176154913BE793C00324EF9 /* CellDashboardCallToAction.m in Sources */,
 				0176154A13BE793C00324EF9 /* BBTableViewCell.m in Sources */,
-				0176154B13BE793C00324EF9 /* SubViewNoLocations.m in Sources */,
 				0176154C13BE793C00324EF9 /* CellEventCallToAction.m in Sources */,
 				0176154D13BE793C00324EF9 /* LoadView.m in Sources */,
 				0176154E13BE793C00324EF9 /* HeaderViewDetailsEvent.m in Sources */,
@@ -2722,6 +2724,7 @@
 				0176156013BE793C00324EF9 /* CellPrefsLoginParticipant.m in Sources */,
 				0176156113BE793C00324EF9 /* Help.m in Sources */,
 				0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */,
+				0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2744,7 +2747,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2772,7 +2775,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2806,6 +2809,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2827,6 +2831,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2837,11 +2842,11 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "TOKEN_ENV_SANDBOX=1";
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "TOKEN_ENV_SANDBOX=0";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2871,6 +2876,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
