@@ -1274,8 +1274,8 @@
 		0176109E13BE6F3600324EF9 /* Weego */ = {
 			isa = PBXGroup;
 			children = (
-				0176140713BE777200324EF9 /* view */,
-				017613EE13BE773B00324EF9 /* vo */,
+				0176140713BE777200324EF9 /* View */,
+				017613EE13BE773B00324EF9 /* Vo */,
 				017613E713BE771500324EF9 /* Model */,
 				017613E013BE76BC00324EF9 /* Controller */,
 				017613DC13BE76A400324EF9 /* Business */,
@@ -1844,7 +1844,7 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		017613EE13BE773B00324EF9 /* vo */ = {
+		017613EE13BE773B00324EF9 /* Vo */ = {
 			isa = PBXGroup;
 			children = (
 				017613EF13BE775200324EF9 /* Event.h */,
@@ -1864,10 +1864,10 @@
 				017613FD13BE775200324EF9 /* ReportedLocation.h */,
 				017613FE13BE775200324EF9 /* ReportedLocation.m */,
 			);
-			name = vo;
+			name = Vo;
 			sourceTree = "<group>";
 		};
-		0176140713BE777200324EF9 /* view */ = {
+		0176140713BE777200324EF9 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				017614D013BE793C00324EF9 /* SubViewNoLocations.h */,
@@ -1974,7 +1974,7 @@
 				0176141513BE77E300324EF9 /* Feed */,
 				0176140813BE778000324EF9 /* Help/About Components */,
 			);
-			name = view;
+			name = View;
 			sourceTree = "<group>";
 		};
 		0176140813BE778000324EF9 /* Help/About Components */ = {
