@@ -11,4 +11,13 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <QuartzCore/QuartzCore.h>
+    #import <CoreLocation/CoreLocation.h>
+    #import "Model.h"
+    #import "Controller.h"
+    #import "ViewController.h"
+    #import "Constants.h"
+    #import "NavigationSetter.h"
+    #import "GANTracker.h"
+    #import "SoundManager.h"
 #endif
