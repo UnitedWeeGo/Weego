@@ -10,11 +10,10 @@
 
 #import "WeegoAppDelegate.h"
 
-int main(int argc, char *argv[])
-{
-    int retVal = 0;
-    @autoreleasepool {
-        retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([WeegoAppDelegate class]));
-    }
+int main(int argc, char *argv[]) {
+    
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    int retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([WeegoAppDelegate class]));
+    [pool release];
     return retVal;
 }
