@@ -33,7 +33,7 @@
 
 - (void)setFeedMessage:(FeedMessage *)aFeedMessage
 {
-    CGRect trgFrame = CGRectMake(0, 0, 320, [SubViewFeedMessage calulateMyHeightWithMessageString:aFeedMessage.message]);
+    CGRect trgFrame = CGRectMake(0, 0, 320, [SubViewFeedMessage calulateMyHeightWithFeedMessage:aFeedMessage]);
     self.frame = trgFrame;
     cellView.frame = trgFrame;
     cellView.feedMessage = aFeedMessage;

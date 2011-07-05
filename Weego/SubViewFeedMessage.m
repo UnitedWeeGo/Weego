@@ -171,6 +171,30 @@
     return MAX(fieldY + messageCopySize.height + bottomPadding, 52);
 }
 
++ (int)calulateMyHeightWithFeedMessage:(FeedMessage *)feedMessage
+{
+    int         fieldY = 25;
+    int         bottomPadding = 10;
+    CGSize		textSize = { 200, FLT_MAX };// width and height of text area
+    BOOL        decidedFeedMessage = [feedMessage.type isEqualToString:@"decided"];
+    
+    NSString    *message;
+    
+    if (decidedFeedMessage)
+    {
+        Model *model = [Model sharedInstance];
+        Location *topLocation = [model.currentEvent getLocationByLocationId:model.currentEvent.topLocationId];
+        message = [NSString stringWithFormat:@"\"%@\" is where we are going!", topLocation.name];
+    }
+    else
+    {
+        message = feedMessage.message;
+    }
+    
+    CGSize		messageCopySize = [message sizeWithFont:[UIFont fontWithName:@"MyriadPro-Regular" size:12] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+    return MAX(fieldY + messageCopySize.height + bottomPadding, 52);
+}
+
 - (void)dealloc
 {
     [feedMessage release];
