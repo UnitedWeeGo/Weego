@@ -36,7 +36,7 @@
 
 - (void)initCache
 {
-    //    NSLog(@"initCache");
+    //NSLog(@"initCache");
     // init the caching mechanism
     [ASIHTTPRequest setDefaultCache:[BBDownloadCache sharedCache]];
     //[[BBDownloadCache sharedCache] clearCachedResponsesForStoragePolicy:ASICachePermanentlyCacheStoragePolicy | ASICacheForSessionDurationCacheStoragePolicy];
