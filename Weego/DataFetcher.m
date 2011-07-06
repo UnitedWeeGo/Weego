@@ -13,8 +13,8 @@
 #import "Location.h"
 
 
-//#define APP_HOST_URL @"http://api.bigbabyservice.com/public/"
-#define APP_HOST_URL @"http://beta.weegoapp.com/public/"
+#define APP_HOST_URL @"http://api.bigbabyservice.com/public/"
+//#define APP_HOST_URL @"http://beta.weegoapp.com/public/"
 //#define APP_HOST_URL @"http://stable.weegoapp.com/public/"
 
 #define GOOGLE_PLACE_URL @"https://maps.googleapis.com/maps/api/place/search/json"
