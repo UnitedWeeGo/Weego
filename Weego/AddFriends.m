@@ -34,6 +34,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"AddFriends dealloc");
 //    [matchedContacts release];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self.filteredContacts release];

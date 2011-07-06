@@ -55,8 +55,8 @@ typedef enum {
 
 - (void)dealloc
 {
+    NSLog(@"SubViewContactEntry dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self clearText];
     [contacts release];
     [contactButtons release];
     [lastChar release];
@@ -284,11 +284,11 @@ typedef enum {
         remainingWidth = MAX_FIELD_WIDTH - currentX + LEFT_FIELD_MARGIN;
     }
     
-    [self positionTextField];
     [self resizeContent];
     [self showAllButtons:allButtonsShowing];
     
     [self clearText];
+    [self positionTextField];
     if ([delegate respondsToSelector:@selector(inputFieldDidChange:)]) [delegate inputFieldDidChange:self];
 }
 
