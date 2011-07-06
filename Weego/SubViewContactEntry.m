@@ -56,6 +56,7 @@ typedef enum {
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self clearText];
     [contacts release];
     [contactButtons release];
     [lastChar release];
@@ -126,11 +127,11 @@ typedef enum {
     [focusButton addTarget:self action:@selector(textFieldWasTouched) forControlEvents:UIControlEventTouchUpInside];
     [contactScrollView addSubview:focusButton];
     
-    buttonAddressBook = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *iconAddressBook = [UIImage imageNamed:@"icon_addressbook_01.png"];
-    [buttonAddressBook setImage:iconAddressBook forState:UIControlStateNormal];
-    buttonAddressBook.frame = CGRectMake(277, 8, iconAddressBook.size.width, iconAddressBook.size.height);
-    [self addSubview:buttonAddressBook];
+//    buttonAddressBook = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIImage *iconAddressBook = [UIImage imageNamed:@"icon_addressbook_01.png"];
+//    [buttonAddressBook setImage:iconAddressBook forState:UIControlStateNormal];
+//    buttonAddressBook.frame = CGRectMake(277, 8, iconAddressBook.size.width, iconAddressBook.size.height);
+//    [self addSubview:buttonAddressBook];
 
     currentMode = AddFriendsModeEdit;
 }

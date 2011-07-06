@@ -529,13 +529,13 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeReportNewLocationToEvent;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f",
                                 APP_HOST_URL,
                                 @"report.location.php",
                                 userId,
                                 eventId,
                                 aLocation.coordinate.latitude,
-                                aLocation.coordinate.longitude];
+                                aLocation.coordinate.longitude] autorelease];
 		if (useSync)
         {
             [self makeSynchronousRequest:urlString];
@@ -555,12 +555,12 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGetReportedLocations;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
                                 APP_HOST_URL,
                                 @"get.report.location.php",
                                 userId,
                                 eventId,
-                                (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]];
+                                (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;
@@ -608,12 +608,12 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeToggleEventAcceptance;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&didAccept=%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&didAccept=%@",
                                APP_HOST_URL,
                                @"mod.acceptevent.php",
                                userId,
                                event.eventId,
-                               didAccept ? @"true" : @"false"];
+                               didAccept ? @"true" : @"false"] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;
@@ -626,9 +626,9 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeInfo;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                APP_HOST_URL,
-                               @"info.html"];
+                               @"info.html"] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;
@@ -641,9 +641,9 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeHelp;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                APP_HOST_URL,
-                               @"help.html"];
+                               @"help.html"] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;
