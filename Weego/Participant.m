@@ -41,6 +41,8 @@
     if (uFirstName) self.firstName = uFirstName;
     if (uLastName) self.lastName = uLastName;
     if (uAvatarURL) self.avatarURL = uAvatarURL;
+    
+    self.isTemporary = NO;
 }
 
 - (NSString *)fullName

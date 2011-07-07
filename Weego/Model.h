@@ -135,7 +135,7 @@ typedef enum {
 - (Participant *)createNewParticipantWithEmail:(NSString *)anEmailAddress; // andAddToEventWithId:(NSString *)anId;
 - (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML inEventWithId:(NSString *)eventId;
 - (Participant *)getParticipantWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;
-- (void)assignRegisteredInfoToParticipantWithEmail:(NSString *)email inEventWithId:(NSString *)eventId andFirstName:(NSString *)firstName andLastName:(NSString *)lastName andAvatarURL:(NSString *)avatarURL;
+//- (void)assignRegisteredInfoToParticipantWithEmail:(NSString *)email inEventWithId:(NSString *)eventId andFirstName:(NSString *)firstName andLastName:(NSString *)lastName andAvatarURL:(NSString *)avatarURL;
 - (NSArray *)getParticipantsForEventWithId:(NSString *)eventId;
 
 - (void)addFeedMessageWithXml:(GDataXMLElement *)messageXML inEventWithId:(NSString *)eventId;

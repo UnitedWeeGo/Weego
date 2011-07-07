@@ -643,7 +643,7 @@ static Model *sharedInstance;
     participant.ownerEventId = self.currentEvent.eventId;
     participant.email = anEmailAddress;
 //    participant.isTrialParticipant = self.isInTrial;
-//    participant.isTemporary = YES;
+    participant.isTemporary = YES;
     if ([self getParticipantWithEmail:anEmailAddress fromEventWithId:self.currentEvent.eventId] == nil) [self.participants addObject:participant];
     return participant;
 }
@@ -670,7 +670,7 @@ static Model *sharedInstance;
     }
 	return nil;
 }
-
+/*
 - (void)assignRegisteredInfoToParticipantWithEmail:(NSString *)email inEventWithId:(NSString *)eventId andFirstName:(NSString *)firstName andLastName:(NSString *)lastName andAvatarURL:(NSString *)avatarURL
 {
     if (eventId) {
@@ -680,6 +680,7 @@ static Model *sharedInstance;
         identifiedParticipant.avatarURL = avatarURL;
     }
 }
+ */
 
 - (NSArray *)getParticipantsForEventWithId:(NSString *)eventId
 {
