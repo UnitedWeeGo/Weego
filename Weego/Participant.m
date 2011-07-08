@@ -20,6 +20,7 @@
 @synthesize ownerEventId, firstName, lastName, email, avatarURL;
 @synthesize isTemporary;
 @synthesize isTrialParticipant;
+@synthesize hasBeenRemoved;
 
 - (id) init
 {
@@ -36,11 +37,13 @@
     NSString *uFirstName = ((GDataXMLElement *) [[xml elementsForName:@"firstName"] objectAtIndex:0]).stringValue;
     NSString *uLastName = ((GDataXMLElement *) [[xml elementsForName:@"lastName"] objectAtIndex:0]).stringValue;
     NSString *uAvatarURL = ((GDataXMLElement *) [[xml elementsForName:@"avatarURL"] objectAtIndex:0]).stringValue;
+    NSString *uHasBeenRemoved = [[xml attributeForName:@"hasBeenRemoved"] stringValue];
     
     if (uEmail) self.email = uEmail;
     if (uFirstName) self.firstName = uFirstName;
     if (uLastName) self.lastName = uLastName;
     if (uAvatarURL) self.avatarURL = uAvatarURL;
+    if (uHasBeenRemoved != nil) self.hasBeenRemoved = [[uHasBeenRemoved lowercaseString] isEqualToString:@"true"];
     
     self.isTemporary = NO;
 }

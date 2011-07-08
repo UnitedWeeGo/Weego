@@ -686,7 +686,7 @@ static Model *sharedInstance;
 {
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
     for (Participant *p in self.participants) {
-        if ([p.ownerEventId isEqualToString:eventId]) [returnParticipants addObject:p];
+        if ([p.ownerEventId isEqualToString:eventId] && !p.hasBeenRemoved) [returnParticipants addObject:p];
     }
     return [returnParticipants autorelease];
 }

@@ -27,6 +27,7 @@
 @property (nonatomic, copy) NSString *avatarURL;
 @property (nonatomic) BOOL isTemporary;
 @property (nonatomic) BOOL isTrialParticipant;
+@property (nonatomic) BOOL hasBeenRemoved;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;
 
