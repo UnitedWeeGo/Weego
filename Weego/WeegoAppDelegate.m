@@ -297,7 +297,7 @@
     self.loggingInFacebook = NO;
     [facebook release];
     facebook = [[Facebook alloc] initWithAppId:@"221300981231092"];
-    [facebook authorize:[NSArray arrayWithObjects:@"email", @"user_photos", nil] delegate:self];
+    [facebook authorize:[NSArray arrayWithObjects:@"email", nil] delegate:self];
 }
 
 #pragma mark -
