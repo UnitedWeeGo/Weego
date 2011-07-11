@@ -14,6 +14,7 @@
 #import "FeedMessage.h"
 #import "DataParser.h"
 #import "GoogleDataParser.h"
+#import "SimpleGeoDataParser.h"
 #import "InfoDataParser.h"
 #import "HelpDataParser.h"
 
@@ -61,6 +62,7 @@ static Controller *sharedInstance;
 - (void) dealloc
 {
     NSLog(@"Controller dealloc");
+    if (simpleGeoFetcher) [simpleGeoFetcher release];
     [super dealloc];
 }
 
@@ -360,6 +362,13 @@ static Controller *sharedInstance;
     Model *model = [Model sharedInstance];
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetReportedLocationsWithUserId:model.userId andEventId:model.currentEvent.eventId withTimestamp:model.currentEvent.lastReportedLocationsTimestamp delegate:[DataParser sharedInstance]] autorelease];
     return fetcher.requestId;
+}
+
+- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius
+{
+    if (simpleGeoFetcher) [simpleGeoFetcher release];
+    simpleGeoFetcher = [[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]];
+    return simpleGeoFetcher.requestId;
 }
 
 - (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SimpleGeo/SimpleGeo.h>
 
 #define DATA_FETCHER_FINISHED 1
 #define DATA_FETCHER_ERROR @"DataFetcherError"
@@ -42,7 +43,8 @@ enum {
     DataFetchTypeToggleEventAcceptance,
     DataFetchTypeInfo,
     DataFetchTypeHelp,
-    DataFetchTypeRemoveLocation
+    DataFetchTypeRemoveLocation,
+    DataFetchTypeSearchSimpleGeo
 };
 typedef NSInteger DataFetchType;
 
@@ -51,7 +53,9 @@ typedef NSInteger DataFetchType;
 
 @protocol DataFetcherDelegate <NSObject>
 
+@optional
 - (void)processServerResponse:(NSMutableData *)myData;
+- (void)processSimpleGeoResponse:(SGFeatureCollection *)places;
 
 @end
 
@@ -115,6 +119,7 @@ typedef NSInteger DataFetchType;
     BOOL dataFetcherFinished;
 	DataFetchType pendingRequestType;
     NSString *requestId;
+    SimpleGeo *client;
 }
 
 @property (nonatomic, assign) id <DataFetcherDelegate> delegate;
@@ -163,4 +168,8 @@ typedef NSInteger DataFetchType;
 - (id)initAndGetInfoHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetHelpHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndRemoveLocationWithUserId:(NSString *)userId andEventId:(NSString *)eventId andLocationId:(NSString *)locationId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
+
+// SimpleGeo
+- (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
+
 @end

@@ -8,6 +8,7 @@
 
 #import "Location.h"
 #import "GDataXMLNode.h"
+#import <SimpleGeo/SimpleGeo.h>
 
 @interface Location(Private)
 
@@ -24,6 +25,31 @@
 //@synthesize numberOfVotes;
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
+
+- (id)initWithSimpleGeoFeatureResult:(SGFeature *)place
+{
+    self = [super init];
+	if (!self)
+		return nil;
+    NSString *uName = [[place properties] objectForKey:@"name"];
+    NSString *uStreet = [[place properties] objectForKey:@"address"];
+    NSString *uCity = [[place properties] objectForKey:@"city"];
+    NSString *uState = [[place properties] objectForKey:@"province"];
+    NSString *uZip = [[place properties] objectForKey:@"postcode"];
+    NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    NSString *uPhone = [[place properties] objectForKey:@"phone"];
+    
+    self.name = uName;
+    self.formatted_address = uFormatted_address;
+    SGPoint *point = (SGPoint *)[place geometry];
+    
+    self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
+    self.longitude = [NSString stringWithFormat:@"%f", point.longitude]; 
+    self.location_type = @"place";
+    if (uPhone != nil) self.formatted_phone_number = uPhone;
+    return self;
+}
+
 
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict
 {

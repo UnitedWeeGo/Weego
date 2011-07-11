@@ -567,6 +567,23 @@
 	return self;
 }
 
+- (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [super init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeSearchSimpleGeo;
+        
+        // default to using this as the delegate for potentially helpful error logging
+        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:@"bcRryckAyj5YT3ZrSGraENdxqdLJRz9Q" consumerSecret:@"q2AMUDLyHpcPuaKkETchSqxQaPrY2fD9"];
+        self.delegate = myDelegate;
+        
+        SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];
+        [client getPlacesNear:point matching:name within:radius];
+    }
+    return self;
+}
+
 - (id)initAndSearchGooglePlacesWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [super init];
@@ -575,12 +592,12 @@
         pendingRequestType = DataFetchTypeGooglePlaceSearch;
         self.delegate = myDelegate;
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?location=%f,%f&radius=%d&name=%@&sensor=true&key=%@",
-                               GOOGLE_PLACE_URL,
-                               latitude,
-                               longitude,
-                               radius,
-                               name,
-                               GOOGLE_API_KEY] autorelease];
+                                GOOGLE_PLACE_URL,
+                                latitude,
+                                longitude,
+                                radius,
+                                name,
+                                GOOGLE_API_KEY] autorelease];
         [self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     return self;
@@ -773,7 +790,7 @@
         [self handleError:error];
     }
     dataFetcherFinished = YES;
-    [myConnection release];
+    if (myConnection) [myConnection release];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
@@ -782,7 +799,8 @@
 	if (delegate) [delegate processServerResponse:myData];
 	self.delegate = nil;
     [myData release];
-	[myConnection release];    
+	[myConnection release];
+    
     NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -791,12 +809,61 @@
 
 
 - (void)handleError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
+    dataFetcherFinished = YES;
+	if (delegate) [delegate processServerResponse:myData];
+	self.delegate = nil;
+    [myData release];
+	if (myConnection) [myConnection release];
+    
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
     NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
+}
+
+#pragma mark -
+#pragma mark SimpleGeoDelegate methods
+
+- (void)requestDidFail:(ASIHTTPRequest *)request
+{
+    NSLog(@"Request failed: %@: %i", [request responseStatusMessage], [request responseStatusCode]);
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    dataFetcherFinished = YES;
+    if (client) [client release];
+    self.delegate = nil;
+    
+    NSString *errorMessage = [request.error localizedDescription];
+    NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
+}
+
+- (void)requestDidFinish:(ASIHTTPRequest *)request
+{
+    //NSLog(@"Request finished: %@", [request responseString]);
+    
+}
+
+- (void)didLoadPlaces:(SGFeatureCollection *)places
+             forQuery:(NSDictionary *)query
+{
+    NSLog(@"SimpleGeo didLoadPlaces");
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    dataFetcherFinished = YES;
+    
+    if (delegate) [delegate processSimpleGeoResponse:places];
+	self.delegate = nil;
+    if (client) [client release];
+    
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
 }
 
 

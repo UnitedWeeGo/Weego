@@ -48,6 +48,7 @@ typedef enum {
 - (void)hideKeyboardResigner;
 - (void)getDirectionsForLocation:(Location *)loc;
 - (void)callLocation:(Location *)loc;
+- (void)doSecondaryAddressSearch;
 @end
 
 @implementation AddLocation
@@ -84,8 +85,8 @@ typedef enum {
     
     if ( [Model sharedInstance].currentEvent.currentEventState >= EventStateDecided && initState != AddLocationInitStateFromNewEvent ) searchOffState = NavStateLocationDecided;
     
-    NSLog(@"currentEventState = %i", [Model sharedInstance].currentEvent.currentEventState);
-    NSLog(@"isTemporary = %@", ([Model sharedInstance].currentEvent.isTemporary) ? @"YES" : @"NO");
+//    NSLog(@"currentEventState = %i", [Model sharedInstance].currentEvent.currentEventState);
+//    NSLog(@"isTemporary = %@", ([Model sharedInstance].currentEvent.isTemporary) ? @"YES" : @"NO");
     
     switch (state) {
         case SearchAndDetailStateNone:
@@ -296,8 +297,15 @@ typedef enum {
     CLLocation * centerLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude] autorelease];
     int radius = [centerLocation distanceFromLocation:newLocation];
     
+    /* trying out simple geo
     if (googlePlacesFetchId) [googlePlacesFetchId release];
     googlePlacesFetchId = [[[Controller sharedInstance] searchGooglePlacesForLocation:searchLocation withRadius:radius] retain];
+    */
+    
+    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radius] retain];
+    
+    
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = [theSearchBar.text retain];
 }
@@ -338,17 +346,19 @@ typedef enum {
 
 - (void)addSearchResultAnnotations
 {
-    int searchResults = [savedGoogleObjects count];
+    int searchResults = [savedSearchResults count];
     
     // Add placemarks for each result
     for(int i = 0; i < searchResults; i++)
     {
-        Location *place = [savedGoogleObjects objectAtIndex:i];
+        Location *place = [savedSearchResults objectAtIndex:i];
         // Add a placemark on the map
-        LocAnnotation *mark = [[[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault] autorelease];
+        LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
         mark.dataLocationIndex = i;
         mark.iAddedLocation = YES;
-        [mapView addAnnotation:mark];	
+        [mapView addAnnotation:mark];
+        
+        [mark release];
     }
     [self zoomToFitMapAnnotations];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
@@ -554,7 +564,7 @@ typedef enum {
 #pragma mark - LocationDetailWidgetDelegate methods
 - (void)addButtonPressed
 {
-    Location *aPlace = [savedGoogleObjects objectAtIndex:selectedSearchLocationIndex];
+    Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
 	Location *location = [[Model sharedInstance] createNewLocationWithPlace:aPlace];
     
     NSString *uuid = location.locationId; //[location stringWithUUID];
@@ -663,7 +673,7 @@ typedef enum {
     NSLog(@"loc.uuid = %@ : loc.id = %@ : pm.uuid = %@", loc.uuid, loc.locationId, placemark.uuid);
     if (model.currentAppState == AppStateCreateEvent || loc == nil) // case 1 - create mode OR case 2 - location unsaved
     {
-        Location *aPlace = [savedGoogleObjects objectAtIndex:selectedSearchLocationIndex];
+        Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
         aPlace.name = name;
         placemark.title = name;
         if (loc) loc.name = name;
@@ -832,10 +842,11 @@ typedef enum {
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
-    [savedGoogleObjects release];
+    [savedSearchResults release];
     mapView.delegate = nil;
     searchBar.delegate = nil;
     if (participantSelectedOnMap) [participantSelectedOnMap release];
+    [simpleGeoFetchId release];
     [googlePlacesFetchId release];
     [googleGeoFetchId release];
     [pendingSearchString release];
@@ -848,6 +859,18 @@ typedef enum {
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)doSecondaryAddressSearch
+{
+    NSLog(@"No place results found, searching GEO for query: %@", pendingSearchString);
+    if (googleGeoFetchId != nil) [googleGeoFetchId release];
+    
+    CLLocationCoordinate2D northEast, southWest;
+    northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+    southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
+    
+    googleGeoFetchId = [[[Controller sharedInstance] searchGoogleGeoForAddress:pendingSearchString northEastBounds:northEast southWestBounds:southWest] retain];
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -883,30 +906,48 @@ typedef enum {
             mapView.userInteractionEnabled = YES;
             [self addOrUpdateUserLocationAnnotations];
             break;
-        case DataFetchTypeGooglePlaceSearch:
-            if ( [fetchId isEqualToString:googlePlacesFetchId] )
+        case DataFetchTypeSearchSimpleGeo:
+            if ( [fetchId isEqualToString:simpleGeoFetchId] )
             {
-                [savedGoogleObjects release];
-                NSMutableArray *locations = [Model sharedInstance].googleLocalSearchResults;
-                savedGoogleObjects = [[NSMutableArray alloc] initWithArray:locations];
+                [savedSearchResults release];
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
                 
                 // remove any existing locations from results
                 NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
-                for (Location *obj in savedGoogleObjects) {
+                for (Location *obj in savedSearchResults) {
                     if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
                 }
-                [savedGoogleObjects removeObjectsInArray:toRemove];
+                [savedSearchResults removeObjectsInArray:toRemove];
             }
-            if ([savedGoogleObjects count] == 0) {
-                NSLog(@"No place results found, searching GEO for query: %@", pendingSearchString);
-                if (googleGeoFetchId != nil) [googleGeoFetchId release];
+            if ([savedSearchResults count] == 0) 
+            {
+                [self doSecondaryAddressSearch];
+            }
+            else 
+            {
+                [self addSearchResultAnnotations];
+                currentState = AddLocationStateSearch;
+            }
+            
+            break;
+        case DataFetchTypeGooglePlaceSearch:
+            if ( [fetchId isEqualToString:googlePlacesFetchId] )
+            {
+                [savedSearchResults release];
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
                 
-                CLLocationCoordinate2D northEast, southWest;
-                northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
-                southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
-                
-                googleGeoFetchId = [[[Controller sharedInstance] searchGoogleGeoForAddress:pendingSearchString northEastBounds:northEast southWestBounds:southWest] retain];
-                
+                // remove any existing locations from results
+                NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
+                for (Location *obj in savedSearchResults) {
+                    if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
+                }
+                [savedSearchResults removeObjectsInArray:toRemove];
+            }
+            if ([savedSearchResults count] == 0) 
+            {
+                [self doSecondaryAddressSearch];
             }
             else 
             {
@@ -918,18 +959,18 @@ typedef enum {
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
             {
-                [savedGoogleObjects release];
-                NSMutableArray *locations = [Model sharedInstance].googleLocalSearchResults;
-                savedGoogleObjects = [[NSMutableArray alloc] initWithArray:locations];
+                [savedSearchResults release];
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
                 
                 // remove any existing locations from results
                 NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
-                for (Location *obj in savedGoogleObjects) {
+                for (Location *obj in savedSearchResults) {
                     if ([[Model sharedInstance] locationExistsUsingLatLngInCurrentEvent:obj]) [toRemove addObject:obj];
                 }
-                [savedGoogleObjects removeObjectsInArray:toRemove];
+                [savedSearchResults removeObjectsInArray:toRemove];
             }
-            if ([savedGoogleObjects count] == 0) {
+            if ([savedSearchResults count] == 0) {
                 NSLog(@"No address results found for query: %@, giving up", pendingSearchString);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No matches found near this location" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alert show];
@@ -968,8 +1009,16 @@ typedef enum {
             NSLog(@"Unhandled Error: %d", DataFetchTypeGetReportedLocations);
             mapView.userInteractionEnabled = YES;
             break;
+        case DataFetchTypeSearchSimpleGeo:
+            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            //
+            break;
         case DataFetchTypeGooglePlaceSearch:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGooglePlaceSearch);
+            //
+            break;
+        case DataFetchTypeGoogleAddressSearch:
+            NSLog(@"Unhandled Error: %d", DataFetchTypeGoogleAddressSearch);
             //
             break;
         case DataFetchTypeAddVoteToLocation:

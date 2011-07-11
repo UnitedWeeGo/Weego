@@ -16,7 +16,7 @@
 @class FeedMessage;
 
 @interface Controller : NSObject {
-//    DataFetcher *fetcher;
+    DataFetcher *simpleGeoFetcher;
 }
 
 + (Controller *)sharedInstance;
@@ -52,6 +52,7 @@
 - (NSString *)checkinUserForEventSynchronous:(Event *)anEvent;
 - (NSString *)fetchEventsSynchronous;
 - (NSString *)fetchReportedLocations;
+- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius;
 - (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius;
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;

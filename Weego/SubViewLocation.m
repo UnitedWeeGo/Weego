@@ -33,6 +33,8 @@
 
 - (NSString *)urldecode:(NSString *)aString;
 
+- (void)setFormattedAddress;
+
 @end
 
 @implementation SubViewLocation
@@ -61,30 +63,42 @@
     location = aLocation;
     [location retain];
     labelTitle.text = [self urldecode:aLocation.name];
-//    labelOwnerIndicator.text = aLocation.addedByMe ? @"MINE" : @"";
     imageOwnerIndicator.hidden = !aLocation.addedByMe;
     
+    /*
     BOOL isCreateMode = [Model sharedInstance].currentAppState == AppStateCreateEvent;
     
     if ((isCreateMode && [aLocation.location_type isEqualToString:@"place"]) || ([Model sharedInstance].isInTrial && [aLocation.location_type isEqualToString:@"place"]))
     {
-        labelSecondaryInfo.text = [self urldecode:aLocation.vicinity];
+        //labelSecondaryInfo.text = [self urldecode:aLocation.vicinity]; // for use with 
+        [self setFormattedAddress];
     }
     else
     {
-        NSString *formatted_address = [self urldecode:aLocation.formatted_address];
-        if (formatted_address.length > 0) {
-            int commaLoc = [formatted_address rangeOfString:@","].location;
-            
-            NSString *labelSecondaryInfoS = [formatted_address substringWithRange:NSMakeRange(0, commaLoc)];
-            NSString *labelTertiaryInfoS = [formatted_address substringWithRange:NSMakeRange(commaLoc+2, [formatted_address length]-commaLoc-2)];
-            
-            labelSecondaryInfo.text = labelSecondaryInfoS;
-            labelTertiaryInfo.text = labelTertiaryInfoS;
-        }
+        [self setFormattedAddress];
     }
+     */
+    [self setFormattedAddress];
     [self resetUIState];
     [self setUIState];
+}
+
+- (void)setFormattedAddress
+{
+    NSString *formatted_address = [self urldecode:location.formatted_address];
+    if (formatted_address.length > 0) {
+        int commaLoc = [formatted_address rangeOfString:@","].location;
+        
+        NSString *labelSecondaryInfoS = [formatted_address substringWithRange:NSMakeRange(0, commaLoc)];
+        NSString *labelTertiaryInfoS = [formatted_address substringWithRange:NSMakeRange(commaLoc+2, [formatted_address length]-commaLoc-2)];
+        
+        labelSecondaryInfo.text = labelSecondaryInfoS;
+        labelTertiaryInfo.text = labelTertiaryInfoS;
+    }
+    else
+    {
+        labelSecondaryInfo.text = [self urldecode:location.vicinity];
+    }
 }
 
 - (void)setUIState

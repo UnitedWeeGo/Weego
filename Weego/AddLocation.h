@@ -38,7 +38,7 @@ typedef enum {
     LocationDetailWidget *locWidget;
     UISearchBar *searchBar;
     Boolean searchBarShowing;
-    NSMutableArray *savedGoogleObjects;
+    NSMutableArray *savedSearchResults;
     int selectedSearchLocationIndex;
     int selectedLocationIndex;
     AddLocationInitState initState;
@@ -51,6 +51,8 @@ typedef enum {
     
     NSString *googlePlacesFetchId;
     NSString *googleGeoFetchId;
+    NSString *simpleGeoFetchId;
+    
     NSString *pendingSearchString;
     Participant *participantSelectedOnMap;
     LocationActionSheetState locationActionSheetState;

@@ -40,7 +40,7 @@
 @synthesize currentEvent;
 @synthesize deviceToken;
 @synthesize lastFetchAttempt, lastReportLocationAttempt;
-@synthesize googleLocalSearchResults;
+@synthesize geoSearchResults;
 @synthesize pendingVoteRequests;
 @synthesize infoResults;
 @synthesize helpResults;
@@ -150,7 +150,7 @@ static Model *sharedInstance;
     [self.lastFetchAttempt release];
     [self.lastReportLocationAttempt release];
     
-    [self.googleLocalSearchResults release];
+    [self.geoSearchResults release];
     
     [self.pendingVoteRequests release];
     [self.infoResults release];
@@ -933,6 +933,7 @@ static Model *sharedInstance;
                 GDataXMLElement *g_reference = [GDataXMLNode elementWithName:@"g_reference" stringValue:loc.g_reference];
                 GDataXMLElement *location_type = [GDataXMLNode elementWithName:@"location_type" stringValue:loc.location_type];
                 GDataXMLElement *formatted_address = [GDataXMLNode elementWithName:@"formatted_address" stringValue:loc.formatted_address];
+                GDataXMLElement *formatted_phone_number = [GDataXMLNode elementWithName:@"formatted_phone_number" stringValue:loc.formatted_phone_number];
                 [location addChild:latitude];
                 [location addChild:longitude];
                 [location addChild:name];
@@ -941,6 +942,7 @@ static Model *sharedInstance;
                 [location addChild:g_reference];
                 [location addChild:location_type];
                 [location addChild:formatted_address];
+                [location addChild:formatted_phone_number];
                 [locationsNode addChild:location];
             }
             [eventNode addChild:locationsNode];
@@ -1085,6 +1087,7 @@ static Model *sharedInstance;
             GDataXMLElement *g_reference = [GDataXMLNode elementWithName:@"g_reference" stringValue:loc.g_reference];
             GDataXMLElement *location_type = [GDataXMLNode elementWithName:@"location_type" stringValue:loc.location_type];
             GDataXMLElement *formatted_address = [GDataXMLNode elementWithName:@"formatted_address" stringValue:loc.formatted_address];
+            GDataXMLElement *formatted_phone_number = [GDataXMLNode elementWithName:@"formatted_phone_number" stringValue:loc.formatted_phone_number];
 			[location addChild:latitude];
 			[location addChild:longitude];
 			[location addChild:name];
@@ -1093,6 +1096,7 @@ static Model *sharedInstance;
             [location addChild:g_reference];
             [location addChild:location_type];
             [location addChild:formatted_address];
+            [location addChild:formatted_phone_number];
 			[locationsNode addChild:location];
 		}
 		[eventNode addChild:locationsNode];

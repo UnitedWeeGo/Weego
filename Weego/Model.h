@@ -90,7 +90,7 @@ typedef enum {
 @property (nonatomic, retain) NSDate *lastFetchAttempt;
 @property (nonatomic, retain) NSDate *lastReportLocationAttempt;
 
-@property (nonatomic, retain) NSMutableArray *googleLocalSearchResults;
+@property (nonatomic, retain) NSMutableArray *geoSearchResults;
 
 @property (nonatomic, retain) NSMutableDictionary *pendingVoteRequests;
 @property (nonatomic, retain) NSString *infoResults;

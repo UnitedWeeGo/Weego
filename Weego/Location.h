@@ -51,6 +51,7 @@
 @property (nonatomic) BOOL hasBeenRemoved;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;
+- (id)initWithSimpleGeoFeatureResult:(SGFeature *)feature;
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict;
 - (NSString*) stringWithUUID;
 
