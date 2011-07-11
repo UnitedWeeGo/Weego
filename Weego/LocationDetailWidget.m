@@ -310,7 +310,7 @@
 
 - (void)showDealButton
 {
-    NSLog(@"showDealButton? -- hasDeal:%d", self.hasDeal);
+    //NSLog(@"showDealButton? -- hasDeal:%d", self.hasDeal);
     if (self.hasDeal) dealButton.hidden = NO;
     else dealButton.hidden = YES;
 }

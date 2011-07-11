@@ -44,7 +44,10 @@
     SGPoint *point = (SGPoint *)[place geometry];
     
     self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
-    self.longitude = [NSString stringWithFormat:@"%f", point.longitude]; 
+    self.longitude = [NSString stringWithFormat:@"%f", point.longitude];
+    
+    NSLog(@"longitude: %@", self.longitude);
+    
     self.location_type = @"place";
     if (uPhone != nil) self.formatted_phone_number = uPhone;
     return self;
@@ -132,7 +135,7 @@
 
 - (BOOL)hasDeal
 {
-    NSString *lastNumber = [longitude substringFromIndex:[longitude length] - 1];
+    NSString *lastNumber = [self.longitude substringFromIndex:[self.longitude length] - 1];
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
     NSNumber *myNumber = [f numberFromString:lastNumber];
