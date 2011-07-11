@@ -43,7 +43,7 @@
 
 @implementation LocationDetailWidget
 
-@synthesize iAmShowing, delegate;
+@synthesize iAmShowing, delegate, hasDeal;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -310,7 +310,8 @@
 
 - (void)showDealButton
 {
-    if (hasDeal) dealButton.hidden = NO;
+    NSLog(@"showDealButton? -- hasDeal:%d", self.hasDeal);
+    if (self.hasDeal) dealButton.hidden = NO;
     else dealButton.hidden = YES;
 }
 
@@ -323,9 +324,12 @@
 
 - (void)hideDealImage
 {
-    if (dealImage)  [dealImage removeFromSuperview];
-    [self showDealButton];
-    dealImage = nil;
+    if (dealImage)  
+    {
+        [dealImage removeFromSuperview];
+        [self showDealButton];
+        dealImage = nil;
+    }
 }
 
 - (void)showDeal
@@ -515,13 +519,13 @@
 
 - (void)updateInfoViewWithLocationAnnotation:(LocAnnotation *)annotation
 {
-    Model *model = [Model sharedInstance];
-    EventState cState = model.currentEvent.currentEventState;
-    BOOL locationAdded = [annotation getStateType] == LocAnnoStateTypePlace || [annotation getStateType] == LocAnnoStateTypeLiked;
-    BOOL locationEligibleForDeletion = cState < EventStateDecided && annotation.iAddedLocation && locationAdded;
-    if (locationEligibleForDeletion) //
+    // Use these if we enable delete in the map view
+    //Model *model = [Model sharedInstance];
+    //EventState cState = model.currentEvent.currentEventState;
+    //BOOL locationAdded = [annotation getStateType] == LocAnnoStateTypePlace || [annotation getStateType] == LocAnnoStateTypeLiked;
+    //BOOL locationEligibleForDeletion = cState < EventStateDecided && annotation.iAddedLocation && locationAdded;
     
-    hasDeal = annotation.hasDeal;
+    self.hasDeal = annotation.hasDeal;
     if (avatarImage) [avatarImage removeFromSuperview];
     avatarImage = nil;
     distanceLabel.hidden = YES;

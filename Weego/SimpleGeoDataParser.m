@@ -46,27 +46,4 @@ static SimpleGeoDataParser *sharedInstance;
     }
     [Model sharedInstance].geoSearchResults = results;
 }
-
-/*
-- (void)processServerResponse:(NSMutableData *)myData
-{
-    
-    NSString *responseString = [[[NSString alloc] initWithData:myData encoding:NSUTF8StringEncoding] autorelease];	
-	NSError *jsonError = nil;
-	SBJsonParser *json = [[SBJsonParser new] autorelease];
-    
-    NSDictionary *parsedJSON = [json objectWithString:responseString];
-    
-    NSMutableArray *results = [NSMutableArray arrayWithCapacity:[[parsedJSON objectForKey:@"results"] count]];
-    
-    if ([jsonError code]==0) {
-        for (int x=0; x<[[parsedJSON objectForKey:@"results"] count]; x++) {
-            Location *loc = [[[Location alloc] initWithPlacesJsonResultDict:[[parsedJSON objectForKey:@"results"] objectAtIndex:x]] autorelease];
-            [results addObject:loc];
-        }
-    }
-    [Model sharedInstance].geoSearchResults = results;
-     
-}
- */
 @end

@@ -60,7 +60,6 @@ typedef enum {
     CGRect dealBtnRect;
     CGRect editNameBtnRect;
     int labelLeftPos;
-    BOOL hasDeal;
 
     CGSize currentBaseInfoSize;
     UIImageView *dealImage;
@@ -70,6 +69,7 @@ typedef enum {
 }
 
 @property (readonly,assign) Boolean iAmShowing;
+@property (readwrite,assign) Boolean hasDeal;
 @property (nonatomic,assign) id <LocationDetailWidgetDelegate> delegate;
 
 - (void)updateInfoViewWithLocationAnnotation:(LocAnnotation *)annotation;
