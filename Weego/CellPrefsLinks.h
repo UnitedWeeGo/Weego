@@ -13,8 +13,10 @@
 
 @interface CellPrefsLinks : BBTableViewCell {
     UILabel *fieldTitle;
+    UILabel *fieldInfo;
 }
 
 - (void)setTitle:(NSString *)title;
+- (void)setInfo:(NSString *)info;
 
 @end

@@ -24,6 +24,7 @@ typedef enum {
 - (BBTableViewCell *)getCellForLoginParticipant:(Participant *)aParticipant;
 - (BBTableViewCell *)getCellForControlsWithLabel:(NSString *)aLabel andIndex:(int)index andPrefsKey:(NSString *)key;
 - (BBTableViewCell *)getCellForLinksWithLabel:(NSString *)aLabel andIndex:(int)index;
+- (BBTableViewCell *)getCellForLinksWithLabel:(NSString *)aLabel andInfo:(NSString *)info andIndex:(int)index;
 
 - (void)setUpFooterView;
 - (void)handleFacebookPressed:(id)sender;
@@ -193,7 +194,7 @@ typedef enum {
             cell = [self getCellForLinksWithLabel:@"Help" andIndex:1];
             [cell isFirst:NO isLast:NO];
         } else if (indexPath.row == 2) {
-            cell = [self getCellForLinksWithLabel:@"About" andIndex:2];
+            cell = [self getCellForLinksWithLabel:@"About" andInfo:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] andIndex:2];
             [cell isFirst:NO isLast:YES];
         }
     }
@@ -232,6 +233,18 @@ typedef enum {
 		cell = [[[CellPrefsLinks alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellPrefsLinksCellId"] autorelease];
 	}
     [cell setTitle:aLabel];
+    cell.cellHostView = CellHostViewHome;
+    return cell;
+}
+
+- (BBTableViewCell *)getCellForLinksWithLabel:(NSString *)aLabel andInfo:(NSString *)info andIndex:(int)index
+{
+    CellPrefsLinks *cell = (CellPrefsLinks *) [self.tableView dequeueReusableCellWithIdentifier:@"CellPrefsLinksCellId"];
+	if (cell == nil) {
+		cell = [[[CellPrefsLinks alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellPrefsLinksCellId"] autorelease];
+	}
+    [cell setTitle:aLabel];
+    [cell setInfo:info];
     cell.cellHostView = CellHostViewHome;
     return cell;
 }
@@ -352,7 +365,7 @@ typedef enum {
     Model *model = [Model sharedInstance];
     Participant *me = model.loginParticipant;
     NSString *title = @"weego";
-    NSString *subject = [NSString stringWithFormat:@"weego message from %@", me.fullName];
+    NSString *subject = [NSString stringWithFormat:@"weego message from %@ : v %@", me.fullName, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
     NSString *body = @"";
     NSArray *recipients = [NSArray arrayWithObject:@"feedback@unitedweego.com"];
     

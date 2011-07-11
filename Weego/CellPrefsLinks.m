@@ -20,6 +20,9 @@
         UIColor *titleLabelColor = nil;
         titleLabelColor = HEXCOLOR(0x333333FF);
         
+        UIColor *infoLabelColor = nil;
+        infoLabelColor = HEXCOLOR(0x999999FF);
+        
         if (fieldTitle == nil) fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 
                                                                                        17, 
                                                                                        300, 
@@ -30,6 +33,21 @@
         fieldTitle.lineBreakMode = UILineBreakModeTailTruncation;
         fieldTitle.numberOfLines = 0;
         [self addSubview:fieldTitle];
+        
+        if (fieldInfo == nil) fieldInfo = [[[UILabel alloc] initWithFrame:CGRectMake(200, 
+                                                                                       17, 
+                                                                                       84, 
+                                                                                       16)] autorelease];
+        fieldInfo.textColor = infoLabelColor;
+        fieldInfo.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
+        fieldInfo.backgroundColor = [ UIColor clearColor ]; 
+        fieldInfo.lineBreakMode = UILineBreakModeTailTruncation;
+        fieldInfo.numberOfLines = 0;
+        fieldInfo.textAlignment = UITextAlignmentRight;
+//        UIColor *testBorderColor = HEXCOLOR(0xCCCCCCFF);
+//        [fieldInfo.layer setBorderColor:[testBorderColor CGColor]];
+//        [fieldInfo.layer setBorderWidth: 1.0];
+        [self addSubview:fieldInfo];
         
         
         
@@ -58,6 +76,11 @@
 - (void)setTitle:(NSString *)title
 {
     fieldTitle.text = title;
+}
+
+- (void)setInfo:(NSString *)info
+{
+    fieldInfo.text = info;
 }
 
 @end
