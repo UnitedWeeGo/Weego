@@ -569,11 +569,11 @@
     CGRect infoViewBGRect = CGRectMake(0, (iAmShowing)?(0):( -(targetHeight) ), bounds.size.width, targetHeight); // 35 is padding
     currentBaseInfoSize = infoViewBGRect.size;
     
-    CGRect primaryInfoLabelRect = CGRectMake(labelLeftPos, 12, width, primaryCopySize.height);
+    CGRect primaryInfoLabelRect = CGRectMake(labelLeftPos, 16, width, primaryCopySize.height);
     [primaryInfoLabel setText:titleCopy];
     [primaryInfoLabel setFont:primaryFont];
     
-    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+10, width, secondaryCopySize.height);
+    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+14, width, secondaryCopySize.height);
     [secondaryInfoLabel setText:subTitleCopy];
     [secondaryInfoLabel setFont:secondaryFont];
     
