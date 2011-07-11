@@ -120,6 +120,7 @@
     {
 //        [_spinner stopAnimating];
 //        _spinner.hidden = YES;
+        if (!delegate) return;
         if ([delegate respondsToSelector:@selector(infoDisplayDidFinishLoading)]) [delegate infoDisplayDidFinishLoading];
         
         NSString *jsCommand = @"getNumberOfPages();";
