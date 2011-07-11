@@ -77,6 +77,7 @@ typedef NSInteger AcceptanceType;
 - (NSString *)getCreatorAvatarURL;
 
 - (void)addVoteWithLocationId:(NSString *)locationId;
+- (void)removeVoteFromLocationWithId:(NSString *)locationId;
 - (void)clearNewVotes;
 
 @end

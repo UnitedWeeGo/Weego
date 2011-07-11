@@ -297,6 +297,19 @@
     }
 }
 
+- (void)removeVoteFromLocationWithId:(NSString *)locationId
+{
+    NSMutableArray *mIVotedFor = [[NSMutableArray alloc] initWithArray:self.iVotedFor];
+    [mIVotedFor removeObject:locationId];
+    self.iVotedFor = mIVotedFor;
+    [mIVotedFor release];
+    
+    NSMutableArray *mNewVotes = [[NSMutableArray alloc] initWithArray:self.updatedVotes];
+    [mNewVotes removeObject:locationId];
+    self.updatedVotes = mNewVotes;
+    [mNewVotes release];
+}
+
 - (void)clearNewVotes
 {
     self.updatedVotes = nil;

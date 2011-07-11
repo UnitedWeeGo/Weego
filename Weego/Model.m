@@ -632,6 +632,7 @@ static Model *sharedInstance;
 {
     Location *loc = [self getLocationWithId:locationId fromEventWithId:eventId];
     if (loc) [self.locations removeObject:loc];
+    [[self getEventById:eventId] removeVoteFromLocationWithId:locationId];
 }
 
 #pragma mark -
