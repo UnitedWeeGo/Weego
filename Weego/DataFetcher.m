@@ -18,9 +18,10 @@
 //#define APP_HOST_URL @"http://stable.weegoapp.com/public/"
 
 #define GOOGLE_PLACE_URL @"https://maps.googleapis.com/maps/api/place/search/json"
-#define GOOGLE_GEOCODE_URL @"http://maps.googleapis.com/maps/api/geocode/json"
 #define GOOGLE_MAPS_API_V3 @"http://maps.google.com/maps/api/geocode/json"
-
+/* depricated
+#define GOOGLE_GEOCODE_URL @"http://maps.googleapis.com/maps/api/geocode/json"
+*/
 
 @interface DataFetcher ()
 
