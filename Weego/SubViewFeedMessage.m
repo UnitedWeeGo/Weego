@@ -40,6 +40,7 @@
     BOOL decidedFeedMessage = [aFeedMessage.type isEqualToString:@"decided"];
     BOOL inviteFeedMessage = [aFeedMessage.type isEqualToString:@"invite"];
     BOOL locationFeedMessage = [aFeedMessage.type isEqualToString:@"locationadd"];
+    BOOL locationCheckinMessage = [aFeedMessage.type isEqualToString:@"checkin"];
     
     if (decidedFeedMessage)
     {
@@ -79,7 +80,7 @@
     
     NSURL *url = [NSURL URLWithString:participant.avatarURL];
     
-    checkIconView.hidden = !decidedFeedMessage;
+    checkIconView.hidden = !locationCheckinMessage;
     peopleIconView.hidden = !inviteFeedMessage;
     locationIconView.hidden = !locationFeedMessage;
     
