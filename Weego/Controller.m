@@ -62,7 +62,7 @@ static Controller *sharedInstance;
 - (void) dealloc
 {
     NSLog(@"Controller dealloc");
-    if (simpleGeoFetcher) [simpleGeoFetcher release];
+//    if (simpleGeoFetcher) [simpleGeoFetcher release];
     [super dealloc];
 }
 
@@ -366,9 +366,10 @@ static Controller *sharedInstance;
 
 - (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius
 {
-    if (simpleGeoFetcher) [simpleGeoFetcher release];
-    simpleGeoFetcher = [[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]];
-    return simpleGeoFetcher.requestId;
+//    if (simpleGeoFetcher) [simpleGeoFetcher release];
+//    simpleGeoFetcher = [[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
 }
 
 - (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius

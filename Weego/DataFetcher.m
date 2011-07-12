@@ -575,6 +575,7 @@
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
         
         // default to using this as the delegate for potentially helpful error logging
+        [self retain];
         client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:@"bcRryckAyj5YT3ZrSGraENdxqdLJRz9Q" consumerSecret:@"q2AMUDLyHpcPuaKkETchSqxQaPrY2fD9"];
         self.delegate = myDelegate;
         
@@ -841,6 +842,7 @@
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
+    [self release];
 }
 
 - (void)requestDidFinish:(ASIHTTPRequest *)request
@@ -864,6 +866,7 @@
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
+    [self release];
 }
 
 
