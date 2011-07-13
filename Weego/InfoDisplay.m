@@ -162,7 +162,7 @@
     view.clipsToBounds = YES;
     
     CGRect webFrame = CGRectMake(0, 0, cardSize.width, cardSize.height);
-    UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
+    webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
     webView.userInteractionEnabled = NO;
     webView.delegate = self;
     webView.tag = index;
@@ -240,6 +240,10 @@
 
 - (void)dealloc
 {
+    webView.delegate = nil;
+    [webView stopLoading];
+    webView = nil;
+    
     [self removeDataFetcherMessageListeners];
     infoScrollView.delegate = nil;
     [super dealloc];

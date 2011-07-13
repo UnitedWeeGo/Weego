@@ -24,6 +24,7 @@
     PageControl *pageControl;
     UIActivityIndicatorView* _spinner;
     UIView *shader;
+    UIWebView *webView;
 }
 
 @property (nonatomic, assign) id <InfoDisplayDelegate> delegate;

@@ -457,6 +457,8 @@ static DataParser *sharedInstance;
     
     NSLog(@"No RUID!!"); // Doing nothing about it for now.");
     
+    [[KeychainManager sharedInstance] resetKeychain];
+    
     WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
     if (!appDelegate.loggingInFacebook) {
         [[ViewController sharedInstance] enterOnEntryScreen];
