@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 010A6E5013CD74D800D8F191 /* Entitlements.plist */; };
 		01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */; };
 		0131719513CA8B4A0068B383 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719413CA8B4A0068B383 /* YAJL.framework */; };
 		0131719813CABDF00068B383 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719713CABDF00068B383 /* libz.dylib */; };
@@ -547,6 +548,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		010A6E5013CD74D800D8F191 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGeoDataParser.h; sourceTree = "<group>"; };
 		01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleGeoDataParser.m; sourceTree = "<group>"; };
 		0131719413CA8B4A0068B383 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = "<group>"; };
@@ -561,7 +563,6 @@
 		017610A613BE6F3600324EF9 /* Weego-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Weego-Prefix.pch"; sourceTree = "<group>"; };
 		017610A713BE6F3600324EF9 /* WeegoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeegoAppDelegate.h; sourceTree = "<group>"; };
 		017610A813BE6F3600324EF9 /* WeegoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeegoAppDelegate.m; sourceTree = "<group>"; };
-		017610AF13BE6F6400324EF9 /* Weego.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Weego.entitlements; sourceTree = "<group>"; };
 		017610B313BE70A600324EF9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		017610B513BE70B200324EF9 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		017610B713BE70C700324EF9 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
@@ -1316,7 +1317,6 @@
 				017610D413BE725D00324EF9 /* SoundManager */,
 				017610CD13BE71FB00324EF9 /* Fonts */,
 				017610DC13BE73E000324EF9 /* Constants.h */,
-				017610AF13BE6F6400324EF9 /* Weego.entitlements */,
 				017610A713BE6F3600324EF9 /* WeegoAppDelegate.h */,
 				017610A813BE6F3600324EF9 /* WeegoAppDelegate.m */,
 				0176109F13BE6F3600324EF9 /* Supporting Files */,
@@ -1332,6 +1332,7 @@
 				017610A413BE6F3600324EF9 /* main.m */,
 				017610A613BE6F3600324EF9 /* Weego-Prefix.pch */,
 				017610EB13BE752A00324EF9 /* Private.xcconfig */,
+				010A6E5013CD74D800D8F191 /* Entitlements.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2629,6 +2630,7 @@
 				017614CF13BE78F100324EF9 /* whiteArrow@2x.png in Resources */,
 				0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */,
 				0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */,
+				010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2897,7 +2899,7 @@
 		0176156813BE803600324EF9 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Weego/Weego.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Weego/Entitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

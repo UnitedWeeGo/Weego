@@ -114,7 +114,7 @@
 
 
 #pragma mark UIWebViewDelegate methods
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(UIWebView *)myWebView
 {
     if (numPages == -1) // first page parsing complete
     {
@@ -124,7 +124,7 @@
         if ([delegate respondsToSelector:@selector(infoDisplayDidFinishLoading)]) [delegate infoDisplayDidFinishLoading];
         
         NSString *jsCommand = @"getNumberOfPages();";
-        NSString *result = [webView stringByEvaluatingJavaScriptFromString:jsCommand];
+        NSString *result = [myWebView stringByEvaluatingJavaScriptFromString:jsCommand];
         numPages = [result intValue];
         [self layoutCards];
     }
