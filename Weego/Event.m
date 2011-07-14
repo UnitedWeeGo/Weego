@@ -243,18 +243,26 @@
 {
     int state = 0;
     
-    if (self.minutesToGo > 90) state = EventStateVoting;
-    if (self.minutesToGo <= 90) state = EventStateVotingWarning;
-    if (self.minutesToGo <= 0) state = EventStateDecided;
+    if (self.minutesToGoUntilVotingEnds > 90) state = EventStateVoting;
+    if (self.minutesToGoUntilVotingEnds <= 90) state = EventStateVotingWarning;
+    if (self.minutesToGoUntilVotingEnds <= 0) state = EventStateDecided;
     if (self.isTemporary) state = EventStateNew;
 
     return state;
 }
 
-- (int)minutesToGo
+- (int)minutesToGoUntilVotingEnds
 {
     NSDate *now = [NSDate date];
     NSTimeInterval flooredEventExpireDateInterval = floor([self.eventExpireDate timeIntervalSinceReferenceDate] / 60) * 60;
+    NSDate *flooredEventExpireDate = [NSDate dateWithTimeIntervalSinceReferenceDate:flooredEventExpireDateInterval];
+    return ceil([flooredEventExpireDate timeIntervalSinceDate:now] / 60);
+}
+
+- (int)minutesToGoUntilEventStarts
+{
+    NSDate *now = [NSDate date];
+    NSTimeInterval flooredEventExpireDateInterval = floor([self.eventDate timeIntervalSinceReferenceDate] / 60) * 60;
     NSDate *flooredEventExpireDate = [NSDate dateWithTimeIntervalSinceReferenceDate:flooredEventExpireDateInterval];
     return ceil([flooredEventExpireDate timeIntervalSinceDate:now] / 60);
 }

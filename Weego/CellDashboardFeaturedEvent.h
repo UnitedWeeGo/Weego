@@ -11,6 +11,7 @@
 #import "SubViewEventInfo.h"
 #import "SubViewLocation.h"
 #import "SubViewNoLocations.h"
+#import "Event.h"
 
 #define CellDashboardFeaturedEventHeight 148.0
 #define CellDashboardFeaturedEventHeightWithTimer 168.0

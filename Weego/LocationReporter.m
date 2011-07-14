@@ -107,7 +107,7 @@ static LocationReporter *sharedInstance;
     
     for ( Event *e in allEvents )
     {
-        BOOL eventIsWithinTimeRange = e.minutesToGo < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGo > (-CHECKIN_TIME_RANGE_MINUTES/2);
+        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > (-CHECKIN_TIME_RANGE_MINUTES/2);
 //        NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
         
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
@@ -183,7 +183,7 @@ static LocationReporter *sharedInstance;
     
     for ( Event *e in allEvents )
     {
-        BOOL eventIsWithinTimeRange = e.minutesToGo < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGo >  (-CHECKIN_TIME_RANGE_MINUTES/2);
+        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
         BOOL eventIsDecided = e.currentEventState >= EventStateDecided;

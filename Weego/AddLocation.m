@@ -1180,7 +1180,7 @@ typedef enum {
     [self setUpDataFetcherMessageListeners];
     
     Event *detail = [Model sharedInstance].currentEvent;
-    BOOL eventIsWithinTimeRange = detail.minutesToGo < (CHECKIN_TIME_RANGE_MINUTES/2) && detail.minutesToGo >  (-CHECKIN_TIME_RANGE_MINUTES/2);
+    BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
     BOOL eventIsBeingCreated = detail.isTemporary;
     // grab any users reported locations if in the window
     if (eventIsWithinTimeRange && !eventIsBeingCreated) [[Controller sharedInstance] fetchReportedLocations];

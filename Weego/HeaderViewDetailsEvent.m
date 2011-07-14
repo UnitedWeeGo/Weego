@@ -103,12 +103,12 @@
 - (void)setVotingWarningTimerLabel
 {
 //    NSLog(@"minutesToGo = %i", event.minutesToGo);
-    if (event.minutesToGo > 0) {
+    if (event.minutesToGoUntilVotingEnds > 0) {
         labelEndsIn.hidden = NO;
         labelTimer.hidden = NO;
         labelEndsIn.text = @"Voting ends in ";
         [labelEndsIn sizeToFit];
-        labelTimer.text = [[[NSString alloc] initWithFormat:@"%i minute%@", event.minutesToGo, (event.minutesToGo != 1) ? @"s" : @""] autorelease];
+        labelTimer.text = [[[NSString alloc] initWithFormat:@"%i minute%@", event.minutesToGoUntilVotingEnds, (event.minutesToGoUntilVotingEnds != 1) ? @"s" : @""] autorelease];
         [labelTimer sizeToFit];
         labelTimer.frame = CGRectMake(labelEndsIn.frame.origin.x + labelEndsIn.frame.size.width, 
                                       labelTimer.frame.origin.y, 
