@@ -32,6 +32,7 @@
 {
 	self = [self init];
 	if (self != nil) {
+        self.eventTitle = @"";
 		self.eventId = anId;
 	}
 	return self;

@@ -172,4 +172,6 @@ typedef enum {
 - (NSString *)locationWithRequestId:(NSString *)requestId;
 - (NSString *)getAddOrUpdateLocationXMLForLocations:(NSArray *)locations withEventId:(NSString *)anEventId;
 
+- (void)printModel;
+
 @end

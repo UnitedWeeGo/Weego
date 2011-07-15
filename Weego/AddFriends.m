@@ -12,6 +12,7 @@
 #import "Contact.h"
 #import "Participant.h"
 #import "CellContact.h"
+#import "Event.h"
 
 @interface AddFriends (Private)
 
@@ -88,6 +89,8 @@
     pred = [NSPredicate predicateWithFormat:@"emailArrayCount > 0"];
     allContactsWithEmail = [[allContacts filteredArrayUsingPredicate:pred] retain];
     [self inputFieldDidChange:nil];
+    
+    Event *detail = [Model sharedInstance].currentEvent;
 }
 
 - (void)viewWillAppear:(BOOL)animated

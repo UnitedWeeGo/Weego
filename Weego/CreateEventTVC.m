@@ -70,7 +70,10 @@ typedef enum {
         
 //    [[NavigationSetter sharedInstance] setNavState:NavStateEventCreateEvent withTarget:self];
     
-	if (detail == nil) detail = [[[Model sharedInstance] createNewEvent] retain];
+	if (detail == nil) {
+        detail = [[[Model sharedInstance] createNewEvent] retain];
+    }
+    NSLog(@"detail.eventId = %@", detail.eventId);
     
     [Model sharedInstance].currentBGState = BGStateEvent;
     
@@ -94,6 +97,8 @@ typedef enum {
 	[self.tableView reloadData];
     
     [self setUpDataFetcherMessageListeners];
+    
+    [[Model sharedInstance] printModel];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

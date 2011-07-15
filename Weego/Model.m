@@ -1142,5 +1142,27 @@ static Model *sharedInstance;
 	return [uuidString autorelease];
 }
 
+- (void)printModel
+{
+    for (Event *ev in [allEvents allValues]) {
+        NSLog(@"EVENT: %@ %@", ev.eventTitle, ev.eventId);
+        NSArray *locs = [ev getLocations];
+        for (Location *loc in locs) {
+            NSLog(@"    LOCATION: %@ %@", loc.name, loc.locationId);
+        }
+        NSArray *parts = [ev getParticipants];
+        for (Participant *part in parts) {
+            NSLog(@"    PARTICIPANT: %@ %@", part.fullName, part.email);
+        }
+    }
+    NSLog(@"ALL LOCATIONS ---------------------------------------------");
+    for (Location *loc in self.locations) {
+        NSLog(@"LOCATION: %@ %@", loc.name, loc.locationId);
+    }
+    NSLog(@"ALL PARTICIPANTS ------------------------------------------");
+    for (Participant *part in self.participants) {
+        NSLog(@"PARTICIPANT: %@ %@", part.fullName, part.email);
+    }
+}
 
 @end
