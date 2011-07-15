@@ -120,6 +120,7 @@ typedef NSInteger DataFetchType;
 	DataFetchType pendingRequestType;
     NSString *requestId;
     SimpleGeo *client;
+    NSString *apiURL;
 }
 
 @property (nonatomic, assign) id <DataFetcherDelegate> delegate;

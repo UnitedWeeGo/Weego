@@ -396,7 +396,7 @@
 }
 
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application { 
     application.applicationIconBadgeNumber = 0;
     NSLog(@"applicationDidBecomeActive");
     Model *model = [Model sharedInstance];

@@ -348,6 +348,7 @@
 
 - (void)egoRefreshScrollViewShowError:(UIScrollView *)scrollView
 {
+    NSLog(@"egoRefreshScrollViewShowError");
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     BOOL _loading = NO;
     if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDataSourceIsLoading:)]) {

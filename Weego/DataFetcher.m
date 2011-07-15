@@ -12,21 +12,22 @@
 #import "Event.h"
 #import "Location.h"
 
-
-//#define APP_HOST_URL @"http://api.bigbabyservice.com/public/"
-#define APP_HOST_URL @"http://beta.weegoapp.com/public/"
-//#define APP_HOST_URL @"http://stable.weegoapp.com/public/"
-
 #define GOOGLE_PLACE_URL @"https://maps.googleapis.com/maps/api/place/search/json"
 #define GOOGLE_MAPS_API_V3 @"http://maps.google.com/maps/api/geocode/json"
+
 /* depricated
+ //#define apiURL @"http://api.bigbabyservice.com/public/"
+ #define apiURL @"http://beta.weegoapp.com/public/"
+ //#define apiURL @"http://stable.weegoapp.com/public/"
 #define GOOGLE_GEOCODE_URL @"http://maps.googleapis.com/maps/api/geocode/json"
 */
+
 
 @interface DataFetcher ()
 
 @property (nonatomic, retain) NSMutableData *myData;
 
+- (id)init;
 - (NSString *)urlencode:(NSString *)aString;
 - (NSString *)stringFromDate:(NSDate *)aDate;
 - (void)makeRequest:(NSString *)urlString;
@@ -47,6 +48,24 @@
     return requestId;
 }
 
+//apiURL
+- (id)init
+{
+    self = [super init];
+    if (self != nil) {
+#if API_TYPE == 1
+        apiURL = @"http://api.bigbabyservice.com/public/";
+#endif
+#if API_TYPE == 2
+        apiURL = @"http://beta.weegoapp.com/public/";
+#endif
+#if API_TYPE == 3
+        apiURL = @"http://stable.weegoapp.com/public/";
+#endif
+    }
+    return self;
+}
+
 - (id)initAndUpdateDeviceRecordWithUserId:(NSString *)userId
                            andDeviceToken:(NSString *)deviceToken 
                             andDeviceUuid:(NSString *)deviceUuid 
@@ -59,13 +78,13 @@
                              andIsSandbox:(BOOL)isSandbox
                                  delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeUpdateDeviceRecord;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&deviceToken=%@&deviceUuid=%@&deviceName=%@&deviceModel=%@&deviceSystemVersion=%@&pushBadge=%@&pushAlert=%@&pushSound=%@&isSandbox=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"mod.device.php",
                                 userId,
                                 deviceToken,
@@ -85,13 +104,13 @@
 
 - (id)initAndAddMessageWithUserId:(NSString *)userId andEventId:(NSString *)eventId andMessageString:(NSString *)messageString andImageUrl:(NSString *)imageUrlString andTimestamp:(NSString *)aTimestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeAddMessage;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&message=%@&imageURL=%@&timestamp=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"mod.feedmessage.php",
                                 userId,
                                 eventId,
@@ -104,13 +123,13 @@
 }
 - (id)initAndMarkFeedMessagesRead:(NSString *)userId andEventId:(NSString *)eventId delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeMarkFeedMessagesRead;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"readall.feedmessages.php",
                                 userId,
                                 eventId] autorelease];
@@ -121,13 +140,13 @@
 
 - (id)initAndResetUserBadge:(NSString *)userId andDeviceUuid:(NSString *)deviceUuid delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeResetUserBadge;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&deviceUuid=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"mod.badge.reset.php",
                                 userId,
                                 deviceUuid] autorelease];
@@ -138,13 +157,13 @@
 
 - (id)initAndLoginWithUserName:(NSString *)emailAddress andPassword:(NSString *)password delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeLoginWithUserName;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?email=%@&password=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"login.php",
                                 emailAddress,
                                 password] autorelease];
@@ -155,7 +174,7 @@
 
 - (id)initAndLoginWithFacebookAccessToken:(NSString *)accessToken delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeLoginWithFacebookAccessToken;
@@ -163,7 +182,7 @@
         
         Model *model = [Model sharedInstance];
         
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.facebook.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.facebook.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -185,13 +204,13 @@
 
 - (id)initAndRegisterWithUserName:(NSString *)emailAddress andPassword:(NSString *)password andFirstName:(NSString *)firstName andLastName:(NSString *)lastName delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeRegister;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?email=%@&password=%@&firstName=%@&lastName=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"register.php",
                                 emailAddress,
                                 password,
@@ -204,13 +223,13 @@
 
 - (id)initAndGetAllEventsWithUserId:(NSString *)userId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGetAllEvents;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@",
-							   APP_HOST_URL,
+							   apiURL,
 							   @"get.event.php",
 							   userId,
 							   (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]] autorelease];
@@ -221,13 +240,13 @@
 
 - (id)initAndGetDashboardEventsWithUserId:(NSString *)userId overrideSynchronous:(BOOL)useSync withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGetDashboardEvents;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"get.event.dashboard.php",
                                 userId,
                                 (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]] autorelease];
@@ -245,13 +264,13 @@
 
 - (id)initAndGetEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGetEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@%@",
-							   APP_HOST_URL,
+							   apiURL,
 							   @"get.event.php",
 							   userId,
 							   (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease],
@@ -263,14 +282,14 @@
 
 - (id)initAndCreateNewEventWithUserId:(NSString *)userId withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeCreateNewEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getCreateEventXML:[NSArray arrayWithObjects:event, nil]];
 
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.post.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.post.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -289,14 +308,14 @@
 
 - (id)initAndUpdateEventWithUserId:(NSString *)userId withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeUpdateEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getUpdateEventXML:event];
 		
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.post.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.post.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -315,14 +334,14 @@
 
 - (id)initAndUpdateParticipantsWithUserId:(NSString *)userId withParticipants:(NSArray *)participants withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeUpdateParticipants;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getUpdateParticipantsXML:participants withEventId:event.eventId];
 		
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.invite.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.invite.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -341,13 +360,13 @@
 
 - (id)initAndAddOrUpdateLocationsWithUserId:(NSString *)userId withLocations:(NSArray *)locations isAnUpdate:(BOOL)update withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = update ? DataFetchTypeUpdateLocationToEvent : DataFetchTypeAddNewLocationToEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getAddOrUpdateLocationXMLForLocations:locations withEventId:event.eventId];
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.location.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.location.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -367,13 +386,13 @@
 /* DEPRICATED
 - (id)initAndAddNewLocationToEventWithUserId:(NSString *)userId withEventId:(NSString *)eventId withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeAddNewLocationToEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f&name=%@&vicinity=%@&g_id=%@&g_reference=%@&location_type=%@%@%@",
-							   APP_HOST_URL,
+							   apiURL,
 							   @"mod.location.php",
 							   userId,
 							   eventId,
@@ -395,14 +414,14 @@
 
 - (id)initAndToggleVotesWithUserId:(NSString *)userId withEvent:(Event *)event withLocations:(NSArray *)locationIds delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeToggleVotesForEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getToggleVotesXML:locationIds withEventId:event.eventId];
 		
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",APP_HOST_URL,@"xml.vote.php"] autorelease];
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",apiURL,@"xml.vote.php"] autorelease];
 		NSMutableURLRequest* theRequest= [[[NSMutableURLRequest alloc] init] autorelease];
 		[theRequest setURL:[NSURL URLWithString: urlString]];
 		[theRequest setHTTPMethod:@"POST"];
@@ -422,13 +441,13 @@
 
 - (id)initAndAddVoteToLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeAddVoteToLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@",
-							   APP_HOST_URL,
+							   apiURL,
 							   @"mod.vote.php",
 							   userId,
 							   eventId,
@@ -440,13 +459,13 @@
 
 - (id)initAndRemoveVoteFromLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeRemoveVoteFromLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@&removeVote=true",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"mod.vote.php",
                                 userId,
                                 eventId,
@@ -458,13 +477,13 @@
 
 - (id)initAndAddParticipantWithUserId:(NSString *)userId toEventId:(NSString *)eventId withEmailAddress:(NSString *)emailAddress delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeAddParticipant;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&email=%@",
-							   APP_HOST_URL,
+							   apiURL,
 							   @"mod.participant.php",
 							   userId,
 							   eventId,
@@ -475,11 +494,11 @@
 }
 - (id)initAndWriteStringToLog:(NSString *)logMessage
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?logMessage=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"log.php",
                                 logMessage] autorelease];
 		[self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -488,11 +507,11 @@
 }
 - (id)initAndClearLog
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?clearLog=true",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"log.php"] autorelease];
         [self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
@@ -500,13 +519,13 @@
 }
 - (id)initAndCheckinWithUserId:(NSString *)userId toEventId:(NSString *)eventId intoLocationId:(NSString *)locationId overrideSynchronous:(BOOL)useSync delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeCheckin;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"checkin.php",
                                 userId,
                                 eventId,
@@ -525,13 +544,13 @@
 
 - (id)initAndReportNewLocationToEventWithUserId:(NSString *)userId overrideSynchronous:(BOOL)useSync withEventId:(NSString *)eventId withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeReportNewLocationToEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"report.location.php",
                                 userId,
                                 eventId,
@@ -551,13 +570,13 @@
 
 - (id)initAndGetReportedLocationsWithUserId:(NSString *)userId andEventId:(NSString *)eventId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGetReportedLocations;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
-                                APP_HOST_URL,
+                                apiURL,
                                 @"get.report.location.php",
                                 userId,
                                 eventId,
@@ -569,7 +588,7 @@
 
 - (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
@@ -587,7 +606,7 @@
 
 - (id)initAndSearchGooglePlacesWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGooglePlaceSearch;
@@ -606,7 +625,7 @@
 
 - (id)initAndSearchGoogleGeoWithAddress:(NSString *)address andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeGoogleAddressSearch;
@@ -622,13 +641,13 @@
 
 - (id)initAndSetEventAcceptanceWithUserId:(NSString *)userId withEvent:(Event *)event didAccept:(BOOL)didAccept delegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeToggleEventAcceptance;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&didAccept=%@",
-                               APP_HOST_URL,
+                               apiURL,
                                @"mod.acceptevent.php",
                                userId,
                                event.eventId,
@@ -640,13 +659,13 @@
 
 - (id)initAndGetInfoHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeInfo;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                               APP_HOST_URL,
+                               apiURL,
                                @"info.html"] autorelease];
 		[self makeRequest:urlString];
 	}
@@ -655,13 +674,13 @@
 
 - (id)initAndGetHelpHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate
 {
-    self = [super init];
+    self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeHelp;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                               APP_HOST_URL,
+                               apiURL,
                                @"help.html"] autorelease];
 		[self makeRequest:urlString];
 	}
@@ -670,13 +689,13 @@
 
 - (id)initAndRemoveLocationWithUserId:(NSString *)userId andEventId:(NSString *)eventId andLocationId:(NSString *)locationId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
-	self = [super init];
+	self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeRemoveLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@%@",
-                               APP_HOST_URL,
+                               apiURL,
                                @"deletelocation.php",
                                userId,
                                eventId,
@@ -795,7 +814,7 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     dataFetcherFinished = YES;
 	if (delegate) [delegate processServerResponse:myData];
 	self.delegate = nil;
@@ -812,10 +831,7 @@
 - (void)handleError:(NSError *)error {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     dataFetcherFinished = YES;
-	if (delegate) [delegate processServerResponse:myData];
 	self.delegate = nil;
-    [myData release];
-	if (myConnection) [myConnection release];
     
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
