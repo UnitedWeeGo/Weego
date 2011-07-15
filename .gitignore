@@ -1,24 +1,19 @@
-
-Weego.xcodeproj/xcuserdata/nick.xcuserdatad/xcschemes/Weego.xcscheme
-
-Weego.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-
-Weego.xcodeproj/project.xcworkspace/xcuserdata/nick.xcuserdatad/UserInterfaceState.xcuserstate
-
-Weego.xcodeproj/project.xcworkspace/xcuserdata/nick.xcuserdatad/WorkspaceSettings.xcsettings
-
-Weego.xcodeproj/xcuserdata/nick.xcuserdatad/xcschemes/xcschememanagement.plist
-
-Weego.xcodeproj/xcuserdata/dave.prukop.xcuserdatad/xcschemes/xcschememanagement.plist
-
-Weego.xcodeproj/project.xcworkspace/xcuserdata/dave.prukop.xcuserdatad/UserInterfaceState.xcuserstate
-
-Weego.xcodeproj/xcuserdata/dave.prukop.xcuserdatad/xcschemes/Weego.xcscheme
-
-Weego.xcodeproj/xcuserdata/nick.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
-
-Weego.xcodeproj/xcuserdata/brampata.xcuserdatad/xcschemes/xcschememanagement.plist
-
-Weego.xcodeproj/project.xcworkspace/xcuserdata/brampata.xcuserdatad/UserInterfaceState.xcuserstate
-
-Weego.xcodeproj/xcuserdata/brampata.xcuserdatad/xcschemes/Weego.xcscheme
+# Exclude the build directory
+build/*
+ 
+# Exclude temp nibs and swap files
+*~.nib
+*.swp
+ 
+# Exclude OS X folder attributes
+.DS_Store
+ 
+# Exclude user-specific XCode 3 and 4 files
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata

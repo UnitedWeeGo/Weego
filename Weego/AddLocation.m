@@ -17,7 +17,7 @@
 #import "Participant.h"
 
 // pad our map by 10% around the farthest annotations
-#define MAP_PADDING 1.4
+#define MAP_PADDING 1.1
 #define MINIMUM_VISIBLE_LATITUDE 0.02
 
 typedef enum {
@@ -49,6 +49,8 @@ typedef enum {
 - (void)getDirectionsForLocation:(Location *)loc;
 - (void)callLocation:(Location *)loc;
 - (void)doSecondaryAddressSearch;
+- (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
+- (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
 @end
 
 @implementation AddLocation
@@ -90,8 +92,6 @@ typedef enum {
     
     switch (state) {
         case SearchAndDetailStateNone:
-//            [self updateSavedLocationsAnnotationsStateEnabled:true];
-//            [self removeAnnotations:mapView includingSaved:false];
             if (searchBarShowing) {
                 [searchBar resignFirstResponder];
                 [self showSearchBar:false withAnimationDelay:0];
@@ -280,41 +280,52 @@ typedef enum {
     if (!toShow) searchBar.text = nil;
 }
 
-#pragma mark - UISearchBarDelegate methods
-- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar 
+- (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
 {
-    [self resignKeyboardAndRemoveModalCover:self];
-    [self removeAnnotations:mapView includingSaved:false];
-    [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    if (removePreviousResults)
+    {
+        [self resignKeyboardAndRemoveModalCover:self];
+        [self removeAnnotations:mapView includingSaved:false];
+        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    }
     Location *searchLocation = [[[Location alloc] init] autorelease];
     searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
     searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
-    searchLocation.name = theSearchBar.text;
+    searchLocation.name = searchBar.text;
     
     MKCoordinateRegion region = mapView.region;
     CLLocationCoordinate2D centerCoordinate = mapView.centerCoordinate;
     CLLocation * newLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude+region.span.latitudeDelta longitude:centerCoordinate.longitude] autorelease];
     CLLocation * centerLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude] autorelease];
     int radius = [centerLocation distanceFromLocation:newLocation];
-    
+    int radiusKilo = ceil(radius/1000);
     /* trying out simple geo
-    if (googlePlacesFetchId) [googlePlacesFetchId release];
-    googlePlacesFetchId = [[[Controller sharedInstance] searchGooglePlacesForLocation:searchLocation withRadius:radius] retain];
-    */
+     if (googlePlacesFetchId) [googlePlacesFetchId release];
+     googlePlacesFetchId = [[[Controller sharedInstance] searchGooglePlacesForLocation:searchLocation withRadius:radius] retain];
+     */
     
     if (simpleGeoFetchId) [simpleGeoFetchId release];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radius] retain];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radiusKilo] retain];
     
     
     if (pendingSearchString) [pendingSearchString release];
-    pendingSearchString = [theSearchBar.text retain];
+    pendingSearchString = [searchBar.text retain];
+}
+
+#pragma mark - UISearchBarDelegate methods
+- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar 
+{
+    [self beginLocationSearchWithSearchString:theSearchBar.text andRemovePreviousResults:YES];
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)theSearchBar
 {
+    continueToSearchEnabled = false;
     [self handleEndSearchPress:self];
 }
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)theSearchBar
 {
+    theSearchBar.text = @"";
+    continueToSearchEnabled = false;
     [self showKeyboardResignerAndEnable:YES]; 
     return YES;
 }
@@ -349,7 +360,7 @@ typedef enum {
     int searchResults = [savedSearchResults count];
     
     // Add placemarks for each result
-    for(int i = 0; i < searchResults; i++)
+    for(int i = alreadyAddedAnnotationsCount; i < searchResults; i++)
     {
         Location *place = [savedSearchResults objectAtIndex:i];
         // Add a placemark on the map
@@ -360,11 +371,20 @@ typedef enum {
         
         [mark release];
     }
-    [self zoomToFitMapAnnotations];
+    //[self zoomToFitMapAnnotations];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
 }
 
 #pragma mark - MKMapViewDelegate methods
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    NSLog(@"should search for new results: %@", continueToSearchEnabled ? @"YES" : @"NO");
+    if (continueToSearchEnabled)
+    {
+        [self beginLocationSearchWithSearchString:searchBar.text andRemovePreviousResults:NO];
+    }
+}
+
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     if (userLocationFound) return;
@@ -750,6 +770,8 @@ typedef enum {
 - (void)handleEndSearchPress:(id)sender
 {
     if (!isAddingLocation) {
+        continueToSearchEnabled = false;
+        
         [self hideKeyboardResigner];
         
         if (locWidget.iAmShowing && currentState == AddLocationStateView) {
@@ -887,6 +909,14 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DATA_FETCHER_ERROR object:nil];
 }
 
+- (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location
+{
+    for (Location *loc in collection) {
+        if ([loc.g_id isEqualToString: location.g_id]) return true;
+    }
+    return false;
+}
+
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification
 {
     NSDictionary *dict = [aNotification userInfo];
@@ -909,23 +939,43 @@ typedef enum {
         case DataFetchTypeSearchSimpleGeo:
             if ( [fetchId isEqualToString:simpleGeoFetchId] )
             {
-                [savedSearchResults release];
-                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
-                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
                 
-                // remove any existing locations from results
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                // if this is a continue, simply add to the result collection
+                if (continueToSearchEnabled)
+                {
+                    // remove any existing added locations from results
+                    NSMutableArray *toRemoveDupes = [[[NSMutableArray alloc] init] autorelease];
+                    for (Location *obj in locations) {
+                        //if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
+                        if ([self locationCollection:savedSearchResults containsLocation:obj]) [toRemoveDupes addObject:obj];
+                    }
+                    [locations removeObjectsInArray:toRemoveDupes];
+                    
+                    alreadyAddedAnnotationsCount = [savedSearchResults count];
+                    [savedSearchResults addObjectsFromArray:locations];
+                }
+                else
+                {
+                    alreadyAddedAnnotationsCount = 0;
+                    [savedSearchResults release];
+                    savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
+                }
+                
+                // remove any existing saved locations from results
                 NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
                 for (Location *obj in savedSearchResults) {
                     if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
                 }
                 [savedSearchResults removeObjectsInArray:toRemove];
             }
-            if ([savedSearchResults count] == 0) 
+            if ([savedSearchResults count] == 0 && !continueToSearchEnabled) 
             {
                 [self doSecondaryAddressSearch];
             }
             else 
             {
+                continueToSearchEnabled = true;
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
             }
@@ -945,7 +995,7 @@ typedef enum {
                 }
                 [savedSearchResults removeObjectsInArray:toRemove];
             }
-            if ([savedSearchResults count] == 0) 
+            if ([savedSearchResults count] == 0 && !continueToSearchEnabled) 
             {
                 [self doSecondaryAddressSearch];
             }
@@ -1151,6 +1201,8 @@ typedef enum {
 {
     [super loadView];
     self.view.backgroundColor = [UIColor whiteColor];
+    continueToSearchEnabled = false;
+    alreadyAddedAnnotationsCount = 0;
     annotationOpenCount = 0;
     searchBarShowing = false;
     [self setupMapView];
@@ -1186,13 +1238,6 @@ typedef enum {
     if (eventIsWithinTimeRange && !eventIsBeingCreated) [[Controller sharedInstance] fetchReportedLocations];
     
 //    NSLog(@"loadView");
-}
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated

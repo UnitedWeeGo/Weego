@@ -586,7 +586,7 @@
 	return self;
 }
 
-- (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndSearchSimpleGeoWithRadius:(int)radiusKilo andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
 	if (self != nil) {
@@ -599,7 +599,7 @@
         self.delegate = myDelegate;
         
         SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];
-        [client getPlacesNear:point matching:name within:radius];
+        [client getPlacesNear:point matching:name within:radiusKilo count:50];        
     }
     return self;
 }

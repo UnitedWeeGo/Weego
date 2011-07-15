@@ -57,6 +57,9 @@ typedef enum {
     Participant *participantSelectedOnMap;
     LocationActionSheetState locationActionSheetState;
     Location *winningLocationSelected;
+    
+    BOOL continueToSearchEnabled;
+    int alreadyAddedAnnotationsCount;
 }
 
 - (id)initWithState:(AddLocationInitState)state;

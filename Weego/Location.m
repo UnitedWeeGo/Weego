@@ -26,6 +26,7 @@
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
 
+// SimpleGeo search
 - (id)initWithSimpleGeoFeatureResult:(SGFeature *)place
 {
     self = [super init];
@@ -45,15 +46,14 @@
     
     self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
     self.longitude = [NSString stringWithFormat:@"%f", point.longitude];
-    
-    NSLog(@"longitude: %@", self.longitude);
+    self.g_id = place.featureId;
     
     self.location_type = @"place";
     if (uPhone != nil) self.formatted_phone_number = uPhone;
     return self;
 }
 
-
+// Google Places or Geo search
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict
 {
     self = [super init];
