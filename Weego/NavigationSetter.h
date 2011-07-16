@@ -36,7 +36,8 @@ typedef enum {
 typedef enum {
 	ToolbarStateOff = 0,
     ToolbarStateDetails,
-    ToolbarStateFeed
+    ToolbarStateFeed,
+    ToolbarStateSearchAgain
 } ToolbarState;
 
 @interface NavigationSetter : NSObject {
@@ -52,5 +53,6 @@ typedef enum {
 + (void)destroy;
 
 - (void)setNavState:(NavState)state withTarget:(id)target;
+- (void)setToolbarState:(ToolbarState)state withTarget:(id)target;
 - (void)setToolbarState:(ToolbarState)state withTarget:(id)target withFeedCount:(int)feedCount;
 @end

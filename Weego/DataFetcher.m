@@ -599,7 +599,7 @@
         self.delegate = myDelegate;
         
         SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];
-        [client getPlacesNear:point matching:name within:radiusKilo count:50];        
+        [client getPlacesNear:point matching:name within:radiusKilo count:SIMLE_GEO_SEARCH_RESULTS_COUNT];        
     }
     return self;
 }

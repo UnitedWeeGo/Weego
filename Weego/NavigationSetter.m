@@ -25,6 +25,7 @@
 - (void)addHomeButton:(id)target useWhiteIcon:(BOOL)useWhite;
 - (void)animateInView:(UIView *)view;
 - (void)addBottomFeedButtonWithTarget:(id)target andFeedCount:(int)feedCount;
+- (void)addBottomSearchAgainButtonWithTarget:(id)target;
 - (void)addGreenActionButtonWithLabel:(NSString *)label andTarget:(id)target toLeft:(BOOL)left overrideClear:(BOOL)clear overrideLight:(BOOL)light withTextColor:(int)textColor;
 - (void)addBackButton:(id)target onLightBackground:(BOOL)onLightBackground;
 - (void)addHeaderFeedTitleWithTarget:(id)target;
@@ -87,6 +88,21 @@ static NavigationSetter *sharedInstance;
             break;
         case ToolbarStateFeed:
             // later to add the gallery/feed toggle
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setToolbarState:(ToolbarState)state withTarget:(id)target
+{
+    UIViewController *vc = target;
+    switch (state) {
+        case ToolbarStateOff:
+            [vc.navigationController setToolbarHidden:YES animated:YES];
+            break;
+        case ToolbarStateSearchAgain:
+            [self addBottomSearchAgainButtonWithTarget:target]; 
             break;
         default:
             break;
@@ -281,6 +297,55 @@ static NavigationSetter *sharedInstance;
 
 //    NSArray *familyNames = [UIFont familyNames];
 //    NSArray *fontNamesForFamilyName = [UIFont fontNamesForFamilyName:@"some font in the names array"];
+
+- (void)addBottomSearchAgainButtonWithTarget:(id)target
+{
+    UIViewController *vc = target;
+    UIColor *col = HEXCOLOR(0xFFFFFFFF);
+    
+    UIImage *searchAgainDefault = [UIImage imageNamed:@"button_redosearch_default.png"];
+    UIImage *searchAgainPressed = [UIImage imageNamed:@"button_redosearch_pressed.png"];
+    UIView *searchAgainBtnView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, searchAgainDefault.size.width, searchAgainDefault.size.height+1)] autorelease];
+    
+    UIButton *searchAgainBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchAgainBtn.adjustsImageWhenHighlighted = NO;
+    searchAgainBtn.frame = CGRectMake(0, 0, searchAgainDefault.size.width, searchAgainDefault.size.height+1);
+    searchAgainBtn.enabled = YES;
+    [searchAgainBtn setBackgroundImage:searchAgainDefault forState:UIControlStateNormal];
+    [searchAgainBtn setBackgroundImage:searchAgainPressed forState:UIControlStateHighlighted];
+    
+    [searchAgainBtn setTitle:@"Redo Search In This Area" forState:UIControlStateNormal];
+    [searchAgainBtn setTitleColor:col forState:UIControlStateNormal];
+    searchAgainBtn.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
+    searchAgainBtn.titleLabel.lineBreakMode = UILineBreakModeClip;
+    searchAgainBtn.titleEdgeInsets = UIEdgeInsetsMake(4, 0, 0, 10);
+    UIColor *shadowColor = HEXCOLOR(0x00000000);
+    searchAgainBtn.titleLabel.shadowColor = shadowColor;
+    searchAgainBtn.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [searchAgainBtn addTarget:vc action:@selector(handleSearchAgainPress:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImage *searchAgainIcon = [UIImage imageNamed:@"icon_redo_01.png"];
+    UIImageView *searchAgainIconView = [[[UIImageView alloc] initWithImage:searchAgainIcon] autorelease];
+    searchAgainIconView.frame = CGRectMake(233, 10, searchAgainIcon.size.width, searchAgainIcon.size.height);
+    
+    [searchAgainBtnView addSubview:searchAgainBtn];
+    [searchAgainBtnView addSubview:searchAgainIconView];
+    
+    UIBarButtonItem *searchAgainBtnBB = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:vc action:@selector(handleSearchAgainPress:)] autorelease];
+    
+    searchAgainBtnBB.customView = searchAgainBtnView;
+    
+    //Buttons you created before will be inserted to an array. The toolbar will read the array for buttons
+    NSArray *items = [NSArray arrayWithObjects: searchAgainBtnBB, nil];
+    
+    //If you hate the default view of UIToolbar, you can change its 'skin' by using image
+    UIImage *bottombar_background = [UIImage imageNamed:@"bottombar_background_clear.png"];
+    [vc.navigationController.toolbar insertSubview:[[[UIImageView alloc] initWithImage:bottombar_background] autorelease] atIndex:0];
+    
+    [vc.navigationController setToolbarHidden:NO animated:YES];
+    vc.toolbarItems = items;
+    
+}
 
 - (void)addBottomFeedButtonWithTarget:(id)target andFeedCount:(int)feedCount
 {

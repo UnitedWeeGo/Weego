@@ -51,6 +51,7 @@ typedef enum {
 - (void)doSecondaryAddressSearch;
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
 - (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
+- (void)doShowSearchAgainButton:(BOOL)doShow;
 @end
 
 @implementation AddLocation
@@ -76,6 +77,19 @@ typedef enum {
 -(id) init {
     self = [self initWithState:AddLocationInitStateFromExistingEvent];
     return self;
+}
+
+#pragma mark - Show or Hide search again handler
+- (void)doShowSearchAgainButton:(BOOL)doShow
+{
+    if (doShow)
+    {
+        [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateSearchAgain withTarget:self];
+    }
+    else
+    {
+        [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+    }
 }
 
 #pragma mark - SearchAndDetailState handler
@@ -320,12 +334,14 @@ typedef enum {
 - (void)searchBarCancelButtonClicked:(UISearchBar *)theSearchBar
 {
     continueToSearchEnabled = false;
+    [self doShowSearchAgainButton:NO];
     [self handleEndSearchPress:self];
 }
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)theSearchBar
 {
     theSearchBar.text = @"";
     continueToSearchEnabled = false;
+    [self doShowSearchAgainButton:NO];
     [self showKeyboardResignerAndEnable:YES]; 
     return YES;
 }
@@ -381,7 +397,7 @@ typedef enum {
     NSLog(@"should search for new results: %@", continueToSearchEnabled ? @"YES" : @"NO");
     if (continueToSearchEnabled)
     {
-        [self beginLocationSearchWithSearchString:searchBar.text andRemovePreviousResults:NO];
+        [self doShowSearchAgainButton:YES];
     }
 }
 
@@ -708,7 +724,11 @@ typedef enum {
 }
 
 #pragma mark - Navigation handlers
-
+- (void)handleSearchAgainPress:(id)sender
+{
+    [self beginLocationSearchWithSearchString:searchBar.text andRemovePreviousResults:NO];
+    [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+}
 - (void)handleLeftActionPress:(id)sender // handler for edit location name CANCEL
 {
     [self doGoToSearchAndDetailState:SearchAndDetailStateBoth];
@@ -771,7 +791,7 @@ typedef enum {
 {
     if (!isAddingLocation) {
         continueToSearchEnabled = false;
-        
+        [self doShowSearchAgainButton:NO];
         [self hideKeyboardResigner];
         
         if (locWidget.iAmShowing && currentState == AddLocationStateView) {

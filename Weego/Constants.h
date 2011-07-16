@@ -14,6 +14,7 @@ alpha:((c)&0xFF)/255.0];
 #define GOOGLE_API_KEY @"AIzaSyAIcJ2O5wb1INKqMQzPDnak6f-Z2pbq1mw"
 #define GOOGLE_ANALYTICS_PROPERTY_ID @"UA-24038628-2"
 #define GOOGLE_ANALYTICS_DISPATCH_PERIOD 10
+#define SIMLE_GEO_SEARCH_RESULTS_COUNT 35
 
 // User setting keys
 #define USER_PREF_ALLOW_TRACKING @"allowsTracking"

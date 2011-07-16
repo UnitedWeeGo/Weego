@@ -545,6 +545,13 @@
 		0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156313BE7B5000324EF9 /* united_appicon_57x57.png */; };
 		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
 		0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176156A13BE8EEC00324EF9 /* SoundManager.m */; };
+		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
+		01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5613D10D6400213CC4 /* button_redosearch_default.png */; };
+		01F17E5E13D10D6400213CC4 /* button_redosearch_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */; };
+		01F17E5F13D10D6400213CC4 /* button_redosearch_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5813D10D6400213CC4 /* button_redosearch_pressed.png */; };
+		01F17E6013D10D6400213CC4 /* button_redosearch_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5913D10D6400213CC4 /* button_redosearch_pressed@2x.png */; };
+		01F17E6113D10D6400213CC4 /* icon_redo_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5A13D10D6400213CC4 /* icon_redo_01.png */; };
+		01F17E6213D10D6400213CC4 /* icon_redo_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5B13D10D6400213CC4 /* icon_redo_01@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1204,6 +1211,13 @@
 		0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_114x114.png; path = ../united_appicon_114x114.png; sourceTree = "<group>"; };
 		0176156913BE8EEC00324EF9 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
 		0176156A13BE8EEC00324EF9 /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
+		01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottombar_background_clear.png; sourceTree = "<group>"; };
+		01F17E5613D10D6400213CC4 /* button_redosearch_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_redosearch_default.png; sourceTree = "<group>"; };
+		01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_default@2x.png"; sourceTree = "<group>"; };
+		01F17E5813D10D6400213CC4 /* button_redosearch_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_redosearch_pressed.png; sourceTree = "<group>"; };
+		01F17E5913D10D6400213CC4 /* button_redosearch_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_pressed@2x.png"; sourceTree = "<group>"; };
+		01F17E5A13D10D6400213CC4 /* icon_redo_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_redo_01.png; sourceTree = "<group>"; };
+		01F17E5B13D10D6400213CC4 /* icon_redo_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_redo_01@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1386,6 +1400,13 @@
 		017610ED13BE753D00324EF9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */,
+				01F17E5613D10D6400213CC4 /* button_redosearch_default.png */,
+				01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */,
+				01F17E5813D10D6400213CC4 /* button_redosearch_pressed.png */,
+				01F17E5913D10D6400213CC4 /* button_redosearch_pressed@2x.png */,
+				01F17E5A13D10D6400213CC4 /* icon_redo_01.png */,
+				01F17E5B13D10D6400213CC4 /* icon_redo_01@2x.png */,
 				0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */,
 				0176156313BE7B5000324EF9 /* united_appicon_57x57.png */,
 				017610EE13BE755800324EF9 /* icon_MyLocation_01.png */,
@@ -2631,6 +2652,13 @@
 				0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */,
 				0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */,
 				010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */,
+				01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */,
+				01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */,
+				01F17E5E13D10D6400213CC4 /* button_redosearch_default@2x.png in Resources */,
+				01F17E5F13D10D6400213CC4 /* button_redosearch_pressed.png in Resources */,
+				01F17E6013D10D6400213CC4 /* button_redosearch_pressed@2x.png in Resources */,
+				01F17E6113D10D6400213CC4 /* icon_redo_01.png in Resources */,
+				01F17E6213D10D6400213CC4 /* icon_redo_01@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
