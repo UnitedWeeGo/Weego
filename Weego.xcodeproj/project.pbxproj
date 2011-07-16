@@ -544,6 +544,7 @@
 		0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156313BE7B5000324EF9 /* united_appicon_57x57.png */; };
 		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
 		0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176156A13BE8EEC00324EF9 /* SoundManager.m */; };
+		A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A979A7AA13D10757008A7002 /* AddressBookTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1203,6 +1204,8 @@
 		0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_114x114.png; path = ../united_appicon_114x114.png; sourceTree = "<group>"; };
 		0176156913BE8EEC00324EF9 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
 		0176156A13BE8EEC00324EF9 /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
+		A979A7A913D10757008A7002 /* AddressBookTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; path = AddressBookTVC.h; sourceTree = "<group>"; };
+		A979A7AA13D10757008A7002 /* AddressBookTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1971,6 +1974,8 @@
 				0176151B13BE793C00324EF9 /* ButtonContact.m */,
 				0176151C13BE793C00324EF9 /* CellContact.h */,
 				0176151D13BE793C00324EF9 /* CellContact.m */,
+				A979A7A913D10757008A7002 /* AddressBookTVC.h */,
+				A979A7AA13D10757008A7002 /* AddressBookTVC.m */,
 				0176151E13BE793C00324EF9 /* LoginRegisterTVC.h */,
 				0176151F13BE793C00324EF9 /* LoginRegisterTVC.m */,
 				0176152013BE793C00324EF9 /* HeaderViewLoginRegister.h */,
@@ -2747,6 +2752,7 @@
 				0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */,
 				0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */,
 				01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */,
+				A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

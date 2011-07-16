@@ -40,6 +40,7 @@ typedef enum {
     ViewStateDetails,
     ViewStateMap,
     ViewStateAddParticipant,
+    ViewStateAddressBook,
     ViewStateEdit,
     ViewStateFeed,
     ViewStateInfo,
@@ -137,6 +138,7 @@ typedef enum {
 - (Participant *)getParticipantWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;
 //- (void)assignRegisteredInfoToParticipantWithEmail:(NSString *)email inEventWithId:(NSString *)eventId andFirstName:(NSString *)firstName andLastName:(NSString *)lastName andAvatarURL:(NSString *)avatarURL;
 - (NSArray *)getParticipantsForEventWithId:(NSString *)eventId;
+- (NSArray *)getRecentParticipants;
 
 - (void)addFeedMessageWithXml:(GDataXMLElement *)messageXML inEventWithId:(NSString *)eventId;
 - (void)updateUnreadMessageCount:(NSString *)messageCount inEventWithId:(NSString *)eventId;

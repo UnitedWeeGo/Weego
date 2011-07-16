@@ -14,8 +14,11 @@
 
 - (void)inputFieldDidReturn:(id)sender;
 - (void)handleDirectFieldTouch:(id)sender;
+- (void)subViewContactEntry:(id)sender didChangeSize:(CGSize)newSize;
+- (void)addressButtonClicked;
 
 @optional
+- (void)inputFieldDidBeginEditing:(id)sender;
 - (void)inputFieldDidEndEditing:(id)sender;
 - (void)inputFieldDidChange:(id)sender;
 
@@ -25,6 +28,7 @@
 @interface SubViewContactEntry : UIView <UITextFieldDelegate, UIScrollViewDelegate, ButtonContactDelegate> {
     UIView *bg;
     UIView *bgStroke;
+    UILabel *cta;
     UIScrollView *contactScrollView;
     UITextField *inputField;
     UITextField *selectConfirmField;
@@ -52,6 +56,7 @@
 @property (nonatomic, readonly) NSString * fieldText;
 @property (nonatomic, readonly) NSArray *enteredContacts;
 @property (nonatomic, readonly) BOOL allValid;
+//@property (nonatomic, readonly) CGSize currentSize;
 
 - (void)addContact:(Contact *)aContact;
 - (BOOL)finalizeContact;

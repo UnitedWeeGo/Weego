@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "WeegoAppDelegate.h"
 #import "AddLocation.h"
+#import "AddFriends.h"
 
 @interface ViewController : NSObject {
     WeegoAppDelegate *appDelegate;
@@ -36,6 +37,7 @@
 - (void)navigateToAddLocationsWithEntryState:(AddLocationInitState)state;
 - (void)navigateToAddLocationsWithLocationOpen:(NSString *)locId;
 - (void)navigateToAddParticipants;
+- (void)navigateToAddressBook:(AddFriends *)delegate;
 //- (void)showModalEditEvent:(UIViewController *)inView;
 - (void)navigateToEditEvent;
 - (void)goBack;

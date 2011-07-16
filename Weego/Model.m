@@ -692,6 +692,19 @@ static Model *sharedInstance;
     return [returnParticipants autorelease];
 }
 
+- (NSArray *)getRecentParticipants
+{
+    NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
+    for (Participant *p in self.participants) {
+        BOOL isFound = NO;
+        for (Participant *p2 in returnParticipants) {
+            if ([p2.email isEqualToString:p.email]) isFound = YES;
+        }
+        if (!isFound && !p.hasBeenRemoved) [returnParticipants addObject:p];
+    }
+    return [returnParticipants autorelease];
+}
+
 #pragma mark -
 #pragma mark ReportedLocations
 

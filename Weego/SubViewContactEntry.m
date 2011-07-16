@@ -84,6 +84,13 @@ typedef enum {
     bgStroke.backgroundColor = HEXCOLOR(0xCCCCCCFF);
     [self addSubview:bgStroke];
     [bgStroke release];
+    
+    cta = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_FIELD_MARGIN,TOP_FIELD_MARGIN+2,MAX_FIELD_WIDTH,16)];
+    cta.textColor = HEXCOLOR(0x666666FF);
+    cta.font = [UIFont fontWithName:@"MyriadPro-Regular" size:14];
+    cta.text = @"Type your friend's name or email address";
+    [self addSubview:cta];
+    [cta release];
         
     contactScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
     contactScrollView.backgroundColor = [UIColor clearColor];
@@ -105,7 +112,6 @@ typedef enum {
     inputField.delegate = self;
         
     [contactScrollView addSubview:inputField];
-    [inputField becomeFirstResponder];
     [inputField release];
     
     selectConfirmField = [[UITextField alloc] initWithFrame:CGRectMake(LEFT_FIELD_MARGIN,TOP_FIELD_MARGIN+56,MAX_FIELD_WIDTH,16)];
@@ -127,16 +133,24 @@ typedef enum {
     [focusButton addTarget:self action:@selector(textFieldWasTouched) forControlEvents:UIControlEventTouchUpInside];
     [contactScrollView addSubview:focusButton];
     
-//    buttonAddressBook = [UIButton buttonWithType:UIButtonTypeCustom];
-//    UIImage *iconAddressBook = [UIImage imageNamed:@"icon_addressbook_01.png"];
-//    [buttonAddressBook setImage:iconAddressBook forState:UIControlStateNormal];
-//    buttonAddressBook.frame = CGRectMake(277, 8, iconAddressBook.size.width, iconAddressBook.size.height);
-//    [self addSubview:buttonAddressBook];
+    buttonAddressBook = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *iconAddressBook = [UIImage imageNamed:@"icon_addressbook_01.png"];
+    [buttonAddressBook setImage:iconAddressBook forState:UIControlStateNormal];
+    buttonAddressBook.frame = CGRectMake(277, 8, iconAddressBook.size.width, iconAddressBook.size.height);
+    [buttonAddressBook addTarget:self action:@selector(addressBookRequested) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:buttonAddressBook];
 
     currentMode = AddFriendsModeEdit;
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    cta.hidden = YES;
+    if ([delegate respondsToSelector:@selector(inputFieldDidBeginEditing:)]) [delegate inputFieldDidBeginEditing:self];
+    return YES;
+}
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -198,6 +212,9 @@ typedef enum {
 
 - (void)addContact:(Contact *)aContact
 {
+    [inputField resignFirstResponder];
+    if ([delegate respondsToSelector:@selector(inputFieldDidEndEditing:)]) [delegate inputFieldDidEndEditing:self];
+    cta.hidden = YES;
     [contacts addObject:aContact];
     allButtonsShowing = YES;
     if (currentlySelectedButton) {
@@ -234,6 +251,11 @@ typedef enum {
     return YES;
 }
 
+//- (CGSize)currentSize
+//{
+//    return nil;
+//}
+
 #pragma mark - Private Methods
 
 - (void)positionTextField
@@ -247,11 +269,16 @@ typedef enum {
 {
 //    contactScrollView.contentSize = CGSizeMake(self.frame.size.width, 44 + (33 * (numberOfLines-1)));
 //    if (!allButtonsShowing) contactScrollView.contentOffset = CGPointMake(0, 33 * (numberOfLines-1));
+    CGFloat newHeight = 44 + (33 * (numberOfLines-1));
+//    CGSize newSize = CGSizeMake(self.frame.size.width, (allButtonsShowing) ? newHeight : 44);
+//    if ([delegate respondsToSelector:@selector(subViewContactEntry:didChangeSize:)]) {
+//        [delegate subViewContactEntry:self didChangeSize:newSize];
+//    }
     [UIView animateWithDuration:0.30f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
-                         contactScrollView.contentSize = CGSizeMake(self.frame.size.width, 44 + (33 * (numberOfLines-1)));
+                         contactScrollView.contentSize = CGSizeMake(self.frame.size.width, newHeight);
                          if (!allButtonsShowing) contactScrollView.contentOffset = CGPointMake(0, 33 * (numberOfLines-1));
                      }
                      completion:NULL];
@@ -342,6 +369,11 @@ typedef enum {
     [self deselectAllButtons];
 }
 
+- (void)addressBookRequested
+{
+    [delegate addressButtonClicked];
+}
+
 - (void)showAllButtons:(BOOL)showAll
 {
     allButtonsShowing = showAll;
@@ -357,6 +389,10 @@ typedef enum {
                               contactScrollView.frame.size.width, 
                               44);
         newPoint = CGPointMake(0, 33 * (numberOfLines-1));
+    }
+    CGSize newSize = newFrame.size;
+    if ([delegate respondsToSelector:@selector(subViewContactEntry:didChangeSize:)]) {
+        [delegate subViewContactEntry:self didChangeSize:newSize];
     }
     [UIView animateWithDuration:0.30f 
                           delay:0 
@@ -419,6 +455,7 @@ typedef enum {
 {
     [self deselectAllButtons];
     [self clearText];
+    [inputField becomeFirstResponder];
     currentlySelectedButton = (ButtonContact *)sender;
     [currentlySelectedButton setSelected:YES];
     inputField.hidden = YES;

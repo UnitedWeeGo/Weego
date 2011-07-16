@@ -17,6 +17,7 @@
 #import "RegisterTVC.h"
 #import "EntryPoint.h"
 #import "AddFriends.h"
+#import "AddressBookTVC.h"
 #import "EditEventTVC.h"
 #import "Info.h"
 #import "Help.h"
@@ -283,6 +284,17 @@ static ViewController *sharedInstance;
     [Model sharedInstance].currentViewState = ViewStateAddParticipant;
 	[nController pushViewController:addParticipantController animated:YES];
 	[addParticipantController release];
+}
+
+- (void)navigateToAddressBook:(AddFriends *)delegate
+{
+    [self addAndReportViewWithName:@"/addressBook"];
+    AddressBookTVC *addressBookController = [[AddressBookTVC alloc] init];
+    addressBookController.dataSource = delegate;
+    addressBookController.delegate = delegate;
+    [Model sharedInstance].currentViewState = ViewStateAddressBook;
+	[nController pushViewController:addressBookController animated:YES];
+	[addressBookController release];
 }
 
 - (void)navigateToEditEvent

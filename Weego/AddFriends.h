@@ -10,16 +10,24 @@
 #import <AddressBook/AddressBook.h>
 #import "SubViewContactEntry.h"
 #import "EGORefreshTableHeaderView.h"
+#import "AddressBookTVC.h"
 
 @class DataFetcher;
 
-@interface AddFriends : UIViewController <SubViewContactEntryDelegate, UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate> {
+@interface AddFriends : UIViewController <SubViewContactEntryDelegate, UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate> {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _saving;
     
     SubViewContactEntry *contactEntry;
     UITableView *contactsTableView;
     NSMutableArray *filteredContacts;
+    BOOL foundResults;
+    BOOL keyboardShowing;
+    CGFloat tableTop;
+    
+    NSArray *recentParticipants;
+    
+//    UITableView *recentsTableView;
     
     NSArray *allContacts;
     NSArray *allContactsWithEmail;
@@ -30,6 +38,7 @@
 
 @property (nonatomic, retain) UITableView *contactsTableView;
 @property (nonatomic, retain) NSMutableArray *filteredContacts;
+//@property (nonatomic, retain) UITableView *recentsTableView;
 @property (nonatomic) BOOL searchThreadIsCancelled;
 
 //@property (nonatomic, retain) NSMutableArray *matchedContacts;
