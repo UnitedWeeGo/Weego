@@ -579,38 +579,17 @@ typedef enum {
 
 - (void)zoomToFitMapAnnotations
 {
-    CLLocationCoordinate2D topLeftCoord;
-    topLeftCoord.latitude = -90;
-    topLeftCoord.longitude = 180;
-    
-    CLLocationCoordinate2D bottomRightCoord;
-    bottomRightCoord.latitude = 90;
-    bottomRightCoord.longitude = -180;
-    
-    for(MKUserLocation* annotation in mapView.annotations)
-    {
-        if ((MKUserLocation *)annotation == mapView.userLocation) continue; // dont take user location into account
-        topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
-        topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
-        
-        bottomRightCoord.longitude = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
-        bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
+    MKMapRect zoomRect = MKMapRectNull;
+    for (id <MKAnnotation> annotation in mapView.annotations) {
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
+        if (MKMapRectIsNull(zoomRect)) {
+            zoomRect = pointRect;
+        } else {
+            zoomRect = MKMapRectUnion(zoomRect, pointRect);
+        }
     }
-    
-    MKCoordinateRegion region;
-    region.center.latitude = (topLeftCoord.latitude + bottomRightCoord.latitude) / 2;
-    region.center.longitude = (topLeftCoord.longitude + bottomRightCoord.longitude) / 2;
-    
-    region.span.latitudeDelta = (bottomRightCoord.latitude - topLeftCoord.latitude) * MAP_PADDING;
-    
-    region.span.latitudeDelta = (region.span.latitudeDelta < MINIMUM_VISIBLE_LATITUDE)
-    ? MINIMUM_VISIBLE_LATITUDE 
-    : region.span.latitudeDelta;
-    
-    region.span.longitudeDelta = (bottomRightCoord.longitude - topLeftCoord.longitude) * MAP_PADDING;
-    
-    MKCoordinateRegion scaledRegion = [mapView regionThatFits:region];
-    [mapView setRegion:scaledRegion animated:YES];
+    [mapView setVisibleMapRect:zoomRect animated:YES];
 }
 
 
