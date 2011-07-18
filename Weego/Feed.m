@@ -79,7 +79,7 @@ const int openWidgetInputHeight = 120;
 {
     NSArray *feedMessages = [currentEvent getFeedMessages];
     FeedMessage *feedMessage = [feedMessages objectAtIndex:indexPath.row];
-    return [SubViewFeedMessage calulateMyHeightWithMessageString:feedMessage.message];
+    return [SubViewFeedMessage calulateMyHeightWithFeedMessage:feedMessage];
 }
 
 #pragma mark -

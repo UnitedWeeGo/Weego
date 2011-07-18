@@ -161,7 +161,7 @@
     [self addSubview:peopleIconView];
 
 }
-
+/*
 + (int)calulateMyHeightWithMessageString:(NSString *)message
 {
     int         fieldY = 25;
@@ -171,7 +171,7 @@
     
     return MAX(fieldY + messageCopySize.height + bottomPadding, 52);
 }
-
+*/
 + (int)calulateMyHeightWithFeedMessage:(FeedMessage *)feedMessage
 {
     int         fieldY = 25;

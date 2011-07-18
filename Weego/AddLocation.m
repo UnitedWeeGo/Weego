@@ -16,10 +16,6 @@
 #import "ReportedLocation.h"
 #import "Participant.h"
 
-// pad our map by 10% around the farthest annotations
-#define MAP_PADDING 1.1
-#define MINIMUM_VISIBLE_LATITUDE 0.02
-
 typedef enum {
 	SearchAndDetailStateSearch = 0,
 	SearchAndDetailStateDetail,

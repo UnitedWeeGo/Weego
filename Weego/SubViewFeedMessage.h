@@ -26,7 +26,7 @@
 
 @property (nonatomic, retain) FeedMessage *feedMessage;
 
-+ (int)calulateMyHeightWithMessageString:(NSString *)message;
+//+ (int)calulateMyHeightWithMessageString:(NSString *)message;
 + (int)calulateMyHeightWithFeedMessage:(FeedMessage *)message;
 
 @end
