@@ -38,9 +38,15 @@ typedef enum {
     LocationDetailWidget *locWidget;
     UISearchBar *searchBar;
     Boolean searchBarShowing;
-    NSMutableArray *savedSearchResults;
-    int selectedSearchLocationIndex;
-    int selectedLocationIndex;
+    
+    
+//    NSMutableArray *savedSearchResults;
+    NSMutableDictionary *savedSearchResultsDict;
+    
+    
+//    int selectedSearchLocationIndex;
+//    int selectedLocationIndex;
+    
     AddLocationInitState initState;
     AddLocationState currentState;
     UIButton *keyboardResigner;
@@ -59,8 +65,11 @@ typedef enum {
     Location *winningLocationSelected;
     
     BOOL continueToSearchEnabled;
-    int alreadyAddedAnnotationsCount;
+//    int alreadyAddedAnnotationsCount;
 }
+
+@property (nonatomic, copy) NSString *selectedSearchLocationKey;
+@property (nonatomic, copy) NSString *selectedLocationKey;
 
 - (id)initWithState:(AddLocationInitState)state;
 - (id)initWithLocationOpen:(NSString *)locId;

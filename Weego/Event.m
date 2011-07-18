@@ -130,7 +130,7 @@
 {
     NSArray *allLocations = [self getLocations];
     for (Location *location in allLocations) {
-        if ([location.uuid isEqualToString:uuid]) return location;
+        if ([location.g_id isEqualToString:uuid]) return location;
     }
     return nil;
 }

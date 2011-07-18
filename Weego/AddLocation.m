@@ -56,6 +56,8 @@ typedef enum {
 
 @implementation AddLocation
 
+@synthesize selectedSearchLocationKey, selectedLocationKey;
+
 #pragma mark - Initializers
 - (id)initWithLocationOpen:(NSString *)locId
 {
@@ -95,14 +97,10 @@ typedef enum {
 #pragma mark - SearchAndDetailState handler
 - (void)doGoToSearchAndDetailState:(SearchAndDetailState)state
 {
-
     int searchOffState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOffTab):(NavStateLocationAddSearchOff);
     int searchOnState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOnTab):(NavStateLocationAddSearchOn);
     
     if ( [Model sharedInstance].currentEvent.currentEventState >= EventStateDecided && initState != AddLocationInitStateFromNewEvent ) searchOffState = NavStateLocationDecided;
-    
-//    NSLog(@"currentEventState = %i", [Model sharedInstance].currentEvent.currentEventState);
-//    NSLog(@"isTemporary = %@", ([Model sharedInstance].currentEvent.isTemporary) ? @"YES" : @"NO");
     
     switch (state) {
         case SearchAndDetailStateNone:
@@ -212,8 +210,6 @@ typedef enum {
     {
         Location *loc = (Location *)[[detail getLocations] objectAtIndex:i];
         
-        NSString *uuid = loc.locationId; //[loc stringWithUUID];
-        loc.uuid = uuid;
         Boolean iLikedLocation = [detail loginUserDidVoteForLocationWithId:loc.locationId];
         LocAnnoStateType type;
         if (detail.currentEventState >= EventStateDecided && [detail.topLocationId isEqualToString:loc.locationId] && [Model sharedInstance].currentAppState != AppStateCreateEvent) //AppStateCreateEvent used during creation because model currentEvent may point to something else
@@ -236,7 +232,7 @@ typedef enum {
         LocAnnotation *mark = [[[LocAnnotation alloc] initWithLocation:loc withStateType:type andSelectedState:state] autorelease];
         
         mark.hasDeal = loc.hasDeal;
-        mark.uuid = uuid;
+        mark.uuid = loc.g_id;
         mark.iAddedLocation = loc.addedByMe;
         [mapView addAnnotation:mark];
         
@@ -373,20 +369,23 @@ typedef enum {
 
 - (void)addSearchResultAnnotations
 {
-    int searchResults = [savedSearchResults count];
-    
-    // Add placemarks for each result
-    for(int i = alreadyAddedAnnotationsCount; i < searchResults; i++)
-    {
-        Location *place = [savedSearchResults objectAtIndex:i];
-        // Add a placemark on the map
-        LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
-        mark.dataLocationIndex = i;
-        mark.iAddedLocation = YES;
-        [mapView addAnnotation:mark];
+    NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
+    id key;
+    while ((key = [enumerator nextObject])) {
+        Location *place = [savedSearchResultsDict objectForKey:key];
         
-        [mark release];
+        if (!place.hasBeenAddedToMapPreviously)
+        {
+            place.hasBeenAddedToMapPreviously = YES;
+            LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
+            mark.uuid = key;
+            mark.iAddedLocation = YES;
+            [mapView addAnnotation:mark];
+            
+            [mark release];
+        }
     }
+    
     //[self zoomToFitMapAnnotations];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
 }
@@ -420,15 +419,21 @@ typedef enum {
         LocAnnotation *placeMark = view.annotation;
         [placeMark setSelectedState:LocAnnoSelectedStateSelected];
         view.image = [placeMark imageForCurrentState];
-        selectedSearchLocationIndex = -1;
-        selectedLocationIndex = -1;
+//        selectedSearchLocationIndex = -1;
+//        selectedLocationIndex = -1;
+        
+        self.selectedLocationKey = nil;
+        self.selectedSearchLocationKey = nil;
+        
         if (placeMark.isSavedLocation)
         {
-            selectedLocationIndex = placeMark.dataLocationIndex;
+//            selectedLocationIndex = placeMark.dataLocationIndex;
+            self.selectedLocationKey = placeMark.uuid;
         }
         else
         {
-            selectedSearchLocationIndex = placeMark.dataLocationIndex;
+//            selectedSearchLocationIndex = placeMark.dataLocationIndex;
+            self.selectedSearchLocationKey = placeMark.uuid;
         }
         [locWidget updateInfoViewWithLocationAnnotation:placeMark];
         [self doGoToSearchAndDetailState:(searchBarShowing)?(SearchAndDetailStateBoth):(SearchAndDetailStateDetail)];
@@ -459,8 +464,12 @@ typedef enum {
         if (annotationOpenCount <= 0)
         {
             annotationOpenCount = 0;
-            selectedSearchLocationIndex = -1;
-            selectedLocationIndex = -1;
+//            selectedSearchLocationIndex = -1;
+//            selectedLocationIndex = -1;
+            
+            self.selectedLocationKey = nil;
+            self.selectedSearchLocationKey = nil;
+            
             [self doGoToSearchAndDetailState:(searchBarShowing)?(SearchAndDetailStateSearch):(SearchAndDetailStateNone)];
         }
     }
@@ -472,8 +481,12 @@ typedef enum {
         if (annotationOpenCount <= 0)
         {
             annotationOpenCount = 0;
-            selectedSearchLocationIndex = -1;
-            selectedLocationIndex = -1;
+//            selectedSearchLocationIndex = -1;
+//            selectedLocationIndex = -1;
+            
+            self.selectedLocationKey = nil;
+            self.selectedSearchLocationKey = nil;
+            
             [self doGoToSearchAndDetailState:(searchBarShowing)?(SearchAndDetailStateSearch):(SearchAndDetailStateNone)];
         }
     }
@@ -548,8 +561,12 @@ typedef enum {
 {
 	// remove observers and annotation
     currentState = AddLocationStateView;
-	selectedSearchLocationIndex = -1;
-    selectedLocationIndex = -1;
+//	selectedSearchLocationIndex = -1;
+//    selectedLocationIndex = -1;
+    
+    self.selectedLocationKey = nil;
+    self.selectedSearchLocationKey = nil;
+    
 	NSMutableArray *toRemove = [NSMutableArray arrayWithCapacity:mapView.annotations.count];
 	for (id annotation in mapView.annotations) {
 		if ([annotation isKindOfClass:[LocAnnotation class]]) {
@@ -600,19 +617,18 @@ typedef enum {
 #pragma mark - LocationDetailWidgetDelegate methods
 - (void)addButtonPressed
 {
-    Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
+   // Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
+    
+    Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
+    
 	Location *location = [[Model sharedInstance] createNewLocationWithPlace:aPlace];
     
-    NSString *uuid = location.locationId; //[location stringWithUUID];
-    location.uuid = uuid;
+    NSString *uuid = location.g_id; //[location stringWithUUID];
+    //location.uuid = uuid;
     
 	Controller *controller = [Controller sharedInstance];
     NSArray *locations = [NSArray arrayWithObject:location];
     [controller addOrUpdateLocations:locations isAnUpdate:NO];
-        
-    // add the newly save annotation to the map
-//    selectedSearchLocationIndex = -1;
-//    selectedLocationIndex = -1;
     
     LocAnnoStateType type = LocAnnoStateTypePlace;
     LocAnnoSelectedState state = LocAnnoSelectedStateSelected;
@@ -634,7 +650,6 @@ typedef enum {
 
 - (void)likeButtonPressed
 {
-//    NSLog(@"likeButtonPressed dataLocationIndex: %d", selectedLocationIndex);
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
     [placemark setStateType:LocAnnoStateTypeLiked];
     [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
@@ -644,12 +659,10 @@ typedef enum {
     
     Controller *controller = [Controller sharedInstance];
     [controller toggleVoteForLocationsWithId:loc.locationId];
-//    [controller voteForLocationWithId:loc.locationId];
     [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
 }
 - (void)unlikeButtonPressed
 {
-//    NSLog(@"unlikeButtonPressed dataLocationIndex: %d", selectedLocationIndex);
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
     [placemark setStateType:LocAnnoStateTypePlace];
     [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
@@ -659,7 +672,6 @@ typedef enum {
     
     Controller *controller = [Controller sharedInstance];
     [controller toggleVoteForLocationsWithId:loc.locationId];
-//    [controller removeVoteForLocationWithId:loc.locationId];
     [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
 }
 
@@ -706,10 +718,13 @@ typedef enum {
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
     Event *detail = model.currentEvent;
     Location *loc = [detail getLocationWithUUID:placemark.uuid];
-    NSLog(@"loc.uuid = %@ : loc.id = %@ : pm.uuid = %@", loc.uuid, loc.locationId, placemark.uuid);
+//    NSLog(@"loc.uuid = %@ : loc.id = %@ : pm.uuid = %@", loc.uuid, loc.locationId, placemark.uuid);
     if (model.currentAppState == AppStateCreateEvent || loc == nil) // case 1 - create mode OR case 2 - location unsaved
     {
-        Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
+//        Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
+        
+        Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
+        
         aPlace.name = name;
         placemark.title = name;
         if (loc) loc.name = name;
@@ -884,7 +899,10 @@ typedef enum {
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
-    [savedSearchResults release];
+    
+    //[savedSearchResults release];
+    [savedSearchResultsDict release];
+    
     mapView.delegate = nil;
     searchBar.delegate = nil;
     if (participantSelectedOnMap) [participantSelectedOnMap release];
@@ -967,29 +985,42 @@ typedef enum {
                     // remove any existing added locations from results
                     NSMutableArray *toRemoveDupes = [[[NSMutableArray alloc] init] autorelease];
                     for (Location *obj in locations) {
-                        //if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
-                        if ([self locationCollection:savedSearchResults containsLocation:obj]) [toRemoveDupes addObject:obj];
+                        
+                        //if ([savedSearchResultsDict objectForKey:obj.g_id] != nil) [toRemoveDupes addObject:obj];
+                        NSLog(@"location uid: %@", obj.g_id);
+                        Location *detectedDupe = [savedSearchResultsDict objectForKey:obj.g_id];
+                        if (detectedDupe)
+                        {
+                            NSLog(@"Found duplicate: %@", detectedDupe.g_id);
+                            [toRemoveDupes addObject:obj];
+                        }
                     }
                     [locations removeObjectsInArray:toRemoveDupes];
+                    NSLog(@"Location count after removing dupes: %d", [locations count]);
+                    for (Location *loc in locations) [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                     
-                    alreadyAddedAnnotationsCount = [savedSearchResults count];
-                    [savedSearchResults addObjectsFromArray:locations];
                 }
                 else
-                {
-                    alreadyAddedAnnotationsCount = 0;
-                    [savedSearchResults release];
-                    savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
+                {                    
+                    [savedSearchResultsDict removeAllObjects];
+                    for (Location *loc in locations) 
+                    {
+                        [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                    }
                 }
                 
                 // remove any existing saved locations from results
-                NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
-                for (Location *obj in savedSearchResults) {
-                    if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
+                NSMutableArray *toRemoveKeys = [[[NSMutableArray alloc] init] autorelease];
+                
+                NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
+                id key;
+                while ((key = [enumerator nextObject])) {
+                    Location *loc = [savedSearchResultsDict objectForKey:key];
+                    if ([[Model sharedInstance] locationExistsInCurrentEvent:loc]) [toRemoveKeys addObject:loc.g_id];
                 }
-                [savedSearchResults removeObjectsInArray:toRemove];
+                [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
             }
-            if ([savedSearchResults count] == 0 && !continueToSearchEnabled) 
+            if ([savedSearchResultsDict count] == 0 && !continueToSearchEnabled) 
             {
                 [self doSecondaryAddressSearch];
             }
@@ -1002,6 +1033,7 @@ typedef enum {
             
             break;
         case DataFetchTypeGooglePlaceSearch:
+            /*
             if ( [fetchId isEqualToString:googlePlacesFetchId] )
             {
                 [savedSearchResults release];
@@ -1024,23 +1056,30 @@ typedef enum {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
             }
-            
+            */
             break;
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
             {
-                [savedSearchResults release];
+                [savedSearchResultsDict removeAllObjects];
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
-                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
                 
+                for (Location *loc in locations) [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                                
                 // remove any existing locations from results
-                NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
-                for (Location *obj in savedSearchResults) {
-                    if ([[Model sharedInstance] locationExistsUsingLatLngInCurrentEvent:obj]) [toRemove addObject:obj];
+                NSMutableArray *toRemoveKeys = [[[NSMutableArray alloc] init] autorelease];
+
+                NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
+                id key;
+                while ((key = [enumerator nextObject])) {
+                    Location *loc = [savedSearchResultsDict objectForKey:key];
+                    if ([[Model sharedInstance] locationExistsUsingLatLngInCurrentEvent:loc]) [toRemoveKeys addObject:loc.g_id];
                 }
-                [savedSearchResults removeObjectsInArray:toRemove];
+                
+                [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
+                
             }
-            if ([savedSearchResults count] == 0) {
+            if ([savedSearchResultsDict count] == 0) {
                 NSLog(@"No address results found for query: %@, giving up", pendingSearchString);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No matches found near this location" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [alert show];
@@ -1053,6 +1092,7 @@ typedef enum {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
             }
+            break;
         case DataFetchTypeAddVoteToLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
             break;
@@ -1209,7 +1249,6 @@ typedef enum {
     NSString *title = [NSString stringWithFormat:@"How would you like to contact %@?", part.fullName];
     UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send Email", nil];
     userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-//    [userOptions showInView:self.view];
     [userOptions showInView:[UIApplication sharedApplication].keyWindow];
     [userOptions release];
 }
@@ -1221,8 +1260,8 @@ typedef enum {
 {
     [super loadView];
     self.view.backgroundColor = [UIColor whiteColor];
+    savedSearchResultsDict = [[NSMutableDictionary alloc] init];
     continueToSearchEnabled = false;
-    alreadyAddedAnnotationsCount = 0;
     annotationOpenCount = 0;
     searchBarShowing = false;
     [self setupMapView];
@@ -1257,7 +1296,6 @@ typedef enum {
     // grab any users reported locations if in the window
     if (eventIsWithinTimeRange && !eventIsBeingCreated) [[Controller sharedInstance] fetchReportedLocations];
     
-//    NSLog(@"loadView");
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1275,7 +1313,7 @@ typedef enum {
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-//    NSLog(@"AddLocation viewWillDisappear");
+    [self doShowSearchAgainButton:NO];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

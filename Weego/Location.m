@@ -18,11 +18,10 @@
 
 @implementation Location
 
-@synthesize ownerEventId, locationId, addedById, uuid, tempId;
+@synthesize ownerEventId, locationId, addedById, tempId;
 @synthesize latitude, longitude, coordinate, name, vicinity, icon, location_type;
 @synthesize g_id, rating, g_reference, formatted_address, formatted_phone_number, stripped_phone_number;
-@synthesize isTemporary, addedByMe;
-//@synthesize numberOfVotes;
+@synthesize isTemporary, addedByMe, hasBeenAddedToMapPreviously;
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
 
@@ -68,7 +67,14 @@
     NSDecimalNumber *uLat = [[[jsonResultDict objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"];
     NSDecimalNumber *uLng = [[[jsonResultDict objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"];
     if (uIcon != nil) self.icon = uIcon;
-    if (uId != nil) self.g_id = uId;
+    if (uId != nil) 
+    {
+        self.g_id = uId;
+    }
+    else
+    {
+        self.g_id = uFormatted_address; // for the geo result
+    }
     self.name = (uId != nil) ? uName : @"Name me!";
     if (uRefernnce != nil) self.g_reference = uRefernnce;
     if (uVicinity != nil) self.vicinity = uVicinity;
@@ -179,16 +185,24 @@
 - (void)dealloc {
 	
 //	NSLog(@"Location destroyed");
-	
+	[g_reference release];
+    [g_id release];
+    [tempId release];
+    
 	[ownerEventId release];
 	[locationId release];
     [addedById release];
-	[uuid release];
     
 	[name release];
 	[vicinity release];
+    [icon release];
 	[latitude release];
 	[longitude release];
+    [location_type release];
+    
+    [formatted_phone_number release];
+    [formatted_address release];
+    [rating release];
     
     [super dealloc];
 }

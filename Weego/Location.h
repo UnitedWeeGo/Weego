@@ -20,7 +20,6 @@
 @property (nonatomic, copy) NSString *ownerEventId;
 @property (nonatomic, copy) NSString *locationId;
 @property (nonatomic, copy) NSString *addedById;
-@property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, copy) NSString *tempId;
 
 // basic info
@@ -44,6 +43,7 @@
 
 
 @property (nonatomic) BOOL isTemporary;
+@property (nonatomic) BOOL hasBeenAddedToMapPreviously;
 //@property (readonly) int numberOfVotes;
 
 @property (nonatomic, readonly) BOOL hasPendingVoteRequest;
