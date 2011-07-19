@@ -18,6 +18,7 @@
 @implementation CellContact
 
 @synthesize contact;
+@synthesize participant;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -79,10 +80,16 @@
     separator.backgroundColor = HEXCOLOR(0xCCCCCCFF);
     [self addSubview:separator];
     [separator release];
+    
+    if (avatarImage == nil) avatarImage = [[[UIImageViewAsyncLoader alloc] initWithFrame:CGRectMake(10, 5, 32, 32)] autorelease];
+    [self addSubview:avatarImage];
+    avatarImage.hidden = YES;
 }
 
 - (void)setContact:(Contact *)aContact
 {
+    avatarImage.hidden = YES;
+    labelName.frame = CGRectMake(8, 8, 230, 16);
     labelName.text = aContact.contactName;
     NSString *label = [aContact.emailLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
     label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
@@ -93,6 +100,40 @@
     labelEmail.frame = CGRectMake(left, 26, 320 - left, 14);
     labelEmail.text = aContact.emailAddress;
     separator.frame = CGRectMake(0, 43, 320, 1);
+}
+
+- (void)setParticipant:(Participant *)aParticipant
+{
+    float leftMargin = 10;
+    float nameLeftPos = leftMargin + 38;
+    float nameFieldWidth = 150;
+    NSURL *url = [NSURL URLWithString:aParticipant.avatarURL];
+    [avatarImage asyncLoadWithNSURL:url useCached:YES andBaseImage:BaseImageTypeAvatar useBorder:YES];
+    avatarImage.hidden = NO;
+    labelName.frame = CGRectMake(nameLeftPos, 15, nameFieldWidth, 16);
+    labelName.text = aParticipant.fullName;
+    labelEmail.text = @"";
+    labelLabel.text = @"";
+    separator.frame = CGRectMake(0, 43, 320, 1);
+}
+
+- (void)showAdded:(BOOL)hasBeenAdded
+{
+    if (hasBeenAdded) {
+        labelName.alpha = 0.5;
+        labelLabel.alpha = 0.5;
+        labelEmail.alpha = 0.5;
+        avatarImage.alpha = 0.5;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        labelName.alpha = 1;
+        labelLabel.alpha = 1;
+        labelEmail.alpha = 1;
+        avatarImage.alpha = 1;
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 @end

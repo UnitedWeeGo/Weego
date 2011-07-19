@@ -9,6 +9,7 @@
 #import "AddFriends.h"
 #import "ABContactsHelper.h"
 #import "ABContact.h"
+#import "Event.h"
 #import "Contact.h"
 #import "Participant.h"
 #import "CellContact.h"
@@ -22,6 +23,8 @@
 - (NSArray *)contactsWithEmailMatchingNameOrEmail:(NSString *)name;
 - (void)updateFilteredContacts:(NSMutableArray *)contacts;
 - (CellContact *)getCellForContactsWithContact:(Contact *)aContact;
+- (CellContact *)getCellForContactsWithParticipant:(Participant *)aParticipant;
+- (BOOL)isAlreadyAdded:(NSString *)email;
 - (void)showSending;
 - (void)hideSending;
 
@@ -32,6 +35,7 @@
 
 //@synthesize matchedContacts;
 @synthesize contactsTableView, filteredContacts, searchThreadIsCancelled;
+//@synthesize recentsTableView;
 
 - (void)dealloc
 {
@@ -41,6 +45,7 @@
     [self.filteredContacts release];
     [allContacts release];
     [allContactsWithEmail release];
+    [recentParticipants release];
     [super dealloc];
 }
 
@@ -70,7 +75,17 @@
     [_refreshHeaderView release];
 //	_refreshHeaderView.hidden = YES;
     
-    self.contactsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, self.view.frame.size.width, 152)];
+//    self.recentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, self.view.frame.size.width, 152)];
+//    self.recentsTableView.delegate = self;
+//    self.recentsTableView.dataSource = self;
+//    self.recentsTableView.backgroundColor = [UIColor clearColor];
+//    self.recentsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//    [self.view addSubview:self.recentsTableView];
+//    [self.recentsTableView release];
+    
+    tableTop = 45;
+    
+    self.contactsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - 44)];
     self.contactsTableView.delegate = self;
     self.contactsTableView.dataSource = self;
     self.contactsTableView.backgroundColor = [UIColor clearColor];
@@ -99,6 +114,9 @@
     [Model sharedInstance].currentViewState = ViewStateAddParticipant;
     [[ViewController sharedInstance] showDropShadow:0];
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
+    [recentParticipants release];
+    recentParticipants = [[[Model sharedInstance] getRecentParticipants] retain];
+    
 }
 
 - (void)viewDidUnload
@@ -162,15 +180,56 @@
     
 }
 
+- (void)subViewContactEntry:(id)sender didChangeSize:(CGSize)newSize
+{
+    tableTop = newSize.height + 1;
+    CGFloat tableHeight = self.view.frame.size.height - tableTop;
+    if (keyboardShowing) tableHeight -= 214;
+//    self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, tableHeight);
+    [UIView animateWithDuration:0.30f 
+                          delay:0 
+                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                     animations:^(void){
+                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, tableHeight);
+                     }
+                     completion:NULL];
+}
+
+- (void)addressButtonClicked
+{
+    [[ViewController sharedInstance] navigateToAddressBook:self];
+}
+
 - (void)inputFieldDidEndEditing:(id)sender
 {
-    
+    keyboardShowing = NO;
+//    self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop);
+//    [UIView animateWithDuration:0.30f 
+//                          delay:0 
+//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+//                     animations:^(void){
+//                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop);
+//                     }
+//                     completion:NULL];
+}
+
+- (void)inputFieldDidBeginEditing:(id)sender
+{
+    keyboardShowing = YES;
+    [UIView animateWithDuration:0.30f 
+                          delay:0 
+                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                     animations:^(void){
+                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop - 214);
+                     }
+                     completion:NULL];
 }
 
 - (void)inputFieldDidChange:(id)sender
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self hideSending];
+//    foundResults = ![[contactEntry.fieldText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""];
     [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
 //    NSLog(@"%@", contactEntry.fieldText);
 //    if ([contactEntry.fieldText isEqualToString:@""]) {
@@ -226,6 +285,8 @@
 - (void)updateFilteredContacts:(NSMutableArray *)contacts
 {
     self.filteredContacts = contacts;
+    foundResults = [self.filteredContacts count] > 0;
+    NSLog(@"self.filteredContacts count = %i", [self.filteredContacts count]);
     [self.contactsTableView reloadData];
 //    [filteredContacts release];
 //    filteredContacts = contacts;
@@ -244,25 +305,64 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Contact *c = [filteredContacts objectAtIndex:indexPath.row];
-    NSLog(@"%@", c.contactName);
-    [contactEntry addContact:c];
+    if (indexPath.section == 0 && foundResults) { //tableView == self.contactsTableView) {
+        Contact *c = [filteredContacts objectAtIndex:indexPath.row];
+        if (![self isAlreadyAdded:c.emailAddress]) {
+            [contactEntry addContact:c];
+        }
+    } else if (indexPath.section == 1 || !foundResults) {
+        Participant *p = [recentParticipants objectAtIndex:indexPath.row];
+        if (![self isAlreadyAdded:p.email]) {
+            Contact *c = [[Contact alloc] init];
+            c.contactName = p.fullName;
+            c.emailAddress = p.email;
+            [contactEntry addContact:c];
+            [c release];
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return (foundResults) ? 2 : 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0 && foundResults) { //tableView == self.contactsTableView) {
+        return [NSString stringWithFormat:@"Results matching %@", contactEntry.fieldText];
+    } else if (section == 1 || !foundResults) { //tableView == self.recentsTableView) {
+        return @"Recents";
+    }
+    return @"";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [filteredContacts count];
+    if (section == 0 && foundResults) { //tableView == self.contactsTableView) {
+        return [filteredContacts count];
+    } else if (section == 1 || !foundResults) { //tableView == self.recentsTableView) {
+        return [recentParticipants count];
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	Contact *contact = [filteredContacts objectAtIndex:indexPath.row];
-	CellContact *cell = [self getCellForContactsWithContact:contact];
-    return cell;
+    if (indexPath.section == 0) {
+        if (foundResults) {
+            Contact *contact = [filteredContacts objectAtIndex:indexPath.row];
+            CellContact *cell = [self getCellForContactsWithContact:contact];
+            return cell;
+        } else {
+            Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
+            CellContact *cell = [self getCellForContactsWithParticipant:participant];
+            return cell;
+        }
+    } else if (indexPath.section == 1) { //tableView == self.recentsTableView) {
+        Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
+        CellContact *cell = [self getCellForContactsWithParticipant:participant];
+        return cell;
+    }
+    return nil;
 }
 
 - (CellContact *)getCellForContactsWithContact:(Contact *)aContact
@@ -272,7 +372,31 @@
         cell = [[[CellContact alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactsTableCellId"] autorelease];
     }
     cell.contact = aContact;
+    [cell showAdded:[self isAlreadyAdded:aContact.emailAddress]];
     return cell;
+}
+
+- (CellContact *)getCellForContactsWithParticipant:(Participant *)aParticipant
+{
+    CellContact *cell = (CellContact *) [contactsTableView dequeueReusableCellWithIdentifier:@"ContactsTableCellId"];
+    if (cell == nil) {
+        cell = [[[CellContact alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactsTableCellId"] autorelease];
+    }
+    cell.participant = aParticipant;
+    [cell showAdded:[self isAlreadyAdded:aParticipant.email]];
+    return cell;
+}
+
+- (BOOL)isAlreadyAdded:(NSString *)email
+{
+    for (Contact *c in [contactEntry enteredContacts]) {
+        if ([c.emailAddress isEqualToString:email]) return YES;
+    }
+    Event *currentEvent = [Model sharedInstance].currentEvent;
+    for (Participant *p in [currentEvent getParticipants]) {
+        if ([p.email isEqualToString:email]) return YES;
+    }
+    return NO;
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -375,6 +499,48 @@
 - (void)egoRefreshTableHeaderClosed
 {
 //    _refreshHeaderView.hidden = YES;
+}
+
+#pragma mark - AddressBookTVCDataSource
+
+- (NSArray *)dataForAddressBookTVC
+{
+    NSMutableArray *matchedContacts = [[NSMutableArray alloc] init];
+    for (ABContact *abc in allContactsWithEmail) {
+        for (int i=0; i<[[abc emailArray] count]; i++) {
+            NSString *email = [[abc emailArray] objectAtIndex:i];
+            NSString *emailLabel = [[abc emailLabels] objectAtIndex:i];
+            Contact *c = [[Contact alloc] init];
+            c.contactName = abc.contactName;
+            c.emailAddress = email;
+            c.emailLabel = emailLabel;
+            [matchedContacts addObject:c];
+            [c release];
+        }
+    }
+    NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(compare:)] autorelease];
+	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
+    return [matchedContacts autorelease];
+}
+
+- (NSArray *)enteredContactsForAddressBookTVC
+{
+    return [contactEntry enteredContacts];
+}
+
+- (NSArray *)addedParticipantsForAddressBookTVC
+{
+    Event *currentEvent = [Model sharedInstance].currentEvent;
+    return [currentEvent getParticipants];
+}
+
+#pragma mark - AddressBookTVCDelegate
+
+- (void)addressBookTVCDidAddContact:(Contact *)aContact
+{
+    if (![self isAlreadyAdded:aContact.emailAddress]) {
+        [contactEntry addContact:aContact];
+    }
 }
 
 @end
