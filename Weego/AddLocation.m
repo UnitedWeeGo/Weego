@@ -427,6 +427,7 @@ typedef enum {
 
 - (void)addSearchResultAnnotations
 {
+    BOOL newLocationDetected = NO;
     NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
     id key;
     while ((key = [enumerator nextObject])) {
@@ -434,6 +435,7 @@ typedef enum {
         
         if (!place.hasBeenAddedToMapPreviously)
         {
+            newLocationDetected = YES;
             place.hasBeenAddedToMapPreviously = YES;
             LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
             mark.uuid = key;
@@ -444,7 +446,7 @@ typedef enum {
         }
     }
     
-    [self zoomToFitMapAnnotations];
+    if (newLocationDetected)    [self zoomToFitMapAnnotations];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
 }
 
