@@ -19,7 +19,7 @@
 @synthesize title;
 @synthesize subtitle;
 @synthesize dataLocationIndex;
-@synthesize isSavedLocation, isEnabled, isNewlyAdded, uuid, iAddedLocation;
+@synthesize isSavedLocation, isEnabled, isNewlyAdded, uuid, iAddedLocation, scheduledForZoom;
 @synthesize hasDeal;
 @synthesize isAddress;
 

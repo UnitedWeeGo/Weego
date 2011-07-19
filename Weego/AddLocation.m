@@ -26,7 +26,7 @@ typedef enum {
 
 @interface AddLocation ()
 - (void)setupMapView;
-- (void)zoomToFitMapAnnotations;
+- (void)zoomToFitMapAnnotationsAndSkipPreviouslyAdded:(BOOL)skipAdded;
 - (void)setupInfoView;
 - (void)setupSearchBar;
 - (void)removeAnnotations:(MKMapView *)theMapView includingSaved:(Boolean)includeSaved;
@@ -196,7 +196,7 @@ typedef enum {
     }
     if (searchResults > 0) {
         userLocationFound = true; // cancels zoom to user location
-        [self zoomToFitMapAnnotations];
+        [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
     }
 }
 
@@ -245,7 +245,7 @@ typedef enum {
     }
     if (searchResults > 0) {
         userLocationFound = true; // cancels zoom to user location
-        [self zoomToFitMapAnnotations];
+        [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
     }
     selectedLocationId = nil;
 }
@@ -440,13 +440,14 @@ typedef enum {
             LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
             mark.uuid = key;
             mark.iAddedLocation = YES;
+            mark.scheduledForZoom = YES;
             [mapView addAnnotation:mark];
             
             [mark release];
         }
     }
     
-    if (newLocationDetected)    [self zoomToFitMapAnnotations];
+    if (newLocationDetected)    [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:YES];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
 }
 
@@ -637,10 +638,22 @@ typedef enum {
 	[mapView removeAnnotations:toRemove];
 }
 
-- (void)zoomToFitMapAnnotations
+- (void)zoomToFitMapAnnotationsAndSkipPreviouslyAdded:(BOOL)skipAdded
 {
     MKMapRect zoomRect = MKMapRectNull;
     for (id <MKAnnotation> annotation in mapView.annotations) {
+        if (mapView.userLocation == annotation) continue;
+        
+        if (skipAdded)
+        {
+            LocAnnotation *loc = (LocAnnotation *)annotation;
+            if (!loc.scheduledForZoom) 
+            {
+                continue;
+            }
+            loc.scheduledForZoom = NO;
+        }
+        
         MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
@@ -649,6 +662,8 @@ typedef enum {
             zoomRect = MKMapRectUnion(zoomRect, pointRect);
         }
     }
+    zoomRect.size.width *= 1.05;
+    zoomRect.size.height *= 1.05;
     [mapView setVisibleMapRect:zoomRect animated:YES];
 }
 

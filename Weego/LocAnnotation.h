@@ -39,6 +39,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL hasDeal;
 @property (nonatomic, assign) BOOL iAddedLocation;
 @property (nonatomic, readonly) BOOL isAddress;
+@property (nonatomic, readwrite) BOOL scheduledForZoom;
 
 - (LocAnnotation *)initWithLocation:(Location *)loc withStateType:(LocAnnoStateType)theStateType andSelectedState:(LocAnnoSelectedState)theSelectedState;
 
