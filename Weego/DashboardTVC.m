@@ -476,6 +476,7 @@
 
 - (void)dealloc {
     NSLog(@"DashboardTVC dealloc");
+    self.tableView.tableHeaderView = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     _refreshHeaderView.delegate = nil;
     [dataSources removeAllObjects];
