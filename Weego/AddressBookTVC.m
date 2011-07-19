@@ -43,6 +43,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    indexes = [[NSMutableArray alloc] init];
+    indexedContacts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+    
+    for(char c = 'A'; c <= 'Z'; c++) {
+        [indexes addObject:[NSString stringWithFormat:@"%c",c]];
+        [indexedContacts addObject:[NSMutableArray array]];
+    }
+    
+    [indexes addObject:@"#"];
+    
+    contacts = [[dataSource dataForAddressBookTVC] retain];
+    
+    for (Contact *c in contacts) {
+		NSInteger index = contacts.count - 1; // insert into #
+		if (c.contactName.length) {
+			NSInteger expectedIndex = [indexes indexOfObject:[c.contactName substringToIndex:1]];
+			if (expectedIndex != NSNotFound) {
+				index = expectedIndex;
+			}
+		}
+		[[indexedContacts objectAtIndex:index] addObject:c];
+	}
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -84,21 +107,43 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)dealloc
+{
+    [contacts release];
+    
+    [super dealloc];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [indexes count];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+	return indexes;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[dataSource dataForAddressBookTVC] count];
+    return [[indexedContacts objectAtIndex:section] count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if ([[indexedContacts objectAtIndex:section] count]) {
+		return 23;
+	}
+	return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [indexes objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Contact *contact = [[dataSource dataForAddressBookTVC] objectAtIndex:indexPath.row];
+    Contact *contact = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     CellContact *cell = [self getCellForContactsWithContact:contact];
     return cell;
     
@@ -169,14 +214,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    Contact *c = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (![self isAlreadyAdded:c.emailAddress]) {
+        [delegate addressBookTVCDidAddContact:c];
+    }
+    [self.tableView reloadData];
 }
 
 @end

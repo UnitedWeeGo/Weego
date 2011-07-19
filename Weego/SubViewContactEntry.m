@@ -12,6 +12,7 @@
 #define TOP_FIELD_MARGIN 14.0
 #define TOP_BUTTON_MARGIN 8.0
 #define MAX_FIELD_WIDTH 265.0
+#define MAX_CONTACT_SCROLL_VIEW_HEIGHT 120.0
 
 #define Z_WIDTH_SPACE @"\u200B"
 
@@ -251,29 +252,17 @@ typedef enum {
     return YES;
 }
 
-//- (CGSize)currentSize
-//{
-//    return nil;
-//}
-
 #pragma mark - Private Methods
 
 - (void)positionTextField
 {
-//    NSLog(@"");
     inputField.frame = CGRectMake(currentX, TOP_FIELD_MARGIN + (33 * (numberOfLines-1)), remainingWidth, 16);
     focusButton.frame = inputField.frame;
 }
 
 - (void)resizeContent
 {
-//    contactScrollView.contentSize = CGSizeMake(self.frame.size.width, 44 + (33 * (numberOfLines-1)));
-//    if (!allButtonsShowing) contactScrollView.contentOffset = CGPointMake(0, 33 * (numberOfLines-1));
     CGFloat newHeight = 44 + (33 * (numberOfLines-1));
-//    CGSize newSize = CGSizeMake(self.frame.size.width, (allButtonsShowing) ? newHeight : 44);
-//    if ([delegate respondsToSelector:@selector(subViewContactEntry:didChangeSize:)]) {
-//        [delegate subViewContactEntry:self didChangeSize:newSize];
-//    }
     [UIView animateWithDuration:0.30f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
@@ -380,10 +369,12 @@ typedef enum {
     CGRect newFrame;
     CGPoint newPoint;
     if (showAll) {
+        CGFloat viewHeight = (contactScrollView.contentSize.height < MAX_CONTACT_SCROLL_VIEW_HEIGHT) ? contactScrollView.contentSize.height : MAX_CONTACT_SCROLL_VIEW_HEIGHT;
+        CGFloat scrollPos = (contactScrollView.contentSize.height < MAX_CONTACT_SCROLL_VIEW_HEIGHT) ? 0 : contactScrollView.contentSize.height - MAX_CONTACT_SCROLL_VIEW_HEIGHT;
         newFrame = CGRectMake(contactScrollView.frame.origin.x, contactScrollView.frame.origin.y, 
                               contactScrollView.frame.size.width, 
-                              contactScrollView.contentSize.height);
-        newPoint = CGPointMake(0, 0);
+                              viewHeight);
+        newPoint = CGPointMake(0, scrollPos);
     } else {
         newFrame = CGRectMake(contactScrollView.frame.origin.x, contactScrollView.frame.origin.y, 
                               contactScrollView.frame.size.width, 

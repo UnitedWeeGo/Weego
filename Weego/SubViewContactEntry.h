@@ -56,7 +56,6 @@
 @property (nonatomic, readonly) NSString * fieldText;
 @property (nonatomic, readonly) NSArray *enteredContacts;
 @property (nonatomic, readonly) BOOL allValid;
-//@property (nonatomic, readonly) CGSize currentSize;
 
 - (void)addContact:(Contact *)aContact;
 - (BOOL)finalizeContact;

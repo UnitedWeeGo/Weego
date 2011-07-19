@@ -515,6 +515,8 @@
             [c release];
         }
     }
+    NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(compare:)] autorelease];
+	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
     return [matchedContacts autorelease];
 }
 
@@ -533,7 +535,9 @@
 
 - (void)addressBookTVCDidAddContact:(Contact *)aContact
 {
-    
+    if (![self isAlreadyAdded:aContact.emailAddress]) {
+        [contactEntry addContact:aContact];
+    }
 }
 
 @end

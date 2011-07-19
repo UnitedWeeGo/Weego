@@ -23,7 +23,13 @@
 
 @end
 
-@interface AddressBookTVC : UITableViewController
+@interface AddressBookTVC : UITableViewController {
+    
+    NSMutableArray *indexes;
+	NSMutableArray *indexedContacts;
+    NSArray *contacts;
+    
+}
 
 @property (nonatomic, assign) id <AddressBookTVCDataSource> dataSource;
 @property (nonatomic, assign) id <AddressBookTVCDelegate> delegate;
