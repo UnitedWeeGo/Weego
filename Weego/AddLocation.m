@@ -464,8 +464,8 @@ typedef enum {
     MKCoordinateRegion region;
     region.center.latitude = userLocation.coordinate.latitude;
     region.center.longitude = userLocation.coordinate.longitude;
-    region.span.latitudeDelta = 0.3;
-    region.span.longitudeDelta = 0.3;
+    region.span.latitudeDelta = 0.101;
+    region.span.longitudeDelta = 0.101;
     [theMapView setRegion:region animated:NO];
     theMapView.showsUserLocation = true;
     userLocationFound = true;

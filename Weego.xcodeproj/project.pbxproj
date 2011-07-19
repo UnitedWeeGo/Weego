@@ -2797,13 +2797,10 @@
 				0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */,
 				0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */,
 				01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */,
-<<<<<<< HEAD
 				A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */,
-=======
 				018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */,
 				018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */,
 				018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */,
->>>>>>> Added search category functionality to add location view.
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
