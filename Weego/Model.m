@@ -32,7 +32,6 @@
 
 @synthesize currentAppState, currentBGState, currentViewState;
 @synthesize allEvents, locations, participants, messages, reportedLocations;
-//@synthesize votes;
 @synthesize isInTrial, loginAfterTrial;
 @synthesize userId, userEmail, userPassword, lastUpdateTimeStamp;
 @synthesize sortedEvents, weeksEvents, futureEvents, pastEvents; //daysEvents
@@ -44,6 +43,7 @@
 @synthesize pendingVoteRequests;
 @synthesize infoResults;
 @synthesize helpResults;
+@synthesize simpleGeoCategoryResults;
 
 static Model *sharedInstance;
 

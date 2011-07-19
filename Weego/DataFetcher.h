@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <SimpleGeo/SimpleGeo.h>
+#import "SearchCategory.h"
 
 #define DATA_FETCHER_FINISHED 1
 #define DATA_FETCHER_ERROR @"DataFetcherError"
@@ -44,7 +45,8 @@ enum {
     DataFetchTypeInfo,
     DataFetchTypeHelp,
     DataFetchTypeRemoveLocation,
-    DataFetchTypeSearchSimpleGeo
+    DataFetchTypeSearchSimpleGeo,
+    DataFetchTypeSearchSimpleGeoCategories
 };
 typedef NSInteger DataFetchType;
 
@@ -56,7 +58,7 @@ typedef NSInteger DataFetchType;
 @optional
 - (void)processServerResponse:(NSMutableData *)myData;
 - (void)processSimpleGeoResponse:(SGFeatureCollection *)places;
-
+- (void)processSimpleGeoCategoryResponse:(NSArray *)categories;
 @end
 
 @protocol DataFetcherMessageHandler
@@ -172,5 +174,7 @@ typedef NSInteger DataFetchType;
 
 // SimpleGeo
 - (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
 
 @end

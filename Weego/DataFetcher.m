@@ -586,6 +586,40 @@
 	return self;
 }
 
+- (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeSearchSimpleGeoCategories;
+        
+        // default to using this as the delegate for potentially helpful error logging
+        [self retain];
+        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.delegate = myDelegate;
+        [client getCategories];
+    }
+    return self;
+}
+
+- (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeSearchSimpleGeo;
+        
+        // default to using this as the delegate for potentially helpful error logging
+        [self retain];
+        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.delegate = myDelegate;
+        
+        SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];        
+        [client getPlacesNear:point matching:nil inCategory:category.search_category within:radiusKilo];
+    }
+    return self;
+}
+
 - (id)initAndSearchSimpleGeoWithRadius:(int)radiusKilo andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -595,11 +629,11 @@
         
         // default to using this as the delegate for potentially helpful error logging
         [self retain];
-        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:@"bcRryckAyj5YT3ZrSGraENdxqdLJRz9Q" consumerSecret:@"q2AMUDLyHpcPuaKkETchSqxQaPrY2fD9"];
+        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         
         SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];
-        [client getPlacesNear:point matching:name within:radiusKilo count:SIMLE_GEO_SEARCH_RESULTS_COUNT];        
+        [client getPlacesNear:point matching:name within:radiusKilo count:SIMLE_GEO_SEARCH_RESULTS_COUNT];
     }
     return self;
 }
@@ -867,6 +901,20 @@
     
 }
 
+- (void)didLoadCategories:(NSArray *)categories
+{
+    NSLog(@"SimpleGeo didLoadCategories");
+    dataFetcherFinished = YES;
+    if (delegate) [delegate processSimpleGeoCategoryResponse:categories];
+	self.delegate = nil;
+    if (client) [client release];
+    
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
+    [self release];
+}
 - (void)didLoadPlaces:(SGFeatureCollection *)places
              forQuery:(NSDictionary *)query
 {

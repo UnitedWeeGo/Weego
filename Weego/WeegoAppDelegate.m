@@ -23,6 +23,7 @@
 - (void)initAnalytics;
 - (void)registerDeviceForRemoteNotifications:(UIApplication *)application;
 - (void)initDefaultPrefs;
+- (void)initSimpleGeoCategories;
 @end
 
 @implementation WeegoAppDelegate
@@ -140,6 +141,11 @@
     whiteView.alpha = 0;
     [window insertSubview:whiteView atIndex:6];
     [whiteView release];
+}
+
+- (void)initSimpleGeoCategories
+{
+    [[Controller sharedInstance] getSimpleGeoCategories];
 }
 
 - (void)initAnalytics
@@ -362,6 +368,7 @@
     [self initViews];
     [self initStartView];
     [self registerDeviceForRemoteNotifications:application];
+    [self initSimpleGeoCategories];
     
     loadView = [[LoadView alloc] initWithFrame:self.window.frame];
     [self.window addSubview:loadView];

@@ -14,6 +14,7 @@
 @class Location;
 @class Participant;
 @class FeedMessage;
+@class SearchCategory;
 
 @interface Controller : NSObject {
     DataFetcher *simpleGeoFetcher;
@@ -53,11 +54,13 @@
 - (NSString *)fetchEventsSynchronous;
 - (NSString *)fetchReportedLocations;
 - (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius;
+- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius andCategory:(SearchCategory *)category;
 - (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius;
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;
 - (NSString *)getInfoHMTLData;
 - (NSString *)getHelpHMTLData;
 - (NSString *)removeLocationWithId:(NSString *)locationId;
+- (NSString *)getSimpleGeoCategories;
 
 @end

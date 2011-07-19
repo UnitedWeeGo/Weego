@@ -366,9 +366,19 @@ static Controller *sharedInstance;
 
 - (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius
 {
-//    if (simpleGeoFetcher) [simpleGeoFetcher release];
-//    simpleGeoFetcher = [[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]];
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
+- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius andCategory:(SearchCategory *)category
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithCategory:category andRadius:radius withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
+- (NSString *)getSimpleGeoCategories
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetSimpleGeoCategoriesWithDelegate:[SimpleGeoDataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 

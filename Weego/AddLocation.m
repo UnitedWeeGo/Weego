@@ -48,6 +48,8 @@ typedef enum {
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
 - (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
 - (void)doShowSearchAgainButton:(BOOL)doShow;
+- (void)enableSearchCategoryTable;
+- (void)disableSearchCategoryTable;
 @end
 
 @implementation AddLocation
@@ -313,9 +315,41 @@ typedef enum {
     if (simpleGeoFetchId) [simpleGeoFetchId release];
     simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radiusKilo] retain];
     
-    
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = [searchBar.text retain];
+    
+    if (pendingSearchCategory) [pendingSearchCategory release];
+    pendingSearchCategory = nil;
+}
+
+- (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
+{
+    searchBar.text = searchCategory.search_category;
+    if (removePreviousResults)
+    {
+        [self resignKeyboardAndRemoveModalCover:self];
+        [self removeAnnotations:mapView includingSaved:false];
+        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    }
+    Location *searchLocation = [[[Location alloc] init] autorelease];
+    searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
+    searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
+    
+    MKCoordinateRegion region = mapView.region;
+    CLLocationCoordinate2D centerCoordinate = mapView.centerCoordinate;
+    CLLocation * newLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude+region.span.latitudeDelta longitude:centerCoordinate.longitude] autorelease];
+    CLLocation * centerLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude] autorelease];
+    int radius = [centerLocation distanceFromLocation:newLocation];
+    int radiusKilo = ceil(radius/1000);
+
+    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radiusKilo andCategory:searchCategory] retain];
+    
+    if (pendingSearchString) [pendingSearchString release];
+    pendingSearchString = nil;
+    
+    if (pendingSearchCategory) [pendingSearchCategory release];
+    pendingSearchCategory = [searchCategory retain];
 }
 
 #pragma mark - UISearchBarDelegate methods
@@ -334,8 +368,35 @@ typedef enum {
     theSearchBar.text = @"";
     continueToSearchEnabled = false;
     [self doShowSearchAgainButton:NO];
-    [self showKeyboardResignerAndEnable:YES]; 
+    [self showKeyboardResignerAndEnable:YES];
+    [self enableSearchCategoryTable];
     return YES;
+}
+- (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText
+{
+    categoryTable.hidden = [searchText length] == 0;
+    [categoryTable updateSearchContentsWithSearchString:searchText];
+}
+
+#pragma mark - SearchCategoryTable
+- (void)enableSearchCategoryTable
+{
+    CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
+    if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
+    categoryTable.hidden = YES;
+    categoryTable.delegate = self;
+    [self.view addSubview:categoryTable];
+}
+- (void)disableSearchCategoryTable
+{
+    if (categoryTable != nil) [categoryTable removeFromSuperview];
+    categoryTable = nil;
+}
+
+#pragma mark - SearchCategoryTableDelegate
+- (void)categorySelected:(SearchCategory *)category
+{
+    [self beginLocationSearchWithCategory:category andRemovePreviousResults:YES];
 }
 
 #pragma mark - keyboard model resigner helper methods
@@ -358,6 +419,7 @@ typedef enum {
 #pragma mark - UISearchBar helper methods
 - (void)resignKeyboardAndRemoveModalCover:(id)target
 {
+    [self disableSearchCategoryTable];
     [searchBar resignFirstResponder];
     [keyboardResigner removeFromSuperview];
     keyboardResigner = nil;
@@ -382,7 +444,7 @@ typedef enum {
         }
     }
     
-    //[self zoomToFitMapAnnotations];
+    [self zoomToFitMapAnnotations];
     [self updateSavedLocationsAnnotationsStateEnabled:false];
 }
 
@@ -716,7 +778,16 @@ typedef enum {
 #pragma mark - Navigation handlers
 - (void)handleSearchAgainPress:(id)sender
 {
-    [self beginLocationSearchWithSearchString:searchBar.text andRemovePreviousResults:NO];
+    if (pendingSearchString)
+    {
+        NSLog(@"pendingSearchString exists, doing beginLocationSearchWithSearchString for: %@", pendingSearchString);
+        [self beginLocationSearchWithSearchString:pendingSearchString andRemovePreviousResults:NO];
+    }
+    else if (pendingSearchCategory)
+    {
+        NSLog(@"pendingSearchCategory exists, doing beginLocationSearchWithCategory for: %@", pendingSearchCategory.search_category);
+        [self beginLocationSearchWithCategory:pendingSearchCategory andRemovePreviousResults:NO];
+    }
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
 }
 - (void)handleLeftActionPress:(id)sender // handler for edit location name CANCEL
@@ -783,7 +854,7 @@ typedef enum {
         continueToSearchEnabled = false;
         [self doShowSearchAgainButton:NO];
         [self hideKeyboardResigner];
-        
+        [self disableSearchCategoryTable];
         if (locWidget.iAmShowing && currentState == AddLocationStateView) {
             [self doGoToSearchAndDetailState:SearchAndDetailStateDetail];
             return;
@@ -885,6 +956,7 @@ typedef enum {
     [googlePlacesFetchId release];
     [googleGeoFetchId release];
     [pendingSearchString release];
+    [pendingSearchCategory release];
     [super dealloc];
 }
 
@@ -960,18 +1032,16 @@ typedef enum {
                     // remove any existing added locations from results
                     NSMutableArray *toRemoveDupes = [[[NSMutableArray alloc] init] autorelease];
                     for (Location *obj in locations) {
-                        
-                        //if ([savedSearchResultsDict objectForKey:obj.g_id] != nil) [toRemoveDupes addObject:obj];
-                        NSLog(@"location uid: %@", obj.g_id);
+                        //NSLog(@"location uid: %@", obj.g_id);
                         Location *detectedDupe = [savedSearchResultsDict objectForKey:obj.g_id];
                         if (detectedDupe)
                         {
-                            NSLog(@"Found duplicate: %@", detectedDupe.g_id);
+                            //NSLog(@"Found duplicate: %@", detectedDupe.g_id);
                             [toRemoveDupes addObject:obj];
                         }
                     }
                     [locations removeObjectsInArray:toRemoveDupes];
-                    NSLog(@"Location count after removing dupes: %d", [locations count]);
+                    //NSLog(@"Location count after removing dupes: %d", [locations count]);
                     for (Location *loc in locations) [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                     
                 }
@@ -995,7 +1065,7 @@ typedef enum {
                 }
                 [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
             }
-            if ([savedSearchResultsDict count] == 0 && !continueToSearchEnabled) 
+            if ([savedSearchResultsDict count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
             {
                 [self doSecondaryAddressSearch];
             }

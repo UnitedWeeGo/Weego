@@ -545,6 +545,9 @@
 		0176156413BE7B5000324EF9 /* united_appicon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156313BE7B5000324EF9 /* united_appicon_57x57.png */; };
 		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
 		0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176156A13BE8EEC00324EF9 /* SoundManager.m */; };
+		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
+		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
+		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
 		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
 		01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5613D10D6400213CC4 /* button_redosearch_default.png */; };
 		01F17E5E13D10D6400213CC4 /* button_redosearch_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */; };
@@ -1212,6 +1215,12 @@
 		0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = united_appicon_114x114.png; path = ../united_appicon_114x114.png; sourceTree = "<group>"; };
 		0176156913BE8EEC00324EF9 /* SoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundManager.h; sourceTree = "<group>"; };
 		0176156A13BE8EEC00324EF9 /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
+		018212C313D4B20C00BF9EF4 /* SearchCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCategory.h; sourceTree = "<group>"; };
+		018212C413D4B20C00BF9EF4 /* SearchCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategory.m; sourceTree = "<group>"; };
+		018212CA13D4C7EF00BF9EF4 /* SearchCategoryTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCategoryTable.h; sourceTree = "<group>"; };
+		018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategoryTable.m; sourceTree = "<group>"; };
+		018212CD13D4D73900BF9EF4 /* CellCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellCategory.h; sourceTree = "<group>"; };
+		018212CE13D4D73900BF9EF4 /* CellCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellCategory.m; sourceTree = "<group>"; };
 		01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottombar_background_clear.png; sourceTree = "<group>"; };
 		01F17E5613D10D6400213CC4 /* button_redosearch_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_redosearch_default.png; sourceTree = "<group>"; };
 		01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_default@2x.png"; sourceTree = "<group>"; };
@@ -1911,6 +1920,8 @@
 				017613FC13BE775200324EF9 /* Contact.m */,
 				017613FD13BE775200324EF9 /* ReportedLocation.h */,
 				017613FE13BE775200324EF9 /* ReportedLocation.m */,
+				018212C313D4B20C00BF9EF4 /* SearchCategory.h */,
+				018212C413D4B20C00BF9EF4 /* SearchCategory.m */,
 			);
 			name = Vo;
 			sourceTree = "<group>";
@@ -2084,6 +2095,10 @@
 				0176143413BE784700324EF9 /* ReportedLocationAnnotation.m */,
 				0176143513BE784700324EF9 /* ReportedLocationAnnotationView.h */,
 				0176143613BE784700324EF9 /* ReportedLocationAnnotationView.m */,
+				018212CA13D4C7EF00BF9EF4 /* SearchCategoryTable.h */,
+				018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */,
+				018212CD13D4D73900BF9EF4 /* CellCategory.h */,
+				018212CE13D4D73900BF9EF4 /* CellCategory.m */,
 			);
 			name = "Location Mgmt";
 			sourceTree = "<group>";
@@ -2782,7 +2797,13 @@
 				0176156213BE793C00324EF9 /* HelpDataParser.m in Sources */,
 				0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */,
 				01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */,
+<<<<<<< HEAD
 				A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */,
+=======
+				018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */,
+				018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */,
+				018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */,
+>>>>>>> Added search category functionality to add location view.
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

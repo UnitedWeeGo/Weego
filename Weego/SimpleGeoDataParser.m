@@ -8,6 +8,7 @@
 
 #import "SimpleGeoDataParser.h"
 #import "Location.h"
+#import "SearchCategory.h"
 
 @interface SimpleGeoDataParser(Private)
 
@@ -45,5 +46,18 @@ static SimpleGeoDataParser *sharedInstance;
         [results addObject:loc];
     }
     [Model sharedInstance].geoSearchResults = results;
+}
+
+- (void)processSimpleGeoCategoryResponse:(NSArray *)categories
+{
+    NSMutableArray *catSet = [[[NSMutableArray alloc] init] autorelease];
+    for (int i=39; i<[categories count]; i++) // the first 39 results are not relevant
+    {
+        NSDictionary *record = [categories objectAtIndex:i];
+        SearchCategory *cat = [[[SearchCategory alloc] init] autorelease];
+        [cat populateWithDict:record];
+        [catSet addObject:cat];
+    }
+    [Model sharedInstance].simpleGeoCategoryResults = catSet;
 }
 @end

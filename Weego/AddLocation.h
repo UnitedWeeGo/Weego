@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #import <MessageUI/MessageUI.h>
 #import "Location.h"
+#import "SearchCategoryTable.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -33,7 +34,7 @@ typedef enum {
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, UISearchBarDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, UISearchBarDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate,SearchCategoryTableDelegate> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
     UISearchBar *searchBar;
@@ -65,7 +66,8 @@ typedef enum {
     Location *winningLocationSelected;
     
     BOOL continueToSearchEnabled;
-//    int alreadyAddedAnnotationsCount;
+    SearchCategoryTable *categoryTable;
+    SearchCategory *pendingSearchCategory;
 }
 
 @property (nonatomic, copy) NSString *selectedSearchLocationKey;
