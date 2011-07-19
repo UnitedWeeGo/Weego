@@ -460,7 +460,8 @@ static DataParser *sharedInstance;
     [[KeychainManager sharedInstance] resetKeychain];
     
     WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
-    if (!appDelegate.loggingInFacebook) {
+    if (!appDelegate.loggingInFacebook && !kickedBackToEntryMissingRUID) {
+        kickedBackToEntryMissingRUID = YES;
         [[ViewController sharedInstance] enterOnEntryScreen];
         [appDelegate hideLoadView];
     }

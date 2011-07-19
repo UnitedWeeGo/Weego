@@ -240,6 +240,7 @@
 
 - (void)dealloc
 {
+    delegate = nil;
     webView.delegate = nil;
     [webView stopLoading];
     webView = nil;

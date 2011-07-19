@@ -81,6 +81,7 @@ static ViewController *sharedInstance;
 
 - (void)enterOnEntryScreen
 {
+    [self removeAllViewsFromStack];
     [self addAndReportViewWithName:@"/entry"];
     [Model sharedInstance].currentAppState = AppStateEntry;
     [Model sharedInstance].currentViewState = ViewStateEntry;

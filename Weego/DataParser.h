@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface DataParser : NSObject<DataFetcherDelegate> {
-
+    BOOL kickedBackToEntryMissingRUID;
 }
 
 + (DataParser *)sharedInstance;
