@@ -33,14 +33,11 @@
 
 @implementation AddFriends
 
-//@synthesize matchedContacts;
 @synthesize contactsTableView, filteredContacts, searchThreadIsCancelled;
-//@synthesize recentsTableView;
 
 - (void)dealloc
 {
     NSLog(@"AddFriends dealloc");
-//    [matchedContacts release];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self.filteredContacts release];
     [allContacts release];
@@ -73,26 +70,16 @@
     _refreshHeaderView.delegate = self;
     [headerViewMask addSubview:_refreshHeaderView];
     [_refreshHeaderView release];
-//	_refreshHeaderView.hidden = YES;
-    
-//    self.recentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 45, self.view.frame.size.width, 152)];
-//    self.recentsTableView.delegate = self;
-//    self.recentsTableView.dataSource = self;
-//    self.recentsTableView.backgroundColor = [UIColor clearColor];
-//    self.recentsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [self.view addSubview:self.recentsTableView];
-//    [self.recentsTableView release];
     
     tableTop = 45;
     
-    self.contactsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - 44)];
+    self.contactsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - 44 - tableTop)];
     self.contactsTableView.delegate = self;
     self.contactsTableView.dataSource = self;
     self.contactsTableView.backgroundColor = [UIColor clearColor];
     self.contactsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.contactsTableView];
     [self.contactsTableView release];
-//    self.contactsTableView.hidden = YES;
     
     contactEntry = [[SubViewContactEntry alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     contactEntry.delegate = self;
@@ -116,7 +103,6 @@
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
     [recentParticipants release];
     recentParticipants = [[[Model sharedInstance] getRecentParticipants] retain];
-    
 }
 
 - (void)viewDidUnload
@@ -185,7 +171,6 @@
     tableTop = newSize.height + 1;
     CGFloat tableHeight = self.view.frame.size.height - tableTop;
     if (keyboardShowing) tableHeight -= 214;
-//    self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, tableHeight);
     [UIView animateWithDuration:0.30f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
@@ -203,14 +188,6 @@
 - (void)inputFieldDidEndEditing:(id)sender
 {
     keyboardShowing = NO;
-//    self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop);
-//    [UIView animateWithDuration:0.30f 
-//                          delay:0 
-//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-//                     animations:^(void){
-//                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop);
-//                     }
-//                     completion:NULL];
 }
 
 - (void)inputFieldDidBeginEditing:(id)sender
@@ -229,16 +206,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self hideSending];
-//    foundResults = ![[contactEntry.fieldText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""];
     [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
-//    NSLog(@"%@", contactEntry.fieldText);
-//    if ([contactEntry.fieldText isEqualToString:@""]) {
-////        contactsTableView.hidden = YES;
-//        [filteredContacts removeAllObjects];
-//        [contactsTableView reloadData];
-//    } else {
-//        [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
-//    }
 }
 
 - (void)searchAddressBook
@@ -268,7 +236,6 @@
             }
         }
     }
-//    [self updateFilteredContacts:matchedContacts];
     [self performSelector:@selector(updateFilteredContacts:) onThread:[NSThread mainThread] withObject:matchedContacts waitUntilDone:NO];
     [matchedContacts release];
     
@@ -286,26 +253,14 @@
 {
     self.filteredContacts = contacts;
     foundResults = [self.filteredContacts count] > 0;
-    NSLog(@"self.filteredContacts count = %i", [self.filteredContacts count]);
     [self.contactsTableView reloadData];
-//    [filteredContacts release];
-//    filteredContacts = contacts;
-//    [filteredContacts retain];
-//    [contactsTableView reloadData];
-
-//    if ([filteredContacts count] > 0) {
-//        contactsTableView.hidden = NO;
-//        [contactsTableView reloadData];
-//    } else {
-//        contactsTableView.hidden = YES;
-//    }
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && foundResults) { //tableView == self.contactsTableView) {
+    if (indexPath.section == 0 && foundResults) {
         Contact *c = [filteredContacts objectAtIndex:indexPath.row];
         if (![self isAlreadyAdded:c.emailAddress]) {
             [contactEntry addContact:c];
@@ -329,18 +284,18 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0 && foundResults) { //tableView == self.contactsTableView) {
+    if (section == 0 && foundResults) {
         return [NSString stringWithFormat:@"Results matching %@", contactEntry.fieldText];
-    } else if (section == 1 || !foundResults) { //tableView == self.recentsTableView) {
+    } else if (section == 1 || !foundResults) {
         return @"Recents";
     }
     return @"";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0 && foundResults) { //tableView == self.contactsTableView) {
+    if (section == 0 && foundResults) {
         return [filteredContacts count];
-    } else if (section == 1 || !foundResults) { //tableView == self.recentsTableView) {
+    } else if (section == 1 || !foundResults) {
         return [recentParticipants count];
     }
     return 1;
@@ -357,7 +312,7 @@
             CellContact *cell = [self getCellForContactsWithParticipant:participant];
             return cell;
         }
-    } else if (indexPath.section == 1) { //tableView == self.recentsTableView) {
+    } else if (indexPath.section == 1) {
         Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
         CellContact *cell = [self getCellForContactsWithParticipant:participant];
         return cell;

@@ -26,9 +26,7 @@
     CGFloat tableTop;
     
     NSArray *recentParticipants;
-    
-//    UITableView *recentsTableView;
-    
+        
     NSArray *allContacts;
     NSArray *allContactsWithEmail;
     
@@ -38,9 +36,6 @@
 
 @property (nonatomic, retain) UITableView *contactsTableView;
 @property (nonatomic, retain) NSMutableArray *filteredContacts;
-//@property (nonatomic, retain) UITableView *recentsTableView;
 @property (nonatomic) BOOL searchThreadIsCancelled;
-
-//@property (nonatomic, retain) NSMutableArray *matchedContacts;
 
 @end
