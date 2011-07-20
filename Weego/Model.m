@@ -643,6 +643,12 @@ static Model *sharedInstance;
     Participant *participant = [[[Participant alloc] init] autorelease];
     participant.ownerEventId = self.currentEvent.eventId;
     participant.email = anEmailAddress;
+    Participant *pairedParticipant = [self getPairedParticipantWithEmail:anEmailAddress];
+    if (pairedParticipant) {
+        participant.firstName = pairedParticipant.firstName;
+        participant.lastName = pairedParticipant.lastName;
+        participant.avatarURL = pairedParticipant.avatarURL;
+    }
 //    participant.isTrialParticipant = self.isInTrial;
     participant.isTemporary = YES;
     if ([self getParticipantWithEmail:anEmailAddress fromEventWithId:self.currentEvent.eventId] == nil) [self.participants addObject:participant];
@@ -671,6 +677,18 @@ static Model *sharedInstance;
     }
 	return nil;
 }
+
+- (Participant *)getPairedParticipantWithEmail:(NSString *)email
+{
+    for (Participant *p in self.participants) {
+        if ([p.email isEqualToString:email] && p.hasBeenPaired) {
+            NSLog(@"p %@", p.avatarURL);
+            return p;
+        }
+    }
+	return nil;
+}
+
 /*
 - (void)assignRegisteredInfoToParticipantWithEmail:(NSString *)email inEventWithId:(NSString *)eventId andFirstName:(NSString *)firstName andLastName:(NSString *)lastName andAvatarURL:(NSString *)avatarURL
 {
@@ -697,10 +715,11 @@ static Model *sharedInstance;
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
     for (Participant *p in self.participants) {
         BOOL isFound = NO;
+        if ([p.email isEqualToString:userEmail]) continue;
         for (Participant *p2 in returnParticipants) {
             if ([p2.email isEqualToString:p.email]) isFound = YES;
         }
-        if (!isFound && !p.hasBeenRemoved) [returnParticipants addObject:p];
+        if (!isFound && !p.hasBeenRemoved && p.hasBeenPaired) [returnParticipants addObject:p];
     }
     return [returnParticipants autorelease];
 }

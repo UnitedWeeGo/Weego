@@ -17,6 +17,7 @@
     NSString *avatarURL;
     BOOL isTemporary;
     BOOL isTrialParticipant;
+    BOOL hasBeenPaired;
 }
 
 @property (nonatomic, copy) NSString *ownerEventId;
@@ -28,6 +29,7 @@
 @property (nonatomic) BOOL isTemporary;
 @property (nonatomic) BOOL isTrialParticipant;
 @property (nonatomic) BOOL hasBeenRemoved;
+@property (nonatomic) BOOL hasBeenPaired;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;
 

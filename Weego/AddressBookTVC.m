@@ -14,6 +14,8 @@
 
 - (CellContact *)getCellForContactsWithContact:(Contact *)aContact;
 - (BOOL)isAlreadyAdded:(NSString *)email;
+- (BOOL)shouldBeChecked:(NSString *)email;
+- (BOOL)shouldBeDisabled:(NSString *)email;
 
 @end
 
@@ -43,6 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NavigationSetter sharedInstance] setNavState:NavStateAddressBook withTarget:self];
     
     indexes = [[NSMutableArray alloc] init];
     indexedContacts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
@@ -110,8 +114,12 @@
 - (void)dealloc
 {
     [contacts release];
-    
     [super dealloc];
+}
+
+- (void)handleBackPress:(id)sender
+{
+    [[ViewController sharedInstance] goBack];
 }
 
 #pragma mark - Table view data source
@@ -146,7 +154,6 @@
     Contact *contact = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     CellContact *cell = [self getCellForContactsWithContact:contact];
     return cell;
-    
 }
 
 - (CellContact *)getCellForContactsWithContact:(Contact *)aContact
@@ -156,7 +163,8 @@
         cell = [[[CellContact alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactsTableCellId"] autorelease];
     }
     cell.contact = aContact;
-    [cell showAdded:[self isAlreadyAdded:aContact.emailAddress]];
+    [cell showChecked:[self shouldBeChecked:aContact.emailAddress]];
+    [cell showDisabled:[self shouldBeDisabled:aContact.emailAddress]];
     return cell;
 }
 
@@ -171,44 +179,21 @@
     return NO;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)shouldBeChecked:(NSString *)email
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    for (Contact *c in [dataSource enteredContactsForAddressBookTVC]) {
+        if ([c.emailAddress isEqualToString:email]) return YES;
+    }
+    return NO;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)shouldBeDisabled:(NSString *)email
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    for (Participant *p in [dataSource addedParticipantsForAddressBookTVC]) {
+        if ([p.email isEqualToString:email]) return YES;
+    }
+    return NO;
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -217,6 +202,8 @@
     Contact *c = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if (![self isAlreadyAdded:c.emailAddress]) {
         [delegate addressBookTVCDidAddContact:c];
+    } else {
+        [delegate addressBookTVCDidRemoveContact:c];
     }
     [self.tableView reloadData];
 }

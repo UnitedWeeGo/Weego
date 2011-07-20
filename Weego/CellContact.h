@@ -22,7 +22,13 @@
 
 @property (nonatomic, assign) Contact *contact;
 @property (nonatomic, assign) Participant *participant;
+@property (nonatomic, assign) BOOL disabled;
+@property (nonatomic, assign) BOOL checked;
+@property (nonatomic, getter=isEditing) BOOL editing;
 
 - (void)showAdded:(BOOL)hasBeenAdded;
+- (void)showDisabled:(BOOL)hasBeenDisabled;
+- (void)showChecked:(BOOL)hasBeenChecked;
+- (void)toggleChecked;
 
 @end

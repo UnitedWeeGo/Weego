@@ -19,6 +19,9 @@
 
 @synthesize contact;
 @synthesize participant;
+@synthesize disabled;
+@synthesize checked;
+@synthesize editing;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -120,17 +123,61 @@
 - (void)showAdded:(BOOL)hasBeenAdded
 {
     if (hasBeenAdded) {
-        labelName.alpha = 0.5;
-        labelLabel.alpha = 0.5;
-        labelEmail.alpha = 0.5;
-        avatarImage.alpha = 0.5;
+        labelName.alpha = 1;
+        labelLabel.alpha = 1;
+        labelEmail.alpha = 1;
+        avatarImage.alpha = 1;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.accessoryType = UITableViewCellAccessoryCheckmark;
+        self.accessoryType = UITableViewCellAccessoryNone;
     } else {
         labelName.alpha = 1;
         labelLabel.alpha = 1;
         labelEmail.alpha = 1;
         avatarImage.alpha = 1;
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)showDisabled:(BOOL)hasBeenDisabled
+{
+    self.disabled = hasBeenDisabled;
+    if (hasBeenDisabled) {
+        labelName.alpha = 0.5;
+        labelLabel.alpha = 0.5;
+        labelEmail.alpha = 0.5;
+        avatarImage.alpha = 0.5;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+//        self.accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        labelName.alpha = 1;
+        labelLabel.alpha = 1;
+        labelEmail.alpha = 1;
+        avatarImage.alpha = 1;
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+//        self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)showChecked:(BOOL)hasBeenChecked
+{
+    self.checked = hasBeenChecked;
+    if (self.checked) {
+//        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+//        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
+}
+
+- (void)toggleChecked
+{
+    self.checked = !self.checked;
+    if (self.checked) {
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.accessoryType = UITableViewCellAccessoryNone;
     }

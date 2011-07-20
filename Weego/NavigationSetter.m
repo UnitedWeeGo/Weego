@@ -183,6 +183,10 @@ static NavigationSetter *sharedInstance;
             [self addBackButton:target onLightBackground:true];            
             [self addGreenActionButtonWithLabel:@"Done" andTarget:target toLeft:NO overrideClear:NO overrideLight:NO withTextColor:0xFFFFFFFF];
             break;
+        case NavStateAddressBook:
+            [self setNav:target withTitle:@"Address Book" withColor:0x777777FF andShadowColor:0x00000000];
+            [self addBackButton:target onLightBackground:true];
+            break;
         case NavStateLogin:
             [self addHeaderLogo:target withAnimation:YES];
             [self addBackButton:target onLightBackground:false];            

@@ -14,21 +14,28 @@
 
 @class DataFetcher;
 
-@interface AddFriends : UIViewController <SubViewContactEntryDelegate, UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate> {
+@interface AddFriends : UIViewController <UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate, UISearchBarDelegate> {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _saving;
     
-    SubViewContactEntry *contactEntry;
+//    SubViewContactEntry *contactEntry;
+    UISearchBar *searchEntryBar;
+    UIView *searchBarButton;
     UITableView *contactsTableView;
     NSMutableArray *filteredContacts;
-    BOOL foundResults;
+    BOOL hasFoundResults;
+    BOOL hasAddedContacts;
+    BOOL hasRecents;
     BOOL keyboardShowing;
     CGFloat tableTop;
     
-    NSArray *recentParticipants;
+    NSMutableArray *addedContacts;
+    NSMutableArray *recentParticipants;
         
     NSArray *allContacts;
     NSArray *allContactsWithEmail;
+    
+    NSString *currentSearchTerm;
     
     NSThread *searchThread;
     BOOL searchThreadIsCancelled;

@@ -21,6 +21,7 @@
 @synthesize isTemporary;
 @synthesize isTrialParticipant;
 @synthesize hasBeenRemoved;
+@synthesize hasBeenPaired;
 
 - (id) init
 {
@@ -53,6 +54,11 @@
 	NSString *output = [NSString stringWithFormat:@"%@ %@", (!firstName) ? @"" : firstName, (!lastName) ? @"" : lastName];
 	if ([[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) output = email;
 	return output;
+}
+
+- (BOOL)hasBeenPaired
+{
+    return self.avatarURL != nil;
 }
 
 #pragma mark -

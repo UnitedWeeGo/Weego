@@ -25,6 +25,7 @@ typedef enum {
     NavStateDashboard,
     NavStateDashboardNoEvents,
     NavStateAddParticipant,
+    NavStateAddressBook,
     NavStateLogin,
     NavStateRegister,
     NavStateFeed,

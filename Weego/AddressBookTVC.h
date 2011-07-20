@@ -20,6 +20,7 @@
 @protocol AddressBookTVCDelegate <NSObject>
 
 - (void)addressBookTVCDidAddContact:(Contact *)aContact;
+- (void)addressBookTVCDidRemoveContact:(Contact *)aContact;
 
 @end
 
