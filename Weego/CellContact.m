@@ -46,14 +46,14 @@
 
 - (void)setUpUI
 {
-    UIColor *titleLabelColor = nil;
-    UIColor *emailLabelColor = nil;
-    
-    titleLabelColor = HEXCOLOR(0x333333FF);
-    emailLabelColor = HEXCOLOR(0x666666FF);
+//    UIColor *titleLabelColor = nil;
+//    UIColor *emailLabelColor = nil;
+//    
+//    titleLabelColor = HEXCOLOR(0x333333FF);
+//    emailLabelColor = HEXCOLOR(0x666666FF);
     
     labelName = [[[UILabel alloc] initWithFrame:CGRectMake(8, 8, 230, 16)] autorelease];
-	labelName.textColor = titleLabelColor;
+//	labelName.textColor = titleLabelColor;
 	labelName.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
 	labelName.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelName.backgroundColor = [ UIColor clearColor ]; 
@@ -62,7 +62,7 @@
 	[self addSubview:labelName];
     
     labelLabel = [[[UILabel alloc] initWithFrame:CGRectMake(8, 25, 230, 14)] autorelease];
-	labelLabel.textColor = emailLabelColor;
+//	labelLabel.textColor = emailLabelColor;
 	labelLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:12];
 	labelLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelLabel.backgroundColor = [ UIColor clearColor ]; 
@@ -71,7 +71,7 @@
 	[self addSubview:labelLabel];
         
     labelEmail = [[[UILabel alloc] initWithFrame:CGRectMake(8, 26, 230, 14)] autorelease];
-	labelEmail.textColor = emailLabelColor;
+//	labelEmail.textColor = emailLabelColor;
 	labelEmail.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
 	labelEmail.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelEmail.backgroundColor = [ UIColor clearColor ]; 
@@ -103,6 +103,24 @@
     labelEmail.frame = CGRectMake(left, 26, 320 - left, 14);
     labelEmail.text = aContact.emailAddress;
     separator.frame = CGRectMake(0, 43, 320, 1);
+    if (!aContact.isValid) {
+        UIColor *errorLabelColor = HEXCOLOR(0xFF0000FF);
+        labelName.textColor = errorLabelColor;
+        labelLabel.textColor = errorLabelColor;
+        labelEmail.textColor = errorLabelColor;
+    } else {
+        UIColor *titleLabelColor = HEXCOLOR(0x333333FF);
+        UIColor *emailLabelColor = HEXCOLOR(0x666666FF);
+        labelName.textColor = titleLabelColor;
+        labelLabel.textColor = emailLabelColor;
+        labelEmail.textColor = emailLabelColor;
+    }
+    if ([aContact.emailAddress isEqualToString:aContact.contactName]) {
+        labelName.frame = CGRectMake(8, 15, 230, 16);
+        labelName.text = aContact.emailAddress;
+        labelEmail.text = @"";
+        labelLabel.text = @"";
+    }
 }
 
 - (void)setParticipant:(Participant *)aParticipant
@@ -118,6 +136,11 @@
     labelEmail.text = @"";
     labelLabel.text = @"";
     separator.frame = CGRectMake(0, 43, 320, 1);
+    UIColor *titleLabelColor = HEXCOLOR(0x333333FF);
+    UIColor *emailLabelColor = HEXCOLOR(0x666666FF);
+    labelName.textColor = titleLabelColor;
+    labelLabel.textColor = emailLabelColor;
+    labelEmail.textColor = emailLabelColor;
 }
 
 - (void)showAdded:(BOOL)hasBeenAdded

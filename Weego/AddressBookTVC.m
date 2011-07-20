@@ -57,13 +57,14 @@
     }
     
     [indexes addObject:@"#"];
+    [indexedContacts addObject:[NSMutableArray array]];
     
     contacts = [[dataSource dataForAddressBookTVC] retain];
     
     for (Contact *c in contacts) {
-		NSInteger index = contacts.count - 1; // insert into #
+		NSInteger index = indexes.count - 1; // insert into #
 		if (c.contactName.length) {
-			NSInteger expectedIndex = [indexes indexOfObject:[c.contactName substringToIndex:1]];
+			NSInteger expectedIndex = [indexes indexOfObject:[[c.contactName substringToIndex:1] uppercaseString]];
 			if (expectedIndex != NSNotFound) {
 				index = expectedIndex;
 			}

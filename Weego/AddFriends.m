@@ -18,6 +18,7 @@
 @interface AddFriends (Private)
 
 - (void)checkValidEmailAddress;
+- (void)validateAndSend;
 - (void)processValidParticipant;
 - (void)searchAddressBook;
 - (NSArray *)contactsWithEmailMatchingNameOrEmail:(NSString *)name;
@@ -112,7 +113,7 @@
     addedContacts = [[[NSMutableArray alloc] init] retain]; //[[NSMutableArray arrayWithArray:[detail getParticipants]] retain]; //
     
     recentParticipants = [[NSMutableArray arrayWithArray:[[Model sharedInstance] getRecentParticipants]] retain]; //[[[Model sharedInstance] getRecentParticipants] retain];
-    NSSortDescriptor *participantsSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(compare:)] autorelease];
+    NSSortDescriptor *participantsSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
     [recentParticipants sortUsingDescriptors:[NSArray arrayWithObjects:participantsSortDescriptor, nil]];
     hasRecents = ([recentParticipants count] > 0);
     
@@ -157,13 +158,30 @@
 //}
 
 - (void)checkValidEmailAddress {
-	self.navigationItem.rightBarButtonItem.enabled = NO;
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [searchEntryBar setUserInteractionEnabled:NO];
-    [contactsTableView setUserInteractionEnabled:NO];
-    [self showSending];
-    [self processValidParticipant];
+	
+}
+
+- (void)validateAndSend
+{
+    BOOL allValid = YES;
+    for (Contact *c in addedContacts) {
+        if (!c.isValid) {
+            allValid = NO;
+            continue;
+        }
+    }
+    if (allValid) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.leftBarButtonItem.enabled = NO;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [searchEntryBar setUserInteractionEnabled:NO];
+        [contactsTableView setUserInteractionEnabled:NO];
+        [self showSending];
+        [self processValidParticipant];
+    } else {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Please check you have entered a valid email address." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [alert show];
+    }
 }
 
 - (void)processValidParticipant {
@@ -190,8 +208,7 @@
 
 - (void)handleRightActionPress:(id)sender
 {
-//    [contactEntry finalizeContact];
-    [self checkValidEmailAddress];
+    [self validateAndSend];
 }
 
 //#pragma mark - SubViewContactEntryDelegate
@@ -309,6 +326,14 @@
     [searchBar resignFirstResponder];
     searchBar.text = @"";
     [contactsTableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    Contact *c = [[Contact alloc] init];
+    c.emailAddress = searchBar.text;
+    [self addContact:c];
+    [c release];
 }
 
 #pragma mark - Search Address Book Thread
@@ -628,13 +653,14 @@
 {
     [_refreshHeaderView egoRefreshScrollViewOpenAndShowSaving:nil];
     [_refreshHeaderView refreshLastUpdatedDate];
+    CGFloat keyboardHeight = (keyboardShowing) ? 214 : 0;
     [UIView animateWithDuration:0.30f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
 //                         contactEntry.frame = CGRectMake(0, 60, 320, contactEntry.frame.size.height);
                          searchEntryBar.frame = CGRectMake(0, 60, 320, searchEntryBar.frame.size.height);
-                         contactsTableView.frame = CGRectMake(0, tableTop+60, self.view.frame.size.width, self.view.frame.size.height - tableTop - 60);
+                         contactsTableView.frame = CGRectMake(0, tableTop+60, self.view.frame.size.width, self.view.frame.size.height - tableTop - 60 - keyboardHeight);
                          _refreshHeaderView.frame = CGRectMake(0, 0, 320, 60);
                      }
                      completion:^(BOOL finished){
@@ -645,13 +671,14 @@
 
 - (void)hideSending
 {
+    CGFloat keyboardHeight = (keyboardShowing) ? 214 : 0;
     [UIView animateWithDuration:0.30f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
 //                         contactEntry.frame = CGRectMake(0, 0, 320, contactEntry.frame.size.height);
                          searchEntryBar.frame = CGRectMake(0, 0, 320, searchEntryBar.frame.size.height);
-                         contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop);
+                         contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop - keyboardHeight);
                          _refreshHeaderView.frame = CGRectMake(0, -60.0f, 320, 60);
                      }
                      completion:^(BOOL finished){
@@ -698,7 +725,7 @@
             [c release];
         }
     }
-    NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(compare:)] autorelease];
+    NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
     return [matchedContacts autorelease];
 }

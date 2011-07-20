@@ -177,32 +177,36 @@ typedef enum {
             [targetCell becomeFirstResponder];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         } else if (indexPath.row == createEventFormRowWhen) {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-            CellFormEntry *targetCell = (CellFormEntry *)cell;
-            [targetCell resignFirstResponder];
+//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
+//            CellFormEntry *targetCell = (CellFormEntry *)cell;
+//            [targetCell resignFirstResponder];
+            [[self.tableView superview] endEditing:YES];
             [self pickDateTime];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
 		if (indexPath.row == [[detail getLocations] count]) {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-            CellFormEntry *targetCell = (CellFormEntry *)cell;
-            [targetCell resignFirstResponder];
+//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
+//            CellFormEntry *targetCell = (CellFormEntry *)cell;
+//            [targetCell resignFirstResponder];
+            [[self.tableView superview] endEditing:YES];
 			[self doGotoMapView];
 		}
 	} else if (indexPath.section == eventDetailSectionParticipants) {
         if (![Model sharedInstance].isInTrial) {
             if (indexPath.row == [[detail getParticipants] count]) {
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-                CellFormEntry *targetCell = (CellFormEntry *)cell;
-                [targetCell resignFirstResponder];
+//                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
+//                CellFormEntry *targetCell = (CellFormEntry *)cell;
+//                [targetCell resignFirstResponder];
+                [[self.tableView superview] endEditing:YES];
                 [self doGotoAddView];
             }
         } else {
             if (indexPath.row == 0) {
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-                CellFormEntry *targetCell = (CellFormEntry *)cell;
-                [targetCell resignFirstResponder];
+//                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
+//                CellFormEntry *targetCell = (CellFormEntry *)cell;
+//                [targetCell resignFirstResponder];
+                [[self.tableView superview] endEditing:YES];
                 [[ViewController sharedInstance] showFacebookPopup];
             }
         }

@@ -10,7 +10,7 @@
 
 
 @interface Contact : NSObject {
-    
+    NSString *contactName;
 }
 
 @property (nonatomic, copy) NSString *contactName;
