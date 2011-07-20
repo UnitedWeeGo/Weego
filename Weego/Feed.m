@@ -120,7 +120,7 @@ const int openWidgetInputHeight = 120;
 {
     currentEvent.unreadMessageCount = 0;
     [self removeDataFetcherMessageListeners];
-    [self dismissModalViewControllerAnimated:YES];
+    [[ViewController sharedInstance] dismissModal:self];
     [[ViewController sharedInstance] showEventBackground];
 }
 - (void)handleCancelChatPress:(id)sender
