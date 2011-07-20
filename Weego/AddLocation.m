@@ -84,10 +84,12 @@ typedef enum {
 {
     if (doShow)
     {
+        searchAgainButtonShowing = YES;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateSearchAgain withTarget:self];
     }
     else
     {
+        searchAgainButtonShowing = NO;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
     }
 }
@@ -154,6 +156,15 @@ typedef enum {
     mapView.showsUserLocation = true;
     [self.view addSubview:mapView];
     [mapView release];
+    
+    tapInterceptor = [[WildcardGestureRecognizer alloc] init];
+    tapInterceptor.touchesMovedCallback = ^(NSSet * touches, UIEvent * event) {
+        if (!searchAgainButtonShowing && continueToSearchEnabled)
+        {
+            [self doShowSearchAgainButton:YES];
+        }
+    };
+    [mapView addGestureRecognizer:tapInterceptor];
 }
 
 - (void)setupInfoView
@@ -447,19 +458,14 @@ typedef enum {
         }
     }
     
-    if (newLocationDetected)    [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:YES];
-    [self updateSavedLocationsAnnotationsStateEnabled:false];
+    if (newLocationDetected)    
+    {
+        [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:YES];
+        [self updateSavedLocationsAnnotationsStateEnabled:false];
+    }
 }
 
 #pragma mark - MKMapViewDelegate methods
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
-{
-    NSLog(@"should search for new results: %@", continueToSearchEnabled ? @"YES" : @"NO");
-    if (continueToSearchEnabled)
-    {
-        [self doShowSearchAgainButton:YES];
-    }
-}
 
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
@@ -664,6 +670,11 @@ typedef enum {
     }
     zoomRect.size.width *= 1.05;
     zoomRect.size.height *= 1.05;
+    if (zoomRect.size.width == 0) // case where there is only 1 annotation, set zoom level manually
+    {
+        zoomRect.size.width = 42781.013333328818;
+        zoomRect.size.height = 45369.197849442069;
+    }
     [mapView setVisibleMapRect:zoomRect animated:YES];
 }
 
@@ -805,7 +816,7 @@ typedef enum {
         NSLog(@"pendingSearchCategory exists, doing beginLocationSearchWithCategory for: %@", pendingSearchCategory.search_category);
         [self beginLocationSearchWithCategory:pendingSearchCategory andRemovePreviousResults:NO];
     }
-    [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+    [self doShowSearchAgainButton:NO];
 }
 - (void)handleLeftActionPress:(id)sender // handler for edit location name CANCEL
 {
@@ -959,6 +970,7 @@ typedef enum {
 - (void)dealloc
 {
     NSLog(@"AddLocation dealloc");
+    [tapInterceptor release];
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];

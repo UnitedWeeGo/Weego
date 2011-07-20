@@ -14,6 +14,7 @@
 #import <MessageUI/MessageUI.h>
 #import "Location.h"
 #import "SearchCategoryTable.h"
+#import "WildcardGestureRecognizer.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -44,7 +45,7 @@ typedef enum {
 //    NSMutableArray *savedSearchResults;
     NSMutableDictionary *savedSearchResultsDict;
     
-    
+    WildcardGestureRecognizer * tapInterceptor;
 //    int selectedSearchLocationIndex;
 //    int selectedLocationIndex;
     
@@ -68,6 +69,7 @@ typedef enum {
     BOOL continueToSearchEnabled;
     SearchCategoryTable *categoryTable;
     SearchCategory *pendingSearchCategory;
+    BOOL searchAgainButtonShowing;
 }
 
 @property (nonatomic, copy) NSString *selectedSearchLocationKey;
