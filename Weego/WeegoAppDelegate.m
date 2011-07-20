@@ -53,6 +53,10 @@
     {
         [userPreferences setBool:YES forKey:USER_PREF_ALLOW_TRACKING];
     }
+    if (nil == [userPreferences objectForKey:USER_PREF_ALLOW_CHECKIN])
+    {
+        [userPreferences setBool:YES forKey:USER_PREF_ALLOW_CHECKIN];
+    }
     [userPreferences synchronize];
 }
 

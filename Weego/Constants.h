@@ -20,3 +20,4 @@ alpha:((c)&0xFF)/255.0];
 
 // User setting keys
 #define USER_PREF_ALLOW_TRACKING @"allowsTracking"
+#define USER_PREF_ALLOW_CHECKIN @"allowsCheckin"

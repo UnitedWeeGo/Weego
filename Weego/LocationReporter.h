@@ -16,7 +16,8 @@
     CLLocationManager *locationManager;
     BOOL locationServicesStarted;
     BOOL locationChangedSignificantly;
-    BOOL locationTrackingEnabled;
+    BOOL locationTrackingUserEnabled;
+    BOOL checkinUserEnabled;
     BOOL locationSignLocMonitoringStarted;
     int timerCount;
 }

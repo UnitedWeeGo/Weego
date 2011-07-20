@@ -132,7 +132,7 @@ typedef enum {
             return 1;
             break;
         case PrefsSectionControls:
-            return 1;
+            return 2;
             break;
         case PrefsSectionLinks:
             return 3;
@@ -183,8 +183,11 @@ typedef enum {
 //            [cell isFirst:YES isLast:NO];
 //        } else if (indexPath.row == 1) {
         if (indexPath.row == 0) {
-            cell = [self getCellForControlsWithLabel:@"Live Location Updating" andIndex:1 andPrefsKey:USER_PREF_ALLOW_TRACKING];
-            [cell isFirst:YES isLast:YES];
+            cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:1 andPrefsKey:USER_PREF_ALLOW_TRACKING];
+            [cell isFirst:YES isLast:NO];
+        } else if (indexPath.row == 1) {
+            cell = [self getCellForControlsWithLabel:@"Auto-checkin" andIndex:1 andPrefsKey:USER_PREF_ALLOW_CHECKIN];
+            [cell isFirst:NO isLast:YES];
         }
     } else if (indexPath.section == PrefsSectionLinks) {
         if (indexPath.row == 0) {

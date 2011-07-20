@@ -79,8 +79,9 @@ static LocationReporter *sharedInstance;
 
 - (void)reportTimerTick
 {    
-    locationTrackingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
-    if (!locationTrackingEnabled)
+    locationTrackingUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
+    checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
+    if (!locationTrackingUserEnabled && !checkinUserEnabled)
     {
         if (locationServicesStarted) [self stopUpdatingLocation];
         if (locationSignLocMonitoringStarted)
@@ -124,12 +125,12 @@ static LocationReporter *sharedInstance;
         
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
-        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent) 
+        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled)) 
         {
             locationServicesShouldStart = YES;
         }
         
-        BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly);
+        BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled);
         if (eventEligibleForLocationReporting) 
         {
             [self reportUserLocation:lastLocation andEvent:e];
@@ -178,6 +179,8 @@ static LocationReporter *sharedInstance;
 
 - (void)checkEventsForCheckin
 {
+    if (!checkinUserEnabled) return;
+    
     Model *model = [Model sharedInstance];
     NSArray *allEvents = [model.allEvents allValues];
     
