@@ -53,7 +53,7 @@ static SoundManager *sharedInstance;
 - (void)initSounds
 {
     sounds = [[NSMutableDictionary alloc] init];
-    NSArray *fileNames = [NSArray arrayWithObjects:@"ReceivedMessage", @"SentMessage", @"sms-received", nil];
+    NSArray *fileNames = [NSArray arrayWithObjects:@"weego-ReceivedMessage", @"weego-SentMessage", @"weego-InviteReceived", nil];
     
     NSMutableArray *allKeys = [[[NSMutableArray alloc] init] autorelease];
     [allKeys addObject:[NSNumber numberWithInteger:SoundManagerSoundIdFeedMessageReceived]];

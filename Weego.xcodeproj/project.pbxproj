@@ -33,9 +33,6 @@
 		017610D113BE720F00324EF9 /* MyriadPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 017610CE13BE720F00324EF9 /* MyriadPro-Regular.otf */; };
 		017610D213BE720F00324EF9 /* MyriadPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 017610CF13BE720F00324EF9 /* MyriadPro-Semibold.otf */; };
 		017610D313BE720F00324EF9 /* MyriadPro-SemiboldIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 017610D013BE720F00324EF9 /* MyriadPro-SemiboldIt.otf */; };
-		017610D713BE730000324EF9 /* ReceivedMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017610D613BE730000324EF9 /* ReceivedMessage.wav */; };
-		017610D913BE730A00324EF9 /* SentMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017610D813BE730A00324EF9 /* SentMessage.wav */; };
-		017610DB13BE731400324EF9 /* sms-received.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017610DA13BE731400324EF9 /* sms-received.wav */; };
 		017610E013BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */; };
 		017610E413BE747800324EF9 /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610E313BE747800324EF9 /* SimpleGeo.framework */; };
 		017610E613BE74AD00324EF9 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */; };
@@ -546,6 +543,9 @@
 		0176156613BE7B5C00324EF9 /* united_appicon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 0176156513BE7B5C00324EF9 /* united_appicon_114x114.png */; };
 		0176156B13BE8EEC00324EF9 /* SoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0176156A13BE8EEC00324EF9 /* SoundManager.m */; };
 		017EE6AD13D6369F00CB7904 /* WildcardGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 017EE6AC13D6369F00CB7904 /* WildcardGestureRecognizer.m */; };
+		017EE6B213D653B900CB7904 /* weego-InviteReceived.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017EE6AF13D653B900CB7904 /* weego-InviteReceived.wav */; };
+		017EE6B313D653B900CB7904 /* weego-ReceivedMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017EE6B013D653B900CB7904 /* weego-ReceivedMessage.wav */; };
+		017EE6B413D653B900CB7904 /* weego-SentMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017EE6B113D653B900CB7904 /* weego-SentMessage.wav */; };
 		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
 		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
 		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
@@ -591,9 +591,6 @@
 		017610CE13BE720F00324EF9 /* MyriadPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MyriadPro-Regular.otf"; sourceTree = "<group>"; };
 		017610CF13BE720F00324EF9 /* MyriadPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MyriadPro-Semibold.otf"; sourceTree = "<group>"; };
 		017610D013BE720F00324EF9 /* MyriadPro-SemiboldIt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MyriadPro-SemiboldIt.otf"; sourceTree = "<group>"; };
-		017610D613BE730000324EF9 /* ReceivedMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ReceivedMessage.wav; sourceTree = "<group>"; };
-		017610D813BE730A00324EF9 /* SentMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = SentMessage.wav; sourceTree = "<group>"; };
-		017610DA13BE731400324EF9 /* sms-received.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "sms-received.wav"; sourceTree = "<group>"; };
 		017610DC13BE73E000324EF9 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		017610DE13BE741800324EF9 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
 		017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics_NoThumb.a; sourceTree = "<group>"; };
@@ -1218,6 +1215,9 @@
 		0176156A13BE8EEC00324EF9 /* SoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundManager.m; sourceTree = "<group>"; };
 		017EE6AB13D6369F00CB7904 /* WildcardGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WildcardGestureRecognizer.h; sourceTree = "<group>"; };
 		017EE6AC13D6369F00CB7904 /* WildcardGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WildcardGestureRecognizer.m; sourceTree = "<group>"; };
+		017EE6AF13D653B900CB7904 /* weego-InviteReceived.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "weego-InviteReceived.wav"; sourceTree = "<group>"; };
+		017EE6B013D653B900CB7904 /* weego-ReceivedMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "weego-ReceivedMessage.wav"; sourceTree = "<group>"; };
+		017EE6B113D653B900CB7904 /* weego-SentMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "weego-SentMessage.wav"; sourceTree = "<group>"; };
 		018212C313D4B20C00BF9EF4 /* SearchCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCategory.h; sourceTree = "<group>"; };
 		018212C413D4B20C00BF9EF4 /* SearchCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategory.m; sourceTree = "<group>"; };
 		018212CA13D4C7EF00BF9EF4 /* SearchCategoryTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCategoryTable.h; sourceTree = "<group>"; };
@@ -1388,9 +1388,9 @@
 		017610D513BE728100324EF9 /* SoundFiles */ = {
 			isa = PBXGroup;
 			children = (
-				017610DA13BE731400324EF9 /* sms-received.wav */,
-				017610D613BE730000324EF9 /* ReceivedMessage.wav */,
-				017610D813BE730A00324EF9 /* SentMessage.wav */,
+				017EE6AF13D653B900CB7904 /* weego-InviteReceived.wav */,
+				017EE6B013D653B900CB7904 /* weego-ReceivedMessage.wav */,
+				017EE6B113D653B900CB7904 /* weego-SentMessage.wav */,
 			);
 			name = SoundFiles;
 			sourceTree = "<group>";
@@ -2272,9 +2272,6 @@
 				017610D113BE720F00324EF9 /* MyriadPro-Regular.otf in Resources */,
 				017610D213BE720F00324EF9 /* MyriadPro-Semibold.otf in Resources */,
 				017610D313BE720F00324EF9 /* MyriadPro-SemiboldIt.otf in Resources */,
-				017610D713BE730000324EF9 /* ReceivedMessage.wav in Resources */,
-				017610D913BE730A00324EF9 /* SentMessage.wav in Resources */,
-				017610DB13BE731400324EF9 /* sms-received.wav in Resources */,
 				017610EC13BE752A00324EF9 /* Private.xcconfig in Resources */,
 				0176123913BE755900324EF9 /* icon_MyLocation_01.png in Resources */,
 				0176123A13BE755900324EF9 /* icon_MyLocation_01@2x.png in Resources */,
@@ -2684,6 +2681,9 @@
 				01F17E6013D10D6400213CC4 /* button_redosearch_pressed@2x.png in Resources */,
 				01F17E6113D10D6400213CC4 /* icon_redo_01.png in Resources */,
 				01F17E6213D10D6400213CC4 /* icon_redo_01@2x.png in Resources */,
+				017EE6B213D653B900CB7904 /* weego-InviteReceived.wav in Resources */,
+				017EE6B313D653B900CB7904 /* weego-ReceivedMessage.wav in Resources */,
+				017EE6B413D653B900CB7904 /* weego-SentMessage.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
