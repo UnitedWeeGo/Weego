@@ -19,6 +19,7 @@
 
 @synthesize index;
 @synthesize delegate;
+@synthesize placeholder;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -39,10 +40,10 @@
     titleLabelColor = HEXCOLOR(0x666666FF);
     entryLabelColor = HEXCOLOR(0x333333FF);
         
-    if (fieldTitle == nil) fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 
-                                                                                   17, 
-                                                                                   80, 
-                                                                                   16)] autorelease];
+    fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 
+                                                               17, 
+                                                               80, 
+                                                               16)] autorelease];
 	fieldTitle.textColor = titleLabelColor;
 	fieldTitle.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
 	fieldTitle.backgroundColor = [ UIColor clearColor ]; 
@@ -52,9 +53,9 @@
     
     
     if (inputField == nil) inputField = [[[UITextField alloc] initWithFrame:CGRectMake(111, 
-                                                                                     15, 
-                                                                                     185, 
-                                                                                     16)] autorelease];
+                                                                 15, 
+                                                                 185, 
+                                                                 16)] autorelease];
     inputField.textColor = entryLabelColor;
     inputField.borderStyle = UITextBorderStyleNone;
 	inputField.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
@@ -142,6 +143,16 @@
     return NO;
 }
 
+- (UITextField *)field
+{
+    return inputField;
+}
+
+- (void)setPlaceholder:(NSString *)aPlaceholder
+{
+    inputField.placeholder = aPlaceholder;
+}
+
 #pragma mark -
 #pragma mark UITextFieldDelegate
 
@@ -174,7 +185,9 @@
 
 - (void)dealloc
 {
+    NSLog(@"CellFormEntry dealloc");
     inputField.delegate = nil;
+    [inputField resignFirstResponder];
     [localText release];
     [super dealloc];
 }

@@ -24,6 +24,7 @@
 @property (nonatomic, copy) NSString *firstName;
 @property (nonatomic, copy) NSString *lastName;
 @property (nonatomic, readonly) NSString *fullName;
+@property (nonatomic, readonly) NSString *firstNamePossessive;
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSString *avatarURL;
 @property (nonatomic) BOOL isTemporary;

@@ -86,29 +86,20 @@
     self.contactsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.contactsTableView];
     [self.contactsTableView release];
-    
-//    contactEntry = [[SubViewContactEntry alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-//    contactEntry.delegate = self;
-//    [self.view addSubview:contactEntry];
-//    [contactEntry release];
-    
-    searchEntryBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
-    searchEntryBar.tintColor = HEXCOLOR(0xE4E4E4FF);
-    searchEntryBar.delegate = self;
-    [self.view addSubview:searchEntryBar];
-    searchEntryBar.showsCancelButton = NO;
-    searchEntryBar.showsBookmarkButton = YES;
-    [searchEntryBar release];
-    
-//    searchBarButton = [[UIView alloc] initWithFrame:CGRectMake(searchEntryBar.frame.size.width, 0, self.view.frame.size.width - searchEntryBar.frame.size.width, 41.0)];
-//    UIImage *bgImage = [UIImage imageNamed:@"searchBarButton_bg.png"];
-//    UIImageView *bgView = [[UIImageView alloc] initWithImage:bgImage];
-//    bgView.frame = CGRectMake(0, 0, searchBarButton.frame.size.width, searchBarButton.frame.size.height);
-//    [searchBarButton addSubview:bgView];
-//    [bgView release];
-//    [self.view addSubview:searchBarButton];
-//    [searchBarButton release];
+        
+//    searchEntryBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
+//    searchEntryBar.tintColor = HEXCOLOR(0xE4E4E4FF);
+////    searchEntryBar.delegate = self;
+//    [self.view addSubview:searchEntryBar];
+//    searchEntryBar.showsCancelButton = NO;
+//    searchEntryBar.showsBookmarkButton = YES;
+//    [searchEntryBar release];
 
+    contactsSearchBar = [[SubViewContactsSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
+    contactsSearchBar.delegate = self;
+    [self.view addSubview:contactsSearchBar];
+    [contactsSearchBar release];
+    
     Event *detail = [Model sharedInstance].currentEvent;
     addedContacts = [[[NSMutableArray alloc] init] retain]; //[[NSMutableArray arrayWithArray:[detail getParticipants]] retain]; //
     
@@ -174,7 +165,8 @@
         self.navigationItem.rightBarButtonItem.enabled = NO;
         self.navigationItem.leftBarButtonItem.enabled = NO;
         [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        [searchEntryBar setUserInteractionEnabled:NO];
+//        [searchEntryBar setUserInteractionEnabled:NO];
+        [contactsSearchBar setUserInteractionEnabled:NO];
         [contactsTableView setUserInteractionEnabled:NO];
         [self showSending];
         [self processValidParticipant];
@@ -267,9 +259,9 @@
 //    [[ViewController sharedInstance] navigateToAddressBook:self];
 //}
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - SubViewContactsSearchBarDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(SubViewContactsSearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self hideSending];
@@ -278,7 +270,7 @@
     [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+- (void)searchBarTextDidBeginEditing:(SubViewContactsSearchBar *)searchBar
 {
     keyboardShowing = YES;
     [UIView animateWithDuration:0.30f 
@@ -290,7 +282,7 @@
                      completion:NULL];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+- (void)searchBarTextDidEndEditing:(SubViewContactsSearchBar *)searchBar
 {
     keyboardShowing = NO;
     [UIView animateWithDuration:0.30f 
@@ -302,33 +294,19 @@
                      completion:NULL];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    searchBar.showsBookmarkButton = NO;
-    [searchBar setShowsCancelButton:YES animated:YES];
-    return YES;
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
-    searchBar.showsBookmarkButton = YES;
-    return YES;
-}
-
-- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarBookmarkButtonClicked:(SubViewContactsSearchBar *)searchBar
 {
     [[ViewController sharedInstance] navigateToAddressBook:self];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(SubViewContactsSearchBar *)searchBar
 {
-    [searchBar setShowsCancelButton:NO animated:YES];
-    [searchBar resignFirstResponder];
-    searchBar.text = @"";
+    hasFoundResults = NO;
+    [filteredContacts removeAllObjects];
     [contactsTableView reloadData];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarReturnButtonClicked:(SubViewContactsSearchBar *)searchBar
 {
     Contact *c = [[Contact alloc] init];
     c.emailAddress = searchBar.text;
@@ -401,8 +379,8 @@
     hasRecents = ([recentParticipants count] > 0);
     hasAddedContacts = ([addedContacts count] > 0);
     hasFoundResults = NO;
-    searchEntryBar.text = @"";
     [contactsTableView reloadData];
+    [contactsSearchBar resetField];
 }
 
 - (void)removeContact:(Contact *)aContact
@@ -422,7 +400,7 @@
     hasRecents = ([recentParticipants count] > 0);
     hasAddedContacts = ([addedContacts count] > 0);
     hasFoundResults = NO;
-    searchEntryBar.text = @"";
+//    [contactsSearchBar resetField];
     [contactsTableView reloadData];
 }
 
@@ -504,15 +482,42 @@
     return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//    if (section == 0) {
+//        if (hasFoundResults) return [NSString stringWithFormat:@"Results matching %@", currentSearchTerm];
+//        if (hasAddedContacts) return @"Invite";
+//        else return @"Recent";
+//    } else if (section == 1) {
+//        return @"Recent";
+//    }
+//    return @"";
+//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 22.0)] autorelease];
+    UIImage *bgImage = [[UIImage imageNamed:@"plainTableHeaderBg.png"] stretchableImageWithLeftCapWidth:3.0 topCapHeight:0];
+    sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:bgImage];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0, 4.0, 310.0, 22.0)];
+    sectionLabel.text = @"Test section label";
+    sectionLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:18.0];
+    sectionLabel.textColor = [UIColor whiteColor];
+    sectionLabel.shadowColor = [UIColor grayColor];
+    sectionLabel.shadowOffset = CGSizeMake(0, 1);
+    sectionLabel.backgroundColor = [UIColor clearColor];
+    [sectionHeaderView addSubview:sectionLabel];
+    [sectionLabel release];
     if (section == 0) {
-        if (hasFoundResults) return [NSString stringWithFormat:@"Results matching %@", currentSearchTerm];
-        if (hasAddedContacts) return @"Invite";
-        else return @"Recent";
+        if (hasFoundResults) sectionLabel.text =  [NSString stringWithFormat:@"Results matching %@", currentSearchTerm];
+        else if (hasAddedContacts) sectionLabel.text =  @"Invite";
+        else sectionLabel.text =  @"Recent";
     } else if (section == 1) {
-        return @"Recent";
+        sectionLabel.text =  @"Recent";
     }
-    return @"";
+    return sectionHeaderView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 22.0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -543,6 +548,7 @@
             CellContact *cell = nil;
             if (participant) cell = [self getCellForContactsWithParticipant:participant];
             else cell = [self getCellForContactsWithContact:contact];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         } else {
             Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
@@ -639,6 +645,7 @@
 //            NSLog(@"Unhandled Error: %d", fetchType);
             self.navigationItem.rightBarButtonItem.enabled = YES;
             self.navigationItem.leftBarButtonItem.enabled = YES;
+            [contactsSearchBar setUserInteractionEnabled:YES];
 //            [contactEntry setUserInteractionEnabled:YES];
             [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:nil];
             [self performSelector:@selector(hideSending) withObject:nil afterDelay:5.0];
@@ -659,7 +666,7 @@
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
 //                         contactEntry.frame = CGRectMake(0, 60, 320, contactEntry.frame.size.height);
-                         searchEntryBar.frame = CGRectMake(0, 60, 320, searchEntryBar.frame.size.height);
+                         contactsSearchBar.frame = CGRectMake(0, 60, 320, contactsSearchBar.frame.size.height);
                          contactsTableView.frame = CGRectMake(0, tableTop+60, self.view.frame.size.width, self.view.frame.size.height - tableTop - 60 - keyboardHeight);
                          _refreshHeaderView.frame = CGRectMake(0, 0, 320, 60);
                      }
@@ -677,7 +684,7 @@
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
 //                         contactEntry.frame = CGRectMake(0, 0, 320, contactEntry.frame.size.height);
-                         searchEntryBar.frame = CGRectMake(0, 0, 320, searchEntryBar.frame.size.height);
+                         contactsSearchBar.frame = CGRectMake(0, 0, 320, contactsSearchBar.frame.size.height);
                          contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop - keyboardHeight);
                          _refreshHeaderView.frame = CGRectMake(0, -60.0f, 320, 60);
                      }

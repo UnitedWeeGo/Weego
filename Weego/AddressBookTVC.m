@@ -134,6 +134,22 @@
 	return indexes;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *sectionHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 22.0)] autorelease];
+    UIImage *bgImage = [[UIImage imageNamed:@"plainTableHeaderBg.png"] stretchableImageWithLeftCapWidth:3.0 topCapHeight:0];
+    sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:bgImage];
+    UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0, 4.0, 310.0, 22.0)];
+    sectionLabel.text = [indexes objectAtIndex:section];
+    sectionLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:18.0];
+    sectionLabel.textColor = [UIColor whiteColor];
+    sectionLabel.shadowColor = [UIColor grayColor];
+    sectionLabel.shadowOffset = CGSizeMake(0, 1);
+    sectionLabel.backgroundColor = [UIColor clearColor];
+    [sectionHeaderView addSubview:sectionLabel];
+    [sectionLabel release];
+    return sectionHeaderView;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[indexedContacts objectAtIndex:section] count];
@@ -141,7 +157,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	if ([[indexedContacts objectAtIndex:section] count]) {
-		return 23;
+		return 22.0;
 	}
 	return 0;
 }

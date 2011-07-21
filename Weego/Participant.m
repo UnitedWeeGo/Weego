@@ -56,6 +56,18 @@
 	return output;
 }
 
+- (NSString *)firstNamePossessive
+{
+    NSString *output = self.firstName;
+    char lastChar = [[output uppercaseString] characterAtIndex:output.length-1];
+    if (lastChar == 'S') {
+        output = [NSString stringWithFormat:@"%@'", output];
+    } else {
+        output = [NSString stringWithFormat:@"%@'s", output];
+    }
+    return output;
+}
+
 - (BOOL)hasBeenPaired
 {
     return self.avatarURL != nil;

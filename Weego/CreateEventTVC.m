@@ -94,6 +94,8 @@ typedef enum {
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
     [[NavigationSetter sharedInstance] setNavState:NavStateEventCreateEvent withTarget:self];
     
+    [self.view endEditing:YES];
+    
 	[self.tableView reloadData];
     
     [self setUpDataFetcherMessageListeners];
@@ -105,6 +107,12 @@ typedef enum {
 {
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
+    [self.view endEditing:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 - (void)handleLeftActionPress:(id)sender
@@ -126,6 +134,9 @@ typedef enum {
     _refreshHeaderView.hidden = NO;
     [_refreshHeaderView egoRefreshScrollViewOpenAndShowSaving:self.tableView];
     Controller *controller = [Controller sharedInstance];
+    if (detail.eventTitle == nil || [[detail.eventTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+        detail.eventTitle = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
+    }
 	[controller addEvent:detail];
 }
 
@@ -172,41 +183,29 @@ typedef enum {
     
 	if (indexPath.section == eventDetailSectionEntryForm) {
         if (indexPath.row == createEventFormRowWhat) {
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             CellFormEntry *targetCell = (CellFormEntry *)cell;
             [targetCell becomeFirstResponder];
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         } else if (indexPath.row == createEventFormRowWhen) {
-//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-//            CellFormEntry *targetCell = (CellFormEntry *)cell;
-//            [targetCell resignFirstResponder];
-            [[self.tableView superview] endEditing:YES];
+            [self.view endEditing:YES];
             [self pickDateTime];
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
 		if (indexPath.row == [[detail getLocations] count]) {
-//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-//            CellFormEntry *targetCell = (CellFormEntry *)cell;
-//            [targetCell resignFirstResponder];
-            [[self.tableView superview] endEditing:YES];
+            [self.view endEditing:YES];
 			[self doGotoMapView];
 		}
 	} else if (indexPath.section == eventDetailSectionParticipants) {
         if (![Model sharedInstance].isInTrial) {
             if (indexPath.row == [[detail getParticipants] count]) {
-//                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-//                CellFormEntry *targetCell = (CellFormEntry *)cell;
-//                [targetCell resignFirstResponder];
-                [[self.tableView superview] endEditing:YES];
+                [self.view endEditing:YES];
                 [self doGotoAddView];
             }
         } else {
             if (indexPath.row == 0) {
-//                UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
-//                CellFormEntry *targetCell = (CellFormEntry *)cell;
-//                [targetCell resignFirstResponder];
-                [[self.tableView superview] endEditing:YES];
+                [self.view endEditing:YES];
                 [[ViewController sharedInstance] showFacebookPopup];
             }
         }
@@ -258,6 +257,7 @@ typedef enum {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"What"];
             [targetCell isFirst:YES isLast:NO];
             targetCell.index = createEventFormRowWhat;
+            targetCell.placeholder = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
             targetCell.fieldText = detail.eventTitle;
             [targetCell setEntryType:CellFormEntryTypeName];
             [targetCell setReturnKeyType:UIReturnKeyNext];
@@ -299,10 +299,11 @@ typedef enum {
 
 - (BBTableViewCell *)getCellForFormWithLabel:(NSString *)label
 {
-    CellFormEntry *cell = (CellFormEntry *) [self.tableView dequeueReusableCellWithIdentifier:@"FormTableCellId"];
-    if (cell == nil) {
-        cell = [[[CellFormEntry alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FormTableCellId"] autorelease];
-    }
+//    CellFormEntry *cell = (CellFormEntry *) [self.tableView dequeueReusableCellWithIdentifier:@"FormTableCellId"];
+//    if (cell == nil) {
+//        cell = [[[CellFormEntry alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FormTableCellId"] autorelease];
+//    }
+    CellFormEntry *cell = [[[CellFormEntry alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FormTableCellId"] autorelease];
     [cell setTitle:label];
     cell.cellHostView = CellHostViewEvent;
     cell.delegate = self;

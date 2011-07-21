@@ -39,7 +39,9 @@ typedef enum {
 
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) id <CellFormEntryDelegate> delegate;
-@property (nonatomic, assign) NSString * fieldText;
+@property (nonatomic, readonly) UITextField *field;
+@property (nonatomic, assign) NSString *fieldText;
+@property (nonatomic, assign) NSString *placeholder;
 
 - (void)setTitle:(NSString *)title;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
