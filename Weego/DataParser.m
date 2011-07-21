@@ -55,7 +55,7 @@
 - (void)parseResponseRUIDError:(GDataXMLDocument *)doc;
 - (void)saveLoginInfo:(NSString *)ruid withFirstName:(NSString *)firstName andLastName:(NSString *)lastName andParticipantId:(NSString *)participantId andAvatarURL:(NSString *)avatarURL;
 - (void)parseResponseAddRemoveVote:(GDataXMLDocument *)doc;
-- (void)checkAppVersion:(NSString *)version andURL:(NSString *)url;
+- (void)checkAppVersion:(NSString *)version withAppId:(NSString *)appId;
 
 @end
 
@@ -283,9 +283,9 @@ static DataParser *sharedInstance;
 {
     // check the users installed app version
     GDataXMLElement *appinfo = (GDataXMLElement *) [[doc.rootElement elementsForName:@"appinfo"] objectAtIndex:0];
-    NSString *app_store_url = [[appinfo attributeForName:@"app_store_url"] stringValue];
+    NSString *app_store_id = [[appinfo attributeForName:@"app_store_id"] stringValue];
     NSString *app_store_version = [[appinfo attributeForName:@"app_store_version"] stringValue];
-    [self checkAppVersion:app_store_version andURL:app_store_url];
+    [self checkAppVersion:app_store_version andURL:app_store_id];
     
     
 	NSArray *events = [doc.rootElement elementsForName:@"event"];
@@ -476,11 +476,11 @@ static DataParser *sharedInstance;
 
 #pragma mark -
 #pragma mark check app version
-- (void)checkAppVersion:(NSString *)version andURL:(NSString *)url
+- (void)checkAppVersion:(NSString *)version withAppId:(NSString *)appId
 {
     NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
     [userPreferences setValue:version forKey:APP_STORE_VERSION];
-    [userPreferences setValue:url forKey:APP_STORE_URL];
+    [userPreferences setValue:appId forKey:APP_STORE_ID];
     WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate checkForUpdateWithServerReportedVerion];
 }

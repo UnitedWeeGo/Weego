@@ -701,7 +701,7 @@
     if (buttonIndex == 1)
     {
         NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
-        NSString *iTunesLink = [NSString stringWithFormat:@"http://itunes.apple.com/us/app/%@", [userPreferences objectForKey:APP_STORE_URL]];
+        NSString *iTunesLink = [NSString stringWithFormat:@"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=%@&mt=8", [userPreferences objectForKey:APP_STORE_ID]];
         if (nil != iTunesLink) [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
     }
 }
