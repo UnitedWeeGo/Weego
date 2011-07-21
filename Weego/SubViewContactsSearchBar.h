@@ -51,5 +51,6 @@
 @property (nonatomic, readonly) NSString *text;
 
 - (void)resetField;
+- (void)showError:(BOOL)shouldShowError;
 
 @end

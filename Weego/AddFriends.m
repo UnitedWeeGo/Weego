@@ -200,64 +200,17 @@
 
 - (void)handleRightActionPress:(id)sender
 {
+    if (![[contactsSearchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+        Contact *c = [[Contact alloc] init];
+        c.emailAddress = contactsSearchBar.text;
+        if (c.isValid) [self addContact:c];
+        else {
+            [contactsSearchBar showError:YES];
+            return;
+        }
+    }
     [self validateAndSend];
 }
-
-//#pragma mark - SubViewContactEntryDelegate
-//
-//- (void)inputFieldDidReturn:(id)sender
-//{
-//    
-//}
-//
-//- (void)handleDirectFieldTouch:(id)sender
-//{
-//    
-//}
-//
-//- (void)subViewContactEntry:(id)sender didChangeSize:(CGSize)newSize
-//{
-//    tableTop = newSize.height + 1;
-//    CGFloat tableHeight = self.view.frame.size.height - tableTop;
-//    if (keyboardShowing) tableHeight -= 214;
-//    [UIView animateWithDuration:0.30f 
-//                          delay:0 
-//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-//                     animations:^(void){
-//                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, tableHeight);
-//                     }
-//                     completion:NULL];
-//}
-//
-//
-//- (void)inputFieldDidEndEditing:(id)sender
-//{
-//    keyboardShowing = NO;
-//}
-//
-//- (void)inputFieldDidBeginEditing:(id)sender
-//{
-//    keyboardShowing = YES;
-//    [UIView animateWithDuration:0.30f 
-//                          delay:0 
-//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-//                     animations:^(void){
-//                         self.contactsTableView.frame = CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - tableTop - 214);
-//                     }
-//                     completion:NULL];
-//}
-//
-//- (void)inputFieldDidChange:(id)sender
-//{
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-//    [self hideSending];
-//    [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
-//}
-//
-//- (void)addressButtonClicked
-//{
-//    [[ViewController sharedInstance] navigateToAddressBook:self];
-//}
 
 #pragma mark - SubViewContactsSearchBarDelegate
 
@@ -265,6 +218,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self hideSending];
+    [contactsSearchBar showError:NO];
     [currentSearchTerm release];
     currentSearchTerm = [[NSString stringWithString:searchText] retain];
     [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
@@ -310,7 +264,8 @@
 {
     Contact *c = [[Contact alloc] init];
     c.emailAddress = searchBar.text;
-    [self addContact:c];
+    if (c.isValid) [self addContact:c];
+    else [contactsSearchBar showError:YES];
     [c release];
 }
 
@@ -338,7 +293,7 @@
                 c.contactName = abc.contactName;
                 c.emailAddress = email;
                 c.emailLabel = emailLabel;
-                [matchedContacts addObject:c];
+                if (c.isValid) [matchedContacts addObject:c];
                 [c release];
             }
         }
@@ -481,8 +436,10 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 //    return (foundResults) ? 2 : 1;
     if (hasFoundResults) return 1;
-    if (hasAddedContacts && hasRecents) return 2;
-    return 1;
+    int numSections = 0;
+    if (hasAddedContacts) numSections++;
+    if (hasRecents) numSections++;
+    return numSections;
 }
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -501,7 +458,7 @@
     UIImage *bgImage = [[UIImage imageNamed:@"plainTableHeaderBg.png"] stretchableImageWithLeftCapWidth:3.0 topCapHeight:0];
     sectionHeaderView.backgroundColor = [UIColor colorWithPatternImage:bgImage];
     UILabel *sectionLabel = [[UILabel alloc] initWithFrame:CGRectMake(8.0, 4.0, 310.0, 22.0)];
-    sectionLabel.text = @"Test section label";
+    sectionLabel.text = @"";
     sectionLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:18.0];
     sectionLabel.textColor = [UIColor whiteColor];
     sectionLabel.shadowColor = [UIColor grayColor];
@@ -512,7 +469,7 @@
     if (section == 0) {
         if (hasFoundResults) sectionLabel.text =  [NSString stringWithFormat:@"Results matching %@", currentSearchTerm];
         else if (hasAddedContacts) sectionLabel.text =  @"Invite";
-        else sectionLabel.text =  @"Recent";
+        else if (hasRecents) sectionLabel.text =  @"Recent";
     } else if (section == 1) {
         sectionLabel.text =  @"Recent";
     }
@@ -731,7 +688,7 @@
             c.contactName = abc.contactName;
             c.emailAddress = email;
             c.emailLabel = emailLabel;
-            [matchedContacts addObject:c];
+            if (c.isValid) [matchedContacts addObject:c];
             [c release];
         }
     }

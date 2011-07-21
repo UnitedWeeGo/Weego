@@ -78,17 +78,15 @@
 	searchField.backgroundColor = [UIColor clearColor];
     searchField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchField.autocorrectionType = UITextAutocorrectionTypeNo;
+    searchField.keyboardType = UIKeyboardTypeEmailAddress;
     searchField.delegate = self;
-//    UIColor *borderColor = HEXCOLOR(0x333333FF);
-//    searchField.layer.borderColor = [borderColor CGColor];
-//    searchField.layer.borderWidth = 1;
     searchField.placeholder = placeholderText;
 	[self addSubview:searchField];
     
     buttonClear = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *iconClearButton = [UIImage imageNamed:@"icon_clearTextField_01.png"];
     [buttonClear setImage:iconClearButton forState:UIControlStateNormal];
-    buttonClear.frame = CGRectMake(searchField.frame.origin.x + searchField.frame.size.width + 5, 10, iconClearButton.size.width, iconClearButton.size.height);
+    buttonClear.frame = CGRectMake(searchField.frame.origin.x + searchField.frame.size.width, 4, 32, 32);
     [buttonClear addTarget:self action:@selector(clearTextRequested) forControlEvents:UIControlEventTouchUpInside];
     buttonClear.hidden = YES;
     [self addSubview:buttonClear];
@@ -96,7 +94,7 @@
     buttonAddressBook = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *iconAddressBook = [UIImage imageNamed:@"searchBar_bookmark_icon.png"];
     [buttonAddressBook setImage:iconAddressBook forState:UIControlStateNormal];
-    buttonAddressBook.frame = CGRectMake(277, 7, iconAddressBook.size.width, iconAddressBook.size.height);
+    buttonAddressBook.frame = CGRectMake(277, 4, 36, 32);
     [buttonAddressBook addTarget:self action:@selector(addressBookRequested) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonAddressBook];
     
@@ -135,11 +133,18 @@
     [searchField resignFirstResponder];
 }
 
+- (void)showError:(BOOL)shouldShowError
+{
+    UIColor *normalColor = HEXCOLOR(0x333333FF);
+    UIColor *errorColor = HEXCOLOR(0xFF0000FF);
+    searchField.textColor = (shouldShowError) ? errorColor : normalColor;
+}
+
 #pragma mark - Private Methods
 
 - (void)showClearButton:(BOOL)shouldShowButton
 {
-    buttonClear.frame = CGRectMake(searchField.frame.origin.x + searchField.frame.size.width + 5, 10, buttonClear.frame.size.width, buttonClear.frame.size.height);
+    buttonClear.frame = CGRectMake(searchField.frame.origin.x + searchField.frame.size.width, 4, 32, 32);
     buttonClear.hidden = !shouldShowButton;
 }
 
