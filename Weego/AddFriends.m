@@ -443,8 +443,11 @@
 {
     if (indexPath.section == 0) {
         if (hasFoundResults) {
-            Contact *c = [filteredContacts objectAtIndex:indexPath.row];
-            [self addContact:c];
+            CellContact *cell = (CellContact *)[contactsTableView cellForRowAtIndexPath:indexPath];
+            if (!cell.disabled) {
+                Contact *c = [filteredContacts objectAtIndex:indexPath.row];
+                [self addContact:c];
+            }
         } else if (!hasAddedContacts) {
             CellContact *cell = (CellContact *)[contactsTableView cellForRowAtIndexPath:indexPath];
             if (!cell.disabled) {
@@ -570,7 +573,7 @@
         cell = [[[CellContact alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ContactsTableCellId"] autorelease];
     }
     cell.contact = aContact;
-    [cell showDisabled:NO];
+    [cell showDisabled:[self shouldBeDisabled:aContact.emailAddress]];
     return cell;
 }
 
