@@ -46,6 +46,34 @@
     [[BBDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];
 }
 
+- (void)checkForUpdateWithServerReportedVerion
+{
+    if (lastDisplayedVersionAlertDate != nil)
+    {
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate: lastDisplayedVersionAlertDate];
+        int sevenDaysInSeconds = 86400 * APP_STORE_VERSION_CHECK_FREQUENCY_DAYS;
+        if (interval > sevenDaysInSeconds) 
+        {
+            [lastDisplayedVersionAlert release];
+            lastDisplayedVersionAlert = [[NSString stringWithString:@"none"] retain];
+        }
+    }
+    
+    
+    NSString *currentlyInstalledVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+    NSString *serverVersion = [userPreferences objectForKey:APP_STORE_VERSION];
+    if (![currentlyInstalledVersion isEqualToString:serverVersion] && ![lastDisplayedVersionAlert isEqualToString:serverVersion])
+    {
+        lastDisplayedVersionAlert = [serverVersion retain];
+        lastDisplayedVersionAlertDate = [[NSDate date] retain];
+        NSString *alertMessage = [NSString stringWithFormat:@"Version %@ is now available. Please update to get the most out of weego!", serverVersion];
+        UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"Update available" message:alertMessage delegate:self cancelButtonTitle:@"Now now" otherButtonTitles:@"Update!", nil];
+        [updateAlert show];
+        [updateAlert release];
+    }
+}
+
 - (void)initDefaultPrefs
 {
     NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
@@ -667,6 +695,18 @@
 }
 
 #pragma mark -
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+        NSString *iTunesLink = [NSString stringWithFormat:@"http://itunes.apple.com/us/app/%@", [userPreferences objectForKey:APP_STORE_URL]];
+        if (nil != iTunesLink) [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
+    }
+}
+
+#pragma mark -
 #pragma mark Memory management
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -677,6 +717,8 @@
 
 - (void)dealloc {
     NSLog(@"BigBabyAppDelegate dealloc");
+    [lastDisplayedVersionAlertDate release];
+    [lastDisplayedVersionAlert release];
     [minuteTimer stopTimer];
     [minuteTimer release];
     [self.deviceToken release];

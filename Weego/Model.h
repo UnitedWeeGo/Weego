@@ -98,6 +98,7 @@ typedef enum {
 @property (nonatomic, retain) NSString *infoResults;
 @property (nonatomic, retain) NSString *helpResults;
 
+
 + (Model *)sharedInstance;
 + (void)destroy;
 

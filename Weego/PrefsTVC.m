@@ -183,7 +183,7 @@ typedef enum {
 //            [cell isFirst:YES isLast:NO];
 //        } else if (indexPath.row == 1) {
         if (indexPath.row == 0) {
-            cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:1 andPrefsKey:USER_PREF_ALLOW_TRACKING];
+            cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:0 andPrefsKey:USER_PREF_ALLOW_TRACKING];
             [cell isFirst:YES isLast:NO];
         } else if (indexPath.row == 1) {
             cell = [self getCellForControlsWithLabel:@"Auto-checkin" andIndex:1 andPrefsKey:USER_PREF_ALLOW_CHECKIN];

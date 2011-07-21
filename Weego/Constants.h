@@ -21,3 +21,8 @@ alpha:((c)&0xFF)/255.0];
 // User setting keys
 #define USER_PREF_ALLOW_TRACKING @"allowsTracking"
 #define USER_PREF_ALLOW_CHECKIN @"allowsCheckin"
+
+// App settings keys
+#define APP_STORE_URL @"appStoreURL"
+#define APP_STORE_VERSION @"appStoreVersion"
+#define APP_STORE_VERSION_CHECK_FREQUENCY_DAYS 7

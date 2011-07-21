@@ -16,7 +16,7 @@
 
 @class DataFetcher;
 
-@interface WeegoAppDelegate : UIResponder <UIApplicationDelegate, FBSessionDelegate, FBRequestDelegate, DataFetcherMessageHandler> {
+@interface WeegoAppDelegate : UIResponder <UIApplicationDelegate, FBSessionDelegate, FBRequestDelegate, DataFetcherMessageHandler, UIAlertViewDelegate> {
     
     UIWindow *window;
     UINavigationController *navigationController;
@@ -40,6 +40,9 @@
     UIBackgroundTaskIdentifier bgTask;
     
     BOOL viewsHaveBeenInitialized;
+    
+    NSString *lastDisplayedVersionAlert;
+    NSDate *lastDisplayedVersionAlertDate;
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -63,5 +66,6 @@
 - (void)hideLoadView;
 - (void)authenticateWithFacebook;
 - (void)hideLoadView;
+- (void)checkForUpdateWithServerReportedVerion;
 
 @end
