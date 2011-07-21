@@ -285,7 +285,7 @@ static DataParser *sharedInstance;
     GDataXMLElement *appinfo = (GDataXMLElement *) [[doc.rootElement elementsForName:@"appinfo"] objectAtIndex:0];
     NSString *app_store_id = [[appinfo attributeForName:@"app_store_id"] stringValue];
     NSString *app_store_version = [[appinfo attributeForName:@"app_store_version"] stringValue];
-    [self checkAppVersion:app_store_version andURL:app_store_id];
+    [self checkAppVersion:app_store_version withAppId:app_store_id];
     
     
 	NSArray *events = [doc.rootElement elementsForName:@"event"];
