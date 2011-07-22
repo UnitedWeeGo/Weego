@@ -17,3 +17,4 @@ build/*
 *.pbxuser
 *.xcworkspace
 xcuserdata
+Weego.xcodeproj/xcuserdata/dave.prukop.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
