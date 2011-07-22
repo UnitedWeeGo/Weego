@@ -447,7 +447,6 @@
         [[Controller sharedInstance] fetchEvents];
         [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
     }
-    [[Controller sharedInstance] getRecentParticipants];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -667,13 +666,10 @@
             if (model.isInTrial) model.loginAfterTrial = YES;
             model.isInTrial = NO;
             if (model.currentViewState == ViewStatePrefs) {
-                [[Controller sharedInstance] getRecentParticipants];
                 [[ViewController sharedInstance] goBack];
             } else if (model.currentViewState == ViewStateDetails || model.currentViewState == ViewStateCreate) {
-                [[Controller sharedInstance] getRecentParticipants];
                 [self hideLoadView];
             } else {
-                [[Controller sharedInstance] getRecentParticipants];
                 [self continueToDashboard];
             }
             

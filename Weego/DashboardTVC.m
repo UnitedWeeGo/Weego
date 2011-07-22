@@ -104,12 +104,6 @@
     [self removeDataFetcherMessageListeners];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    [self createDataSources];
-}
-
 - (void)fetchData
 {
 	Controller *controller = [Controller sharedInstance];
@@ -435,11 +429,6 @@
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
 	return [NSDate date]; // should return date data source was last changed
-}
-
-- (void)egoRefreshTableHeaderClosed
-{
-    _reloading = NO;
 }
 
 #pragma mark -
