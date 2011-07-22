@@ -154,6 +154,7 @@
     searchField.text = @"";
     buttonClear.hidden = YES;
     searchField.frame = CGRectMake(nonEditingFieldOrigin.x, nonEditingFieldOrigin.y, searchField.frame.size.width, searchField.frame.size.height);
+    if ([self.delegate respondsToSelector:@selector(searchBarClearButtonClicked:)]) [self.delegate searchBarClearButtonClicked:self];
 }
 
 - (void)addressBookRequested

@@ -25,6 +25,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        nonEditingFieldFrame = CGRectMake(111, 16, 185, 16);
+        isEditingFieldFrame = CGRectMake(111, 15, 185, 16);
         [self initUI];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -39,11 +41,8 @@
     UIColor *entryLabelColor = nil;
     titleLabelColor = HEXCOLOR(0x666666FF);
     entryLabelColor = HEXCOLOR(0x333333FF);
-        
-    fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 
-                                                               17, 
-                                                               80, 
-                                                               16)] autorelease];
+
+    fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 17, 80, 16)] autorelease];
 	fieldTitle.textColor = titleLabelColor;
 	fieldTitle.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
 	fieldTitle.backgroundColor = [ UIColor clearColor ]; 
@@ -52,10 +51,7 @@
 	[self addSubview:fieldTitle];
     
     
-    if (inputField == nil) inputField = [[[UITextField alloc] initWithFrame:CGRectMake(111, 
-                                                                 15, 
-                                                                 185, 
-                                                                 16)] autorelease];
+    if (inputField == nil) inputField = [[[UITextField alloc] initWithFrame:nonEditingFieldFrame] autorelease];
     inputField.textColor = entryLabelColor;
     inputField.borderStyle = UITextBorderStyleNone;
 	inputField.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
@@ -150,7 +146,10 @@
 
 - (void)setPlaceholder:(NSString *)aPlaceholder
 {
-    inputField.placeholder = aPlaceholder;
+    [placeholderText release];
+    placeholderText = aPlaceholder;
+    [placeholderText retain];
+    inputField.placeholder = placeholderText;
 }
 
 #pragma mark -
@@ -164,12 +163,18 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    inputField.frame = isEditingFieldFrame;
+    inputField.placeholder = @"";
     [delegate handleDirectFieldTouch:self];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    if ([[inputField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+        inputField.placeholder = placeholderText;
+    }
+    inputField.frame = nonEditingFieldFrame;
     if ([delegate respondsToSelector:@selector(inputFieldDidEndEditing:)]) [delegate inputFieldDidEndEditing:self];
     return YES;
 }

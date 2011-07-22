@@ -12,6 +12,7 @@
 
 - (void)searchBar:(id)searchBar textDidChange:(NSString *)searchText;
 - (void)searchBarBookmarkButtonClicked:(id)searchBar;
+- (void)searchBarClearButtonClicked:(id)searchBar;
 - (void)searchBarCancelButtonClicked:(id)searchBar;
 - (void)searchBarReturnButtonClicked:(id)searchBar;
 

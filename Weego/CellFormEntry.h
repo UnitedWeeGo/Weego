@@ -32,9 +32,13 @@ typedef enum {
 @end
 
 @interface CellFormEntry : BBTableViewCell <UITextFieldDelegate> {
+    CGRect nonEditingFieldFrame;
+    CGRect isEditingFieldFrame;
+    
     UILabel *fieldTitle;
     UITextField *inputField;
     NSString *localText;
+    NSString *placeholderText;
 }
 
 @property (nonatomic, assign) int index;

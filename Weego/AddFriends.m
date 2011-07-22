@@ -253,6 +253,13 @@
     [[ViewController sharedInstance] navigateToAddressBook:self];
 }
 
+- (void)searchBarClearButtonClicked:(id)searchBar
+{
+    hasFoundResults = NO;
+    [filteredContacts removeAllObjects];
+    [contactsTableView reloadData];
+}
+
 - (void)searchBarCancelButtonClicked:(SubViewContactsSearchBar *)searchBar
 {
     hasFoundResults = NO;
