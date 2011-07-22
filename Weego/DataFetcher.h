@@ -45,6 +45,7 @@ enum {
     DataFetchTypeInfo,
     DataFetchTypeHelp,
     DataFetchTypeRemoveLocation,
+    DataFetchTypeRemoveEvent,
     DataFetchTypeSearchSimpleGeo,
     DataFetchTypeSearchSimpleGeoCategories
 };
@@ -176,5 +177,6 @@ typedef NSInteger DataFetchType;
 - (id)initAndSearchSimpleGeoWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut delegate:(id <DataFetcherDelegate>)myDelegate;
 
 @end

@@ -12,9 +12,13 @@
 #import "SubViewLocation.h"
 
 typedef enum {
-	ActionSheetStateMorePressEventPending = 0,
-    ActionSheetStateMorePressEventAccepted,
-    ActionSheetStateMorePressEventDecided,
+	ActionSheetStateMorePressEventVotingPending = 0,
+    ActionSheetStateMorePressEventVotingAccepted,
+    ActionSheetStateMorePressEventVotingDeclined,
+    ActionSheetStateMorePressEventDecidedPending,
+    ActionSheetStateMorePressEventDecidedAccepted,
+    ActionSheetStateMorePressEventDecidedDeclined,
+    ActionSheetStateMorePressEventEnded,
 	ActionSheetStateEmailParticipant
 } ActionSheetState;
 

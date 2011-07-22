@@ -62,5 +62,6 @@
 - (NSString *)getHelpHMTLData;
 - (NSString *)removeLocationWithId:(NSString *)locationId;
 - (NSString *)getSimpleGeoCategories;
+- (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut;
 
 @end

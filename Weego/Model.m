@@ -233,7 +233,6 @@ static Model *sharedInstance;
 	for (Event *ev in self.sortedEvents) {
 		float dayDiff = [ev.eventDate timeIntervalSinceDate:todayMidnight] / (60*60*24);
         if (dayDiff >= 0 && dayDiff <= 7) {
-//			[self.weeksEvents addObject:ev];
             if ([ev.eventDate timeIntervalSinceNow] < 0) [weeksEventsPast addObject:ev];
             else [weeksEventsFuture addObject:ev];
 		} else if (dayDiff > 7) {

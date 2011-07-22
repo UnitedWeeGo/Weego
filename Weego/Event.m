@@ -247,6 +247,7 @@
     if (self.minutesToGoUntilVotingEnds > 90) state = EventStateVoting;
     if (self.minutesToGoUntilVotingEnds <= 90) state = EventStateVotingWarning;
     if (self.minutesToGoUntilVotingEnds <= 0) state = EventStateDecided;
+    if (self.minutesToGoUntilEventStarts < -60) state = EventStateEnded;
     if (self.isTemporary) state = EventStateNew;
 
     return state;

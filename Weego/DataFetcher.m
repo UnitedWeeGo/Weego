@@ -740,6 +740,25 @@
 	return self;
 }
 
+- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeRemoveEvent;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
+                               apiURL,
+                               @"remove.event.php",
+                               userId,
+                               eventId,
+                                countMeOut ? @"&countMeOut=true" : @""] autorelease];
+        NSLog(@"req: %@", urlString);
+		//[self makeRequest:urlString];
+	}
+	return self;
+}
+
 #pragma mark -
 #pragma mark helper methods
 
