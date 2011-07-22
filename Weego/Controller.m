@@ -437,6 +437,12 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
+- (NSString *)getRecentParticipants
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetRecentParticipantsWithUserId:[Model sharedInstance].userId delegate:[DataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
 - (NSString *)clearLog
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndClearLog] autorelease];

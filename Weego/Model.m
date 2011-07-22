@@ -709,6 +709,18 @@ static Model *sharedInstance;
     return [returnParticipants autorelease];
 }
 
+- (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML
+{
+    Participant *newp = [[Participant alloc] init];
+    [newp populateWithXml:participantXML];
+    BOOL isFound = NO;
+    for (Participant *p in self.participants) {
+        if ([p.email isEqualToString:newp.email] && p.hasBeenPaired) isFound = YES;
+    }
+    if (!isFound) [self.participants addObject:newp];
+    [newp release];
+}
+
 - (NSArray *)getRecentParticipants
 {
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];

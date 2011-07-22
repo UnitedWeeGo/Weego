@@ -538,6 +538,7 @@ typedef enum {
         case DataFetchTypeCreateNewEvent:
             NSLog(@"DataFetchTypeCreateNewEvent Success");
             _saving = NO;
+            [[Model sharedInstance] flushTempItems];
             [[ViewController sharedInstance] dismissModal:self];
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:

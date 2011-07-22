@@ -758,6 +758,23 @@
 	return self;
 }
 
+- (id)initAndGetRecentParticipantsWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeRemoveEvent;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@",
+                                apiURL,
+                                @"get.participantinfo.php",
+                                userId] autorelease];
+        NSLog(@"req: %@", urlString);
+		[self makeRequest:urlString];
+	}
+	return self;
+}
+
 #pragma mark -
 #pragma mark helper methods
 
