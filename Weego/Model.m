@@ -803,6 +803,14 @@ static Model *sharedInstance;
     return [returnMessages autorelease];
 }
 
+- (void)removeFeedMessagesForEventWithId:(NSString *)eventId
+{
+    NSMutableArray *returnMessages = [[[NSMutableArray alloc] init] autorelease];
+    for (FeedMessage *mess in self.messages) {
+        if ([mess.ownerEventId isEqualToString:eventId]) [returnMessages addObject:mess];
+    }
+}
+
 - (void)markLocalFeedMessageReadForEventWithId:(NSString *)eventId
 {
     for (FeedMessage *mess in self.messages) {

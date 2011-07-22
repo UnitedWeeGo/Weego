@@ -54,7 +54,7 @@
     self = [super init];
     if (self != nil) {
 #if API_TYPE == 1
-        apiURL = @"http://api.bigbabyservice.com/public/";
+        apiURL = @"http://local.weegoapp.com/public/";
 #endif
 #if API_TYPE == 2
         apiURL = @"http://beta.weegoapp.com/public/";
@@ -753,8 +753,7 @@
                                userId,
                                eventId,
                                 countMeOut ? @"&countMeOut=true" : @""] autorelease];
-        NSLog(@"req: %@", urlString);
-		//[self makeRequest:urlString];
+		[self makeRequest:urlString];
 	}
 	return self;
 }

@@ -146,6 +146,7 @@ typedef enum {
 - (void)addFeedMessageWithXml:(GDataXMLElement *)messageXML inEventWithId:(NSString *)eventId;
 - (void)updateUnreadMessageCount:(NSString *)messageCount inEventWithId:(NSString *)eventId;
 - (NSArray *)getFeedMessagesForEventWithId:(NSString *)eventId;
+- (void)removeFeedMessagesForEventWithId:(NSString *)eventId;
 - (void)markLocalFeedMessageReadForEventWithId:(NSString *)eventId;
 - (int)getUnreadMessageCountForPastEvents;
 - (int)getUnreadMessageCountForFutureEvents;

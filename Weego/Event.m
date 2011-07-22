@@ -26,7 +26,7 @@
 @synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn;
 @synthesize currentLocationOrder, iVotedFor;
 @synthesize updatedVotes;
-@synthesize acceptanceStatus;
+@synthesize acceptanceStatus,hasBeenRemoved;
 
 - (id)initWithId:(NSString *)anId
 {
@@ -325,6 +325,19 @@
     self.updatedVotes = nil;
     [self.updatedVotes release];
 }
+
+- (void)setHasBeenRemoved:(BOOL)hbr
+{
+    self.isTemporary = true;
+    NSArray *locations = [self getLocations];
+    NSArray *participants = [self getParticipants];
+    for (Location *loc in locations) loc.isTemporary = YES;
+    for (Participant *par in participants) par.isTemporary = YES;
+    Model *model = [Model sharedInstance];
+    [model removeFeedMessagesForEventWithId:self.eventId];
+    [model flushTempItems];
+}
+
 
 - (id)init {
 	[super init];
