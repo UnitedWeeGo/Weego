@@ -38,6 +38,10 @@ typedef enum {
     NSString *pendingCountMeInFetchRequestId;
     ActionSheetState currentActionSheetState;
     Participant *pendingMailParticipant;
+    UIActionSheet *dateActionSheet;
+	UIDatePicker *datePicker;
+    NSDate *suggestedDate;
 }
+
 
 @end

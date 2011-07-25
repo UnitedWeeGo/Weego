@@ -16,6 +16,7 @@
 #import "CellParticipantsSummary.h"
 #import "CellEventCallToAction.h"
 #import "BBTableViewCell.h"
+#import "NSDate+Helper.h"
 
 enum eventDetailSections {
 	eventDetailSectionLocations = 0,
@@ -46,6 +47,8 @@ enum eventDetailSections {
 - (void)presentMailModalViewController;
 - (void)showActionSheetForMorePress;
 - (void)showUserActionSheetForUser:(Participant *)part;
+- (void)pickDateTime;
+- (void)datePickerDoneClick:(id)sender;
 
 @end
 
@@ -743,12 +746,12 @@ enum eventDetailSections {
                 if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
             } else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined) {
-                NSLog(@"To do, SUGGEST NEW TIME");
+                [self pickDateTime];
             }
             break;
         case 3:
             if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending) {
-                NSLog(@"To do, SUGGEST NEW TIME");
+                [self pickDateTime];
             }
             // else cancel, do nothing
             break;
@@ -839,8 +842,92 @@ enum eventDetailSections {
 	
 }
 
+#pragma mark -
+#pragma mark Date Picker Methods
+
+- (void)pickDateTime
+{
+    if (suggestedDate != nil) [suggestedDate release];
+    suggestedDate = [detail.eventDate copy];
+    
+	SEL changeSelector = @selector(setNewDateTime:);
+	int pickerMode = UIDatePickerModeDateAndTime;
+    
+	dateActionSheet = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+	
+	UIToolbar *pickerDateToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+	pickerDateToolbar.barStyle = UIBarStyleBlackOpaque;
+	[pickerDateToolbar sizeToFit];
+	
+	NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(datePickerCancelClick:)];
+    [barItems addObject:cancelBtn];
+    [cancelBtn release];
+    
+	UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+	[barItems addObject:flexSpace];
+    [flexSpace release];
+	
+	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(datePickerDoneClick:)];
+	[barItems addObject:doneBtn];
+    [doneBtn release];
+    
+	
+	[pickerDateToolbar setItems:barItems animated:YES];
+    [barItems release];
+	
+	[dateActionSheet addSubview:pickerDateToolbar];
+    [pickerDateToolbar release];
+	
+	datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 325, 250)];
+	datePicker.datePickerMode = pickerMode;
+	datePicker.hidden = NO;
+    
+    int minuteInterval = 5;
+    NSDate *now = [NSDate date];
+	datePicker.minuteInterval = minuteInterval;
+    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval); // Current time rounded up to the nearest minuteInterval
+    NSDate *minimumDate = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
+    datePicker.minimumDate = minimumDate;
+    
+	datePicker.date = detail.eventDate;
+    
+	[datePicker addTarget:self
+	               action:changeSelector
+	     forControlEvents:UIControlEventValueChanged];
+	[dateActionSheet addSubview:datePicker];
+	[datePicker release];
+	
+	[dateActionSheet showInView:self.view];
+	[dateActionSheet setBounds:CGRectMake(0,0,320, 464)];
+    [dateActionSheet release];
+}
+
+- (void)datePickerDoneClick:(id)sender
+{
+    if ([detail.eventDate compare:suggestedDate] == NSOrderedSame) return; //exit if suggested date is same as current date
+    
+	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES];
+    NSString *suggestedDateString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    NSLog(@"suggestedDateString: %@", suggestedDateString);
+}
+
+- (void)datePickerCancelClick:(id)sender
+{
+	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES]; 
+}
+
+- (void)setNewDateTime:(id)sender
+{
+    if (suggestedDate != nil) [suggestedDate release];
+    suggestedDate = [datePicker.date retain];
+    
+}
+
 - (void)dealloc {
     NSLog(@"EventDetailTVC dealloc");
+    [suggestedDate release];
     [pendingCountMeInFetchRequestId release];
     [self removeDataFetcherMessageListeners];
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // removes all observers for object

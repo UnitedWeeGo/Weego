@@ -257,7 +257,6 @@ typedef enum {
 	datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 325, 250)];
 	datePicker.datePickerMode = pickerMode;
 	datePicker.hidden = NO;
-	datePicker.date = self.anotherDate;
     
     int minuteInterval = 5;
     NSDate *now = [NSDate date];
@@ -265,6 +264,9 @@ typedef enum {
     NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval); // Current time rounded up to the nearest minuteInterval
     NSDate *minimumDate = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
     datePicker.minimumDate = minimumDate;
+    
+	datePicker.date = self.anotherDate;
+    
     
 	[datePicker addTarget:self
 	               action:changeSelector
