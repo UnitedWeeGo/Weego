@@ -49,6 +49,7 @@ enum eventDetailSections {
 - (void)showUserActionSheetForUser:(Participant *)part;
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
+- (void)presentRemoveEventAlert;
 
 @end
 
@@ -655,17 +656,20 @@ enum eventDetailSections {
             case AcceptanceTypePending:
                 currentActionSheetState = ActionSheetStateMorePressEventVotingPending;
                 title = @"Let the group know if you are coming or not, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"Count me in!", @"I'm not coming", @"Suggest a new time", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", @"Suggest a new time", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 3;
                 break;
             case AcceptanceTypeAccepted:
                 currentActionSheetState = ActionSheetStateMorePressEventVotingAccepted;
                 title = @"Let the group know that you are not going to make it, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"I'm not coming", @"Suggest a new time", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", @"Suggest a new time", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 2;
                 break;
             case AcceptanceTypeDeclined:
                 currentActionSheetState = ActionSheetStateMorePressEventVotingDeclined;
                 title = @"Let the group know you decided to come, or if there is a better time for you.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"Count me in!", @"Suggest a new time", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"Suggest a new time", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 2;
                 break;
             default:
                 break;
@@ -677,17 +681,20 @@ enum eventDetailSections {
             case AcceptanceTypePending:
                 currentActionSheetState = ActionSheetStateMorePressEventDecidedPending;
                 title = @"Let the group know if you are coming or not. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"Count me in!", @"I'm not coming", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 2;
                 break;
             case AcceptanceTypeAccepted:
                 currentActionSheetState = ActionSheetStateMorePressEventDecidedAccepted;
                 title = @"Let the group know that you are not going to make it. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"I'm not coming", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 1;
                 break;
             case AcceptanceTypeDeclined:
                 currentActionSheetState = ActionSheetStateMorePressEventDecidedDeclined;
                 title = @"Let the group know you decided to come!";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"Count me in!", nil];
+                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"Remove event", nil];
+                userOptions.destructiveButtonIndex = 1;
                 break;
             default:
                 break;
@@ -697,7 +704,8 @@ enum eventDetailSections {
     {
         currentActionSheetState = ActionSheetStateMorePressEventEnded;
         title = @"Remove this event from your dashboard, or create a new event with the same group and locations.";
-        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Remove event" otherButtonTitles:@"Duplicate event", nil];
+        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Duplicate event", @"Remove event", nil];
+        userOptions.destructiveButtonIndex = 1;
     }
     userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     [userOptions showInView:[UIApplication sharedApplication].keyWindow];
@@ -716,49 +724,78 @@ enum eventDetailSections {
 }
 
 #pragma mark - UIActionSheetDelegate methods
-
+ 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {
         case 0:
-            NSLog(@"Present remove event alert");
-            NSString *title = @"Remove Event?";
-            NSString *message = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", currentActionSheetState == EventStateEnded ? @"." : @" and \"Count you out\""];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-            [alert show];
-            [alert release];
-            break;
-        case 1:
-            if (currentActionSheetState == ActionSheetStateEmailParticipant) {
-                [self presentMailModalViewController];
-            } else if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined) {
+            //ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending, ActionSheetStateMorePressEventDecidedDeclined - count me in
+            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined)
+            {
                 if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:YES] retain];
-            } else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted) {
+            }
+            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventDecidedAccepted - count me out
+            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted)
+            {
                 if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
-            } else if (currentActionSheetState == EventStateEnded) {
+            }
+            else if (currentActionSheetState == ActionSheetStateMorePressEventEnded) // duplicate event
+            {
                 NSLog(@"To do, DUPLICATE EVENT");
             }
             break;
-        case 2:
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending) {
+        case 1:
+            // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
+            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
+            {
                 if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
-            } else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined) {
+            }
+            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined - suggest new time
+            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined)
+            {
                 [self pickDateTime];
+            }
+            // ActionSheetStateMorePressEventDecidedAccepted, ActionSheetStateMorePressEventDecidedDeclined - remove event
+            if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined)
+            {
+                [self presentRemoveEventAlert];
+            }
+            break;
+        case 2:
+            // ActionSheetStateMorePressEventVotingPending - suggest new time
+            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
+            {
+                [self pickDateTime];
+            }
+            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending - remove event
+            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
+            {
+                [self presentRemoveEventAlert];
             }
             break;
         case 3:
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending) {
-                [self pickDateTime];
+            //ActionSheetStateMorePressEventVotingPending remove event
+            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
+            {
+                [self presentRemoveEventAlert];
             }
-            // else cancel, do nothing
-            break;
-             
+            break;   
         default:
             break;
     }
+}
+
+- (void)presentRemoveEventAlert
+{
+    NSLog(@"Present remove event alert");
+    NSString *title = @"Remove Event?";
+    NSString *message = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", currentActionSheetState == EventStateEnded ? @"." : @" and \"Count you out\""];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alert show];
+    [alert release];
 }
 
 #pragma mark -
