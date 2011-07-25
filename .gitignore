@@ -16,11 +16,4 @@ build/*
 *.perspectivev3
 *.pbxuser
 *.xcworkspace
-<<<<<<< HEAD
 xcuserdata
-=======
-xcuserdata
-Weego.xcodeproj/xcuserdata/dave.prukop.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
-
-Weego.xcodeproj/xcuserdata/dave.prukop.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
->>>>>>> parent of 8e64d9d... Revert "try it again"
