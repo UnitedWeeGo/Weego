@@ -745,6 +745,10 @@ enum eventDetailSections {
             {
                 NSLog(@"To do, DUPLICATE EVENT");
             }
+            else if (currentActionSheetState == ActionSheetStateEmailParticipant) // email modal
+            {
+                [self presentMailModalViewController];
+            }
             break;
         case 1:
             // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
