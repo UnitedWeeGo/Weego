@@ -759,7 +759,7 @@ enum eventDetailSections {
                 [self pickDateTime];
             }
             // ActionSheetStateMorePressEventDecidedAccepted, ActionSheetStateMorePressEventDecidedDeclined - remove event
-            if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined)
+            if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined || currentActionSheetState == ActionSheetStateMorePressEventEnded)
             {
                 [self presentRemoveEventAlert];
             }

@@ -15,6 +15,7 @@
     
     UIImageViewAsyncLoader *avatarImage;
     UILabel *labelName;
+    UILabel *labelSuggestedTime;
     UILabel *labelStatus;
 }
 
