@@ -9,6 +9,8 @@
 #import "SubViewFeedMessage.h"
 #import "Participant.h"
 #import "Event.h"
+#import "NSDate+Helper.h"
+#import "SuggestedTime.h"
 
 @interface SubViewFeedMessage (Private)
 
@@ -41,6 +43,7 @@
     BOOL inviteFeedMessage = [aFeedMessage.type isEqualToString:@"invite"];
     BOOL locationFeedMessage = [aFeedMessage.type isEqualToString:@"locationadd"];
     BOOL locationCheckinMessage = [aFeedMessage.type isEqualToString:@"checkin"];
+    BOOL timeSuggestionFeedMessage = [feedMessage.type isEqualToString:@"timesuggestion"];
     
     if (decidedFeedMessage)
     {
@@ -51,6 +54,13 @@
 
         Location *topLocation = [model.currentEvent getLocationByLocationId:model.currentEvent.topLocationId];
         feedMessage.message = [NSString stringWithFormat:@"\"%@\" is where we are going!", topLocation.name];
+    }
+    else if (timeSuggestionFeedMessage)
+    {
+        participant = [[Model sharedInstance] getParticipantWithEmail:aFeedMessage.senderId fromEventWithId:aFeedMessage.ownerEventId];
+        SuggestedTime *sugTime =  [[Model sharedInstance] getSuggestedTimeWithEmail:feedMessage.senderId fromEventWithId:feedMessage.ownerEventId];
+        NSDate *suggestedDate = [NSDate dateFromString:sugTime.suggestedTime withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        feedMessage.message = [suggestedDate stringWithFormat:@"'Suggests 'MMMM d 'at' h:mm a' as an alternate event time.'" timeZone:[NSTimeZone localTimeZone]];
     }
     else
     {
@@ -178,6 +188,7 @@
     int         bottomPadding = 10;
     CGSize		textSize = { 200, FLT_MAX };// width and height of text area
     BOOL        decidedFeedMessage = [feedMessage.type isEqualToString:@"decided"];
+    BOOL        timeSuggestionFeedMessage = [feedMessage.type isEqualToString:@"timesuggestion"];
     
     NSString    *message;
     
@@ -186,6 +197,12 @@
         Model *model = [Model sharedInstance];
         Location *topLocation = [model.currentEvent getLocationByLocationId:model.currentEvent.topLocationId];
         message = [NSString stringWithFormat:@"\"%@\" is where we are going!", topLocation.name];
+    }
+    else if(timeSuggestionFeedMessage)
+    {
+        SuggestedTime *sugTime =  [[Model sharedInstance] getSuggestedTimeWithEmail:feedMessage.senderId fromEventWithId:feedMessage.ownerEventId];
+        NSDate *suggestedDate = [NSDate dateFromString:sugTime.suggestedTime withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        message = [suggestedDate stringWithFormat:@"'Suggests 'MMMM d 'at' h:mm a' as an alternate event time.'" timeZone:[NSTimeZone localTimeZone]];
     }
     else
     {

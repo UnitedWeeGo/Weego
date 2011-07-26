@@ -60,8 +60,6 @@ const int openWidgetInputHeight = 120;
     
     tableViewMessages = [[[UITableView alloc] initWithFrame:TableViewMessagesFullRect style:UITableViewStylePlain] autorelease];
     tableViewMessages.backgroundColor = HEXCOLOR(0xF3F3F3FF);
-//    tableViewMessages.separatorColor = HEXCOLOR(0xCCCCCCFF);
-//    tableViewMessages.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     tableViewMessages.dataSource = self;
     tableViewMessages.delegate = self;
     tableViewMessages.separatorStyle = UITableViewCellSeparatorStyleNone;
