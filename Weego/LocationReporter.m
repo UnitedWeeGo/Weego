@@ -253,7 +253,7 @@ static LocationReporter *sharedInstance;
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-//    NSLog(@"Location: %@", [newLocation description]);
+    //NSLog(@"Location: %@", [newLocation description]);
     
     if (lastLocation == nil)
     {
@@ -262,7 +262,20 @@ static LocationReporter *sharedInstance;
     else
     {
         CLLocationAccuracy accuracy = newLocation.horizontalAccuracy;
-        if (!locationChangedSignificantly) locationChangedSignificantly = [lastLocation distanceFromLocation:newLocation] > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD;
+        
+        if (lastReportedLocation == nil) lastReportedLocation  = [newLocation copy];
+        /*
+        NSLog(@"accuracy: %f", accuracy);
+        NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
+        NSLog(@"lastReportedLocation distanceFromLocation:newLocation: %f", [lastReportedLocation distanceFromLocation:newLocation]);
+        NSLog(@"REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD: %d", REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD);
+        NSLog(@"CHECKIN_ACCURACY_THRESHOLD: %d", CHECKIN_ACCURACY_THRESHOLD);
+        */
+        if (!locationChangedSignificantly) locationChangedSignificantly = [lastReportedLocation distanceFromLocation:newLocation] > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD;
+        if (locationChangedSignificantly) {
+            [lastReportedLocation release];
+            lastReportedLocation = [newLocation copy];
+        }
     }
     
     if (lastLocation != nil) [lastLocation release];
@@ -272,7 +285,7 @@ static LocationReporter *sharedInstance;
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error
 {
-	NSLog(@"Error: %@", [error description]);
+	NSLog(@"locationManager didFailWithError: %@", [error description]);
 }
 
 - (void)dealloc

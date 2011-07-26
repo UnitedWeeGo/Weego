@@ -13,6 +13,7 @@
     BOOL locationServicesEnabled;
 //    SimpleGeo *client;
     CLLocation *lastLocation;
+    CLLocation *lastReportedLocation;
     CLLocationManager *locationManager;
     BOOL locationServicesStarted;
     BOOL locationChangedSignificantly;
