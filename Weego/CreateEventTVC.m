@@ -129,15 +129,19 @@ typedef enum {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
     CellFormEntry *targetCell = (CellFormEntry *)cell;
     [targetCell resignFirstResponder];
-    _saving = YES;
-	[_refreshHeaderView refreshLastUpdatedDate];
-    _refreshHeaderView.hidden = NO;
-    [_refreshHeaderView egoRefreshScrollViewOpenAndShowSaving:self.tableView];
-    Controller *controller = [Controller sharedInstance];
     if (detail.eventTitle == nil || [[detail.eventTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         detail.eventTitle = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
     }
-	[controller addEvent:detail];
+    if (![Model sharedInstance].isInTrial) {
+        _saving = YES;
+        [_refreshHeaderView refreshLastUpdatedDate];
+        _refreshHeaderView.hidden = NO;
+        [_refreshHeaderView egoRefreshScrollViewOpenAndShowSaving:self.tableView];
+        Controller *controller = [Controller sharedInstance];
+        [controller addEvent:detail];
+    } else {
+        [[ViewController sharedInstance] dismissModal:self];
+    }
 }
 
 #pragma mark -
@@ -538,6 +542,7 @@ typedef enum {
         case DataFetchTypeCreateNewEvent:
             NSLog(@"DataFetchTypeCreateNewEvent Success");
             _saving = NO;
+            [[Model sharedInstance] flushTempItems];
             [[ViewController sharedInstance] dismissModal:self];
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:

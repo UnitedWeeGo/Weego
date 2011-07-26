@@ -181,4 +181,6 @@ typedef NSInteger DataFetchType;
 - (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSuggestTimeWithUserId:(NSString *)userId toEventId:(NSString *)eventId withSuggestedTime:(NSString *)suggestedDate withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 
+- (id)initAndGetRecentParticipantsWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate;
+
 @end

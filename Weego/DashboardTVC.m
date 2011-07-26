@@ -66,6 +66,9 @@
         [_refreshHeaderView refreshLastUpdatedDate];
         [self fetchData];
         [self showLoadingIndicator];
+    } else {
+        initialLoadFinished = YES;
+        [self createDataSources];
     }
 }
 
@@ -102,6 +105,12 @@
 {
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [self createDataSources];
 }
 
 - (void)fetchData
@@ -429,6 +438,11 @@
 
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
 	return [NSDate date]; // should return date data source was last changed
+}
+
+- (void)egoRefreshTableHeaderClosed
+{
+    _reloading = NO;
 }
 
 #pragma mark -

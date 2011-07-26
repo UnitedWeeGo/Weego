@@ -523,7 +523,11 @@ enum eventDetailSections {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    [controller toggleVoteForLocationsWithId:loc.locationId];
+    if (![Model sharedInstance].isInTrial) {
+        [controller toggleVoteForLocationsWithId:loc.locationId];
+    } else {
+        [controller voteForLocationWithId:loc.locationId];
+    }
     [self.tableView reloadData];
 }
 
@@ -532,7 +536,11 @@ enum eventDetailSections {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    [controller toggleVoteForLocationsWithId:loc.locationId];
+    if (![Model sharedInstance].isInTrial) {
+        [controller toggleVoteForLocationsWithId:loc.locationId];
+    } else {
+        [controller removeVoteForLocationWithId:loc.locationId];
+    }
     [self.tableView reloadData];
 }
 
@@ -724,7 +732,7 @@ enum eventDetailSections {
 }
 
 #pragma mark - UIActionSheetDelegate methods
- 
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {

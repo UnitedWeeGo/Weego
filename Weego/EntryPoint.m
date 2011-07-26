@@ -49,31 +49,31 @@
     UIImage *bg1 = [UIImage imageNamed:@"button_clear_lrg_default.png"];
     UIImage *bg2 = [UIImage imageNamed:@"button_clear_lrg_pressed.png"];
     
-//    CGRect buttonTargetSize = CGRectMake(8, 328, bg1.size.width, bg1.size.height);
+    CGRect buttonTargetSize = CGRectMake(8, 328, bg1.size.width, bg1.size.height);
     
-//    UIButton *cViewSignUp = [UIButton buttonWithType:UIButtonTypeCustom];
-//    cViewSignUp.adjustsImageWhenHighlighted = NO;
-//    [cViewSignUp setFrame:buttonTargetSize];
-//    
-//    SEL selector = nil;
-//    selector = @selector(handleTryNowPress:);
-//    
-//    [cViewSignUp addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-//    [cViewSignUp setBackgroundImage:bg1 forState:UIControlStateNormal];
-//    [cViewSignUp setBackgroundImage:bg2 forState:UIControlStateHighlighted];
-//    [cViewSignUp setBackgroundImage:bg2 forState:UIControlStateDisabled];
-//    [cViewSignUp setTitle:@"Try Now" forState:UIControlStateNormal];
-//    
-//    [cViewSignUp setTitleColor:col forState:UIControlStateNormal];
-//    
-//    cViewSignUp.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
-//    cViewSignUp.titleLabel.lineBreakMode = UILineBreakModeClip;
-//    
-//    cViewSignUp.titleLabel.shadowColor = shadowColor;
-//    cViewSignUp.titleLabel.shadowOffset = CGSizeMake(1.0, 2.0);
-//    
-//    cViewSignUp.contentEdgeInsets = UIEdgeInsetsMake(4, 0, 0, 0);
-//    [[self view] addSubview:cViewSignUp];
+    UIButton *cViewSignUp = [UIButton buttonWithType:UIButtonTypeCustom];
+    cViewSignUp.adjustsImageWhenHighlighted = NO;
+    [cViewSignUp setFrame:buttonTargetSize];
+    
+    SEL selector = nil;
+    selector = @selector(handleTryNowPress:);
+    
+    [cViewSignUp addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    [cViewSignUp setBackgroundImage:bg1 forState:UIControlStateNormal];
+    [cViewSignUp setBackgroundImage:bg2 forState:UIControlStateHighlighted];
+    [cViewSignUp setBackgroundImage:bg2 forState:UIControlStateDisabled];
+    [cViewSignUp setTitle:@"Try Now" forState:UIControlStateNormal];
+    
+    [cViewSignUp setTitleColor:col forState:UIControlStateNormal];
+    
+    cViewSignUp.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
+    cViewSignUp.titleLabel.lineBreakMode = UILineBreakModeClip;
+    
+    cViewSignUp.titleLabel.shadowColor = shadowColor;
+    cViewSignUp.titleLabel.shadowOffset = CGSizeMake(1.0, 2.0);
+    
+    cViewSignUp.contentEdgeInsets = UIEdgeInsetsMake(4, 0, 0, 0);
+    [[self view] addSubview:cViewSignUp];
     
     loginFacebook = [UIButton buttonWithType:UIButtonTypeCustom];
     loginFacebook.frame = CGRectMake(8, 385, bg1.size.width, bg1.size.height);

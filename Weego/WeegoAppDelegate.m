@@ -24,6 +24,7 @@
 - (void)registerDeviceForRemoteNotifications:(UIApplication *)application;
 - (void)initDefaultPrefs;
 - (void)initSimpleGeoCategories;
+- (void)showLoginError;
 @end
 
 @implementation WeegoAppDelegate
@@ -335,7 +336,7 @@
     self.loggingInFacebook = NO;
     [facebook release];
     facebook = [[Facebook alloc] initWithAppId:@"221300981231092"];
-    [facebook authorize:[NSArray arrayWithObjects:@"email", nil] delegate:self];
+    [facebook authorize:[NSArray arrayWithObjects:@"email,offline_access,sms,publish_checkins", nil] delegate:self];
 }
 
 #pragma mark -
@@ -447,6 +448,7 @@
         [[Controller sharedInstance] fetchEvents];
         [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
     }
+    [[Controller sharedInstance] getRecentParticipants];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -666,10 +668,18 @@
             if (model.isInTrial) model.loginAfterTrial = YES;
             model.isInTrial = NO;
             if (model.currentViewState == ViewStatePrefs) {
+                [[Controller sharedInstance] getRecentParticipants];
+                [model flushTempItems];
                 [[ViewController sharedInstance] goBack];
-            } else if (model.currentViewState == ViewStateDetails || model.currentViewState == ViewStateCreate) {
+            } else if (model.currentViewState == ViewStateDetails) {
+                [[Controller sharedInstance] getRecentParticipants];
+                [model flushTempItems];
                 [self hideLoadView];
-            } else {
+            } else if (model.currentViewState == ViewStateCreate) {
+                [[Controller sharedInstance] getRecentParticipants];
+                [self hideLoadView];
+            } else if (model.currentViewState != ViewStateDashboard) {
+                [[Controller sharedInstance] getRecentParticipants];
                 [self continueToDashboard];
             }
             
@@ -686,12 +696,20 @@
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeLoginWithFacebookAccessToken:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeLoginWithFacebookAccessToken);
+//            NSLog(@"Unhandled Error: %d", DataFetchTypeLoginWithFacebookAccessToken);
+            [self showLoginError];
             break;
-            
         default:
             break;
     }
+}
+
+- (void)showLoginError
+{
+    NSString *alertMessage = @"Something went wrong during login. Please try again.";
+    UIAlertView *loginAlert = [[UIAlertView alloc] initWithTitle:@"Login Error" message:alertMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [loginAlert show];
+    [loginAlert release];
 }
 
 #pragma mark -
