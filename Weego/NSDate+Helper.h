@@ -40,6 +40,7 @@
 
 + (NSDate *)dateFromString:(NSString *)string;
 + (NSDate *)dateFromString:(NSString *)string withFormat:(NSString *)format;
++ (NSDate *)dateFromString:(NSString *)string withFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone;
 + (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)string;
 + (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone;
 + (NSString *)stringFromDate:(NSDate *)date;

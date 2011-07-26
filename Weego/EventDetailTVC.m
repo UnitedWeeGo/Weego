@@ -946,8 +946,9 @@ enum eventDetailSections {
     if ([detail.eventDate compare:suggestedDate] == NSOrderedSame) return; //exit if suggested date is same as current date
     
 	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    NSString *suggestedDateString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    NSLog(@"suggestedDateString: %@", suggestedDateString);
+    NSString *suggestedTimeString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    NSLog(@"suggestedTimeString: %@", suggestedTimeString);
+    [[Controller sharedInstance] suggestTimeForEvent:detail withSuggestedTime:suggestedTimeString];
 }
 
 - (void)datePickerCancelClick:(id)sender

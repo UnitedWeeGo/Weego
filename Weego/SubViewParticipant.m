@@ -8,6 +8,8 @@
 
 #import "SubViewParticipant.h"
 #import "Event.h"
+#import "SuggestedTime.h"
+#import "NSDate+Helper.h"
 
 @interface SubViewParticipant (Private)
 
@@ -36,25 +38,45 @@
     labelName.text = aParticipant.fullName;
     
     // set the status here    
+    SuggestedTime *sugTime =  [[Model sharedInstance] getSuggestedTimeWithEmail:participant.email fromEventWithId:participant.ownerEventId];
+    BOOL userSuggestedTime = sugTime != nil;
     
     BOOL isDetailsMode = [Model sharedInstance].currentAppState == AppStateEventDetails;
     AcceptanceType acceptanceStatus = [[Model sharedInstance].currentEvent acceptanceStatusForUserWithEmail:participant.email];
     
+    int numLines = 0;
+    if (userSuggestedTime) numLines++;
     labelStatus.text = @"";
+    
+    NSString *formattedDate;
+    if (userSuggestedTime)
+    {
+        NSDate *suggestedDate = [NSDate dateFromString:sugTime.suggestedTime withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        formattedDate = [suggestedDate stringWithFormat:@"'Suggests 'MMMM d 'at' h:mm a" timeZone:[NSTimeZone localTimeZone]];
+    }
     
     if (acceptanceStatus == AcceptanceTypePending && isDetailsMode)
     {
-        labelStatus.text = @"Pending";
+        labelStatus.text = [NSString stringWithFormat:@"Pending\r%@", userSuggestedTime ? formattedDate : @""];
+        numLines++;
     }
     else if (acceptanceStatus == AcceptanceTypeAccepted && isDetailsMode)
     {
-        labelStatus.text = @""; // maybe add distance here
+        labelStatus.text = [NSString stringWithFormat:@"%@", userSuggestedTime ? formattedDate : @""];
+        
     }
     else if (acceptanceStatus == AcceptanceTypeDeclined && isDetailsMode)
     {
-        labelStatus.text = @"Declined";
+        labelStatus.text = [NSString stringWithFormat:@"Count me out\r%@", userSuggestedTime ? formattedDate : @""];
+        numLines++;
     }
     
+    int targetYForLabel = numLines == 2 ? 10 : 17;
+    int targetHeightForLabel = numLines == 2 ? 30 : 14;
+    CGRect newFrame = labelStatus.frame;
+    newFrame.origin.y = targetYForLabel;
+    newFrame.size.height = targetHeightForLabel;
+    labelStatus.frame = newFrame;
     
     NSURL *url = [NSURL URLWithString:participant.avatarURL];
     [avatarImage asyncLoadWithNSURL:url useCached:YES andBaseImage:BaseImageTypeAvatar useBorder:YES];
@@ -71,10 +93,12 @@
     
     float leftMargin = 10;
     float nameLeftPos = leftMargin + 38;
-    float nameFieldWidth = 150;
+    float nameFieldWidth = 100;
     
-    float statusLeftPos = nameLeftPos + nameFieldWidth + 5;
-    float statusFieldWidth = self.frame.size.width - statusLeftPos - 8;
+    //float statusLeftPos = nameLeftPos + nameFieldWidth + 5;
+    //float statusFieldWidth = self.frame.size.width - statusLeftPos - 8;
+    float statusLeftPos = 0;
+    float statusFieldWidth = self.frame.size.width - 5;
     
     if (avatarImage == nil) avatarImage = [[[UIImageViewAsyncLoader alloc] initWithFrame:CGRectMake(leftMargin, 5, 32, 32)] autorelease];
     [self addSubview:avatarImage];
@@ -101,6 +125,8 @@
 	labelStatus.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
 	labelStatus.backgroundColor = [ UIColor clearColor ]; 
     labelStatus.textAlignment = UITextAlignmentRight;
+    labelStatus.lineBreakMode = UILineBreakModeWordWrap;
+    labelStatus.numberOfLines = 0;
 	[self addSubview:labelStatus];
     	
 	self.frame = CGRectMake(self.frame.origin.x, 

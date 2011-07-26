@@ -37,6 +37,7 @@ enum {
     DataFetchTypeAddVoteToLocation,
     DataFetchTypeRemoveVoteFromLocation,
     DataFetchTypeAddParticipant,
+    DataFetchTypeSuggestTime,
     DataFetchTypeCheckin,
     DataFetchTypeGetReportedLocations,
     DataFetchTypeGooglePlaceSearch,
@@ -161,8 +162,8 @@ typedef NSInteger DataFetchType;
 - (id)initAndAddMessageWithUserId:(NSString *)userId andEventId:(NSString *)eventId andMessageString:(NSString *)messageString andImageUrl:(NSString *)imageUrlString andTimestamp:(NSString *)aTimestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndMarkFeedMessagesRead:(NSString *)userId andEventId:(NSString *)eventId delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndResetUserBadge:(NSString *)userId andDeviceUuid:(NSString *)deviceUuid delegate:(id <DataFetcherDelegate>)myDelegate;
-- (id)initAndWriteStringToLog:(NSString *)logMessage;
-- (id)initAndClearLog;
+//- (id)initAndWriteStringToLog:(NSString *)logMessage;
+//- (id)initAndClearLog;
 - (id)initAndCheckinWithUserId:(NSString *)userId toEventId:(NSString *)eventId intoLocationId:(NSString *)locationId overrideSynchronous:(BOOL)useSync delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndReportNewLocationToEventWithUserId:(NSString *)userId overrideSynchronous:(BOOL)useSync withEventId:(NSString *)eventId withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetReportedLocationsWithUserId:(NSString *)userId andEventId:(NSString *)eventId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
@@ -178,5 +179,6 @@ typedef NSInteger DataFetchType;
 - (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndSuggestTimeWithUserId:(NSString *)userId toEventId:(NSString *)eventId withSuggestedTime:(NSString *)suggestedDate withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 
 @end

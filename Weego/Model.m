@@ -15,6 +15,7 @@
 #import "GDataXMLNode.h"
 #import "FeedMessage.h"
 #import "ReportedLocation.h"
+#import "SuggestedTime.h"
 
 @interface Model (Private)
 
@@ -23,6 +24,7 @@
 - (Event *)getEventById:(NSString *) eventId;
 - (Location *)getLocationWithId:(NSString *)locationId fromEventWithId:(NSString *)eventId;
 - (Vote *)getVoteForLocationWithId:(NSString *)locationId inEventWithId:(NSString *)eventId fromUserWithId:(NSString *)email;
+- (SuggestedTime *)getSuggestedTimeWithId:(NSString *)suggestedMessageId fromEventWithId:(NSString *)eventId;
 - (FeedMessage *)getFeedMessageWithId:(NSString *)messageId fromEventWithId:(NSString *)eventId;
 - (ReportedLocation *)getReportedLocationWithUserId:(NSString *)reporterEmail fromEventWithId:(NSString *)eventId;
 
@@ -44,6 +46,7 @@
 @synthesize infoResults;
 @synthesize helpResults;
 @synthesize simpleGeoCategoryResults;
+@synthesize suggestedTimes;
 
 static Model *sharedInstance;
 
@@ -93,6 +96,10 @@ static Model *sharedInstance;
 		self.messages = tMessages;
         [tMessages release];
         
+        NSMutableArray *tSuggestedTimes = [[NSMutableArray alloc] init];
+		self.suggestedTimes = tSuggestedTimes;
+        [tSuggestedTimes release];
+        
         NSMutableArray *tReportedLocations = [[NSMutableArray alloc] init];
 		self.reportedLocations = tReportedLocations;
         [tReportedLocations release];
@@ -120,6 +127,8 @@ static Model *sharedInstance;
     
 //    [self.votes removeAllObjects];
 //	[self.votes release];
+    [self.suggestedTimes removeAllObjects];
+	[self.suggestedTimes release];
     
     [self.messages removeAllObjects];
 	[self.messages release];
@@ -188,6 +197,11 @@ static Model *sharedInstance;
     NSMutableArray *tAllParticipants = [[NSMutableArray alloc] init];
     self.participants = tAllParticipants;
     [tAllParticipants release];
+    
+    [self.suggestedTimes removeAllObjects];
+    NSMutableArray *tAllSuggestedTimes = [[NSMutableArray alloc] init];
+    self.suggestedTimes = tAllSuggestedTimes;
+    [tAllSuggestedTimes release];
     
     [self.messages removeAllObjects];
     NSMutableArray *tAllMessages = [[NSMutableArray alloc] init];
@@ -764,6 +778,38 @@ static Model *sharedInstance;
 {
     [self getEventById:eventId].lastReportedLocationsTimestamp = timestamp;
 }
+
+#pragma mark -
+#pragma mark SuggestedTimes
+- (void)addSuggestedTimeWithXml:(GDataXMLElement *)suggestedTimeXML inEventWithId:(NSString *)eventId
+{
+    SuggestedTime *suggestedTime = [[SuggestedTime alloc] init];
+    suggestedTime.ownerEventId = eventId;
+    [suggestedTime populateWithXml:suggestedTimeXML];
+    SuggestedTime *existingSuggestedTime = [self getSuggestedTimeWithId:suggestedTime.suggestedTimeId fromEventWithId:eventId];
+    if (existingSuggestedTime) {
+        [existingSuggestedTime populateWithXml:suggestedTimeXML]; // checks for existing message and updates if it exists
+    } else {
+        [self.suggestedTimes addObject:suggestedTime];
+    }
+    [suggestedTime release];
+}
+
+- (SuggestedTime *)getSuggestedTimeWithId:(NSString *)suggestedMessageId fromEventWithId:(NSString *)eventId
+{
+    for (SuggestedTime *sugTime in self.suggestedTimes) {
+        if ([sugTime.suggestedTimeId isEqualToString:suggestedMessageId] && [sugTime.ownerEventId isEqualToString:eventId]) return sugTime;
+    }
+	return nil;
+}
+- (SuggestedTime *)getSuggestedTimeWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId
+{
+    for (SuggestedTime *sugTime in self.suggestedTimes) {
+        if ([sugTime.email isEqualToString:email] && [sugTime.ownerEventId isEqualToString:eventId]) return sugTime;
+    }
+	return nil;
+}
+
 
 #pragma mark -
 #pragma mark FeedMessages

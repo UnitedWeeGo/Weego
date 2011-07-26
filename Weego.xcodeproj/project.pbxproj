@@ -551,6 +551,7 @@
 		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
 		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
 		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
+		01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E164BF13DE440800B0B8FD /* SuggestedTime.m */; };
 		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
 		01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5613D10D6400213CC4 /* button_redosearch_default.png */; };
 		01F17E5E13D10D6400213CC4 /* button_redosearch_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */; };
@@ -1240,6 +1241,8 @@
 		018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategoryTable.m; sourceTree = "<group>"; };
 		018212CD13D4D73900BF9EF4 /* CellCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellCategory.h; sourceTree = "<group>"; };
 		018212CE13D4D73900BF9EF4 /* CellCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellCategory.m; sourceTree = "<group>"; };
+		01E164BE13DE440800B0B8FD /* SuggestedTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestedTime.h; sourceTree = "<group>"; };
+		01E164BF13DE440800B0B8FD /* SuggestedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestedTime.m; sourceTree = "<group>"; };
 		01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottombar_background_clear.png; sourceTree = "<group>"; };
 		01F17E5613D10D6400213CC4 /* button_redosearch_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_redosearch_default.png; sourceTree = "<group>"; };
 		01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_default@2x.png"; sourceTree = "<group>"; };
@@ -1974,6 +1977,8 @@
 				017613FE13BE775200324EF9 /* ReportedLocation.m */,
 				018212C313D4B20C00BF9EF4 /* SearchCategory.h */,
 				018212C413D4B20C00BF9EF4 /* SearchCategory.m */,
+				01E164BE13DE440800B0B8FD /* SuggestedTime.h */,
+				01E164BF13DE440800B0B8FD /* SuggestedTime.m */,
 			);
 			name = Vo;
 			sourceTree = "<group>";
@@ -2871,6 +2876,7 @@
 				017EE6AD13D6369F00CB7904 /* WildcardGestureRecognizer.m in Sources */,
 				A9E8813F13D79EF200ABB78D /* SubViewContactsSearchBar.m in Sources */,
 				013CF51A13DA296F0086B5B2 /* NSDate+Helper.m in Sources */,
+				01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

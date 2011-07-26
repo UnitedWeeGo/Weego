@@ -103,6 +103,15 @@ static NSDateFormatter *displayFormatter;
 	return date;
 }
 
++ (NSDate *)dateFromString:(NSString *)string withFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone {
+    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+    [inputFormatter setTimeZone:timeZone];
+	[inputFormatter setDateFormat:format];
+	NSDate *date = [inputFormatter dateFromString:string];
+	[inputFormatter release];
+    return date;
+}
+
 + (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)format {
 	return [date stringWithFormat:format];
 }

@@ -31,9 +31,6 @@
 - (NSString *)addEvent:(Event *)anEvent;
 - (NSString *)updateEvent:(Event *)anEvent;
 - (void)removeEvent;
-/* DEPRICATED
-- (NSString *)addLocation:(Location *)aLocation;
- */
 - (NSString *)addOrUpdateLocations:(NSArray *)locations isAnUpdate:(BOOL)update;
 - (NSString *)reportLocation:(Location *)aLocation forEvent:(Event *)anEvent;
 - (NSString *)reportLocationSynchronous:(Location *)aLocation forEvent:(Event *)anEvent;
@@ -47,8 +44,6 @@
 - (NSString *)sendFeedMessage:(FeedMessage *)message;
 - (NSString *)markFeedMessagesRead;
 - (NSString *)resetUserBadge;
-- (NSString *)writeStringToLog:(NSString *)logMessage;
-- (NSString *)clearLog;
 - (NSString *)checkinUserForEvent:(Event *)anEvent;
 - (NSString *)checkinUserForEventSynchronous:(Event *)anEvent;
 - (NSString *)fetchEventsSynchronous;
@@ -63,5 +58,6 @@
 - (NSString *)removeLocationWithId:(NSString *)locationId;
 - (NSString *)getSimpleGeoCategories;
 - (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut;
+- (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime;
 
 @end

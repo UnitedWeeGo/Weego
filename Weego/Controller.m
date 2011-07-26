@@ -204,17 +204,7 @@ static Controller *sharedInstance;
     Model *model = [Model sharedInstance];
     [model removeCurrentEvent];
 }
-/* DEPRICATED
-- (NSString *)addLocation:(Location *)aLocation
-{
-	Model *model = [Model sharedInstance];
-	if (model.currentAppState != AppStateCreateEvent) {
-        DataFetcher *fetcher = [[[DataFetcher alloc] initAndAddNewLocationToEventWithUserId:model.userId withEventId:model.currentEvent.eventId withLocation:aLocation delegate:[DataParser sharedInstance]] autorelease];
-        return fetcher.requestId;
-    }
-    return nil;
-}
-*/
+
 - (NSString *)addOrUpdateLocations:(NSArray *)locations isAnUpdate:(BOOL)update
 {
 	Model *model = [Model sharedInstance];
@@ -337,12 +327,6 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
-- (NSString *)writeStringToLog:(NSString *)logMessage
-{
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndWriteStringToLog:logMessage] autorelease];
-    return fetcher.requestId;
-}
-
 - (NSString *)checkinUserForEvent:(Event *)anEvent
 {
     Model *model = [Model sharedInstance];
@@ -437,9 +421,10 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
-- (NSString *)clearLog
+- (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime
 {
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndClearLog] autorelease];
+    Model *model = [Model sharedInstance];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSuggestTimeWithUserId:model.userId toEventId:anEvent.eventId withSuggestedTime:suggestedTime withTimestamp:(NSString *)model.currentEvent.lastUpdatedTimestamp delegate:[DataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 

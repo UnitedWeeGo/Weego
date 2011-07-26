@@ -365,6 +365,16 @@ static DataParser *sharedInstance;
             for (GDataXMLElement *message in feedMessages) {
                 [[Model sharedInstance] addFeedMessageWithXml:message inEventWithId:eventId];
             }
+            
+            // ***************
+            NSArray *suggestedTimes = [(GDataXMLElement *) [[event elementsForName:@"suggestedTimes"] objectAtIndex:0] elementsForName:@"suggestedTime"];
+            for (GDataXMLElement *suggestedTime in suggestedTimes) {
+                [[Model sharedInstance] addSuggestedTimeWithXml:suggestedTime inEventWithId:eventId]; ///////
+            }
+            // ***************
+            
+            
+            
             GDataXMLElement *locationOrderElement = (GDataXMLElement *) [[event elementsForName:@"locationOrder"] objectAtIndex:0];
             NSString *locationOrder = [[locationOrderElement attributeForName:@"order"] stringValue];
             if (locationOrder != nil) [[Model sharedInstance] addOrUpdateLocationOrder:locationOrder inEventWithId:eventId];

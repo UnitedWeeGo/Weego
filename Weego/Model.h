@@ -13,6 +13,7 @@
 @class Participant;
 @class GoogleLocalObject;
 @class GDataXMLElement;
+@class SuggestedTime;
 
 typedef enum {
     AppStateBackground = 0,
@@ -69,6 +70,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray *locations;
 @property (nonatomic, retain) NSMutableArray *participants;
 @property (nonatomic, retain) NSMutableArray *messages;
+@property (nonatomic, retain) NSMutableArray *suggestedTimes;
 @property (nonatomic, retain) NSMutableArray *reportedLocations;
 
 @property (nonatomic, assign) BOOL isInTrial;
@@ -177,7 +179,8 @@ typedef enum {
 - (BOOL)locationWithIdHasPendingVoteRequest:(NSString *)locationId;
 - (NSString *)locationWithRequestId:(NSString *)requestId;
 - (NSString *)getAddOrUpdateLocationXMLForLocations:(NSArray *)locations withEventId:(NSString *)anEventId;
-
+- (void)addSuggestedTimeWithXml:(GDataXMLElement *)suggestedTimeXML inEventWithId:(NSString *)eventId;
+- (SuggestedTime *)getSuggestedTimeWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;
 - (void)printModel;
 
 @end

@@ -492,6 +492,28 @@
 	}
 	return self;
 }
+
+- (id)initAndSuggestTimeWithUserId:(NSString *)userId toEventId:(NSString *)eventId withSuggestedTime:(NSString *)suggestedTime withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
+{
+	self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeSuggestTime;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&suggestedTime=%@%@",
+                                apiURL,
+                                @"suggesttime.php",
+                                userId,
+                                eventId,
+                                suggestedTime,
+                                (!timestamp) ? @"" : [NSString stringWithFormat:@"&timestamp=%@", timestamp]] autorelease];
+                                
+		[self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	}
+	return self;
+}
+
+/*
 - (id)initAndWriteStringToLog:(NSString *)logMessage
 {
     self = [self init];
@@ -517,6 +539,7 @@
     }
     return self;
 }
+ */
 - (id)initAndCheckinWithUserId:(NSString *)userId toEventId:(NSString *)eventId intoLocationId:(NSString *)locationId overrideSynchronous:(BOOL)useSync delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
