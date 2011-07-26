@@ -59,6 +59,7 @@
 - (NSString *)firstNamePossessive
 {
     NSString *output = self.firstName;
+    if (output == nil) return @"My";
     char lastChar = [[output uppercaseString] characterAtIndex:output.length-1];
     if (lastChar == 'S') {
         output = [NSString stringWithFormat:@"%@'", output];

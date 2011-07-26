@@ -43,5 +43,4 @@ typedef enum {
     NSDate *suggestedDate;
 }
 
-
 @end

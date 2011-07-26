@@ -18,6 +18,7 @@
 #define RESPONSE_ADD_LOCATION 220
 #define RESPONSE_ADD_PARTICIPANT 230
 #define RESPONSE_ADD_REGISTERED_PARTICIPANT 231
+#define RESPONSE_RECENT_PARTICIPANTS 234
 #define RESPONSE_ADD_VOTE 240
 #define RESPONSE_REMOVE_VOTE 241
 #define RESPONSE_ALL_EVENTS 250
@@ -51,6 +52,7 @@
 - (void)parseResponseAddLocation:(GDataXMLDocument *)doc;
 - (void)parseResponseAddParticipant:(GDataXMLDocument *)doc;
 - (void)parseResponseAddRegisteredParticipant:(GDataXMLDocument *)doc;
+- (void)parseResponseRecentParticipants:(GDataXMLDocument *)doc;
 - (void)parseResponseGenericError:(GDataXMLDocument *)doc;
 - (void)parseResponseRUIDError:(GDataXMLDocument *)doc;
 - (void)saveLoginInfo:(NSString *)ruid withFirstName:(NSString *)firstName andLastName:(NSString *)lastName andParticipantId:(NSString *)participantId andAvatarURL:(NSString *)avatarURL;
@@ -144,6 +146,10 @@ static DataParser *sharedInstance;
 		case RESPONSE_ADD_REGISTERED_PARTICIPANT:
 //			NSLog(@"RESPONSE_ADD_REGISTERED_PARTICIPANT");
 			[self parseResponseAddRegisteredParticipant:doc];
+			break;
+        case RESPONSE_RECENT_PARTICIPANTS:
+//			NSLog(@"RESPONSE_RECENT_PARTICIPANTS");
+			[self parseResponseRecentParticipants:doc];
 			break;
 		case RESPONSE_GENERIC_ERROR:
 //			NSLog(@"RESPONSE_GENERIC_ERROR");
@@ -323,7 +329,7 @@ static DataParser *sharedInstance;
             [[Model sharedInstance] addFeedMessageWithXml:message inEventWithId:eventId];
         }
     }
-    [[Model sharedInstance] flushTempItems];
+    if (![Model sharedInstance].currentAppState == AppStateCreateEvent) [[Model sharedInstance] flushTempItems];
         
     NSLog(@"User %@ :: parseResponseAllEvents success", model.userEmail);
     model.lastFetchAttempt = [NSDate date];
@@ -378,7 +384,7 @@ static DataParser *sharedInstance;
             NSString *iVotedFor = [[iVotedForElement attributeForName:@"locations"] stringValue];
             if (iVotedFor != nil) [[Model sharedInstance] addOrUpdateVotes:iVotedFor inEventWithId:eventId overwrite:YES];
         }
-        [[Model sharedInstance] flushTempItems]; // may have to make this specific to the event
+        if (![Model sharedInstance].currentAppState == AppStateCreateEvent) [[Model sharedInstance] flushTempItems]; // may have to make this specific to the event
 //        [[Model sharedInstance] sortEvents];
 //    } else {
 //        [[NSNotificationCenter defaultCenter] postNotificationName:MODEL_EVENT_ALL_EVENTS_UPDATED_NULL object:nil];
@@ -419,6 +425,17 @@ static DataParser *sharedInstance;
 	GDataXMLElement *participant = (GDataXMLElement *) [[doc.rootElement elementsForName:@"participant"] objectAtIndex:0];
     NSString *eventId = [[participant attributeForName:@"eventId"] stringValue];
     [[Model sharedInstance] addOrUpdateParticipantWithXml:participant inEventWithId:eventId];
+}
+
+#pragma mark -
+#pragma mark RESPONSE_RECENT_PARTICIPANTS
+
+- (void)parseResponseRecentParticipants:(GDataXMLDocument *)doc
+{
+    NSArray *participants = [doc.rootElement elementsForName:@"participant"];
+    for (GDataXMLElement *participant in participants) {
+        [[Model sharedInstance] addOrUpdateParticipantWithXml:participant];
+    }
 }
 
 #pragma mark -

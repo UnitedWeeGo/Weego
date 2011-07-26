@@ -272,7 +272,7 @@ static Controller *sharedInstance;
 {
 	Model *model = [Model sharedInstance];
 //	[model voteForLocationWithId:locationId inEventWithId:model.currentEvent.eventId fromUserWithId:model.userEmail];
-    if (model.currentAppState != AppStateCreateEvent) 
+    if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) 
     {
         DataFetcher *fetcher = [[[DataFetcher alloc] initAndAddVoteToLocationWithUserId:[model userId] toEventId:model.currentEvent.eventId withLocationId:locationId delegate:[DataParser sharedInstance]] autorelease];
 //        [model addPendingVoteRequestToLocationWithId:locationId withRequestId:fetcher.requestId];
@@ -287,7 +287,7 @@ static Controller *sharedInstance;
 {
 	Model *model = [Model sharedInstance];
 //	[model removeVoteForLocationWithId:locationId inEventWithId:model.currentEvent.eventId fromUserWithId:model.userEmail];
-    if (model.currentAppState != AppStateCreateEvent) 
+    if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) 
     {
         DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveVoteFromLocationWithUserId:[model userId] toEventId:model.currentEvent.eventId withLocationId:locationId delegate:[DataParser sharedInstance]] autorelease];
         [model addPendingVoteRequestToLocationWithId:locationId withRequestId:fetcher.requestId];
@@ -419,6 +419,15 @@ static Controller *sharedInstance;
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetHelpHMTLDataWithDelegate:[HelpDataParser sharedInstance]] autorelease];
     return fetcher.requestId;
+}
+
+- (NSString *)getRecentParticipants
+{
+    if ([Model sharedInstance].userId) {
+        DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetRecentParticipantsWithUserId:[Model sharedInstance].userId delegate:[DataParser sharedInstance]] autorelease];
+        return fetcher.requestId;
+    }
+    return nil;
 }
 
 - (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime

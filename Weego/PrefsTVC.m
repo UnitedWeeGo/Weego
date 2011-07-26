@@ -129,7 +129,7 @@ typedef enum {
 {
     switch (section) {
         case PrefsSectionLoginParticipant:
-            return 1;
+            return ([Model sharedInstance].isInTrial) ? 0 : 1;
             break;
         case PrefsSectionControls:
             return 2;
@@ -144,13 +144,15 @@ typedef enum {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == PrefsSectionLoginParticipant) return 68;
+    if (indexPath.section == PrefsSectionLoginParticipant) {
+        return 68;
+    }
     return 44.0;
 }
 
 -(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(section == 0)
+    if(section == 0 && ![Model sharedInstance].isInTrial)
         return 14;
     return 1.0;
 }
@@ -305,7 +307,7 @@ typedef enum {
 
 - (void)setUpFooterView
 {
-    footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 75)];
+    footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 48)];
     
     UIImage *bg1 = [UIImage imageNamed:@"button_clear_lrg_default.png"];
     UIImage *bg2 = [UIImage imageNamed:@"button_clear_lrg_pressed.png"];
@@ -351,12 +353,13 @@ typedef enum {
     if ([Model sharedInstance].isInTrial) {
         logoutButton.hidden = YES;
         loginFacebook.hidden = NO;
+        self.tableView.tableHeaderView = footerView;
     } else {
         logoutButton.hidden = NO;
         loginFacebook.hidden = YES;
+        self.tableView.tableFooterView = footerView;
     }
     
-    self.tableView.tableFooterView = footerView;
     [footerView release];
 }
 

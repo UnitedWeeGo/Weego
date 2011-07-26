@@ -189,8 +189,12 @@
 		[theRequest addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [theRequest setTimeoutInterval:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL];
 		NSMutableData *postBody = [NSMutableData data];
-        if (model.isInTrial && model.currentViewState != ViewStateCreate) {
-            NSString *xmlString = [[Model sharedInstance] getCreateEventXML:[model.allEvents allValues]];
+        if (model.isInTrial) { // && model.currentViewState != ViewStateCreate) {
+            [model printModel];
+            NSMutableArray *trialEvents = [NSMutableArray arrayWithArray:[model.allEvents allValues]];
+            if (model.currentViewState == ViewStateCreate) [trialEvents removeObject:model.currentEvent];
+            NSLog(@"allEvents = %i : trialEvents = %i", [[model.allEvents allValues] count], [trialEvents count]);
+            NSString *xmlString = [[Model sharedInstance] getCreateEventXML:trialEvents];
             [postBody appendData:[[[[NSString alloc] initWithFormat:@"xml=%@&",[self urlencode:xmlString]] autorelease] dataUsingEncoding:NSUTF8StringEncoding]];
         }
 		[postBody appendData:[[[[NSString alloc] initWithFormat:@"access_token=%@",accessToken] autorelease] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -776,6 +780,22 @@
                                userId,
                                eventId,
                                 countMeOut ? @"&countMeOut=true" : @""] autorelease];
+		[self makeRequest:urlString];
+	}
+	return self;
+}
+
+- (id)initAndGetRecentParticipantsWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeRemoveEvent;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@",
+                                apiURL,
+                                @"get.participantinfo.php",
+                                userId] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;
