@@ -82,9 +82,13 @@ enum eventDetailSections {
     {
         [[NavigationSetter sharedInstance] setNavState:NavStateEventDetails withTarget:self];
     }
-    else
+    else if (detail.currentEventState != EventStateEnded)
     {
         [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsPending withTarget:self];
+    }
+    else
+    {
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsEnded withTarget:self];
     }
         
     self.tableView.backgroundColor = [UIColor clearColor];
