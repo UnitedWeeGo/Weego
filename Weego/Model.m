@@ -828,6 +828,9 @@ static Model *sharedInstance;
         for (Participant *p in recents) {
             if ([newp.email isEqualToString:p.email]) isFound = YES;
         }
+        for (Participant *p in facebookFriends) {
+            if ([newp.email isEqualToString:p.email]) isFound = YES;
+        }
         if (!isFound) [facebookFriends addObject:newp];
     } else {
         BOOL isFound = NO;

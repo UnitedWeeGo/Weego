@@ -418,17 +418,14 @@
         } else if (!hasAddedContacts) {
             CellContact *cell = (CellContact *)[contactsTableView cellForRowAtIndexPath:indexPath];
             if (!cell.disabled) {
-                Participant *p = [recentParticipants objectAtIndex:indexPath.row];
+                NSMutableArray *source = (hasRecents) ? recentParticipants : facebookFriends;
+                Participant *p = [source objectAtIndex:indexPath.row];
                 Contact *c = [[Contact alloc] init];
                 c.contactName = p.fullName;
                 c.emailAddress = p.email;
-                if (hasRecents) {
-                    [recentParticipants removeObject:p];
-                    hasRecents = ([recentParticipants count] > 0);
-                } else if (hasFacebookFriends) {
-                    [facebookFriends removeObject:p];
-                    hasFacebookFriends = ([facebookFriends count] > 0);
-                }
+                [source removeObject:p];
+                hasRecents = ([recentParticipants count] > 0);
+                hasFacebookFriends = ([facebookFriends count] > 0);
                 [self addContact:c];
                 [c release];
             }
