@@ -351,7 +351,6 @@ static ViewController *sharedInstance;
 - (void)dismissModal:(UIViewController *)modalView
 {
     nController = appDelegate.navigationController;
-    [nController popViewControllerAnimated:NO];
     [modalView dismissModalViewControllerAnimated:YES];
     [self removeCurrentAndReportPreviousView];
 }
