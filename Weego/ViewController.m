@@ -250,8 +250,23 @@ static ViewController *sharedInstance;
 {
     [self addAndReportViewWithName:@"/create_event"];
     [Model sharedInstance].currentViewState = ViewStateCreate;
-//    [self showEventBackground];
     CreateEventTVC *createEventViewController = [[CreateEventTVC alloc] init];
+	UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:createEventViewController];
+    navCon.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    navCon.navigationBar.tintColor = HEXCOLOR(0x858585FF);
+    nController = navCon;
+	[inView presentModalViewController:navCon animated:YES];
+	[createEventViewController release];
+	[navCon release];
+}
+
+- (void)showModalDuplicateEvent:(UIViewController *)inView withEvent:(Event *)anEvent
+{
+    [self addAndReportViewWithName:@"/duplicate_event"];
+    [Model sharedInstance].currentViewState = ViewStateCreate; // ViewStateDuplicate;
+    CreateEventTVC *createEventViewController = [[CreateEventTVC alloc] init];
+    createEventViewController.isInDuplicate = YES;
+    createEventViewController.eventId = anEvent.eventId;
 	UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:createEventViewController];
     navCon.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     navCon.navigationBar.tintColor = HEXCOLOR(0x858585FF);
@@ -336,6 +351,15 @@ static ViewController *sharedInstance;
 - (void)dismissModal:(UIViewController *)modalView
 {
     nController = appDelegate.navigationController;
+    [nController popViewControllerAnimated:NO];
+    [modalView dismissModalViewControllerAnimated:YES];
+    [self removeCurrentAndReportPreviousView];
+}
+
+- (void)dismissDuplicateEventModalAfterSuccess:(UIViewController *)modalView
+{
+    nController = appDelegate.navigationController;
+    [nController popViewControllerAnimated:NO];
     [modalView dismissModalViewControllerAnimated:YES];
     [self removeCurrentAndReportPreviousView];
 }

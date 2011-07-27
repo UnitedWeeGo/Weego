@@ -23,4 +23,7 @@
     BOOL _saving;
 }
 
+@property (nonatomic, assign) BOOL isInDuplicate;
+@property (nonatomic, assign) NSString *eventId;
+
 @end

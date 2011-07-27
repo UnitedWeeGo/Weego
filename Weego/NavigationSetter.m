@@ -163,6 +163,11 @@ static NavigationSetter *sharedInstance;
             [self addGreenActionButtonWithLabel:@"Cancel" andTarget:target toLeft:YES overrideClear:NO overrideLight:YES withTextColor:0x525252FF]; //0xFFFFFFFF
             [self addGreenActionButtonWithLabel:@"Done" andTarget:target toLeft:NO overrideClear:NO overrideLight:NO withTextColor:0xFFFFFFFF];
             break;
+        case NavStateEventDuplicateEvent:
+            [self setNav:target withTitle:@"Duplicate Event" withColor:0x777777FF andShadowColor:0x00000000];
+            [self addGreenActionButtonWithLabel:@"Cancel" andTarget:target toLeft:YES overrideClear:NO overrideLight:YES withTextColor:0x525252FF]; //0xFFFFFFFF
+            [self addGreenActionButtonWithLabel:@"Done" andTarget:target toLeft:NO overrideClear:NO overrideLight:NO withTextColor:0xFFFFFFFF];
+            break;
         case NavStateEventEdit:
             [self setNav:target withTitle:@"Edit What & When" withColor:0x777777FF andShadowColor:0x00000000];
 //            [self addGreenActionButtonWithLabel:@"Cancel" andTarget:target toLeft:YES overrideClear:NO overrideLight:YES withTextColor:0x525252FF]; //0xFFFFFFFF

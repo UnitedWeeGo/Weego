@@ -34,6 +34,7 @@
 - (void)navigateToEventDetailWithId:(NSString *)eventId; // andPushOnStack:(BOOL)toPush;
 - (void)showModalFeed:(UIViewController *)inView;
 - (void)showModalCreateEvent:(UIViewController *)inView;
+- (void)showModalDuplicateEvent:(UIViewController *)inView withEvent:(Event *)anEvent;
 - (void)navigateToAddLocationsWithEntryState:(AddLocationInitState)state;
 - (void)navigateToAddLocationsWithLocationOpen:(NSString *)locId;
 - (void)navigateToAddParticipants;
@@ -42,6 +43,7 @@
 - (void)navigateToEditEvent;
 - (void)goBack;
 - (void)dismissModal:(UIViewController *)modalView;
+- (void)dismissDuplicateEventModalAfterSuccess:(UIViewController *)modalView;
 - (void)showHomeBackground;
 - (void)showEventBackground;
 - (void)showFeedBackground;

@@ -21,6 +21,7 @@ typedef enum {
     NavStateEventDetailsPending,
     NavStateEventDetailsEnded,
     NavStateEventCreateEvent,
+    NavStateEventDuplicateEvent,
     NavStateEventEdit,
     NavStatePrefs,
     NavStateDashboard,

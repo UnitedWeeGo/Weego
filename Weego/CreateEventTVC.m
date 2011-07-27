@@ -49,12 +49,21 @@ typedef enum {
 
 @implementation CreateEventTVC
 
+@synthesize isInDuplicate, eventId;
+
 - (id)init {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         
     }
     return self;
+}
+
+- (void)setEventId:(NSString *)anEventId
+{
+    [detail release];
+    detail = [[Model sharedInstance] duplicateEventWithId:anEventId];
+    [detail retain];
 }
 
 - (void)viewDidLoad
@@ -88,11 +97,19 @@ typedef enum {
 {
 	[super viewWillAppear:animated];
     
-    [Model sharedInstance].currentAppState = AppStateCreateEvent;
-    [Model sharedInstance].currentViewState = ViewStateCreate;
-    
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
-    [[NavigationSetter sharedInstance] setNavState:NavStateEventCreateEvent withTarget:self];
+    
+    if (isInDuplicate) {
+//        [Model sharedInstance].currentAppState = AppStateDuplicateEvent;
+//        [Model sharedInstance].currentViewState = ViewStateDuplicate;
+        [Model sharedInstance].currentAppState = AppStateCreateEvent;
+        [Model sharedInstance].currentViewState = ViewStateCreate;
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventDuplicateEvent withTarget:self];
+    } else {
+        [Model sharedInstance].currentAppState = AppStateCreateEvent;
+        [Model sharedInstance].currentViewState = ViewStateCreate;
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventCreateEvent withTarget:self];
+    }
     
     [self.view endEditing:YES];
     
@@ -543,7 +560,11 @@ typedef enum {
             NSLog(@"DataFetchTypeCreateNewEvent Success");
             _saving = NO;
             [[Model sharedInstance] flushTempItems];
-            [[ViewController sharedInstance] dismissModal:self];
+            if (isInDuplicate) {
+                [[ViewController sharedInstance] dismissDuplicateEventModalAfterSuccess:self];
+            } else {
+                [[ViewController sharedInstance] dismissModal:self];
+            }
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:
             [Model sharedInstance].currentEvent = detail;

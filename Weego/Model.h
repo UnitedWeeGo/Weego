@@ -21,6 +21,7 @@ typedef enum {
     AppStateLogin,
     AppStateDashboard,
     AppStateCreateEvent,
+    AppStateDuplicateEvent,
     AppStateEventDetails
 } AppState;
 
@@ -38,6 +39,7 @@ typedef enum {
     ViewStateDashboard,
     ViewStatePrefs,
     ViewStateCreate,
+    ViewStateDuplicate,
     ViewStateDetails,
     ViewStateMap,
     ViewStateAddParticipant,
@@ -121,6 +123,7 @@ typedef enum {
 //- (void)assignRegisteredId:(NSString *)registeredId;
 
 - (Event *)createNewEvent;
+- (Event *)duplicateEventWithId:(NSString *)anId;
 - (void)addOrUpdateEventWithXml:(GDataXMLElement *)eventXML inEventWithId:(NSString *)eventId withTimestamp:(NSString *)timestamp;
 - (void)addEvent:(Event *)anEvent;
 - (void)assignOfficialId:(NSString *)officialEventId toEventWithLocalId:(NSString *)localEventId;

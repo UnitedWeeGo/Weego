@@ -28,6 +28,9 @@
 - (FeedMessage *)getFeedMessageWithId:(NSString *)messageId fromEventWithId:(NSString *)eventId;
 - (ReportedLocation *)getReportedLocationWithUserId:(NSString *)reporterEmail fromEventWithId:(NSString *)eventId;
 
+- (void)duplicateLocationWithLocation:(Location *)origLocation;
+- (void)duplicateParticipantWithEmail:(NSString *)anEmailAddress;
+
 @end
 
 @implementation Model
@@ -405,6 +408,50 @@ static Model *sharedInstance;
 	return event;
 }
 
+- (Event *)duplicateEventWithId:(NSString *)anId
+{
+    Event *origEvent = [self getEventById:anId];
+    Event *dupEvent = [[[Event alloc] init] autorelease]; //[[[self getEventById:anId] copy] autorelease];
+    dupEvent.eventTitle = origEvent.eventTitle;
+    
+    dupEvent.eventId = [self stringWithUUID];
+    dupEvent.isTemporary = YES;
+	dupEvent.creatorId = userEmail;
+    NSDate *now = [NSDate date];
+    int minuteInterval = 5;
+    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval) + (60 * 60); // One hour ahead rounded up to the nearest minuteInterval
+    NSDate *defaultStartTime = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
+    dupEvent.eventDate = defaultStartTime;
+    self.currentEvent = dupEvent;
+    
+    for (Location *loc in [origEvent getLocations]) {
+        [self duplicateLocationWithLocation:loc];
+    }
+    
+    for (Participant *p in [origEvent getParticipants]) {
+        [self duplicateParticipantWithEmail:p.email];
+    }
+    
+//    dupEvent.acceptedParticipantList = nil;
+//    dupEvent.declinedParticipantList = nil;
+//    dupEvent.lastUpdatedTimestamp = nil;
+//    dupEvent.lastReportedLocationsTimestamp = nil;
+//    dupEvent.currentEventState = EventStateNew;
+//    dupEvent.topLocationId = nil;
+//    dupEvent.participantCount = nil;
+//    dupEvent.unreadMessageCount = nil;
+//    dupEvent.eventRead = nil;
+//    dupEvent.hasBeenCheckedIn = false;
+//    dupEvent.iVotedFor = nil;
+//    dupEvent.updatedVotes = nil;
+//    dupEvent.hasBeenRemoved = false;
+//    
+//    dupEvent.currentLocationOrder = nil;
+    
+    [self addEvent:dupEvent];
+    return dupEvent;
+}
+
 - (void)addOrUpdateEventWithXml:(GDataXMLElement *)eventXML inEventWithId:(NSString *)eventId withTimestamp:(NSString *)timestamp
 {
     if ([self.allEvents objectForKey:eventId]) {
@@ -578,6 +625,31 @@ static Model *sharedInstance;
     return location;
 }
 
+- (void)duplicateLocationWithLocation:(Location *)origLocation
+{
+    Location *location = [[Location alloc] init];
+    location.ownerEventId = self.currentEvent.eventId;
+    location.addedById = userEmail;
+    location.tempId = [self stringWithUUID];
+    location.locationId = [self stringWithUUID];
+    location.isTemporary = YES;
+    
+    location.locationId = origLocation.locationId;
+    location.addedById = origLocation.addedById;
+    location.latitude = origLocation.latitude;
+    location.longitude = origLocation.longitude;
+    location.name = origLocation.name;
+    location.vicinity = origLocation.vicinity;
+    location.g_id = origLocation.g_id;
+    location.formatted_address = origLocation.formatted_address;
+    location.formatted_phone_number = origLocation.formatted_phone_number;
+    location.rating = origLocation.rating;
+    location.location_type = origLocation.location_type;
+    location.hasBeenRemoved = false;
+    
+    [self.locations addObject:location];
+}
+
 - (void)addOrUpdateLocationWithXml:(GDataXMLElement *)locationXML inEventWithId:(NSString *)eventId
 {
     NSString *locId = [[locationXML attributeForName:@"id"] stringValue];
@@ -668,6 +740,22 @@ static Model *sharedInstance;
     participant.isTemporary = YES;
     if ([self getParticipantWithEmail:anEmailAddress fromEventWithId:self.currentEvent.eventId] == nil) [self.participants addObject:participant];
     return participant;
+}
+
+- (void)duplicateParticipantWithEmail:(NSString *)anEmailAddress
+{
+    Participant *participant = [[[Participant alloc] init] autorelease];
+    participant.ownerEventId = self.currentEvent.eventId;
+    participant.email = anEmailAddress;
+    Participant *pairedParticipant = [self getPairedParticipantWithEmail:anEmailAddress];
+    if (pairedParticipant) {
+        participant.firstName = pairedParticipant.firstName;
+        participant.lastName = pairedParticipant.lastName;
+        participant.avatarURL = pairedParticipant.avatarURL;
+    }
+    //    participant.isTrialParticipant = self.isInTrial;
+    participant.isTemporary = YES;
+    if ([self getParticipantWithEmail:anEmailAddress fromEventWithId:self.currentEvent.eventId] == nil) [self.participants addObject:participant];
 }
 
 - (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML inEventWithId:(NSString *)eventId

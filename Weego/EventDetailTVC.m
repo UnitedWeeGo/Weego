@@ -755,7 +755,7 @@ enum eventDetailSections {
             }
             else if (currentActionSheetState == ActionSheetStateMorePressEventEnded) // duplicate event
             {
-                NSLog(@"To do, DUPLICATE EVENT");
+                [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
             }
             else if (currentActionSheetState == ActionSheetStateEmailParticipant) // email modal
             {
