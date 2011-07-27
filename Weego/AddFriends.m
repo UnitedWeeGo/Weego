@@ -47,6 +47,7 @@
     [allContacts release];
     [allContactsWithEmail release];
     [recentParticipants release];
+    [facebookFriends release];
     [addedContacts release];
     [currentSearchTerm release];
     [super dealloc];
@@ -86,14 +87,6 @@
     self.contactsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.contactsTableView];
     [self.contactsTableView release];
-        
-//    searchEntryBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
-//    searchEntryBar.tintColor = HEXCOLOR(0xE4E4E4FF);
-////    searchEntryBar.delegate = self;
-//    [self.view addSubview:searchEntryBar];
-//    searchEntryBar.showsCancelButton = NO;
-//    searchEntryBar.showsBookmarkButton = YES;
-//    [searchEntryBar release];
 
     contactsSearchBar = [[SubViewContactsSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
     contactsSearchBar.delegate = self;
@@ -107,6 +100,11 @@
     NSSortDescriptor *participantsSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
     [recentParticipants sortUsingDescriptors:[NSArray arrayWithObjects:participantsSortDescriptor, nil]];
     hasRecents = ([recentParticipants count] > 0);
+    
+    facebookFriends = [[NSMutableArray arrayWithArray:[[Model sharedInstance] getFacebookFriends]] retain];
+    NSSortDescriptor *facebookSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
+    [facebookFriends sortUsingDescriptors:[NSArray arrayWithObjects:facebookSortDescriptor, nil]];
+    hasFacebookFriends = ([facebookFriends count] > 0);
     
     allContacts = [[ABContactsHelper contacts] retain];
     NSPredicate *pred;
@@ -357,9 +355,16 @@
             [recentParticipants addObject:p];
         }
     }
+    for (Participant *p in [[Model sharedInstance] getFacebookFriends]) {
+        if ([aContact.emailAddress isEqualToString:p.email]) {
+            [facebookFriends addObject:p];
+        }
+    }
     NSSortDescriptor *participantsSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(compare:)] autorelease];
     [recentParticipants sortUsingDescriptors:[NSArray arrayWithObjects:participantsSortDescriptor, nil]];
+    [facebookFriends sortUsingDescriptors:[NSArray arrayWithObjects:participantsSortDescriptor, nil]];
     hasRecents = ([recentParticipants count] > 0);
+    hasFacebookFriends = ([facebookFriends count] > 0);
     hasAddedContacts = ([addedContacts count] > 0);
     hasFoundResults = NO;
 //    [contactsSearchBar resetField];
@@ -417,8 +422,13 @@
                 Contact *c = [[Contact alloc] init];
                 c.contactName = p.fullName;
                 c.emailAddress = p.email;
-                [recentParticipants removeObject:p];
-                hasRecents = ([recentParticipants count] > 0);
+                if (hasRecents) {
+                    [recentParticipants removeObject:p];
+                    hasRecents = ([recentParticipants count] > 0);
+                } else if (hasFacebookFriends) {
+                    [facebookFriends removeObject:p];
+                    hasFacebookFriends = ([facebookFriends count] > 0);
+                }
                 [self addContact:c];
                 [c release];
             }
@@ -426,12 +436,26 @@
     } else if (indexPath.section == 1) {
         CellContact *cell = (CellContact *)[contactsTableView cellForRowAtIndexPath:indexPath];
         if (!cell.disabled) {
-            Participant *p = [recentParticipants objectAtIndex:indexPath.row];
+            NSMutableArray *source = (hasRecents && hasAddedContacts) ? recentParticipants : facebookFriends;
+            Participant *p = [source objectAtIndex:indexPath.row];
             Contact *c = [[Contact alloc] init];
             c.contactName = p.fullName;
             c.emailAddress = p.email;
-            [recentParticipants removeObject:p];
+            [source removeObject:p];
             hasRecents = ([recentParticipants count] > 0);
+            hasFacebookFriends = ([facebookFriends count] > 0);
+            [self addContact:c];
+            [c release];
+        }
+    } else if (indexPath.section == 2) {
+        CellContact *cell = (CellContact *)[contactsTableView cellForRowAtIndexPath:indexPath];
+        if (!cell.disabled) {
+            Participant *p = [facebookFriends objectAtIndex:indexPath.row];
+            Contact *c = [[Contact alloc] init];
+            c.contactName = p.fullName;
+            c.emailAddress = p.email;
+            [facebookFriends removeObject:p];
+            hasFacebookFriends = ([facebookFriends count] > 0);
             [self addContact:c];
             [c release];
         }
@@ -446,6 +470,7 @@
     int numSections = 0;
     if (hasAddedContacts) numSections++;
     if (hasRecents) numSections++;
+    if (hasFacebookFriends) numSections++;
     return numSections;
 }
 
@@ -477,8 +502,12 @@
         if (hasFoundResults) sectionLabel.text =  [NSString stringWithFormat:@"Results matching %@", currentSearchTerm];
         else if (hasAddedContacts) sectionLabel.text =  @"Invite";
         else if (hasRecents) sectionLabel.text =  @"Recent";
+        else if (hasFacebookFriends) sectionLabel.text = @"Facebook friends on weego";
     } else if (section == 1) {
-        sectionLabel.text =  @"Recent";
+        if (hasRecents && hasAddedContacts) sectionLabel.text =  @"Recent";
+        else if (hasFacebookFriends) sectionLabel.text = @"Facebook friends on weego";
+    } else if (section == 2) {
+        sectionLabel.text = @"Facebook friends on weego";
     }
     return sectionHeaderView;
 }
@@ -491,11 +520,18 @@
     if (section == 0) {
         if (hasFoundResults) return [filteredContacts count];
         if (hasAddedContacts) return [addedContacts count];
-        else return [recentParticipants count];
+        if (hasRecents) return [recentParticipants count];
+        if (hasFacebookFriends) return [facebookFriends count];
+        return 0;
     } else if (section == 1) {
-        return [recentParticipants count];
-    }
-    return 1;
+        if (hasRecents && hasAddedContacts) return [recentParticipants count];
+        if (hasFacebookFriends) return [facebookFriends count];
+        return 0;
+    } else if (section == 2) {
+        if (hasFacebookFriends) return [facebookFriends count];
+        return 0;
+    } 
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -507,8 +543,6 @@
             if (participant) cell = [self getCellForContactsWithParticipant:participant];
             else cell = [self getCellForContactsWithContact:contact];
             return cell;
-//            CellContact *cell = [self getCellForContactsWithContact:contact];
-//            return cell;
         } else if (hasAddedContacts) {
             Contact *contact = [addedContacts objectAtIndex:indexPath.row];
             Participant *participant = [[Model sharedInstance] getPairedParticipantWithEmail:contact.emailAddress];
@@ -518,15 +552,23 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         } else {
-            Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
+            NSArray *source = (hasRecents) ? recentParticipants : facebookFriends;
+            Participant *participant = [source objectAtIndex:indexPath.row];
             CellContact *cell = [self getCellForContactsWithParticipant:participant];
             return cell;
         }
     } else if (indexPath.section == 1) {
-        Participant *participant = [recentParticipants objectAtIndex:indexPath.row];
+        NSArray *source = (hasAddedContacts && hasRecents) ? recentParticipants : facebookFriends;
+        Participant *participant = [source objectAtIndex:indexPath.row];
+        CellContact *cell = [self getCellForContactsWithParticipant:participant];
+        return cell;
+    } else if (indexPath.section == 2) {
+        NSArray *source = facebookFriends;
+        Participant *participant = [source objectAtIndex:indexPath.row];
         CellContact *cell = [self getCellForContactsWithParticipant:participant];
         return cell;
     }
+
     return nil;
 }
 

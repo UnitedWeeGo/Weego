@@ -26,11 +26,13 @@
     BOOL hasFoundResults;
     BOOL hasAddedContacts;
     BOOL hasRecents;
+    BOOL hasFacebookFriends;
     BOOL keyboardShowing;
     CGFloat tableTop;
     
     NSMutableArray *addedContacts;
     NSMutableArray *recentParticipants;
+    NSMutableArray *facebookFriends;
         
     NSArray *allContacts;
     NSArray *allContactsWithEmail;

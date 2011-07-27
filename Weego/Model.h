@@ -73,6 +73,8 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray *suggestedTimes;
 @property (nonatomic, retain) NSMutableArray *reportedLocations;
 
+@property (nonatomic, retain) NSMutableArray *facebookFriends;
+
 @property (nonatomic, assign) BOOL isInTrial;
 @property (nonatomic, assign) BOOL loginAfterTrial;
 @property (nonatomic, copy) NSString *userId;
@@ -145,6 +147,7 @@ typedef enum {
 - (NSArray *)getParticipantsForEventWithId:(NSString *)eventId;
 - (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML;
 - (NSArray *)getRecentParticipants;
+- (NSArray *)getFacebookFriends;
 
 - (void)addFeedMessageWithXml:(GDataXMLElement *)messageXML inEventWithId:(NSString *)eventId;
 - (void)updateUnreadMessageCount:(NSString *)messageCount inEventWithId:(NSString *)eventId;

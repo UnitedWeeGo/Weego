@@ -34,6 +34,7 @@
 
 @synthesize currentAppState, currentBGState, currentViewState;
 @synthesize allEvents, locations, participants, messages, reportedLocations;
+@synthesize facebookFriends;
 @synthesize isInTrial, loginAfterTrial;
 @synthesize userId, userEmail, userPassword, lastUpdateTimeStamp;
 @synthesize sortedEvents, weeksEvents, futureEvents, pastEvents; //daysEvents
@@ -88,9 +89,9 @@ static Model *sharedInstance;
 		self.participants = tParticipants;
         [tParticipants release];
         
-//        NSMutableArray *tVotes = [[NSMutableArray alloc] init];
-//		self.votes = tVotes;
-//        [tVotes release];
+        NSMutableArray *tFacebookFriends = [[NSMutableArray alloc] init];
+		self.facebookFriends = tFacebookFriends;
+        [tFacebookFriends release];
         
         NSMutableArray *tMessages = [[NSMutableArray alloc] init];
 		self.messages = tMessages;
@@ -125,8 +126,9 @@ static Model *sharedInstance;
     [self.participants removeAllObjects];
 	[self.participants release];
     
-//    [self.votes removeAllObjects];
-//	[self.votes release];
+    [self.facebookFriends removeAllObjects];
+	[self.facebookFriends release];
+
     [self.suggestedTimes removeAllObjects];
 	[self.suggestedTimes release];
     
@@ -695,7 +697,11 @@ static Model *sharedInstance;
 {
     for (Participant *p in self.participants) {
         if ([p.email isEqualToString:email] && p.hasBeenPaired) {
-            NSLog(@"p %@", p.avatarURL);
+            return p;
+        }
+    }
+    for (Participant *p in self.facebookFriends) {
+        if ([p.email isEqualToString:email] && p.hasBeenPaired) {
             return p;
         }
     }
@@ -727,11 +733,21 @@ static Model *sharedInstance;
 {
     Participant *newp = [[Participant alloc] init];
     [newp populateWithXml:participantXML];
-    BOOL isFound = NO;
-    for (Participant *p in self.participants) {
-        if ([p.email isEqualToString:newp.email] && p.hasBeenPaired) isFound = YES;
+    BOOL isFacebook = [[[participantXML attributeForName:@"type"] stringValue] isEqualToString:@"facebook"];
+    if (isFacebook) {
+        BOOL isFound = NO;
+        NSArray *recents = [self getRecentParticipants];
+        for (Participant *p in recents) {
+            if ([newp.email isEqualToString:p.email]) isFound = YES;
+        }
+        if (!isFound) [facebookFriends addObject:newp];
+    } else {
+        BOOL isFound = NO;
+        for (Participant *p in self.participants) {
+            if ([p.email isEqualToString:newp.email] && p.hasBeenPaired) isFound = YES;
+        }
+        if (!isFound) [self.participants addObject:newp];
     }
-    if (!isFound) [self.participants addObject:newp];
     [newp release];
 }
 
@@ -742,6 +758,20 @@ static Model *sharedInstance;
         BOOL isFound = NO;
         if ([p.email isEqualToString:userEmail]) continue;
         for (Participant *p2 in returnParticipants) {
+            if ([p2.email isEqualToString:p.email]) isFound = YES;
+        }
+        if (!isFound && !p.hasBeenRemoved && p.hasBeenPaired) [returnParticipants addObject:p];
+    }
+    return [returnParticipants autorelease];
+}
+
+- (NSArray *)getFacebookFriends
+{
+    NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
+    for (Participant *p in self.facebookFriends) {
+        BOOL isFound = NO;
+        if ([p.email isEqualToString:userEmail]) continue;
+        for (Participant *p2 in [self getRecentParticipants]) {
             if ([p2.email isEqualToString:p.email]) isFound = YES;
         }
         if (!isFound && !p.hasBeenRemoved && p.hasBeenPaired) [returnParticipants addObject:p];
@@ -1258,7 +1288,7 @@ static Model *sharedInstance;
     }
     NSLog(@"ALL PARTICIPANTS ------------------------------------------");
     for (Participant *part in self.participants) {
-        NSLog(@"PARTICIPANT: %@ %@", part.fullName, part.email);
+        NSLog(@"PARTICIPANT: %@ %@ %@", part.fullName, part.email, part.ownerEventId);
     }
 }
 
