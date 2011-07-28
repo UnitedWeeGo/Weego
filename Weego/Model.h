@@ -124,6 +124,7 @@ typedef enum {
 
 - (Event *)createNewEvent;
 - (Event *)duplicateEventWithId:(NSString *)anId;
+- (void)removeEventWithId:(NSString *)anId;
 - (void)addOrUpdateEventWithXml:(GDataXMLElement *)eventXML inEventWithId:(NSString *)eventId withTimestamp:(NSString *)timestamp;
 - (void)addEvent:(Event *)anEvent;
 - (void)assignOfficialId:(NSString *)officialEventId toEventWithLocalId:(NSString *)localEventId;

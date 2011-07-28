@@ -436,6 +436,19 @@ static Model *sharedInstance;
     return dupEvent;
 }
 
+- (void)removeEventWithId:(NSString *)anId
+{
+    NSArray *locs = [self getLocationsForEventWithId:anId];
+    NSArray *parts = [self getParticipantsForEventWithId:anId];
+    NSArray *feeds = [self getFeedMessagesForEventWithId:anId];
+    [self.locations removeObjectsInArray:locs];
+    [self.participants removeObjectsInArray:parts];
+    [self.messages removeObjectsInArray:feeds];
+    [self.allEvents removeObjectForKey:anId];
+    
+    [self sortEvents];
+}
+
 - (void)addOrUpdateEventWithXml:(GDataXMLElement *)eventXML inEventWithId:(NSString *)eventId withTimestamp:(NSString *)timestamp
 {
     if ([self.allEvents objectForKey:eventId]) {

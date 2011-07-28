@@ -18,6 +18,7 @@ typedef enum {
     ActionSheetStateMorePressEventDecidedPending,
     ActionSheetStateMorePressEventDecidedAccepted,
     ActionSheetStateMorePressEventDecidedDeclined,
+    ActionSheetStateMorePressEventTrial,
     ActionSheetStateMorePressEventEnded,
 	ActionSheetStateEmailParticipant
 } ActionSheetState;

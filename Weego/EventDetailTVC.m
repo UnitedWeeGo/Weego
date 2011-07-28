@@ -674,7 +674,14 @@ enum eventDetailSections {
     
     NSString *title;
     UIActionSheet *userOptions;
-    if (detail.currentEventState < EventStateDecided) 
+    if (detail.currentEventState == EventStateNew)
+    {
+        currentActionSheetState = ActionSheetStateMorePressEventTrial;
+        title = @"Remove this event from your dashboard";
+        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove event", nil];
+        userOptions.destructiveButtonIndex = 0;
+    }
+    else if (detail.currentEventState < EventStateDecided) 
     {
         switch (detail.acceptanceStatus) {
             case AcceptanceTypePending:
@@ -773,6 +780,10 @@ enum eventDetailSections {
             {
                 [self presentMailModalViewController];
             }
+            else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
+            {
+                [self presentRemoveEventAlert];
+            }
             break;
         case 1:
             // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
@@ -833,7 +844,10 @@ enum eventDetailSections {
 {
     if (buttonIndex == 1)
     {
-        [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:detail.currentEventState <= EventStateDecided];
+        if (currentActionSheetState != ActionSheetStateMorePressEventTrial)
+        {
+            [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:detail.currentEventState <= EventStateDecided];
+        }
         detail.hasBeenRemoved = YES;
         [self handleHomePress:self];
     }

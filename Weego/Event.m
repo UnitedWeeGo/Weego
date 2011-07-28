@@ -329,14 +329,9 @@
 
 - (void)setHasBeenRemoved:(BOOL)hbr
 {
-    self.isTemporary = true;
-    NSArray *locations = [self getLocations];
-    NSArray *participants = [self getParticipants];
-    for (Location *loc in locations) loc.isTemporary = YES;
-    for (Participant *par in participants) par.isTemporary = YES;
+    if (!hbr) return;
     Model *model = [Model sharedInstance];
-    [model removeFeedMessagesForEventWithId:self.eventId];
-    [model flushTempItems];
+    [model removeEventWithId:self.eventId];
 }
 
 
