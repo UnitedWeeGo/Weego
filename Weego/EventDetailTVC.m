@@ -191,7 +191,7 @@ enum eventDetailSections {
             return;
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:
-            [Model sharedInstance].currentEvent = detail;
+            detail = [Model sharedInstance].currentEvent;
             detail.creatorId = [Model sharedInstance].userEmail;
             [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
             [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];

@@ -280,6 +280,14 @@ static DataParser *sharedInstance;
     
     // update the user device record
     [[Controller sharedInstance] updateUserDeviceRecord];
+    
+    NSArray *events = [doc.rootElement elementsForName:@"event"];
+    if (events && [events count] > 0) {
+        [self parseResponseSingleEvent:doc];
+        GDataXMLElement *event = [events objectAtIndex:0];
+        NSString *eventId = [[event attributeForName:@"id"] stringValue];
+        [[Model sharedInstance] setCurrentEventById:eventId];
+    }
 }
 
 #pragma mark -
