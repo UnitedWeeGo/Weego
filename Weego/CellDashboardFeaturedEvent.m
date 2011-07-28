@@ -177,6 +177,50 @@
     // Configure the view for the selected state
 }
 
+// TO REPOSITION the DELETE BUTTON
+/*
+- (void)willTransitionToState:(UITableViewCellStateMask)state {
+    
+    [super willTransitionToState:state];
+    
+    if ((state & UITableViewCellStateShowingDeleteConfirmationMask) == UITableViewCellStateShowingDeleteConfirmationMask) {
+        
+        for (UIView *subview in self.subviews) {
+            
+            if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellDeleteConfirmationControl"]) {             
+                
+                subview.hidden = YES;
+                subview.alpha = 0.0;
+            }
+        }
+    }
+}
+
+- (void)didTransitionToState:(UITableViewCellStateMask)state {
+    
+    [super didTransitionToState:state];
+    
+    if (state == UITableViewCellStateShowingDeleteConfirmationMask || state == UITableViewCellStateDefaultMask) {
+        for (UIView *subview in self.subviews) {
+            
+            if ([NSStringFromClass([subview class]) isEqualToString:@"UITableViewCellDeleteConfirmationControl"]) {
+                
+                UIView *deleteButtonView = (UIView *)[subview.subviews objectAtIndex:0];
+                CGRect f = deleteButtonView.frame;
+                f.origin.y -= 20;
+                deleteButtonView.frame = f;
+                
+                subview.hidden = NO;
+                
+                [UIView beginAnimations:@"anim" context:nil];
+                subview.alpha = 1.0;
+                [UIView commitAnimations];
+            }
+        }
+    }
+}
+ */
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
