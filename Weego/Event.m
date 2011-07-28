@@ -111,7 +111,8 @@
     if (order != nil && [order stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length > 0) {
         NSArray *locationIds = [order componentsSeparatedByString:@","];
         for (int i=0; i<[locationIds count]; i++) {
-            [sortedLocations addObject:[self getLocationByLocationId:[locationIds objectAtIndex:i]]];
+            Location *loc = [self getLocationByLocationId:[locationIds objectAtIndex:i]];
+            if (loc) [sortedLocations addObject:loc];
         }
         return sortedLocations;
     }

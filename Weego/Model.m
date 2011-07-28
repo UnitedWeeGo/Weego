@@ -431,23 +431,7 @@ static Model *sharedInstance;
     for (Participant *p in [origEvent getParticipants]) {
         [self duplicateParticipantWithEmail:p.email];
     }
-    
-//    dupEvent.acceptedParticipantList = nil;
-//    dupEvent.declinedParticipantList = nil;
-//    dupEvent.lastUpdatedTimestamp = nil;
-//    dupEvent.lastReportedLocationsTimestamp = nil;
-//    dupEvent.currentEventState = EventStateNew;
-//    dupEvent.topLocationId = nil;
-//    dupEvent.participantCount = nil;
-//    dupEvent.unreadMessageCount = nil;
-//    dupEvent.eventRead = nil;
-//    dupEvent.hasBeenCheckedIn = false;
-//    dupEvent.iVotedFor = nil;
-//    dupEvent.updatedVotes = nil;
-//    dupEvent.hasBeenRemoved = false;
-//    
-//    dupEvent.currentLocationOrder = nil;
-    
+        
     [self addEvent:dupEvent];
     return dupEvent;
 }
@@ -456,7 +440,7 @@ static Model *sharedInstance;
 {
     if ([self.allEvents objectForKey:eventId]) {
         Event *event = [self.allEvents objectForKey:eventId];
-       if (timestamp != nil)    event.lastUpdatedTimestamp = timestamp;
+        if (timestamp != nil) event.lastUpdatedTimestamp = timestamp;
         [event populateWithXml:eventXML];
         event.isTemporary = NO;
     } else {
@@ -489,11 +473,13 @@ static Model *sharedInstance;
 
 - (void)assignOfficialId:(NSString *)officialEventId toEventWithLocalId:(NSString *)localEventId
 {
-    
     for (Event *e in [self.allEvents allValues]) {
         if ([e.eventId isEqualToString:localEventId]) {
             e.isTemporary = NO;
             e.eventId = officialEventId;
+            if ([localEventId isEqualToString:currentEvent.eventId]) {
+                currentEvent = e;
+            }
             [self.allEvents setObject:e forKey:officialEventId];
             [self.allEvents removeObjectForKey:localEventId];
         }
@@ -510,12 +496,6 @@ static Model *sharedInstance;
             p.ownerEventId = officialEventId;
         }
     }
-//    for (Vote *v in self.votes) {
-//        if ([v.ownerEventId isEqualToString:localEventId]) {
-////            v.isTemporary = NO;
-//            v.ownerEventId = officialEventId;
-//        }
-//    }
 }
 
 - (Event *)getEventById:(NSString *) eventId
@@ -543,6 +523,21 @@ static Model *sharedInstance;
     Event *ev = [self.allEvents objectForKey:eventId];
     ev.currentLocationOrder = order;
     ev.topLocationId = [[order componentsSeparatedByString:@","] objectAtIndex:0];
+}
+
+- (void)determineLocationOrderForCreateOrTrial
+{
+    NSMutableArray *otherLocations = [[NSMutableArray alloc] initWithArray:[[currentEvent.iVotedFor reverseObjectEnumerator] allObjects]];
+    for (NSString *locId in [currentEvent.currentLocationOrder componentsSeparatedByString:@","]) {
+        BOOL isFound = NO;
+        for (NSString *voteLocId in currentEvent.iVotedFor) {
+            if ([locId isEqualToString:voteLocId]) isFound = YES;
+        }
+        if (!isFound) [otherLocations addObject:locId];
+    }
+    NSString *order = [otherLocations componentsJoinedByString:@","];
+    [self addOrUpdateLocationOrder:order inEventWithId:currentEvent.eventId];
+    [otherLocations release];
 }
 
 - (void)addOrUpdateVotes:(NSString *)iVotedFor inEventWithId:(NSString *)eventId overwrite:(BOOL)overwrite
@@ -584,6 +579,12 @@ static Model *sharedInstance;
     ev.iVotedFor = votes;
     [votes release];
 }
+
+//- (void)toggleVotesForLocations:(NSArray *)locations inEventWithId:(NSString *)eventId
+//{
+//    Event *ev = [self.allEvents objectForKey:eventId];
+//    NSMutableArray *votes = [[NSMutableArray alloc] initWithArray:ev.iVotedFor];
+//}
 
 //- (void)addOrUpdateVotesForDashboard:(NSString *)iVotedFor inEventWithId:(NSString *)eventId
 //{

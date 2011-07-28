@@ -130,8 +130,10 @@ typedef enum {
 - (void)setCurrentEventById:(NSString *)anId;
 - (void)removeCurrentEvent;
 - (void)addOrUpdateLocationOrder:(NSString *)order inEventWithId:(NSString *)eventId;
+- (void)determineLocationOrderForCreateOrTrial;
 - (void)addOrUpdateVotes:(NSString *)iVotedFor inEventWithId:(NSString *)eventId overwrite:(BOOL)overwrite;
 - (void)removeVote:(NSString *)locationId inEventWithId:(NSString *)eventId;
+//- (void)toggleVotesForLocations:(NSArray *)locations inEventWithId:(NSString *)eventId;
 //- (void)addOrUpdateVotesForDashboard:(NSString *)iVotedFor inEventWithId:(NSString *)eventId;
 - (void)markCheckedInEventWithId:(NSString *)eventId;
 

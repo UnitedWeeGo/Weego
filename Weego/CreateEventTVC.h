@@ -21,6 +21,9 @@
 	UIDatePicker *datePicker;
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _saving;
+    int rowsForLocations;
+    NSArray *oldSortedLocations;
+    NSArray *currentSortedLocations;
 }
 
 @property (nonatomic, assign) BOOL isInDuplicate;

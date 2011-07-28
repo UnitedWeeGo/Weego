@@ -193,9 +193,11 @@
             [model printModel];
             NSMutableArray *trialEvents = [NSMutableArray arrayWithArray:[model.allEvents allValues]];
             if (model.currentViewState == ViewStateCreate) [trialEvents removeObject:model.currentEvent];
-            NSLog(@"allEvents = %i : trialEvents = %i", [[model.allEvents allValues] count], [trialEvents count]);
             NSString *xmlString = [[Model sharedInstance] getCreateEventXML:trialEvents];
             [postBody appendData:[[[[NSString alloc] initWithFormat:@"xml=%@&",[self urlencode:xmlString]] autorelease] dataUsingEncoding:NSUTF8StringEncoding]];
+            if (model.currentViewState == ViewStateDetails && model.currentEvent) {
+                [postBody appendData:[[[[NSString alloc] initWithFormat:@"requestId=%@&", model.currentEvent.eventId] autorelease] dataUsingEncoding:NSUTF8StringEncoding]];
+            }
         }
 		[postBody appendData:[[[[NSString alloc] initWithFormat:@"access_token=%@",accessToken] autorelease] dataUsingEncoding:NSUTF8StringEncoding]];
 		
@@ -790,7 +792,7 @@
     self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
-        pendingRequestType = DataFetchTypeRemoveEvent;
+        pendingRequestType = DataFetchTypeRecentParticipants;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@",
                                 apiURL,

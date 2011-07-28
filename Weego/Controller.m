@@ -211,6 +211,15 @@ static Controller *sharedInstance;
 	if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) {
         DataFetcher *fetcher = [[[DataFetcher alloc] initAndAddOrUpdateLocationsWithUserId:model.userId withLocations:locations isAnUpdate:update withEvent:model.currentEvent delegate:[DataParser sharedInstance]] autorelease];
         return fetcher.requestId;
+    } else {
+#warning Make a model method for this
+        NSMutableArray *locs = [[NSMutableArray alloc] initWithArray:[model.currentEvent.currentLocationOrder componentsSeparatedByString:@","]];
+        for (Location *loc in locations) {
+            [locs insertObject:loc.locationId atIndex:0];
+        }
+        model.currentEvent.currentLocationOrder = [locs componentsJoinedByString:@","];
+        [locs release];
+        [model determineLocationOrderForCreateOrTrial];
     }
     return nil;
 }
@@ -249,10 +258,13 @@ static Controller *sharedInstance;
 	Model *model = [Model sharedInstance];
     [model.currentEvent addVoteWithLocationId:locationId];
 //    Delay the following to account for many button presses
-    if (model.currentAppState != AppStateCreateEvent) 
-    {
+    if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) {
         [self performSelector:@selector(doRequestToggleVoteForLocationsWithId) withObject:nil afterDelay:0.5];
     } else {
+//        [model toggleVotesForLocations:model.currentEvent.updatedVotes inEventWithId:model.currentEvent.eventId];
+        
+        [model.currentEvent clearNewVotes];
+        [model determineLocationOrderForCreateOrTrial];
     }
     return nil;
 }

@@ -35,6 +35,10 @@ typedef enum {
 
 @interface CreateEventTVC (Private)
 
+- (void)populateCurrentSortedLocations;
+- (BOOL)orderDidChange;
+- (void)reorderCells;
+- (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move;
 - (void)doGotoMapView;
 - (void)doGotoAddView;
 - (BBTableViewCell *)getCellForFormWithLabel:(NSString *)label;
@@ -113,9 +117,12 @@ typedef enum {
     
     [self.view endEditing:YES];
     
-	[self.tableView reloadData];
-    
     [self setUpDataFetcherMessageListeners];
+    
+    [self populateCurrentSortedLocations];
+    oldSortedLocations = [currentSortedLocations copy];
+    
+    [self.tableView reloadData];
     
     [[Model sharedInstance] printModel];
 }
@@ -161,6 +168,24 @@ typedef enum {
     }
 }
 
+- (void)populateCurrentSortedLocations
+{
+    oldSortedLocations = [currentSortedLocations copy];
+    [currentSortedLocations release];
+    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
+    [currentSortedLocations retain];
+    if (oldSortedLocations == nil) oldSortedLocations = [currentSortedLocations copy];
+}
+
+- (BOOL)orderDidChange
+{
+    for (int i=0; i<[currentSortedLocations count]; i++) {
+        if ([oldSortedLocations count] < i+1) return YES;
+        if ([currentSortedLocations objectAtIndex:i] != [oldSortedLocations objectAtIndex:i]) return YES;
+    }
+    return NO;
+}
+
 #pragma mark -
 #pragma mark UITableViewDelegate
 
@@ -168,7 +193,7 @@ typedef enum {
 {
     if (indexPath.section == eventDetailSectionLocations)
     {
-        if ([[detail getLocations] count] > 0 && indexPath.row != [[detail getLocations] count])
+        if ([currentSortedLocations count] > 0 && indexPath.row != [currentSortedLocations count])
         {
             return YES;
         }
@@ -193,7 +218,7 @@ typedef enum {
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        Location *loc = (Location *)[[detail getLocations] objectAtIndex:indexPath.row];
+        Location *loc = (Location *)[currentSortedLocations objectAtIndex:indexPath.row];
         NSLog(@"Delete: %@", loc.name);
         [[Controller sharedInstance] removeLocationWithId:loc.locationId];
         [self.tableView reloadData];
@@ -214,7 +239,7 @@ typedef enum {
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
-		if (indexPath.row == [[detail getLocations] count]) {
+		if (indexPath.row == rowsForLocations-1) {
             [self.view endEditing:YES];
 			[self doGotoMapView];
 		}
@@ -242,8 +267,15 @@ typedef enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == eventDetailSectionLocations) {
-        if (indexPath.row == [[detail getLocations] count]) return CellEventCallToActionHeight;
-        else return CellLocationHeight;
+//        if (indexPath.row == [[detail getLocations] count]) return CellEventCallToActionHeight;
+//        else return CellLocationHeight;
+        if (indexPath.row < rowsForLocations-1) {
+            return CellLocationHeight;
+		} else if ([[detail getLocations] count] == 1 && indexPath.row == 0) {
+            return CellLocationHeight;
+        } else {
+            return CellEventCallToActionHeight;
+		}
     } else if (indexPath.section == eventDetailSectionParticipants) {
         if (indexPath.row == [[detail getParticipants] count]) return CellParticipantHeight;
     }
@@ -261,9 +293,11 @@ typedef enum {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	int numRows = 1;
     if (section == eventDetailSectionEntryForm) numRows = numCreateEventFormRow;
-	if (section == eventDetailSectionLocations) numRows += [[detail getLocations] count];
+	if (section == eventDetailSectionLocations) {
+        numRows += [oldSortedLocations count];
+        rowsForLocations = numRows;
+    }
 	if (section == eventDetailSectionParticipants && ![Model sharedInstance].isInTrial) {
-        NSLog(@"Number of participants = %i", [[detail getParticipants] count]);
         numRows += [[detail getParticipants] count];
     }
 	return numRows;
@@ -293,10 +327,10 @@ typedef enum {
             cell = targetCell;
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
-		if (indexPath.row < [[detail getLocations] count]) {
-            Location *loc = (Location *)[[detail getLocationsByLocationOrder:detail.currentLocationOrder] objectAtIndex:indexPath.row];
+		if (indexPath.row < rowsForLocations-1) {
+            Location *loc = (Location *)[oldSortedLocations objectAtIndex:indexPath.row];
 			cell = [self getCellForLocationWithLocation:loc andIndex:indexPath.row];			
-            if (indexPath.row == 0) [cell isFirst:YES isLast:NO];
+            if (indexPath.row == 0 && rowsForLocations > 1) [cell isFirst:YES isLast:NO];
             else [cell isFirst:NO isLast:NO];
 		} else {
             cell = [self getCellForCallToAction:@"Add location(s)"];
@@ -366,13 +400,40 @@ typedef enum {
     return cell;
 }
 
+//#pragma mark -
+//#pragma mark SubViewLocationDelegate
+//- (void)mapButtonPressed:(id)sender
+//{
+//    SubViewLocation *svl = (SubViewLocation *)sender;
+//    Location *loc = svl.location;
+//    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];    
+//}
+//
+//- (void)likeButtonPressed:(id)sender
+//{
+//    SubViewLocation *svl = (SubViewLocation *)sender;
+//    Location *loc = svl.location;
+//    Controller *controller = [Controller sharedInstance];
+//    [controller voteForLocationWithId:loc.locationId];
+//    [self.tableView reloadData];
+//}
+//
+//- (void)unlikeButtonPressed:(id)sender
+//{
+//    SubViewLocation *svl = (SubViewLocation *)sender;
+//    Location *loc = svl.location;
+//    Controller *controller = [Controller sharedInstance];
+//    [controller removeVoteForLocationWithId:loc.locationId];
+//    [self.tableView reloadData];
+//}
+
 #pragma mark -
 #pragma mark SubViewLocationDelegate
 - (void)mapButtonPressed:(id)sender
 {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
-    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];    
+    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
 }
 
 - (void)likeButtonPressed:(id)sender
@@ -380,8 +441,10 @@ typedef enum {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    [controller voteForLocationWithId:loc.locationId];
+    [controller toggleVoteForLocationsWithId:loc.locationId];
     [self.tableView reloadData];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(reorderForNonServerVote) withObject:nil afterDelay:0.5];
 }
 
 - (void)unlikeButtonPressed:(id)sender
@@ -389,8 +452,66 @@ typedef enum {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    [controller removeVoteForLocationWithId:loc.locationId];
+    [controller toggleVoteForLocationsWithId:loc.locationId];
     [self.tableView reloadData];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(reorderForNonServerVote) withObject:nil afterDelay:0.5];
+}
+
+- (void)reorderForNonServerVote
+{
+    [self populateCurrentSortedLocations];
+    if ([self orderDidChange]) [self reorderCells];
+}
+
+#pragma mark - Cell Reordering
+
+- (void)reorderCells
+{    
+    [self.tableView beginUpdates];
+    for (int i=0; i<[currentSortedLocations count]; i++) {
+        int toIndex = i;
+        int fromIndex = i;
+        for (int j=0; j<[oldSortedLocations count]; j++) {
+            if ([oldSortedLocations objectAtIndex:j] == [currentSortedLocations objectAtIndex:i]) {
+                fromIndex = j;
+                break;
+            }
+        }
+        [self reorderCellFromIndex:fromIndex toIndex:toIndex withMovement:YES];
+    }
+    [oldSortedLocations release];
+    oldSortedLocations = [currentSortedLocations copy];
+    [self.tableView endUpdates];
+    
+}
+
+- (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move
+{    
+    if (iFrom == iTo && !move) return;
+    
+    NSUInteger fromPath[2] = {1, iFrom};
+    NSIndexPath *fromIndexPath = [[NSIndexPath alloc] initWithIndexes:fromPath length:2];
+    
+    NSUInteger toPath[2] = {1, iTo};
+    NSIndexPath *toIndexPath = [[NSIndexPath alloc] initWithIndexes:toPath length:2];
+    
+    if (!move) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    else {
+        int animType = UITableViewRowAnimationNone;
+        int delta = iFrom - iTo;
+        
+        // Figure out a way to tell if number of votes changed. Only animate if number of votes changed from old to current.
+        Location *location = [currentSortedLocations objectAtIndex:iTo];
+        Boolean iLikedLocation = [[Model sharedInstance] loginUserDidVoteForLocationWithId:location.locationId inEventWithId:location.ownerEventId];
+        
+        if (delta >= 1 && iLikedLocation) animType = UITableViewRowAnimationBottom;
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:animType];
+    }
+    
+    if (iTo < [oldSortedLocations count]) [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:fromIndexPath] withRowAnimation:UITableViewRowAnimationNone]; //(iTo>iFrom) ? UITableViewRowAnimationBottom : UITableViewRowAnimationTop];
+    [fromIndexPath release];
+    [toIndexPath release];    
 }
 
 #pragma mark -

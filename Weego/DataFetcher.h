@@ -24,6 +24,7 @@ enum {
     DataFetchTypeLoginWithUserName,
     DataFetchTypeLoginWithFacebookAccessToken,
     DataFetchTypeRegister,
+    DataFetchTypeRecentParticipants,
     DataFetchTypeGetAllEvents,
     DataFetchTypeGetDashboardEvents,
     DataFetchTypeGetEvent,

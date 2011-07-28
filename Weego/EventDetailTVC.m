@@ -42,6 +42,7 @@ enum eventDetailSections {
 - (BBTableViewCell *)getCellForCallToAction:(NSString *)label;
 - (void)toggleShowHideOtherLocations;
 - (void)toggleShowHideOtherParticipants;
+- (void)reorderForNonServerVote;
 - (void)reorderCells;
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move;
 - (void)presentMailModalViewController;
@@ -207,6 +208,9 @@ enum eventDetailSections {
             self.tableView.tableHeaderView = tableHeaderView;
             [tableHeaderView release];
             [self.tableView reloadData];
+            break;
+        case DataFetchTypeRecentParticipants:
+            return;
             break;
     }
     
@@ -527,12 +531,13 @@ enum eventDetailSections {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    if (![Model sharedInstance].isInTrial) {
-        [controller toggleVoteForLocationsWithId:loc.locationId];
-    } else {
-        [controller voteForLocationWithId:loc.locationId];
-    }
-    [self.tableView reloadData];
+    [controller toggleVoteForLocationsWithId:loc.locationId];
+    if (![Model sharedInstance].isInTrial) [self.tableView reloadData];
+    else {
+        [self.tableView reloadData];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(reorderForNonServerVote) withObject:nil afterDelay:0.5];
+    }    
 }
 
 - (void)unlikeButtonPressed:(id)sender
@@ -540,13 +545,22 @@ enum eventDetailSections {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
-    if (![Model sharedInstance].isInTrial) {
-        [controller toggleVoteForLocationsWithId:loc.locationId];
-    } else {
-        [controller removeVoteForLocationWithId:loc.locationId];
+    [controller toggleVoteForLocationsWithId:loc.locationId];
+    if (![Model sharedInstance].isInTrial) [self.tableView reloadData];
+    else {
+        [self.tableView reloadData];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(reorderForNonServerVote) withObject:nil afterDelay:0.5];
     }
-    [self.tableView reloadData];
 }
+
+- (void)reorderForNonServerVote
+{
+    [self populateCurrentSortedLocations];
+    if ([self orderDidChange] && otherLocationsShowing) [self reorderCells];
+}
+
+#pragma mark - Cell Reordering
 
 - (void)reorderCells
 {    
@@ -569,9 +583,7 @@ enum eventDetailSections {
 }
 
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move
-{
-    NSLog(@"reorder from %i to %i", iFrom, iTo);
-    
+{    
     if (iFrom == iTo && !move) return;
 
     NSUInteger fromPath[2] = {0, iFrom};

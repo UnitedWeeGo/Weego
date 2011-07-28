@@ -37,8 +37,8 @@
 - (NSString *)addParticipants:(NSArray *)participants;
 - (NSString *)toggleVoteForLocationsWithId:(NSString *)locationId;
 
-- (NSString *)voteForLocationWithId:(NSString *)locationId;
-- (NSString *)removeVoteForLocationWithId:(NSString *)locationId;
+//- (NSString *)voteForLocationWithId:(NSString *)locationId;
+//- (NSString *)removeVoteForLocationWithId:(NSString *)locationId;
 
 - (NSString *)updateUserDeviceRecord;
 - (NSString *)sendFeedMessage:(FeedMessage *)message;
