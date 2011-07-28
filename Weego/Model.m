@@ -1152,7 +1152,7 @@ static Model *sharedInstance;
         
         [eventNode addChild:eventInfo];
         
-        NSArray *locationsArray = [anEvent getLocationsSortedByLocationId];    
+        NSArray *locationsArray = [[[anEvent getLocationsByLocationOrder:anEvent.currentLocationOrder] reverseObjectEnumerator] allObjects];    
         if ([locationsArray count] > 0) {
             GDataXMLElement *locationsNode = [GDataXMLNode elementWithName:@"locations"];
             for (int i=0; i<[locationsArray count]; i++) {
