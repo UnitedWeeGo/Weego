@@ -319,7 +319,53 @@
 }
 
 #pragma mark -
-#pragma mark Table view delegate
+#pragma mark UITableViewDelegate
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    return [cell isKindOfClass: [CellDashboardFeaturedEvent class]] || [cell isKindOfClass: [CellDashboardEvent class]];
+}
+
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //CellLocation *cell = (CellLocation *)[tableView cellForRowAtIndexPath:indexPath];
+    //cell.editing = YES;
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //CellLocation *cell = (CellLocation *)[tableView cellForRowAtIndexPath:indexPath];
+    //cell.editing = NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If row is deleted, remove it from the list.
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        Model *model = [Model sharedInstance];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        Event *eventToDelete;
+        if ([cell isKindOfClass: [CellDashboardFeaturedEvent class]])
+        {
+            CellDashboardFeaturedEvent *fecell = (CellDashboardFeaturedEvent *)cell;
+            eventToDelete = fecell.event;
+        }
+        else if ([cell isKindOfClass: [CellDashboardEvent class]])
+        {
+            CellDashboardEvent *fecell = (CellDashboardEvent *)cell;
+            eventToDelete = fecell.event;
+        }
+        if (!model.isInTrial)
+        {
+            [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:eventToDelete.currentEventState <= EventStateDecided];
+        }
+        eventToDelete.hasBeenRemoved = YES;
+        [model printModel];
+        [self createDataSources];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *currentSource = [dataSources objectAtIndex:indexPath.section];
