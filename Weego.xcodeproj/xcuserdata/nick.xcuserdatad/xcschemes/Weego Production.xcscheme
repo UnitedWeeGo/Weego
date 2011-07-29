@@ -73,7 +73,7 @@
       buildConfiguration = "Release">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Ad Hoc"
+      buildConfiguration = "Release"
       customArchiveName = "Weego"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
