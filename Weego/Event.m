@@ -156,8 +156,20 @@
 - (NSArray *)getParticipantsSortedByName
 {
     NSMutableArray *sortedParticipants = [[NSMutableArray alloc] initWithArray:[self getParticipants]];
-    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(compare:)] autorelease];
+    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[sortedParticipants sortUsingDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+//    Participant *mine = [[Participant alloc] init];
+//    for (Participant *p in sortedParticipants) {
+//        if ([p.email isEqualToString:[Model sharedInstance].userEmail]) {
+//            mine = p;
+//            break;
+//        }
+//    }
+//    if (mine) {
+//        [sortedParticipants removeObject:mine];
+//        [sortedParticipants insertObject:mine atIndex:0];
+//    }
+//    [mine release];
     return [sortedParticipants autorelease];
 }
 

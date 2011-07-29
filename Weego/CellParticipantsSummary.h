@@ -19,4 +19,6 @@
 
 @property (nonatomic, assign) NSString *numParticipants;
 
+- (void)setParticipants:(NSArray *)participants;
+
 @end

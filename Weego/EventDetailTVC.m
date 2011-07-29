@@ -71,6 +71,7 @@ enum eventDetailSections {
     detail.eventRead = @"true";
     
     otherLocationsShowing = detail.currentEventState < EventStateDecided;
+    otherParticipantsShowing = detail.currentEventState < EventStateDecided;
     
     [self populateCurrentSortedLocations];
 
@@ -339,14 +340,24 @@ enum eventDetailSections {
 		} 
 	} else if (indexPath.section == eventDetailSectionParticipants) {
         if (![Model sharedInstance].isInTrial) {
-            if (indexPath.row == 0) {
-                [self toggleShowHideOtherParticipants];
-            } else if (indexPath.row == [[detail getParticipants] count] + 1) {
-                [self doGotoAddView];
+            if (detail.currentEventState >= EventStateDecided) {
+                if (indexPath.row == 0) {
+                    [self toggleShowHideOtherParticipants];
+                } else if (indexPath.row == [[detail getParticipants] count] + 1) {
+                    [self doGotoAddView];
+                } else {
+                    Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row - 1];
+                    [self showUserActionSheetForUser:p];
+                    pendingMailParticipant = p;
+                }
             } else {
-                Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row - 1];
-                [self showUserActionSheetForUser:p];
-                pendingMailParticipant = p;
+                if (indexPath.row == [[detail getParticipants] count]) {
+                    [self doGotoAddView];
+                } else {
+                    Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row];
+                    [self showUserActionSheetForUser:p];
+                    pendingMailParticipant = p;
+                }
             }
         } else {
             if (indexPath.row == 0) {
@@ -400,7 +411,9 @@ enum eventDetailSections {
     }
 	if (section == eventDetailSectionParticipants) {
         if (otherParticipantsShowing && ![Model sharedInstance].isInTrial) {
-            numRows = [[detail getParticipants] count] + 2;
+            if (detail.currentEventState >= EventStateDecided) numRows = [[detail getParticipants] count] + 2;
+            else numRows = [[detail getParticipants] count] + 1;
+//            numRows = [[detail getParticipants] count] + 1;
         } else {
             numRows = 1;
         }
@@ -428,19 +441,29 @@ enum eventDetailSections {
             else [cell isFirst:NO isLast:YES];
 		}
 	} else if (indexPath.section == eventDetailSectionParticipants) {
-        if (indexPath.row == 0 && ![Model sharedInstance].isInTrial) {
+        if (indexPath.row == 0 && ![Model sharedInstance].isInTrial && detail.currentEventState >= EventStateDecided) {
             cell = [self getCellForParticipantsSummary];
             [cell isFirst:YES isLast:!otherParticipantsShowing];
-        } else if (indexPath.row <= [[detail getParticipants] count] && ![Model sharedInstance].isInTrial) {
-			Participant *p = (Participant *)[[detail getParticipantsSortedByName] objectAtIndex:indexPath.row - 1];
-            cell = [self getCellForParticipantWithParticipant:p];
-            if (indexPath.row == 0) [cell isFirst:YES isLast:NO];
-            else [cell isFirst:NO isLast:NO];
-		} else {
-            cell = [self getCellForCallToAction:@"Add friend(s)"];
-            if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
-            else [cell isFirst:NO isLast:YES];
-		}
+        } else if (![Model sharedInstance].isInTrial) { // indexPath.row <= [[detail getParticipants] count] &&
+            int index = indexPath.row;
+            if (detail.currentEventState >= EventStateDecided) index = indexPath.row - 1;
+            if (index < [[detail getParticipants] count]) {
+                Participant *p = (Participant *)[[detail getParticipantsSortedByName] objectAtIndex:index];
+                cell = [self getCellForParticipantWithParticipant:p];
+                if (indexPath.row == 0) [cell isFirst:YES isLast:NO];
+//                else if (detail.currentEventState >= EventStateDecided && index == [[detail getParticipants] count] - 1) [cell isFirst:NO isLast:YES];
+                else [cell isFirst:NO isLast:NO];
+            } else {
+                cell = [self getCellForCallToAction:@"Add friend(s)"];
+                if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
+                else [cell isFirst:NO isLast:YES];
+            }
+		} 
+//        else {
+//            cell = [self getCellForCallToAction:@"Add friend(s)"];
+//            if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
+//            else [cell isFirst:NO isLast:YES];
+//		}
 	}
     return cell;
 }
@@ -476,7 +499,11 @@ enum eventDetailSections {
 	if (cell == nil) {
 		cell = [[[CellParticipantsSummary alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ParticipantsSummaryTableCellId"] autorelease];
 	}
-    cell.numParticipants = [detail participantCount];
+    if (otherParticipantsShowing) {
+        cell.numParticipants = [detail participantCount];
+    } else {
+        [cell setParticipants:[detail getParticipantsSortedByName]];
+    }
     cell.cellHostView = CellHostViewEvent;
     return cell;
 }
@@ -616,8 +643,10 @@ enum eventDetailSections {
 - (void)eventReachedDecided
 {   
     otherLocationsShowing = NO;
+    otherParticipantsShowing = NO;
     [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }

@@ -7,7 +7,8 @@
 //
 
 #import "CellParticipantsSummary.h"
-
+#import "UIImageViewAsyncLoader.h"
+#import "Participant.h"
 
 @implementation CellParticipantsSummary
 
@@ -46,6 +47,26 @@
 //    NSString *countCopy = [NSString stringWithFormat:@"%d", value];
     [labelNumParticipants setText:value];
     [labelNumParticipants sizeToFit];
+}
+
+- (void)setParticipants:(NSArray *)participants
+{
+    [labelNumParticipants setText:[[[NSString alloc] initWithFormat:@"%i", [participants count]] autorelease]];
+    [labelNumParticipants sizeToFit];
+    CGFloat left = 78;
+    int i = 0;
+    for (Participant *p in participants) {
+        if (p.avatarURL && ![[p.avatarURL stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+            CGFloat leftPos = left + (i * 37);
+            UIImageViewAsyncLoader *avatarImage = [[UIImageViewAsyncLoader alloc] initWithFrame:CGRectMake(leftPos, 7, 32, 32)];
+            NSURL *url = [NSURL URLWithString:p.avatarURL];
+            [avatarImage asyncLoadWithNSURL:url useCached:YES andBaseImage:BaseImageTypeAvatar useBorder:YES];
+            [self addSubview:avatarImage];
+            [avatarImage release];
+            i++;
+            if (i == 5) break;
+        }
+    }
 }
 
 @end
