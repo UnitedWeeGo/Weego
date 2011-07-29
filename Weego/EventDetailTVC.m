@@ -458,12 +458,11 @@ enum eventDetailSections {
                 if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
                 else [cell isFirst:NO isLast:YES];
             }
-		} 
-//        else {
-//            cell = [self getCellForCallToAction:@"Add friend(s)"];
-//            if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
-//            else [cell isFirst:NO isLast:YES];
-//		}
+		} else if ([Model sharedInstance].isInTrial) {
+            cell = [self getCellForCallToAction:@"Add friend(s)"];
+            if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
+            else [cell isFirst:NO isLast:YES];
+		}
 	}
     return cell;
 }
