@@ -18,4 +18,4 @@ build/*
 *.xcworkspace
 xcuserdata
 
-Weego.xcodeproj/xcuserdata/nick.xcuserdatad/xcschemes/Weego Beta.xcscheme
+*.xcscheme
