@@ -19,7 +19,8 @@
 
 - (ReportedLocationAnnotation *) initWithCoordinate:(CLLocationCoordinate2D)coordinate andParticipant:(Participant *)myPart
 {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
 		self.coordinate = coordinate;
         participant = [myPart retain];
         self.title = myPart.fullName;

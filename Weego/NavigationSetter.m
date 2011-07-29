@@ -61,7 +61,8 @@ static NavigationSetter *sharedInstance;
 }
 
 - (id)init {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         appDelegate = (WeegoAppDelegate *)[[UIApplication sharedApplication] delegate];
         nController = [ViewController sharedInstance].currentNavController;
     }

@@ -34,5 +34,6 @@ static InfoDataParser *sharedInstance;
 {
     NSString *responseString = [[NSString alloc] initWithData:myData encoding:NSUTF8StringEncoding];	
     [Model sharedInstance].infoResults = responseString;
+    [responseString release];
 }
 @end

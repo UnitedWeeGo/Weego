@@ -346,10 +346,12 @@
     [model removeEventWithId:self.eventId];
 }
 
-
 - (id)init {
-	[super init];
-	return self;
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
 }
 
 - (void)dealloc {

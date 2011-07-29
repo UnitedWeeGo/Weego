@@ -41,7 +41,8 @@
 
 - (LocAnnotation *)initWithLocation:(Location *)loc withStateType:(LocAnnoStateType)theStateType andSelectedState:(LocAnnoSelectedState)theSelectedState
 {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         self.coordinate = loc.coordinate;
         self.title = loc.name;
         self.subtitle = loc.formatted_address == nil ? loc.vicinity: loc.formatted_address; 

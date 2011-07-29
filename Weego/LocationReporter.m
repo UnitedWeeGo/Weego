@@ -42,7 +42,8 @@ static LocationReporter *sharedInstance;
 }
 
 -(id) init {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         timerCount = 0;
         locationServicesStarted = NO;
         locationChangedSignificantly = NO;

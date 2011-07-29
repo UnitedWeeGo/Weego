@@ -57,7 +57,8 @@ static ViewController *sharedInstance;
 }
 
 -(id) init {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         appDelegate = (WeegoAppDelegate *)[[UIApplication sharedApplication] delegate];
         nController = appDelegate.navigationController;
         navigationIndexingCollection = [[NSMutableArray alloc] init];

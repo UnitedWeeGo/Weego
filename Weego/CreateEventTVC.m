@@ -312,7 +312,7 @@ typedef enum {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"What"];
             [targetCell isFirst:YES isLast:NO];
             targetCell.index = createEventFormRowWhat;
-            targetCell.placeholder = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
+            targetCell.placeholder = [[[NSString alloc] initWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive] autorelease];
             targetCell.fieldText = detail.eventTitle;
             [targetCell setEntryType:CellFormEntryTypeName];
             [targetCell setReturnKeyType:UIReturnKeyNext];

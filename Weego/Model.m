@@ -79,7 +79,8 @@ static Model *sharedInstance;
 }
 
 - (id)init {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         NSMutableDictionary *tAllEvents = [[NSMutableDictionary alloc] init];
 		self.allEvents = tAllEvents;
         [tAllEvents release];
@@ -722,11 +723,11 @@ static Model *sharedInstance;
 
 - (NSArray *)getLocationsForEventWithId:(NSString *)eventId
 {
-    NSMutableArray *returnLocations = [[NSMutableArray alloc] init];
+    NSMutableArray *returnLocations = [[[NSMutableArray alloc] init] autorelease];
     for (Location *loc in self.locations) {
         if ([loc.ownerEventId isEqualToString:eventId] && !loc.hasBeenRemoved) [returnLocations addObject:loc];
     }
-    return [returnLocations autorelease];
+    return returnLocations;
 }
 
 - (void)removeLocationWithId:(NSString *)locationId fromEventWithId:(NSString *)eventId

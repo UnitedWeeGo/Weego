@@ -43,7 +43,7 @@
 {
     NSLog(@"AddFriends dealloc");
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self.filteredContacts release];
+    [filteredContacts release];
     [allContacts release];
     [allContactsWithEmail release];
     [recentParticipants release];
@@ -80,13 +80,12 @@
     
     tableTop = 41;
     
-    self.contactsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - 44 - tableTop)];
+    self.contactsTableView = [[[UITableView alloc] initWithFrame:CGRectMake(0, tableTop, self.view.frame.size.width, self.view.frame.size.height - 44 - tableTop)] autorelease];
     self.contactsTableView.delegate = self;
     self.contactsTableView.dataSource = self;
     self.contactsTableView.backgroundColor = [UIColor clearColor];
     self.contactsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.contactsTableView];
-    [self.contactsTableView release];
 
     contactsSearchBar = [[SubViewContactsSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
     contactsSearchBar.delegate = self;
@@ -199,10 +198,11 @@
 - (void)handleRightActionPress:(id)sender
 {
     if (![[contactsSearchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
-        Contact *c = [[Contact alloc] init];
+        Contact *c = [[[Contact alloc] init] autorelease];
         c.emailAddress = contactsSearchBar.text;
-        if (c.isValid) [self addContact:c];
-        else {
+        if (c.isValid) {
+            [self addContact:c];
+        } else {
             [contactsSearchBar showError:YES];
             return;
         }
