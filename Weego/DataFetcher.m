@@ -62,6 +62,9 @@
 #if API_TYPE == 3
         apiURL = @"http://stable.weegoapp.com/public/";
 #endif
+#if API_TYPE == 4
+        apiURL = @"https://api.unitedweego.com/";
+#endif
     }
     return self;
 }
