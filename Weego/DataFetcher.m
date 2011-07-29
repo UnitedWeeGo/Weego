@@ -760,13 +760,13 @@
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeRemoveLocation;
 		self.delegate = myDelegate;
-		NSString *urlString = [[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@%@",
                                apiURL,
                                @"deletelocation.php",
                                userId,
                                eventId,
                                locationId,
-                               (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]];
+                               (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease]] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;

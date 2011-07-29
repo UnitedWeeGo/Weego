@@ -57,7 +57,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug Beta"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference

@@ -151,6 +151,7 @@ enum eventDetailSections {
 
 - (void)populateCurrentSortedLocations
 {
+    if (oldSortedLocations != nil) [oldSortedLocations release];
     oldSortedLocations = [currentSortedLocations copy];
     [currentSortedLocations release];
     currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];

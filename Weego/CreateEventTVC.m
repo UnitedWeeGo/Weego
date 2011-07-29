@@ -170,6 +170,7 @@ typedef enum {
 
 - (void)populateCurrentSortedLocations
 {
+    if (oldSortedLocations != nil) [oldSortedLocations release];
     oldSortedLocations = [currentSortedLocations copy];
     [currentSortedLocations release];
     currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
@@ -312,7 +313,7 @@ typedef enum {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"What"];
             [targetCell isFirst:YES isLast:NO];
             targetCell.index = createEventFormRowWhat;
-            targetCell.placeholder = [[[NSString alloc] initWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive] autorelease];
+            targetCell.placeholder = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
             targetCell.fieldText = detail.eventTitle;
             [targetCell setEntryType:CellFormEntryTypeName];
             [targetCell setReturnKeyType:UIReturnKeyNext];
