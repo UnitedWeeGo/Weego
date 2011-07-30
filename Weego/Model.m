@@ -31,6 +31,8 @@
 - (void)duplicateLocationWithLocation:(Location *)origLocation;
 - (void)duplicateParticipantWithEmail:(NSString *)anEmailAddress;
 
+- (NSString *)getUserLocalTimezoneIdentifier;
+
 @end
 
 @implementation Model
@@ -1134,6 +1136,7 @@ static Model *sharedInstance;
 
 - (NSString *)getCreateEventXML:(NSArray *)events
 {
+    NSString *localTimeZoneAbbreviation = [self getUserLocalTimezoneIdentifier];
     GDataXMLElement *request = [GDataXMLNode elementWithName:@"request"];
     
     for (Event *anEvent in events) {
@@ -1141,6 +1144,7 @@ static Model *sharedInstance;
         
         GDataXMLElement *eventInfo = [GDataXMLNode elementWithName:@"eventInfo"];
         GDataXMLElement *eventDate = [GDataXMLNode attributeWithName:@"eventDate" stringValue:[anEvent getTimestampDateString]];
+        GDataXMLElement *eventTimeZone = [GDataXMLNode attributeWithName:@"eventTimeZone" stringValue:localTimeZoneAbbreviation];
         if (anEvent.isTemporary && anEvent.eventId) {
             GDataXMLElement *requestId = [GDataXMLNode attributeWithName:@"requestId" stringValue:anEvent.eventId];
             [eventNode addChild:requestId];
@@ -1148,6 +1152,7 @@ static Model *sharedInstance;
         GDataXMLElement *eventTitle = [GDataXMLNode elementWithName:@"eventTitle" stringValue:anEvent.eventTitle];
         GDataXMLElement *eventDescription = [GDataXMLNode elementWithName:@"eventDescription" stringValue:anEvent.eventDescription];
         [eventInfo addChild:eventDate];
+        [eventInfo addChild:eventTimeZone];
         [eventInfo addChild:eventTitle];
         [eventInfo addChild:eventDescription];
         
@@ -1365,7 +1370,19 @@ static Model *sharedInstance;
 }
 
 #pragma mark -
-#pragma mark Unique ID Generator
+#pragma mark Utils
+
+- (NSString *)getUserLocalTimezoneIdentifier
+{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
+    [dateFormatter setDateFormat:@"z"];
+    [NSTimeZone resetSystemTimeZone];
+    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSDate *date = [NSDate date];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    return dateString;
+}
 
 - (NSString*) stringWithUUID {
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);//create a new UUID
