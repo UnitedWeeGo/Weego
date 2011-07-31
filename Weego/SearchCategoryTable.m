@@ -44,6 +44,13 @@
     
     NSMutableArray *catSet = [Model sharedInstance].simpleGeoCategoryResults;
     NSLog(@"catSet count: %d", [catSet count]);
+    
+    // if the cat loading somehow failed, attempt to reload it
+    if ([catSet count] == 0)
+    {
+        NSLog(@"no categories, attempting to reload");
+        [[Controller sharedInstance] getSimpleGeoCategories];
+    }
 }
 
 - (void)updateSearchContentsWithSearchString:(NSString *)searchString
