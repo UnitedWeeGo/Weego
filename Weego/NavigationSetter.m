@@ -343,7 +343,7 @@ static NavigationSetter *sharedInstance;
     [searchAgainBtn setTitleColor:col forState:UIControlStateNormal];
     searchAgainBtn.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
     searchAgainBtn.titleLabel.lineBreakMode = UILineBreakModeClip;
-    searchAgainBtn.titleEdgeInsets = UIEdgeInsetsMake(4, 0, 0, 10);
+    searchAgainBtn.titleEdgeInsets = UIEdgeInsetsMake(4, 13, 0, 10);
     UIColor *shadowColor = HEXCOLOR(0x00000000);
     searchAgainBtn.titleLabel.shadowColor = shadowColor;
     searchAgainBtn.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -351,7 +351,7 @@ static NavigationSetter *sharedInstance;
     
     UIImage *searchAgainIcon = [UIImage imageNamed:@"icon_redo_01.png"];
     UIImageView *searchAgainIconView = [[[UIImageView alloc] initWithImage:searchAgainIcon] autorelease];
-    searchAgainIconView.frame = CGRectMake(233, 10, searchAgainIcon.size.width, searchAgainIcon.size.height);
+    searchAgainIconView.frame = CGRectMake(62, 10, searchAgainIcon.size.width, searchAgainIcon.size.height);
     
     [searchAgainBtnView addSubview:searchAgainBtn];
     [searchAgainBtnView addSubview:searchAgainIconView];
