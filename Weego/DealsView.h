@@ -16,6 +16,6 @@
     UIView *shader;
 }
 
-@property (nonatomic, copy) NSString *dealCode;
+@property (nonatomic, copy) NSString *SGID;
 
 @end

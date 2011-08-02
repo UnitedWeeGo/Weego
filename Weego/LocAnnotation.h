@@ -41,6 +41,8 @@ typedef enum {
 @property (nonatomic, readonly) BOOL isAddress;
 @property (nonatomic, readwrite) BOOL scheduledForZoom;
 
+@property (nonatomic, copy) NSString *featureId;
+
 - (LocAnnotation *)initWithLocation:(Location *)loc withStateType:(LocAnnoStateType)theStateType andSelectedState:(LocAnnoSelectedState)theSelectedState;
 
 - (void)setStateType:(LocAnnoStateType)type;

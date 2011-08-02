@@ -18,7 +18,7 @@
 
 @implementation DealsView
 
-@synthesize dealCode;
+@synthesize SGID;
 
 - (void)didReceiveMemoryWarning
 {
@@ -58,7 +58,7 @@
     [self.view addSubview:shader];
     
     [self setUpDataFetcherMessageListeners];
-    [[Controller sharedInstance] getDealsHTMLDataWithCode:self.dealCode];
+    [[Controller sharedInstance] getDealsHTMLDataWithSGID:self.SGID];
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -209,7 +209,7 @@
 - (void)dealloc
 {
     [self removeDataFetcherMessageListeners];
-    [self.dealCode release];
+    [self.SGID release];
     [super dealloc];
 }
 

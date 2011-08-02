@@ -756,17 +756,19 @@
 	return self;
 }
 
-- (id)initAndGetDealsHMTLDataWithCode:(NSString *)dealCode withDelegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndGetDealsHMTLDataWithUserId:(NSString *)userId withSGID:(NSString *)sg_id withTimestamp:(NSString *)timestamp withDelegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
         pendingRequestType = DataFetchTypeDeal;
 		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&sg_id=%@&timestamp=%@",
                                 apiURL,
-                                @"help.html",
-                                dealCode] autorelease];
+                                @"deal.php",
+                                userId,
+                                [self urlencode:sg_id],
+                                [self urlencode:timestamp]] autorelease];
         [self makeRequest:urlString];
 	}
 	return self;

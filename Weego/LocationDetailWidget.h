@@ -70,6 +70,7 @@ typedef enum {
 
 @property (readonly,assign) Boolean iAmShowing;
 @property (readwrite,assign) Boolean hasDeal;
+@property (nonatomic, copy) NSString *featureId;
 @property (nonatomic,assign) id <LocationDetailWidgetDelegate> delegate;
 
 - (void)updateInfoViewWithLocationAnnotation:(LocAnnotation *)annotation;

@@ -43,7 +43,7 @@
 
 @implementation LocationDetailWidget
 
-@synthesize iAmShowing, delegate, hasDeal;
+@synthesize iAmShowing, delegate, hasDeal, featureId;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -305,7 +305,7 @@
 
 - (void)dealButtonPressed
 {
-    [[ViewController sharedInstance] showDeal:@"98765"];
+    [[ViewController sharedInstance] showDeal:self.featureId];
 //    [self showDeal];
 }
 
@@ -527,6 +527,7 @@
     //BOOL locationEligibleForDeletion = cState < EventStateDecided && annotation.iAddedLocation && locationAdded;
     
     self.hasDeal = annotation.hasDeal;
+    self.featureId = annotation.featureId;
     if (avatarImage) [avatarImage removeFromSuperview];
     avatarImage = nil;
     distanceLabel.hidden = YES;
@@ -756,6 +757,7 @@
 {
     currentAnnotation = nil;
     delegate = nil;
+    [self.featureId release];
     [super dealloc];
 }
 

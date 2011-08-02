@@ -435,9 +435,10 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
-- (NSString *)getDealsHTMLDataWithCode:(NSString *)dealCode
+- (NSString *)getDealsHTMLDataWithSGID:(NSString *)sg_id
 {
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetDealsHMTLDataWithCode:dealCode withDelegate:[DealsDataParser sharedInstance]] autorelease];
+    Model *model = [Model sharedInstance];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetDealsHMTLDataWithUserId:model.userId withSGID:sg_id withTimestamp:[model.currentEvent getTimestampDateString] withDelegate:[DealsDataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 

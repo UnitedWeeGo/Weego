@@ -390,14 +390,14 @@ static ViewController *sharedInstance;
     [appDelegate showDropShadow:amount];
 }
 
-- (void)showDeal:(NSString *)dealCode
+- (void)showDeal:(NSString *)SGID
 {
 #warning Should we add deal code to GA tracking?
     [self addAndReportViewWithName:@"/deal"];
     [Model sharedInstance].currentViewState = ViewStateDeal;
     [self showEventBackground];
     DealsView *dealController = [[DealsView alloc] init];
-    dealController.dealCode = dealCode;
+    dealController.SGID = SGID;
     [nController pushViewController:dealController animated:YES];
 	[dealController release];
     

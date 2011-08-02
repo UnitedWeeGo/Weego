@@ -437,7 +437,7 @@
 - (void)dealButtonPressed
 {
     NSLog(@"dealButtonPressed");
-    [[ViewController sharedInstance] showDeal:@"12345"];
+    [[ViewController sharedInstance] showDeal:location.g_id];
 }
 
 - (NSString *)urldecode:(NSString *)aString

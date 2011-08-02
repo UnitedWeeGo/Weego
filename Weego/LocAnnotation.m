@@ -22,6 +22,7 @@
 @synthesize isSavedLocation, isEnabled, isNewlyAdded, uuid, iAddedLocation, scheduledForZoom;
 @synthesize hasDeal;
 @synthesize isAddress;
+@synthesize featureId;
 
 
 #pragma mark -
@@ -32,6 +33,7 @@
 	[self.title release];
 	[self.subtitle release];
     [self.uuid release];
+    [self.featureId release];
 	[super dealloc];
 }
 
@@ -47,6 +49,7 @@
         self.title = loc.name;
         self.subtitle = loc.formatted_address == nil ? loc.vicinity: loc.formatted_address; 
         self.hasDeal = loc.hasDeal;
+        self.featureId = loc.g_id;
         isAddress = [loc.location_type isEqualToString:@"address"];
         stateType = theStateType;
         selectedState = theSelectedState;
