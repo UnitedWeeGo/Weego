@@ -38,6 +38,7 @@
     NSString *uZip = [[place properties] objectForKey:@"postcode"];
     NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
     NSString *uPhone = [[place properties] objectForKey:@"phone"];
+    NSString *uDealFlag = [[place properties] objectForKey:@"hasDeal"];
     
     self.name = uName;
     self.formatted_address = uFormatted_address;
@@ -46,6 +47,7 @@
     self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
     self.longitude = [NSString stringWithFormat:@"%f", point.longitude];
     self.g_id = place.featureId;
+    hasDeal = [uDealFlag isEqualToString:@"true"];
     
     self.location_type = @"place";
     if (uPhone != nil) self.formatted_phone_number = uPhone;
@@ -91,6 +93,7 @@
     NSString *uAddedById = [[xml attributeForName:@"addedById"] stringValue];
     NSString *uLatitude = [[xml attributeForName:@"latitude"] stringValue];
     NSString *uLongitude = [[xml attributeForName:@"longitude"] stringValue];
+    NSString *uHasDeal = [[xml attributeForName:@"hasDeal"] stringValue];
     NSString *uName = ((GDataXMLElement *) [[xml elementsForName:@"name"] objectAtIndex:0]).stringValue;
     NSString *uVicinity = ((GDataXMLElement *) [[xml elementsForName:@"vicinity"] objectAtIndex:0]).stringValue;
     NSString *uG_id = ((GDataXMLElement *) [[xml elementsForName:@"g_id"] objectAtIndex:0]).stringValue;
@@ -126,6 +129,7 @@
     if (uRating != nil) self.rating = uRating;
     if (uLocationType != nil) self.location_type = uLocationType;
     if (uHasBeenRemoved != nil) self.hasBeenRemoved = [[uHasBeenRemoved lowercaseString] isEqualToString:@"true"];
+    if (uHasDeal != nil) hasDeal = [[uHasDeal lowercaseString] isEqualToString:@"true"];
 }
 
 - (NSString *)stripped_phone_number
@@ -138,7 +142,7 @@
     mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"+" withString:@""];
     return mobileNumber;
 }
-
+/*
 - (BOOL)hasDeal
 {
     NSString *lastNumber = [self.longitude substringFromIndex:[self.longitude length] - 1];
@@ -149,7 +153,7 @@
     int isOdd = [myNumber intValue] % 2;
     return (isOdd == 1 && [self.location_type isEqualToString:@"place"]);
 }
-
+*/
 - (BOOL)addedByMe
 {
     return [self.addedById isEqualToString:[Model sharedInstance].userEmail];
