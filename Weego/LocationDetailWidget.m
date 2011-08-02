@@ -305,7 +305,8 @@
 
 - (void)dealButtonPressed
 {
-    [self showDeal];
+    [[ViewController sharedInstance] showDeal:@"98765"];
+//    [self showDeal];
 }
 
 - (void)showDealButton

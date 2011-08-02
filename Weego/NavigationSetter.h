@@ -33,7 +33,8 @@ typedef enum {
     NavStateFeed,
     NavStateEntry,
     NavStateInfo,
-    NavStateHelp
+    NavStateHelp,
+    NavStateDeals
 } NavState;
 
 typedef enum {

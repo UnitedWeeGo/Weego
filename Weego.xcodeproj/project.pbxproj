@@ -559,6 +559,8 @@
 		01F17E6013D10D6400213CC4 /* button_redosearch_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5913D10D6400213CC4 /* button_redosearch_pressed@2x.png */; };
 		01F17E6113D10D6400213CC4 /* icon_redo_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5A13D10D6400213CC4 /* icon_redo_01.png */; };
 		01F17E6213D10D6400213CC4 /* icon_redo_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5B13D10D6400213CC4 /* icon_redo_01@2x.png */; };
+		A901BFE513E762D3002D68CA /* DealsView.m in Sources */ = {isa = PBXBuildFile; fileRef = A901BFE413E762D3002D68CA /* DealsView.m */; };
+		A901BFE813E76B5A002D68CA /* DealsDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A901BFE713E76B5A002D68CA /* DealsDataParser.m */; };
 		A91F017B13D8DB4700DA2415 /* plainTableHeaderBg.png in Resources */ = {isa = PBXBuildFile; fileRef = A91F017913D8DB4700DA2415 /* plainTableHeaderBg.png */; };
 		A91F017C13D8DB4700DA2415 /* plainTableHeaderBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A91F017A13D8DB4700DA2415 /* plainTableHeaderBg@2x.png */; };
 		A94B965F13D89416007BC057 /* searchBar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B965913D89416007BC057 /* searchBar_bg.png */; };
@@ -1250,6 +1252,10 @@
 		01F17E5913D10D6400213CC4 /* button_redosearch_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_pressed@2x.png"; sourceTree = "<group>"; };
 		01F17E5A13D10D6400213CC4 /* icon_redo_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_redo_01.png; sourceTree = "<group>"; };
 		01F17E5B13D10D6400213CC4 /* icon_redo_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_redo_01@2x.png"; sourceTree = "<group>"; };
+		A901BFE313E762D3002D68CA /* DealsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DealsView.h; sourceTree = "<group>"; };
+		A901BFE413E762D3002D68CA /* DealsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DealsView.m; sourceTree = "<group>"; };
+		A901BFE613E76B5A002D68CA /* DealsDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DealsDataParser.h; sourceTree = "<group>"; };
+		A901BFE713E76B5A002D68CA /* DealsDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DealsDataParser.m; sourceTree = "<group>"; };
 		A91F017913D8DB4700DA2415 /* plainTableHeaderBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plainTableHeaderBg.png; sourceTree = "<group>"; };
 		A91F017A13D8DB4700DA2415 /* plainTableHeaderBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plainTableHeaderBg@2x.png"; sourceTree = "<group>"; };
 		A94B965913D89416007BC057 /* searchBar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchBar_bg.png; sourceTree = "<group>"; };
@@ -2086,6 +2092,7 @@
 				0176152F13BE793C00324EF9 /* Help.m */,
 				0176153013BE793C00324EF9 /* HelpDataParser.h */,
 				0176153113BE793C00324EF9 /* HelpDataParser.m */,
+				A901BFE113E76211002D68CA /* Deals */,
 				017614B913BE789200324EF9 /* EGOTableViewPullRefresh */,
 				0176142C13BE783200324EF9 /* Location Mgmt */,
 				0176142513BE781500324EF9 /* Navigation Setter */,
@@ -2272,6 +2279,17 @@
 				017614C713BE78F100324EF9 /* whiteArrow@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		A901BFE113E76211002D68CA /* Deals */ = {
+			isa = PBXGroup;
+			children = (
+				A901BFE313E762D3002D68CA /* DealsView.h */,
+				A901BFE413E762D3002D68CA /* DealsView.m */,
+				A901BFE613E76B5A002D68CA /* DealsDataParser.h */,
+				A901BFE713E76B5A002D68CA /* DealsDataParser.m */,
+			);
+			name = Deals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2877,6 +2895,8 @@
 				A9E8813F13D79EF200ABB78D /* SubViewContactsSearchBar.m in Sources */,
 				013CF51A13DA296F0086B5B2 /* NSDate+Helper.m in Sources */,
 				01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */,
+				A901BFE513E762D3002D68CA /* DealsView.m in Sources */,
+				A901BFE813E76B5A002D68CA /* DealsDataParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

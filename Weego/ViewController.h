@@ -48,7 +48,7 @@
 - (void)showEventBackground;
 - (void)showFeedBackground;
 - (void)showDropShadow:(int)amount;
-- (void)showDeal;
+- (void)showDeal:(NSString *)dealCode;
 - (void)hideDeal;
 - (void)showFacebookPopup;
 - (void)hideFacebookPopupWithAnimation:(BOOL)animated;

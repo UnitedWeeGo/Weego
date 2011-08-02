@@ -1,30 +1,30 @@
 //
-//  HelpDataParser.m
-//  BigBaby
+//  DealsDataParser.m
+//  Weego
 //
-//  Created by Dave Prukop on 6/28/11.
+//  Created by Dave Prukop on 8/1/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "HelpDataParser.h"
+#import "DealsDataParser.h"
 
-@implementation HelpDataParser
+@implementation DealsDataParser
 
-static HelpDataParser *sharedInstance;
+static DealsDataParser *sharedInstance;
 
 #pragma mark -
 #pragma mark Object Lifecycle
-+ (HelpDataParser *)sharedInstance {
++ (DealsDataParser *)sharedInstance {
     @synchronized(self) {
         if (!sharedInstance)
-            sharedInstance=[[HelpDataParser alloc] init];       
+            sharedInstance=[[DealsDataParser alloc] init];       
     }
     return sharedInstance;
 }
 
 + (id)alloc {
     @synchronized(self) {
-        NSAssert(sharedInstance == nil, @"Attempted to allocate a second instance of a singleton InfoDataParser.");
+        NSAssert(sharedInstance == nil, @"Attempted to allocate a second instance of a singleton DealsDataParser.");
         sharedInstance = [super alloc];
     }
     return sharedInstance;
@@ -33,8 +33,7 @@ static HelpDataParser *sharedInstance;
 - (void)processServerResponse:(NSMutableData *)myData
 {
     NSString *responseString = [[NSString alloc] initWithData:myData encoding:NSUTF8StringEncoding];	
-    [Model sharedInstance].helpResults = responseString;
+    [Model sharedInstance].dealResults = responseString;
     [responseString release];
 }
-
 @end

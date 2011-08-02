@@ -31,6 +31,7 @@
 - (NSString *)urlencode:(NSString *)aString;
 - (NSString *)stringFromDate:(NSDate *)aDate;
 - (void)makeRequest:(NSString *)urlString;
+- (void)makeRequestRespectingCache:(NSString *)urlString;
 - (void)handleError:(NSError *)error;
 - (void)makeSynchronousRequest:(NSString *)urlString;
 - (NSString*) stringWithUUID;
@@ -733,7 +734,8 @@
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                apiURL,
                                @"info.html"] autorelease];
-		[self makeRequest:urlString];
+//        [self makeRequest:urlString];
+		[self makeRequestRespectingCache:urlString];
 	}
 	return self;
 }
@@ -748,7 +750,24 @@
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                apiURL,
                                @"help.html"] autorelease];
-		[self makeRequest:urlString];
+//        [self makeRequest:urlString];
+		[self makeRequestRespectingCache:urlString];
+	}
+	return self;
+}
+
+- (id)initAndGetDealsHMTLDataWithCode:(NSString *)dealCode withDelegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeDeal;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?%@",
+                                apiURL,
+                                @"help.html",
+                                dealCode] autorelease];
+        [self makeRequest:urlString];
 	}
 	return self;
 }
@@ -834,6 +853,15 @@
 	myConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
 	NSLog(@"http request: %@", urlString);
 //	NSLog(@"%@", myConnection);
+}
+
+- (void)makeRequestRespectingCache:(NSString *)urlString
+{
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:urlString] 
+											  cachePolicy:NSURLRequestReturnCacheDataElseLoad
+										  timeoutInterval:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL];
+	myConnection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+	NSLog(@"http request: %@", urlString);
 }
 
 - (void)makeSynchronousRequest:(NSString *)urlString

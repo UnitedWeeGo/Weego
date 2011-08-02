@@ -21,6 +21,7 @@
 #import "EditEventTVC.h"
 #import "Info.h"
 #import "Help.h"
+#import "DealsView.h"
 
 @interface ViewController(Private)
 - (void)clearLoginKeyChainData;
@@ -389,9 +390,18 @@ static ViewController *sharedInstance;
     [appDelegate showDropShadow:amount];
 }
 
-- (void)showDeal
+- (void)showDeal:(NSString *)dealCode
 {
-    [appDelegate showDeal];
+#warning Should we add deal code to GA tracking?
+    [self addAndReportViewWithName:@"/deal"];
+    [Model sharedInstance].currentViewState = ViewStateDeal;
+    [self showEventBackground];
+    DealsView *dealController = [[DealsView alloc] init];
+    dealController.dealCode = dealCode;
+    [nController pushViewController:dealController animated:YES];
+	[dealController release];
+    
+//    [appDelegate showDeal];
 }
 
 - (void)hideDeal

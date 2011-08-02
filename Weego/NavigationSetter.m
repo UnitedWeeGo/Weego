@@ -224,6 +224,10 @@ static NavigationSetter *sharedInstance;
             [self setNav:target withTitle:@"Help"  withColor:0x777777FF andShadowColor:0x00000000];
             [self addBackHomeButton:target useWhiteIcon:NO];
             break;
+        case NavStateDeals:
+            [self setNav:target withTitle:@"$"  withColor:0x777777FF andShadowColor:0x00000000];
+            [self addBackHomeButton:target useWhiteIcon:NO];
+            break;
         default:
             break;
     }

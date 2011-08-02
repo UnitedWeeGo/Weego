@@ -51,6 +51,7 @@
 @synthesize pendingVoteRequests;
 @synthesize infoResults;
 @synthesize helpResults;
+@synthesize dealResults;
 @synthesize simpleGeoCategoryResults;
 @synthesize suggestedTimes;
 

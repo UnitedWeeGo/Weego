@@ -47,7 +47,8 @@ typedef enum {
     ViewStateEdit,
     ViewStateFeed,
     ViewStateInfo,
-    ViewStateHelp
+    ViewStateHelp,
+    ViewStateDeal
 } ViewState;
 
 typedef enum {
@@ -103,6 +104,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableDictionary *pendingVoteRequests;
 @property (nonatomic, retain) NSString *infoResults;
 @property (nonatomic, retain) NSString *helpResults;
+@property (nonatomic, retain) NSString *dealResults;
 
 
 + (Model *)sharedInstance;
