@@ -334,11 +334,15 @@ typedef enum {
     
     // ------
     
+    UIImage *g_bg1 = [[UIImage imageNamed:@"button_green_default.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:4];
+    UIImage *g_bg2 = [[UIImage imageNamed:@"button_green_pressed.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:4];
+    UIColor *g_shadowColor = HEXCOLOR(0x33333333);
+    
     loginFacebook = [UIButton buttonWithType:UIButtonTypeCustom];
     loginFacebook.adjustsImageWhenHighlighted = NO;
     loginFacebook.frame = CGRectMake(8, 8, bg1.size.width, bg1.size.height);
-    [loginFacebook setBackgroundImage:bg1 forState:UIControlStateNormal];
-    [loginFacebook setBackgroundImage:bg2 forState:UIControlStateHighlighted];
+    [loginFacebook setBackgroundImage:g_bg1 forState:UIControlStateNormal];
+    [loginFacebook setBackgroundImage:g_bg2 forState:UIControlStateHighlighted];
     [loginFacebook addTarget:self action:@selector(handleFacebookPressed:) forControlEvents:UIControlEventTouchUpInside];
     [loginFacebook setImage:[UIImage imageNamed:@"icon_facebook.png"] forState:UIControlStateNormal];
     [loginFacebook setTitle:@"Login with Facebook" forState:UIControlStateNormal];
@@ -346,7 +350,7 @@ typedef enum {
     loginFacebook.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
     loginFacebook.imageEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
     [loginFacebook setTitleColor:col forState:UIControlStateNormal];
-    loginFacebook.titleLabel.shadowColor = shadowColor;
+    loginFacebook.titleLabel.shadowColor = g_shadowColor;
     loginFacebook.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     [footerView addSubview:loginFacebook];
     
