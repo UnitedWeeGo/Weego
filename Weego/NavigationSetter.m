@@ -30,6 +30,7 @@
 - (void)addBackButton:(id)target onLightBackground:(BOOL)onLightBackground;
 - (void)addHeaderFeedTitleWithTarget:(id)target;
 - (void)addHeaderCountMeInTitleWithTarget:(id)target;
+- (void)addSelectTimeButton:(id)target;
 
 @end
 
@@ -225,8 +226,13 @@ static NavigationSetter *sharedInstance;
             [self addBackHomeButton:target useWhiteIcon:NO];
             break;
         case NavStateDeals:
-            [self setNav:target withTitle:@"$"  withColor:0x777777FF andShadowColor:0x00000000];
+            [self setNav:target withTitle:@"Deal"  withColor:0x777777FF andShadowColor:0x00000000];
             [self addBackHomeButton:target useWhiteIcon:NO];
+            break;
+        case NavStateDealsWithTimeAvailability:
+            [self setNav:target withTitle:@"Deal"  withColor:0x777777FF andShadowColor:0x00000000];
+            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addSelectTimeButton:target];
             break;
         default:
             break;
@@ -688,6 +694,30 @@ static NavigationSetter *sharedInstance;
     vc.navigationItem.leftBarButtonItem = btn;
 }
 
+- (void)addSelectTimeButton:(id)target
+{
+    UIViewController *vc = target;
+    
+    UIImage *bg1 = [UIImage imageNamed:@"button_clear_sm_default.png"];
+    UIImage *bg2 = [UIImage imageNamed:@"button_clear_sm_pressed.png"];
+    
+    UIImage *icon = [UIImage imageNamed:@"icon_time_01.png"];
+    
+    CGRect buttonTargetSize = CGRectMake(0, 0, bg1.size.width, bg1.size.height); // set the desired width here, if it is different than the default button size
+    
+    UIButton *cView = [UIButton buttonWithType:UIButtonTypeCustom];
+    cView.imageEdgeInsets = UIEdgeInsetsMake(0, 2, 0, 0);
+    cView.adjustsImageWhenHighlighted = NO;
+    [cView setFrame:buttonTargetSize];
+    [cView addTarget:target action:@selector(handleSelectTimePress:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cView setBackgroundImage:bg1 forState:UIControlStateNormal];
+    [cView setBackgroundImage:bg2 forState:UIControlStateHighlighted];
+    [cView setImage:icon forState:UIControlStateNormal];
+    
+    UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithCustomView:cView] autorelease];
+    vc.navigationItem.rightBarButtonItem = btn;
+}
 
 
 /*

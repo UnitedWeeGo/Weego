@@ -34,7 +34,8 @@ typedef enum {
     NavStateEntry,
     NavStateInfo,
     NavStateHelp,
-    NavStateDeals
+    NavStateDeals,
+    NavStateDealsWithTimeAvailability
 } NavState;
 
 typedef enum {

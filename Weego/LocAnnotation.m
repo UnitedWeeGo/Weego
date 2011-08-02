@@ -96,7 +96,7 @@
     NSString *typeString;
     switch (type) {
         case LocAnnoStateTypeSearch:
-            typeString = @"POIs_search_";
+            typeString = self.hasDeal ? @"POIs_deal_" : @"POIs_search_";
             break;
         case LocAnnoStateTypePlace:
             typeString = @"POIs_place_";
