@@ -14,7 +14,7 @@
 @class Event;
 @class DataFetcher;
 
-@interface CreateEventTVC : UITableViewController <SubViewLocationDelegate, CellFormEntryDelegate, UIActionSheetDelegate, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate> {
+@interface CreateEventTVC : UITableViewController <SubViewLocationDelegate, CellFormEntryDelegate, UIActionSheetDelegate, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, UIAlertViewDelegate> {
 	
 	Event *detail;
     UIActionSheet *dateActionSheet;
@@ -24,6 +24,7 @@
     int rowsForLocations;
     NSArray *oldSortedLocations;
     NSArray *currentSortedLocations;
+    BOOL eventDateAdjusted;
 }
 
 @property (nonatomic, assign) BOOL isInDuplicate;

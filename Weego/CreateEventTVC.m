@@ -48,6 +48,7 @@ typedef enum {
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
 - (void)changeDateTimeInLabel:(id)sender;
+- (void)handleRightActionPress:(id)sender;
 
 @end
 
@@ -148,6 +149,15 @@ typedef enum {
 
 - (void)handleRightActionPress:(id)sender
 {
+    if (!eventDateAdjusted)
+    {
+        NSString *message = [NSString stringWithFormat:@"You selected %@ for the event time. Is this ok?", [detail getFormattedDateString]];
+        UIAlertView *noTimeChangeWarning = [[UIAlertView alloc] initWithTitle:@"Just checking" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes!", nil];
+        [noTimeChangeWarning show];
+        [noTimeChangeWarning release];
+        return;
+    }
+    
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem.enabled = NO;
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhat inSection:eventDetailSectionEntryForm]];
@@ -165,6 +175,15 @@ typedef enum {
         [controller addEvent:detail];
     } else {
         [[ViewController sharedInstance] dismissModal:self];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        eventDateAdjusted = YES;
+        [self handleRightActionPress:self];
     }
 }
 
@@ -644,6 +663,7 @@ typedef enum {
     if (sender == datePicker) detail.eventDate = datePicker.date;
     CellFormEntry *targetCell = (CellFormEntry *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhen inSection:eventDetailSectionEntryForm]];
     targetCell.fieldText = [detail getFormattedDateString];
+    eventDateAdjusted = YES;
 }
 
 #pragma mark -
