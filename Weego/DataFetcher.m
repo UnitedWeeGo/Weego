@@ -756,6 +756,38 @@
 	return self;
 }
 
+- (id)initAndGetTermsHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeHelp;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
+                                apiURL,
+                                @"terms.html"] autorelease];
+        //        [self makeRequest:urlString];
+		[self makeRequestRespectingCache:urlString];
+	}
+	return self;
+}
+
+- (id)initAndGetPrivacyHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        requestId = [[self stringWithUUID] retain];
+        pendingRequestType = DataFetchTypeHelp;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
+                                apiURL,
+                                @"privacy.html"] autorelease];
+        //        [self makeRequest:urlString];
+		[self makeRequestRespectingCache:urlString];
+	}
+	return self;
+}
+
 - (id)initAndGetDealsHMTLDataWithUserId:(NSString *)userId withSGID:(NSString *)sg_id withTimestamp:(NSString *)timestamp withDelegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];

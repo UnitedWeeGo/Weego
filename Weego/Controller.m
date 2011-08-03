@@ -17,6 +17,8 @@
 #import "SimpleGeoDataParser.h"
 #import "InfoDataParser.h"
 #import "HelpDataParser.h"
+#import "TermsDataParser.h"
+#import "PrivacyDataParser.h"
 #import "DealsDataParser.h"
 
 @interface Controller (Private)
@@ -432,6 +434,18 @@ static Controller *sharedInstance;
 - (NSString *)getHelpHMTLData
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetHelpHMTLDataWithDelegate:[HelpDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
+- (NSString *)getTermsHMTLData
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetTermsHMTLDataWithDelegate:[TermsDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
+- (NSString *)getPrivacyHMTLData
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetPrivacyHMTLDataWithDelegate:[PrivacyDataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 

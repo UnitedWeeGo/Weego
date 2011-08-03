@@ -581,6 +581,10 @@
 		A94B966813D89DDC007BC057 /* searchBar_bookmark_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B966613D89DDC007BC057 /* searchBar_bookmark_icon@2x.png */; };
 		A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A979A7AA13D10757008A7002 /* AddressBookTVC.m */; };
 		A9E8813F13D79EF200ABB78D /* SubViewContactsSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */; };
+		A9FBA28E13E8C6A400FAC5CA /* TermsDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */; };
+		A9FBA29213E8C6BF00FAC5CA /* PrivacyDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */; };
+		A9FBA29513E8C79200FAC5CA /* Terms.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA29413E8C79200FAC5CA /* Terms.m */; };
+		A9FBA29813E8C7B400FAC5CA /* Privacy.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA29713E8C7B400FAC5CA /* Privacy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1286,6 +1290,14 @@
 		A979A7AA13D10757008A7002 /* AddressBookTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookTVC.m; sourceTree = "<group>"; };
 		A9E8813D13D79EF100ABB78D /* SubViewContactsSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewContactsSearchBar.h; sourceTree = "<group>"; };
 		A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewContactsSearchBar.m; sourceTree = "<group>"; };
+		A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsDataParser.h; sourceTree = "<group>"; };
+		A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsDataParser.m; sourceTree = "<group>"; };
+		A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivacyDataParser.h; sourceTree = "<group>"; };
+		A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivacyDataParser.m; sourceTree = "<group>"; };
+		A9FBA29313E8C79200FAC5CA /* Terms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terms.h; sourceTree = "<group>"; };
+		A9FBA29413E8C79200FAC5CA /* Terms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Terms.m; sourceTree = "<group>"; };
+		A9FBA29613E8C7B300FAC5CA /* Privacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Privacy.h; sourceTree = "<group>"; };
+		A9FBA29713E8C7B400FAC5CA /* Privacy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Privacy.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2120,6 +2132,14 @@
 				0176140813BE778000324EF9 /* Help/About Components */,
 				A9E8813D13D79EF100ABB78D /* SubViewContactsSearchBar.h */,
 				A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */,
+				A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */,
+				A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */,
+				A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */,
+				A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */,
+				A9FBA29313E8C79200FAC5CA /* Terms.h */,
+				A9FBA29413E8C79200FAC5CA /* Terms.m */,
+				A9FBA29613E8C7B300FAC5CA /* Privacy.h */,
+				A9FBA29713E8C7B400FAC5CA /* Privacy.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2929,6 +2949,10 @@
 				01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */,
 				A901BFE513E762D3002D68CA /* DealsView.m in Sources */,
 				A901BFE813E76B5A002D68CA /* DealsDataParser.m in Sources */,
+				A9FBA28E13E8C6A400FAC5CA /* TermsDataParser.m in Sources */,
+				A9FBA29213E8C6BF00FAC5CA /* PrivacyDataParser.m in Sources */,
+				A9FBA29513E8C79200FAC5CA /* Terms.m in Sources */,
+				A9FBA29813E8C7B400FAC5CA /* Privacy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,8 @@
 #import "EditEventTVC.h"
 #import "Info.h"
 #import "Help.h"
+#import "Terms.h"
+#import "Privacy.h"
 #import "DealsView.h"
 
 @interface ViewController(Private)
@@ -342,6 +344,26 @@ static ViewController *sharedInstance;
     Help *helpController = [[Help alloc] init];
     [nController pushViewController:helpController animated:YES];
 	[helpController release];
+}
+
+- (void)navigateToTerms
+{
+    [self addAndReportViewWithName:@"/terms"];
+    [Model sharedInstance].currentViewState = ViewStateTerms;
+    [self showEventBackground];
+    Terms *termsController = [[Terms alloc] init];
+    [nController pushViewController:termsController animated:YES];
+	[termsController release];
+}
+
+- (void)navigateToPrivacy
+{
+    [self addAndReportViewWithName:@"/privacy"];
+    [Model sharedInstance].currentViewState = ViewStatePrivacy;
+    [self showEventBackground];
+    Privacy *privacyController = [[Privacy alloc] init];
+    [nController pushViewController:privacyController animated:YES];
+	[privacyController release];
 }
 
 - (void)goBack

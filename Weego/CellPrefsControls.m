@@ -31,7 +31,7 @@
         fieldTitle.numberOfLines = 0;
         [self addSubview:fieldTitle];
         
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.frame = CGRectMake(0, 0, 300, CellPrefsControlsHeight);
         
         uiSwitch = [[[UISwitch alloc] init] autorelease];

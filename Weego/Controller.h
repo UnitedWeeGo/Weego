@@ -55,6 +55,8 @@
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;
 - (NSString *)getInfoHMTLData;
 - (NSString *)getHelpHMTLData;
+- (NSString *)getTermsHMTLData;
+- (NSString *)getPrivacyHMTLData;
 - (NSString *)getDealsHTMLDataWithSGID:(NSString *)sg_id;
 - (NSString *)getRecentParticipants;
 - (NSString *)removeLocationWithId:(NSString *)locationId;

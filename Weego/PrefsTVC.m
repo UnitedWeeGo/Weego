@@ -16,6 +16,7 @@ typedef enum {
     PrefsSectionLoginParticipant = 0,
     PrefsSectionControls,
     PrefsSectionLinks,
+    PrefsSectionLegal,
     NumPrefsSections
 } PrefsSections;
 
@@ -31,6 +32,8 @@ typedef enum {
 - (void)handleHomePress:(id)sender;
 - (void)handleInfoPress:(id)sender;
 - (void)handleHelpPress:(id)sender;
+- (void)handleTermsPress:(id)sender;
+- (void)handlePrivacyPress:(id)sender;
 - (void)initiateLogout:(id)sender;
 
 - (void)presentMailModalViewController;
@@ -132,10 +135,13 @@ typedef enum {
             return ([Model sharedInstance].isInTrial) ? 0 : 1;
             break;
         case PrefsSectionControls:
-            return 2;
+            return [Model sharedInstance].isInTrial ? 0 : 2;
             break;
         case PrefsSectionLinks:
             return 3;
+            break;
+        case PrefsSectionLegal:
+            return 2;
             break;
         default:
             break;
@@ -160,6 +166,8 @@ typedef enum {
 
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (section == 0 && [Model sharedInstance].isInTrial) return 1.0;
+    if (section == 1 && [Model sharedInstance].isInTrial) return 11.0;
     return 11.0;
 }
 
@@ -193,13 +201,21 @@ typedef enum {
         }
     } else if (indexPath.section == PrefsSectionLinks) {
         if (indexPath.row == 0) {
-            cell = [self getCellForLinksWithLabel:@"Feedback" andIndex:0];
+            cell = [self getCellForLinksWithLabel:@"About" andInfo:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] andIndex:0];
             [cell isFirst:YES isLast:NO];
         } else if (indexPath.row == 1) {
             cell = [self getCellForLinksWithLabel:@"Help" andIndex:1];
             [cell isFirst:NO isLast:NO];
         } else if (indexPath.row == 2) {
-            cell = [self getCellForLinksWithLabel:@"About" andInfo:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] andIndex:2];
+            cell = [self getCellForLinksWithLabel:@"Feedback" andIndex:2];
+            [cell isFirst:NO isLast:YES];
+        }
+    } else if (indexPath.section == PrefsSectionLegal) {
+        if (indexPath.row == 0) {
+            cell = [self getCellForLinksWithLabel:@"Terms" andIndex:0];
+            [cell isFirst:YES isLast:NO];
+        } else if (indexPath.row == 1) {
+            cell = [self getCellForLinksWithLabel:@"Privacy policy" andIndex:1];
             [cell isFirst:NO isLast:YES];
         }
     }
@@ -260,11 +276,17 @@ typedef enum {
 {
     if (indexPath.section == PrefsSectionLinks) {
         if (indexPath.row == 0) {
-            [self presentMailModalViewController];
+            [self handleInfoPress:nil];
         } else if (indexPath.row == 1) {
             [self handleHelpPress:nil];
         } else if (indexPath.row == 2) {
-            [self handleInfoPress:nil];
+            [self presentMailModalViewController];
+        }
+    } else if (indexPath.section == PrefsSectionLegal) {
+        if (indexPath.row == 0) {
+            [self handleTermsPress:nil];
+        } else if (indexPath.row == 1) {
+            [self handlePrivacyPress:nil];
         }
     }
 
@@ -300,6 +322,16 @@ typedef enum {
     [[ViewController sharedInstance] navigateToHelp];
 }
 
+- (void)handleTermsPress:(id)sender
+{
+    [[ViewController sharedInstance] navigateToTerms];
+}
+
+- (void)handlePrivacyPress:(id)sender
+{
+    [[ViewController sharedInstance] navigateToPrivacy];
+}
+
 - (void)initiateLogout:(id)sender
 {
     [[ViewController sharedInstance] logoutUser:self];
@@ -307,7 +339,8 @@ typedef enum {
 
 - (void)setUpFooterView
 {
-    footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 48)];
+    CGFloat fHeight = [Model sharedInstance].isInTrial ? 48 : 68;
+    footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fHeight)];
     
     UIImage *bg1 = [UIImage imageNamed:@"button_clear_lrg_default.png"];
     UIImage *bg2 = [UIImage imageNamed:@"button_clear_lrg_pressed.png"];

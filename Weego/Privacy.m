@@ -1,14 +1,14 @@
 //
-//  Help.m
-//  BigBaby
+//  Privacy.m
+//  Weego
 //
-//  Created by Dave Prukop on 6/28/11.
+//  Created by Dave Prukop on 8/2/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "Help.h"
+#import "Privacy.h"
 
-@interface Help (Private)
+@interface Privacy (Private)
 
 - (void)showLoading;
 - (void)hideLoading;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation Help
+@implementation Privacy
 
 - (void)didReceiveMemoryWarning
 {
@@ -33,7 +33,7 @@
 {
     [super loadView];
     self.view.backgroundColor = [UIColor clearColor];
-    [[NavigationSetter sharedInstance] setNavState:NavStateHelp withTarget:self];
+    [[NavigationSetter sharedInstance] setNavState:NavStatePrivacy withTarget:self];
     
     UIView *bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
     bevelStripe.backgroundColor = HEXCOLOR(0xFFFFFFFF);
@@ -55,7 +55,7 @@
     [self.view addSubview:shader];
     
     [self setUpDataFetcherMessageListeners];
-    [[Controller sharedInstance] getHelpHMTLData];
+    [[Controller sharedInstance] getPrivacyHMTLData];
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -146,7 +146,7 @@
                      }
                      completion:^(BOOL finished){
                          [[ViewController sharedInstance] showDropShadow:0];
-                         NSString *htmlContent = [Model sharedInstance].helpResults;
+                         NSString *htmlContent = [Model sharedInstance].privacyResults;
                          [self showContent:htmlContent];
                      }];
 }

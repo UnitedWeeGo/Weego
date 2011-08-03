@@ -46,7 +46,7 @@
     
     labelName.text = aParticipant.fullName;
     labelEmail.text = aParticipant.email;
-    labelPhone.text = @"000-000-0000";
+//    labelPhone.text = @"000-000-0000";
 }
 
 - (void)setUpUI
@@ -70,7 +70,7 @@
     fieldWidth = 320 - textLeftPos - 45;
     
     if (labelName == nil) labelName = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
-                                                                                       nextY + 4, 
+                                                                                       nextY + 13, 
                                                                                        fieldWidth, 
                                                                                        16)] autorelease];
 	labelName.textColor = titleLabelColor;
@@ -97,16 +97,16 @@
     
 	nextY = labelEmail.frame.origin.y + labelEmail.frame.size.height;
 	
-	if (labelPhone == nil) labelPhone = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
-                                                                                 nextY, 
-                                                                                 fieldWidth, 
-                                                                                 14)] autorelease];
-	labelPhone.textColor = labelColor;
-	labelPhone.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
-	labelPhone.backgroundColor = [ UIColor clearColor ]; 
-	[self addSubview:labelPhone];
-    
-	nextY = labelPhone.frame.origin.y + labelPhone.frame.size.height;
+//	if (labelPhone == nil) labelPhone = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
+//                                                                                 nextY, 
+//                                                                                 fieldWidth, 
+//                                                                                 14)] autorelease];
+//	labelPhone.textColor = labelColor;
+//	labelPhone.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
+//	labelPhone.backgroundColor = [ UIColor clearColor ]; 
+//	[self addSubview:labelPhone];
+//    
+//	nextY = labelPhone.frame.origin.y + labelPhone.frame.size.height;
     
 	self.frame = CGRectMake(self.frame.origin.x, 
 							self.frame.origin.y, 

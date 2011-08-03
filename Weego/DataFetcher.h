@@ -174,6 +174,8 @@ typedef NSInteger DataFetchType;
 - (id)initAndSetEventAcceptanceWithUserId:(NSString *)userId withEvent:(Event *)event didAccept:(BOOL)didAccept delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetInfoHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetHelpHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndGetTermsHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndGetPrivacyHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetDealsHMTLDataWithUserId:(NSString *)userId withSGID:(NSString *)sg_id withTimestamp:(NSString *)timestamp withDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndRemoveLocationWithUserId:(NSString *)userId andEventId:(NSString *)eventId andLocationId:(NSString *)locationId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 

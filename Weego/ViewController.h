@@ -56,6 +56,8 @@
 - (void)hideLoadView;
 - (void)navigateToInfo;
 - (void)navigateToHelp;
+- (void)navigateToTerms;
+- (void)navigateToPrivacy;
 
 - (void)addAndReportViewWithName:(NSString *)name;
 - (void)removeCurrentAndReportPreviousView;
