@@ -178,7 +178,7 @@
 }
 
 #pragma mark - Navigation handlers
-- (void)handleHomePress:(id)sender
+- (void)handleBackPress:(id)sender
 {
     [[ViewController sharedInstance] goBack];
 }

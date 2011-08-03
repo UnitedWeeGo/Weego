@@ -219,27 +219,27 @@ static NavigationSetter *sharedInstance;
             // nothing, empty
         case NavStateInfo:
             [self setNav:target withTitle:@"About"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             break;
         case NavStateHelp:
             [self setNav:target withTitle:@"Help"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             break;
         case NavStateTerms:
             [self setNav:target withTitle:@"Terms"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             break;
         case NavStatePrivacy:
             [self setNav:target withTitle:@"Privacy Policy"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             break;
         case NavStateDeals:
             [self setNav:target withTitle:@"Deal"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             break;
         case NavStateDealsWithTimeAvailability:
             [self setNav:target withTitle:@"Deal"  withColor:0x777777FF andShadowColor:0x00000000];
-            [self addBackHomeButton:target useWhiteIcon:NO];
+            [self addBackButton:target onLightBackground:true];
             [self addSelectTimeButton:target];
             break;
         default:
