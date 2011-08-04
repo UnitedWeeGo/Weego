@@ -710,7 +710,8 @@ typedef enum {
     placemark.uuid = uuid;
     [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
     if ([Model sharedInstance].currentAppState == AppStateCreateEvent || [Model sharedInstance].isInTrial) {
-        [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
+//        [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
+        [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
     } else {
         [locWidget updateInfoViewWithCorrectButtonState:ActionStateSpinning];
         mapView.userInteractionEnabled = NO;
@@ -1044,7 +1045,13 @@ typedef enum {
     
     switch (fetchType) {
         case DataFetchTypeAddNewLocationToEvent:
-            [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
+//            [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
+            
+            [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
+            LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
+            [placemark setStateType:LocAnnoStateTypeLiked];
+            [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
+            
             mapView.userInteractionEnabled = YES;
             isAddingLocation = NO;
             break;

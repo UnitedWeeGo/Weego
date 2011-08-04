@@ -220,6 +220,7 @@ static Controller *sharedInstance;
         NSMutableArray *locs = [[NSMutableArray alloc] initWithArray:[model.currentEvent.currentLocationOrder componentsSeparatedByString:@","]];
         for (Location *loc in locations) {
             [locs insertObject:loc.locationId atIndex:0];
+            [model addOrUpdateVotes:loc.locationId inEventWithId:model.currentEvent.eventId overwrite:NO];
         }
         model.currentEvent.currentLocationOrder = [locs componentsJoinedByString:@","];
         [locs release];
