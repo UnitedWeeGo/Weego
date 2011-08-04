@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SubViewContactsSearchBarDelegate <NSObject>
+@protocol SubViewSearchBarDelegate <NSObject>
 
 - (void)searchBar:(id)searchBar textDidChange:(NSString *)searchText;
 - (void)searchBarBookmarkButtonClicked:(id)searchBar;
@@ -25,7 +25,7 @@
 
 @end
 
-@interface SubViewContactsSearchBar : UIView <UITextFieldDelegate> {
+@interface SubViewSearchBar : UIView <UITextFieldDelegate> {
     CGPoint nonEditingFieldOrigin;
     CGPoint isEditingFieldOrigin;
     CGSize nonEditingFieldSize;
@@ -43,13 +43,12 @@
     UIButton *buttonAddressBook;
     UIButton *buttonClear;
     UIButton *buttonCancel;
-    
-    NSString *placeholderText;
     NSString *localText;
 }
 
-@property (nonatomic, assign) id <SubViewContactsSearchBarDelegate> delegate;
+@property (nonatomic, assign) id <SubViewSearchBarDelegate> delegate;
 @property (nonatomic, readonly) NSString *text;
+@property (nonatomic, retain) NSString *placeholderText;
 
 - (void)resetField;
 - (void)showError:(BOOL)shouldShowError;

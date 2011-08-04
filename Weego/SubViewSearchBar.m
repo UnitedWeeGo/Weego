@@ -6,9 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "SubViewContactsSearchBar.h"
+#import "SubViewSearchBar.h"
 
-@interface SubViewContactsSearchBar (Private)
+@interface SubViewSearchBar (Private)
 
 - (void)setUpUI;
 - (void)showClearButton:(BOOL)shouldShowButton;
@@ -19,9 +19,15 @@
 
 @end
 
-@implementation SubViewContactsSearchBar
+@implementation SubViewSearchBar
 
-@synthesize delegate;
+@synthesize delegate, placeholderText;
+
+- (void)dealloc
+{
+    self.placeholderText = nil;
+    [super dealloc];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -38,7 +44,7 @@
         nonEditingBgButtonFrame = CGRectMake(5, 0, 265, self.frame.size.height);
         isEditingBgButtonFrame = CGRectMake(5, 0, 205, self.frame.size.height);
         
-        placeholderText = @"Type your friend's name or email";
+        self.placeholderText = @"";
         localText = @"";
         [self setUpUI];
     }
@@ -80,7 +86,7 @@
     searchField.autocorrectionType = UITextAutocorrectionTypeNo;
     searchField.keyboardType = UIKeyboardTypeEmailAddress;
     searchField.delegate = self;
-    searchField.placeholder = placeholderText;
+    searchField.placeholder = self.placeholderText;
 	[self addSubview:searchField];
     
     buttonClear = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -120,6 +126,13 @@
     buttonCancel.alpha = 0;
     [self addSubview:buttonCancel];
 
+}
+
+- (void)setPlaceholderText:(NSString *)text
+{
+    if (placeholderText) [placeholderText release];
+    placeholderText = [text retain];
+    searchField.placeholder = placeholderText;
 }
 
 - (NSString *)text
