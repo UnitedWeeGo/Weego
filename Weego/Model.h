@@ -59,7 +59,8 @@ typedef enum {
 	EventStateVoting,
     EventStateVotingWarning,
     EventStateDecided,
-    EventStateEnded
+    EventStateEnded,
+    EventStateCancelled
 } EventState;
 
 #define MODEL_EVENT_GENERIC_ERROR @"genericError"
