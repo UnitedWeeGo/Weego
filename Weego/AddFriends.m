@@ -87,8 +87,9 @@
     self.contactsTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.contactsTableView];
 
-    contactsSearchBar = [[SubViewContactsSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
+    contactsSearchBar = [[SubViewSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
     contactsSearchBar.delegate = self;
+    contactsSearchBar.placeholderText = @"Type your friend's name or email";
     [self.view addSubview:contactsSearchBar];
     [contactsSearchBar release];
     
@@ -212,7 +213,7 @@
 
 #pragma mark - SubViewContactsSearchBarDelegate
 
-- (void)searchBar:(SubViewContactsSearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(SubViewSearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self hideSending];
@@ -222,7 +223,7 @@
     [NSThread detachNewThreadSelector:@selector(searchAddressBook) toTarget:self withObject:nil];
 }
 
-- (void)searchBarTextDidBeginEditing:(SubViewContactsSearchBar *)searchBar
+- (void)searchBarTextDidBeginEditing:(SubViewSearchBar *)searchBar
 {
     keyboardShowing = YES;
     [UIView animateWithDuration:0.30f 
@@ -234,7 +235,7 @@
                      completion:NULL];
 }
 
-- (void)searchBarTextDidEndEditing:(SubViewContactsSearchBar *)searchBar
+- (void)searchBarTextDidEndEditing:(SubViewSearchBar *)searchBar
 {
     keyboardShowing = NO;
     [UIView animateWithDuration:0.30f 
@@ -246,7 +247,7 @@
                      completion:NULL];
 }
 
-- (void)searchBarBookmarkButtonClicked:(SubViewContactsSearchBar *)searchBar
+- (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)searchBar
 {
     [[ViewController sharedInstance] navigateToAddressBook:self];
 }
@@ -258,14 +259,14 @@
     [contactsTableView reloadData];
 }
 
-- (void)searchBarCancelButtonClicked:(SubViewContactsSearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(SubViewSearchBar *)searchBar
 {
     hasFoundResults = NO;
     [filteredContacts removeAllObjects];
     [contactsTableView reloadData];
 }
 
-- (void)searchBarReturnButtonClicked:(SubViewContactsSearchBar *)searchBar
+- (void)searchBarReturnButtonClicked:(SubViewSearchBar *)searchBar
 {
     Contact *c = [[Contact alloc] init];
     c.emailAddress = searchBar.text;

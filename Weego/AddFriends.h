@@ -11,16 +11,16 @@
 #import "SubViewContactEntry.h"
 #import "EGORefreshTableHeaderView.h"
 #import "AddressBookTVC.h"
-#import "SubViewContactsSearchBar.h"
+#import "SubViewSearchBar.h"
 
 @class DataFetcher;
 
-@interface AddFriends : UIViewController <UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate, SubViewContactsSearchBarDelegate> {
+@interface AddFriends : UIViewController <UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate, SubViewSearchBarDelegate> {
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _saving;
     
 //    UISearchBar *searchEntryBar;
-    SubViewContactsSearchBar *contactsSearchBar;
+    SubViewSearchBar *contactsSearchBar;
     UITableView *contactsTableView;
     NSMutableArray *filteredContacts;
     BOOL hasFoundResults;

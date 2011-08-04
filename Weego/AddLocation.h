@@ -15,6 +15,7 @@
 #import "Location.h"
 #import "SearchCategoryTable.h"
 #import "WildcardGestureRecognizer.h"
+#import "SubViewSearchBar.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -35,10 +36,11 @@ typedef enum {
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, UISearchBarDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate,SearchCategoryTableDelegate> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
-    UISearchBar *searchBar;
+    //UISearchBar *searchBar;
+    SubViewSearchBar *searchBar;
     Boolean searchBarShowing;
     
     

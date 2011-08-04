@@ -580,7 +580,7 @@
 		A94B966713D89DDC007BC057 /* searchBar_bookmark_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B966513D89DDC007BC057 /* searchBar_bookmark_icon.png */; };
 		A94B966813D89DDC007BC057 /* searchBar_bookmark_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B966613D89DDC007BC057 /* searchBar_bookmark_icon@2x.png */; };
 		A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A979A7AA13D10757008A7002 /* AddressBookTVC.m */; };
-		A9E8813F13D79EF200ABB78D /* SubViewContactsSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */; };
+		A9E8813F13D79EF200ABB78D /* SubViewSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */; };
 		A9FBA28E13E8C6A400FAC5CA /* TermsDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */; };
 		A9FBA29213E8C6BF00FAC5CA /* PrivacyDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */; };
 		A9FBA29513E8C79200FAC5CA /* Terms.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA29413E8C79200FAC5CA /* Terms.m */; };
@@ -1288,8 +1288,8 @@
 		A94B966613D89DDC007BC057 /* searchBar_bookmark_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchBar_bookmark_icon@2x.png"; sourceTree = "<group>"; };
 		A979A7A913D10757008A7002 /* AddressBookTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressBookTVC.h; sourceTree = "<group>"; };
 		A979A7AA13D10757008A7002 /* AddressBookTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookTVC.m; sourceTree = "<group>"; };
-		A9E8813D13D79EF100ABB78D /* SubViewContactsSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewContactsSearchBar.h; sourceTree = "<group>"; };
-		A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewContactsSearchBar.m; sourceTree = "<group>"; };
+		A9E8813D13D79EF100ABB78D /* SubViewSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewSearchBar.h; sourceTree = "<group>"; };
+		A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewSearchBar.m; sourceTree = "<group>"; };
 		A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsDataParser.h; sourceTree = "<group>"; };
 		A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsDataParser.m; sourceTree = "<group>"; };
 		A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivacyDataParser.h; sourceTree = "<group>"; };
@@ -2130,8 +2130,8 @@
 				0176142513BE781500324EF9 /* Navigation Setter */,
 				0176141513BE77E300324EF9 /* Feed */,
 				0176140813BE778000324EF9 /* Help/About Components */,
-				A9E8813D13D79EF100ABB78D /* SubViewContactsSearchBar.h */,
-				A9E8813E13D79EF100ABB78D /* SubViewContactsSearchBar.m */,
+				A9E8813D13D79EF100ABB78D /* SubViewSearchBar.h */,
+				A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */,
 				A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */,
 				A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */,
 				A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */,
@@ -2944,7 +2944,7 @@
 				018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */,
 				018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */,
 				017EE6AD13D6369F00CB7904 /* WildcardGestureRecognizer.m in Sources */,
-				A9E8813F13D79EF200ABB78D /* SubViewContactsSearchBar.m in Sources */,
+				A9E8813F13D79EF200ABB78D /* SubViewSearchBar.m in Sources */,
 				013CF51A13DA296F0086B5B2 /* NSDate+Helper.m in Sources */,
 				01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */,
 				A901BFE513E762D3002D68CA /* DealsView.m in Sources */,

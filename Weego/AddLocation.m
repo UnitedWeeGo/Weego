@@ -105,7 +105,7 @@ typedef enum {
     switch (state) {
         case SearchAndDetailStateNone:
             if (searchBarShowing) {
-                [searchBar resignFirstResponder];
+                [searchBar resetField];
                 [self showSearchBar:false withAnimationDelay:0];
             }
             [locWidget setState:WidgetStateClosed withDelay:0];
@@ -113,7 +113,7 @@ typedef enum {
             break;
         case SearchAndDetailStateDetail:
             if (searchBarShowing) {
-                [searchBar resignFirstResponder];
+                [searchBar resetField];
                 [self showSearchBar:false withAnimationDelay:0];
                 [locWidget setState:WidgetStateOpen withDelay:0.00f];
             } else {
@@ -178,14 +178,11 @@ typedef enum {
 }
 - (void)setupSearchBar
 {
-    searchBar = [[UISearchBar alloc] init];
-    searchBar.tintColor = HEXCOLOR(0xE4E4E4FF);
-    searchBar.translucent = YES;
-    searchBar.delegate = self;
     CGRect searchFrame = CGRectMake(0, -41.0, 320.0, 41.0);
-    [searchBar setFrame:searchFrame];
+    searchBar = [[SubViewSearchBar alloc] initWithFrame:searchFrame];
+    searchBar.delegate = self;
+    searchBar.placeholderText = @"Type a location name or type";
     [self.view addSubview:searchBar];
-    searchBar.showsCancelButton = NO;
     [searchBar release];
 }
 
@@ -296,7 +293,7 @@ typedef enum {
                          [searchBar setFrame:(toShow)?(rectIn):(rectOut)];
                      }
                      completion:NULL];
-    if (!toShow) searchBar.text = nil;
+    if (!toShow) [searchBar resetField];
 }
 
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
@@ -335,7 +332,7 @@ typedef enum {
 
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
 {
-    searchBar.text = searchCategory.search_category;
+    //searchBar.text = searchCategory.search_category;
     if (removePreviousResults)
     {
         [self resignKeyboardAndRemoveModalCover:self];
@@ -363,30 +360,38 @@ typedef enum {
     pendingSearchCategory = [searchCategory retain];
 }
 
-#pragma mark - UISearchBarDelegate methods
-- (void)searchBarSearchButtonClicked:(UISearchBar *)theSearchBar 
+#pragma mark - SubViewSearchBarDelegate methods
+- (void)searchBarReturnButtonClicked:(SubViewSearchBar *)theSearchBar
 {
     [self beginLocationSearchWithSearchString:theSearchBar.text andRemovePreviousResults:YES];
 }
-- (void)searchBarCancelButtonClicked:(UISearchBar *)theSearchBar
+- (void)searchBarCancelButtonClicked:(SubViewSearchBar *)theSearchBar
 {
     continueToSearchEnabled = false;
     [self doShowSearchAgainButton:NO];
     [self handleEndSearchPress:self];
 }
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)theSearchBar
+- (BOOL)searchBarShouldBeginEditing:(SubViewSearchBar *)theSearchBar
 {
-    theSearchBar.text = @"";
+    [searchBar resetField];
     continueToSearchEnabled = false;
     [self doShowSearchAgainButton:NO];
     [self showKeyboardResignerAndEnable:YES];
     [self enableSearchCategoryTable];
     return YES;
 }
-- (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(SubViewSearchBar *)theSearchBar textDidChange:(NSString *)searchText
 {
     categoryTable.hidden = [searchText length] == 0;
     [categoryTable updateSearchContentsWithSearchString:searchText];
+}
+- (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)theSearchBar
+{
+    //
+}
+- (void)searchBarClearButtonClicked:(SubViewSearchBar *)theSearchBar
+{
+    
 }
 
 #pragma mark - SearchCategoryTable
@@ -414,7 +419,7 @@ typedef enum {
 - (void)showKeyboardResignerAndEnable:(BOOL)enabled
 {
     CGRect rect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height);
-    keyboardResigner = [UIButton buttonWithType:UIButtonTypeCustom];
+    keyboardResigner = [[[UIButton alloc] initWithFrame:rect] autorelease];
     keyboardResigner.frame = rect;
     [keyboardResigner setBackgroundColor:[UIColor blackColor]];
     [keyboardResigner setAlpha:0.5f];
@@ -431,7 +436,7 @@ typedef enum {
 - (void)resignKeyboardAndRemoveModalCover:(id)target
 {
     [self disableSearchCategoryTable];
-    [searchBar resignFirstResponder];
+    [searchBar resetField];
     [keyboardResigner removeFromSuperview];
     keyboardResigner = nil;
 }
