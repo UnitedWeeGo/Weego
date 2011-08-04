@@ -298,12 +298,6 @@ typedef enum {
 
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
 {
-    if (removePreviousResults)
-    {
-        [self resignKeyboardAndRemoveModalCover:self];
-        [self removeAnnotations:mapView includingSaved:false];
-        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
-    }
     Location *searchLocation = [[[Location alloc] init] autorelease];
     searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
     searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
@@ -328,6 +322,13 @@ typedef enum {
     
     if (pendingSearchCategory) [pendingSearchCategory release];
     pendingSearchCategory = nil;
+    
+    if (removePreviousResults)
+    {
+        [self resignKeyboardAndRemoveModalCover:self];
+        [self removeAnnotations:mapView includingSaved:false];
+        //[self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    }
 }
 
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
@@ -364,6 +365,7 @@ typedef enum {
 - (void)searchBarReturnButtonClicked:(SubViewSearchBar *)theSearchBar
 {
     if ([theSearchBar.text length] == 0) return;
+    NSLog(@"SEARCH STRING: %@", theSearchBar.text);
     [self beginLocationSearchWithSearchString:theSearchBar.text andRemovePreviousResults:YES];
 }
 - (void)searchBarCancelButtonClicked:(SubViewSearchBar *)theSearchBar
@@ -446,7 +448,7 @@ typedef enum {
 - (void)resignKeyboardAndRemoveModalCover:(id)target
 {
     [self disableSearchCategoryTable];
-    [searchBar resetField];
+    [searchBar resignFirstResponder];
     [keyboardResigner removeFromSuperview];
     keyboardResigner = nil;
 }

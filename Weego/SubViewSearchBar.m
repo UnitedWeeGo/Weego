@@ -140,6 +140,12 @@
     return localText;
 }
 
+- (BOOL)resignFirstResponder
+{
+    [searchField resignFirstResponder];
+    return [super resignFirstResponder];
+}
+
 - (void)resetField
 {
     [self clearTextRequested];
