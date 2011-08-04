@@ -15,6 +15,9 @@
 #import "Controller.h"
 #import "ReportedLocation.h"
 #import "Participant.h"
+#import "Contact.h"
+#import "ABContactsHelper.h"
+#import "ABContact.h"
 
 typedef enum {
 	SearchAndDetailStateSearch = 0,
@@ -391,7 +394,13 @@ typedef enum {
 }
 - (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)theSearchBar
 {
-    //
+    NSArray *allContacts = [[ABContactsHelper contacts] retain];
+    NSPredicate *pred;
+    pred = [NSPredicate predicateWithFormat:@"addressArrayCount > 0"];
+    [allContactsWithAddress release];
+    allContactsWithAddress = [[allContacts filteredArrayUsingPredicate:pred] retain];
+    [allContacts release];
+    [[ViewController sharedInstance] navigateToAddressBookLocations:self];
 }
 - (void)searchBarClearButtonClicked:(SubViewSearchBar *)theSearchBar
 {
@@ -1004,6 +1013,7 @@ typedef enum {
     [googleGeoFetchId release];
     [pendingSearchString release];
     [pendingSearchCategory release];
+    [allContactsWithAddress release];
     [super dealloc];
 }
 
@@ -1350,6 +1360,44 @@ typedef enum {
     [userOptions showInView:[UIApplication sharedApplication].keyWindow];
     [userOptions release];
 }
+
+#pragma mark - AddressBookTVCDataSource
+
+- (NSArray *)dataForAddressBookLocationsTVC
+{
+    NSMutableArray *matchedContacts = [[NSMutableArray alloc] init];
+    for (ABContact *abc in allContactsWithAddress) {
+        for (int i=0; i<[[abc addressArray] count]; i++) {
+            NSDictionary *addressDict = [[abc addressArray] objectAtIndex:i];
+            NSLog(@"%@", [[addressDict allKeys] componentsJoinedByString:@","]);
+            NSString *addressLabel = [[abc addressLabels] objectAtIndex:i];
+            Contact *c = [[Contact alloc] init];
+            c.contactName = abc.contactName;
+            c.streetAddress = [addressDict objectForKey:@"Street"]; //address;
+            c.city = [addressDict objectForKey:@"City"];
+            c.state = [addressDict objectForKey:@"State"];
+            c.zip = [addressDict objectForKey:@"ZIP"];
+            c.countryCode = [addressDict objectForKey:@"CountryCode"];
+            c.emailLabel = @""; //addressLabel;
+//            NSLog(@"%@", c.addressSingleLine);
+            [matchedContacts addObject:c];
+            [c release];
+        }
+    }
+    NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
+	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
+    return [matchedContacts autorelease];
+}
+
+#pragma mark - AddressBookLocationsTVCDelegate
+
+- (void)addressBookLocationsTVCDidSelectAddress:(NSString *)anAddress
+{
+    NSLog(@"search for: %@", anAddress);
+    [[ViewController sharedInstance] goBack];
+    [self beginLocationSearchWithSearchString:anAddress andRemovePreviousResults:YES];
+}
+
 
 #pragma mark - View lifecycle
 

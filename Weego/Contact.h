@@ -18,4 +18,14 @@
 @property (nonatomic, copy) NSString *emailLabel;
 @property (nonatomic, readonly) BOOL isValid;
 
+@property (nonatomic, copy) NSString *streetAddress;
+@property (nonatomic, copy) NSString *city;
+@property (nonatomic, copy) NSString *state;
+@property (nonatomic, copy) NSString *zip;
+@property (nonatomic, copy) NSString *countryCode;
+
+@property (nonatomic, readonly) NSString *addressLine1;
+@property (nonatomic, readonly) NSString *addressLine2;
+@property (nonatomic, readonly) NSString *addressSingleLine;
+
 @end

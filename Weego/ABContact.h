@@ -90,6 +90,7 @@
 @property (nonatomic, readonly) NSString *urls;
 
 @property (nonatomic, readonly) int emailArrayCount;
+@property (nonatomic, readonly) int addressArrayCount;
 
 // Each of these uses an array of dictionaries
 @property (nonatomic, assign) NSArray *emailDictionaries;

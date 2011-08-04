@@ -16,6 +16,7 @@
 #import "SearchCategoryTable.h"
 #import "WildcardGestureRecognizer.h"
 #import "SubViewSearchBar.h"
+#import "AddressBookLocationsTVC.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -36,7 +37,7 @@ typedef enum {
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
     //UISearchBar *searchBar;
@@ -72,6 +73,8 @@ typedef enum {
     SearchCategoryTable *categoryTable;
     SearchCategory *pendingSearchCategory;
     BOOL searchAgainButtonShowing;
+    
+    NSArray *allContactsWithAddress;
 }
 
 @property (nonatomic, copy) NSString *selectedSearchLocationKey;

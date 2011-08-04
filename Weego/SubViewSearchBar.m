@@ -240,7 +240,7 @@
     searchField.frame = CGRectMake(fieldOrigin.x, fieldOrigin.y, nonEditingFieldSize.width, nonEditingFieldSize.height);
     [UIView animateWithDuration:0.30f 
                           delay:0 
-                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                        options:(UIViewAnimationOptionBeginFromCurrentState) // | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
                          fieldButton.frame = nonEditingBgButtonFrame;
                          fieldBgImageView.frame = nonEditingBgFrame;

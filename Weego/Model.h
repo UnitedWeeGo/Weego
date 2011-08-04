@@ -44,6 +44,7 @@ typedef enum {
     ViewStateMap,
     ViewStateAddParticipant,
     ViewStateAddressBook,
+    ViewStateAddressBookLocations,
     ViewStateEdit,
     ViewStateFeed,
     ViewStateInfo,

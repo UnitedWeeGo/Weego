@@ -18,6 +18,7 @@
 #import "EntryPoint.h"
 #import "AddFriends.h"
 #import "AddressBookTVC.h"
+#import "AddressBookLocationsTVC.h"
 #import "EditEventTVC.h"
 #import "Info.h"
 #import "Help.h"
@@ -313,6 +314,17 @@ static ViewController *sharedInstance;
     addressBookController.dataSource = delegate;
     addressBookController.delegate = delegate;
     [Model sharedInstance].currentViewState = ViewStateAddressBook;
+	[nController pushViewController:addressBookController animated:YES];
+	[addressBookController release];
+}
+
+- (void)navigateToAddressBookLocations:(AddLocation *)delegate
+{
+    [self addAndReportViewWithName:@"/addressBookLocations"];
+    AddressBookLocationsTVC *addressBookController = [[AddressBookLocationsTVC alloc] init];
+    addressBookController.dataSource = delegate;
+    addressBookController.delegate = delegate;
+    [Model sharedInstance].currentViewState = ViewStateAddressBookLocations;
 	[nController pushViewController:addressBookController animated:YES];
 	[addressBookController release];
 }

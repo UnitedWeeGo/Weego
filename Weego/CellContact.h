@@ -14,7 +14,8 @@
 @interface CellContact : UITableViewCell {
     UILabel *labelName;
     UILabel *labelLabel;
-    UILabel *labelEmail;
+    UILabel *labelSecondary;
+    UILabel *labelTertiary;
     UIView *separator;
     UIImageViewAsyncLoader *avatarImage;
     NSString *contactId;
@@ -26,6 +27,7 @@
 @property (nonatomic, assign) BOOL checked;
 @property (nonatomic, getter=isEditing) BOOL editing;
 
+- (void)setContactForLocations:(Contact *)aContact;
 - (void)showAdded:(BOOL)hasBeenAdded;
 - (void)showDisabled:(BOOL)hasBeenDisabled;
 - (void)showChecked:(BOOL)hasBeenChecked;

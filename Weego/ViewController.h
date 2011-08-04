@@ -39,6 +39,7 @@
 - (void)navigateToAddLocationsWithLocationOpen:(NSString *)locId;
 - (void)navigateToAddParticipants;
 - (void)navigateToAddressBook:(AddFriends *)delegate;
+- (void)navigateToAddressBookLocations:(AddLocation *)delegate;
 //- (void)showModalEditEvent:(UIViewController *)inView;
 - (void)navigateToEditEvent;
 - (void)goBack;

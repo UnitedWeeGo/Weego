@@ -392,7 +392,8 @@
 - (NSString *) emailaddresses {return [self.emailArray componentsJoinedByString:@" "];}
 - (NSString *) urls {return [self.urlArray componentsJoinedByString:@" "];}
 
-- (int) emailArrayCount {return [[self emailArray] count];};  //NSLog(@"%i : %@",[[self emailArray] count], [self emailArray]); 
+- (int) emailArrayCount {return [[self emailArray] count];};
+- (int) addressArrayCount {return [[self addressArray] count];};
 
 - (NSArray *) dictionaryArrayForProperty: (ABPropertyID) aProperty
 {
