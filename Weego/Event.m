@@ -211,6 +211,34 @@
     return [[Model sharedInstance] getReportedLocationsForEventWithId:self.eventId];
 }
 
+- (void)setDefaultTime
+{
+    NSDate *now = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *nowTzComps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:now];
+    NSDateComponents *midnightTzComps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:now];
+    NSDate *nowTz = [gregorian dateFromComponents:nowTzComps];
+    NSDate *midnightTz = [gregorian dateFromComponents:midnightTzComps];
+    NSDate *earlyCutoff = [NSDate dateWithTimeInterval:(60 * 9 * 60) sinceDate:midnightTz];
+    NSDate *earlyDefault = [NSDate dateWithTimeInterval:(60 * 12.5 * 60) sinceDate:midnightTz];
+    NSDate *lateCutoff = [NSDate dateWithTimeInterval:(60 * 14 * 60) sinceDate:midnightTz];
+    NSDate *lateDefault = [NSDate dateWithTimeInterval:(60 * 18 * 60) sinceDate:midnightTz];
+    [gregorian release];
+    
+    int minuteInterval = 5;
+    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval) + (60 * 60); // One hour ahead rounded up to the nearest minuteInterval
+    NSDate *hourAhead = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
+    
+    if ([nowTz compare:earlyCutoff] == NSOrderedDescending && [hourAhead compare:earlyDefault] == NSOrderedAscending) {
+        self.eventDate = earlyDefault;
+    } else if ([nowTz compare:lateCutoff] == NSOrderedDescending && [hourAhead compare:lateDefault] == NSOrderedAscending) {
+        self.eventDate = lateDefault;
+    } else {
+        self.eventDate = hourAhead;
+    }
+    
+}
+
 - (NSDate *)getDateFromString:(NSString *)dateString
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -223,13 +251,40 @@
 
 - (NSString *)getFormattedDateString
 {
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:@"MMMM d, yyyy h:mm a"];
-	[formatter setTimeZone:[NSTimeZone localTimeZone]];
-    
-	NSString *output = [formatter stringFromDate:self.eventDate];
-    [formatter release];
-	return output;
+    return [self.eventDate getWeegoFormattedDateString];
+//    NSDate *now = [NSDate date];
+//    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//    NSDateComponents *todayMidnightComps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:now];   
+//    NSDate *todayMidnight = [gregorian dateFromComponents:todayMidnightComps];
+//    [gregorian release];
+//    
+//	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setTimeZone:[NSTimeZone localTimeZone]];
+//    NSString *prefix = [[NSString alloc] initWithString:@""];
+//    float dayDiff = [self.eventDate timeIntervalSinceDate:todayMidnight] / (60*60*24);
+//    NSLog(@"dayDiff = %0.2f", dayDiff);
+//    if (dayDiff >= -1 && dayDiff < 8) {
+//        if (dayDiff < 0) {
+//            [formatter setDateFormat:@"h:mm a"];
+//            prefix = @"Yesterday ";
+//        } else if (dayDiff < 1) {
+//            [formatter setDateFormat:@"h:mm a"];
+//            prefix = @"Today ";
+//        } else if (dayDiff < 2) {
+//            [formatter setDateFormat:@"h:mm a"];
+//            prefix = @"Tomorrow ";
+//        } else if (dayDiff <= 7) {
+//            [formatter setDateFormat:@"EEEE h:mm a"];
+//        }
+//    } else {
+//        [formatter setDateFormat:@"MMMM d h:mm a"];
+//    }
+//    
+//	NSString *dateString = [formatter stringFromDate:self.eventDate];
+//    NSString *output = [[[NSString alloc] initWithFormat:@"%@%@", prefix, dateString] autorelease];
+//    [prefix release];
+//    [formatter release];
+//	return output;
 }
 
 - (NSString *)getTimestampDateString

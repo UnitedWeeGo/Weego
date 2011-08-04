@@ -159,11 +159,7 @@ typedef enum {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"When"];
             [targetCell isFirst:NO isLast:YES];
             targetCell.index = createEventFormRowWhen;
-            NSDateFormatter *format = [[NSDateFormatter alloc] init];
-            [format setDateFormat:@"MMM d, yyyy h:mm a"];
-            NSString *dateString = [format stringFromDate:self.anotherDate];
-            [format release];
-            targetCell.fieldText = dateString;
+            targetCell.fieldText = [detail getFormattedDateString];
             [targetCell setEntryType:CellFormEntryTypePrevent];
             //            [targetCell setReturnKeyType:UIReturnKeyNext];
             cell = targetCell;
@@ -287,12 +283,8 @@ typedef enum {
 - (void)changeDateTimeInLabel:(id)sender
 {
     if (sender == datePicker) self.anotherDate = datePicker.date;
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateFormat:@"MMM d, yyyy h:mm a"];
-	NSString *dateString = [format stringFromDate:anotherDate];
-	[format release];
     CellFormEntry *targetCell = (CellFormEntry *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhen inSection:eventDetailSectionEntryForm]];
-    targetCell.fieldText = dateString;
+    targetCell.fieldText = [self.anotherDate getWeegoFormattedDateString];
 }
 
 #pragma mark -

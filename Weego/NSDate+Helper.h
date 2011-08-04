@@ -62,4 +62,6 @@
 + (NSString *)timestampFormatString;
 + (NSString *)dbFormatString;
 
+- (NSString *)getWeegoFormattedDateString;
+
 @end

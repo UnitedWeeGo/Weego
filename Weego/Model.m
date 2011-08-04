@@ -393,11 +393,7 @@ static Model *sharedInstance;
     event.eventId = [self stringWithUUID];
     event.isTemporary = YES;
 	event.creatorId = userEmail;
-    NSDate *now = [NSDate date];
-    int minuteInterval = 5;
-    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval) + (60 * 60); // One hour ahead rounded up to the nearest minuteInterval
-    NSDate *defaultStartTime = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
-    event.eventDate = defaultStartTime;
+    [event setDefaultTime];
     [self addEvent:event];
     self.currentEvent = event;
     Participant *p = [[Participant alloc] init];

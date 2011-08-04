@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GDataXMLNode.h"
+#import "NSDate+Helper.h"
 
 enum {
     AcceptanceTypePending,
@@ -72,6 +73,7 @@ typedef NSInteger AcceptanceType;
 - (NSArray *)getFeedMessages;
 - (NSArray *)getReportedLocations;
 
+- (void)setDefaultTime;
 - (NSString *)getFormattedDateString;
 - (NSString *)getTimestampDateString;
 

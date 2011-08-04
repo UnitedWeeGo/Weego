@@ -191,7 +191,7 @@ static NavigationSetter *sharedInstance;
             [self addPlusButton:target withGreenBackground:YES];
             break;
         case NavStateAddParticipant:
-            [self setNav:target withTitle:@"Add A Friend" withColor:0x777777FF andShadowColor:0x00000000];
+            [self setNav:target withTitle:@"Add Friends" withColor:0x777777FF andShadowColor:0x00000000];
             [self addBackButton:target onLightBackground:true];            
             [self addGreenActionButtonWithLabel:@"Done" andTarget:target toLeft:NO overrideClear:NO overrideLight:NO withTextColor:0xFFFFFFFF];
             break;
