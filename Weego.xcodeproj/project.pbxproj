@@ -3029,7 +3029,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nick Velloff (TCTWKF5628)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -3055,7 +3055,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "221FB82A-8177-44CB-AB24-2566C296CBD5";
+				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3184,7 +3184,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nick Velloff (TCTWKF5628)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -3210,7 +3210,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "221FB82A-8177-44CB-AB24-2566C296CBD5";
+				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3247,7 +3247,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nick Velloff (TCTWKF5628)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -3273,7 +3273,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "221FB82A-8177-44CB-AB24-2566C296CBD5";
+				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
 				WRAPPER_EXTENSION = app;
 			};

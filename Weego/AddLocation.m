@@ -301,10 +301,18 @@ typedef enum {
 
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
 {
+    searchBar.text = searchString;
+    if (removePreviousResults)
+    {
+        [self resignKeyboardAndRemoveModalCover:self];
+        [self removeAnnotations:mapView includingSaved:false];
+//        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    }
+
     Location *searchLocation = [[[Location alloc] init] autorelease];
     searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
     searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
-    searchLocation.name = searchBar.text;
+    searchLocation.name = searchString;
     
     MKCoordinateRegion region = mapView.region;
     CLLocationCoordinate2D centerCoordinate = mapView.centerCoordinate;
@@ -325,18 +333,11 @@ typedef enum {
     
     if (pendingSearchCategory) [pendingSearchCategory release];
     pendingSearchCategory = nil;
-    
-    if (removePreviousResults)
-    {
-        [self resignKeyboardAndRemoveModalCover:self];
-        [self removeAnnotations:mapView includingSaved:false];
-        //[self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
-    }
 }
 
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
 {
-    //searchBar.text = searchCategory.search_category;
+    searchBar.text = searchCategory.search_category;
     if (removePreviousResults)
     {
         [self resignKeyboardAndRemoveModalCover:self];
@@ -380,7 +381,6 @@ typedef enum {
 }
 - (BOOL)searchBarShouldBeginEditing:(SubViewSearchBar *)theSearchBar
 {
-    [searchBar resetField];
     continueToSearchEnabled = false;
     [self doShowSearchAgainButton:NO];
     [self showKeyboardResignerAndEnable:YES];
@@ -1434,7 +1434,7 @@ typedef enum {
     [self.view setClipsToBounds:YES];
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
     
-    [self setUpDataFetcherMessageListeners];
+//    [self setUpDataFetcherMessageListeners];
     
     Event *detail = [Model sharedInstance].currentEvent;
     BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
@@ -1449,6 +1449,8 @@ typedef enum {
     [super viewWillAppear:animated];
     [Model sharedInstance].currentViewState = ViewStateMap;
     [[ViewController sharedInstance] showDropShadow:0];
+    
+    [self setUpDataFetcherMessageListeners];
 }
 
 - (void)viewDidUnload
@@ -1460,7 +1462,8 @@ typedef enum {
 {
     [super viewWillDisappear:animated];
     [self doShowSearchAgainButton:NO];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeDataFetcherMessageListeners];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -135,6 +135,14 @@
     searchField.placeholder = placeholderText;
 }
 
+- (void)setText:(NSString *)aText
+{
+    [localText release];
+    localText = aText;
+    [localText retain];
+    searchField.text = localText;
+}
+
 - (NSString *)text
 {
     return localText;

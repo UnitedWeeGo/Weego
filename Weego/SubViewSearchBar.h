@@ -47,8 +47,9 @@
 }
 
 @property (nonatomic, assign) id <SubViewSearchBarDelegate> delegate;
-@property (nonatomic, readonly) NSString *text;
+@property (nonatomic, copy) NSString *text;
 @property (nonatomic, retain) NSString *placeholderText;
+//@property (nonatomic, assign) BOOL clearOnReset;
 
 - (void)resetField;
 - (void)showError:(BOOL)shouldShowError;
