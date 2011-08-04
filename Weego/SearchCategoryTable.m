@@ -24,7 +24,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.hidden = YES;
         filteredCategories = [[NSMutableArray alloc] init];
         [self initTable];
         
@@ -36,7 +36,6 @@
 {
     CGRect tableFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     tableView = [[[UITableView alloc] initWithFrame:tableFrame] autorelease];
-    tableView.hidden = YES;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -59,6 +58,10 @@
         if (currentSearch) [currentSearch release];
         currentSearch = [searchString retain];
         [NSThread detachNewThreadSelector:@selector(searchCategories) toTarget:self withObject:nil];
+    }
+    else
+    {
+        self.hidden = YES;
     }
 }
 
@@ -83,7 +86,7 @@
 {
     [filteredCategories removeAllObjects];
     [filteredCategories addObjectsFromArray:matchingCategories];
-    tableView.hidden = [filteredCategories count] == 0;
+    self.hidden = [filteredCategories count] == 0;
     if ([filteredCategories count] > 0) [tableView reloadData];
 }
 

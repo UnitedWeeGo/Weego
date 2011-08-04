@@ -181,7 +181,7 @@ typedef enum {
     CGRect searchFrame = CGRectMake(0, -41.0, 320.0, 41.0);
     searchBar = [[SubViewSearchBar alloc] initWithFrame:searchFrame];
     searchBar.delegate = self;
-    searchBar.placeholderText = @"Type a location name or type";
+    searchBar.placeholderText = @"Search for a location";
     [self.view addSubview:searchBar];
     [searchBar release];
 }
@@ -363,13 +363,15 @@ typedef enum {
 #pragma mark - SubViewSearchBarDelegate methods
 - (void)searchBarReturnButtonClicked:(SubViewSearchBar *)theSearchBar
 {
+    if ([theSearchBar.text length] == 0) return;
     [self beginLocationSearchWithSearchString:theSearchBar.text andRemovePreviousResults:YES];
 }
 - (void)searchBarCancelButtonClicked:(SubViewSearchBar *)theSearchBar
 {
     continueToSearchEnabled = false;
     [self doShowSearchAgainButton:NO];
-    [self handleEndSearchPress:self];
+    [self hideKeyboardResigner];
+    //[self handleEndSearchPress:self];
 }
 - (BOOL)searchBarShouldBeginEditing:(SubViewSearchBar *)theSearchBar
 {
@@ -382,7 +384,7 @@ typedef enum {
 }
 - (void)searchBar:(SubViewSearchBar *)theSearchBar textDidChange:(NSString *)searchText
 {
-    categoryTable.hidden = [searchText length] == 0;
+    //categoryTable.hidden = [searchText length] == 0;
     [categoryTable updateSearchContentsWithSearchString:searchText];
 }
 - (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)theSearchBar
@@ -391,7 +393,9 @@ typedef enum {
 }
 - (void)searchBarClearButtonClicked:(SubViewSearchBar *)theSearchBar
 {
-    
+    continueToSearchEnabled = false;
+    [self doShowSearchAgainButton:NO];
+    [categoryTable updateSearchContentsWithSearchString:@""];
 }
 
 #pragma mark - SearchCategoryTable
@@ -399,7 +403,6 @@ typedef enum {
 {
     CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
     if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
-    categoryTable.hidden = YES;
     categoryTable.delegate = self;
     [self.view addSubview:categoryTable];
 }
@@ -418,6 +421,9 @@ typedef enum {
 #pragma mark - keyboard model resigner helper methods
 - (void)showKeyboardResignerAndEnable:(BOOL)enabled
 {
+    if (keyboardResigner != nil) [keyboardResigner removeFromSuperview];
+    keyboardResigner = nil;
+    
     CGRect rect = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height);
     keyboardResigner = [[[UIButton alloc] initWithFrame:rect] autorelease];
     keyboardResigner.frame = rect;
@@ -428,7 +434,11 @@ typedef enum {
 }
 - (void)hideKeyboardResigner
 {
-    if (keyboardResigner != nil) [keyboardResigner removeFromSuperview];
+    if (keyboardResigner != nil) 
+    {
+        [keyboardResigner removeTarget:self action:@selector(resignKeyboardAndRemoveModalCover:) forControlEvents:UIControlEventTouchUpInside];
+        [keyboardResigner removeFromSuperview];
+    }
     keyboardResigner = nil;
 }
 

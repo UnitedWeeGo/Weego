@@ -177,7 +177,7 @@
 {
     addButton = [UIButton buttonWithType:UIButtonTypeCustom];
     addButton.frame = actionBtnRect;
-    addButton.enabled = false;
+    addButton.hidden = YES;
     [addButton setImage:[UIImage imageNamed:@"button_add_annotation_default.png"] forState:UIControlStateNormal];
     [addButton setImage:[UIImage imageNamed:@"button_add_annotation_pressed.png"] forState:UIControlStateHighlighted];
     [addButton addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];    
