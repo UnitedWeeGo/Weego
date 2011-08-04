@@ -22,7 +22,9 @@
         [self addSubview:bgView];
         [bgView release];
         
-        UIImageView *mainImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"modal_window_01.png"]];
+        UIImage *image = [[UIImage imageNamed:@"modal_window_01.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:60];
+        
+        UIImageView *mainImage = [[UIImageView alloc] initWithImage:image];
         mainImage.frame = CGRectMake((frame.size.width - mainImage.image.size.width)/2 , 
                                      ((frame.size.height - mainImage.image.size.height)/2) + addedY, 
                                      mainImage.image.size.width, 
@@ -47,7 +49,7 @@
         copy.textColor = HEXCOLOR(0xFFFFFFFF);
         copy.backgroundColor = [UIColor clearColor];
         copy.numberOfLines = 2;
-        copy.text = @"Weego will never post to your account without your permission.";
+        copy.text = @"In order to add some of your friends, you will need to login via Facebook.";
         [self addSubview:copy];
         [copy release];
         
