@@ -10,8 +10,6 @@
 
 @implementation CellDashboardEvent
 
-@synthesize event;
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -30,6 +28,11 @@
     cellView.event = anEvent;
 }
 
+- (Event *)event
+{
+    return cellView.event;
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -38,7 +41,6 @@
 - (void)dealloc
 {
     NSLog(@"CellDashboardEvent dealloc");
-    [event release];
     [super dealloc];
 }
 

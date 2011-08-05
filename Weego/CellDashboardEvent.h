@@ -18,6 +18,6 @@
     SubViewEventInfo *cellView;
 }
 
-@property (nonatomic, retain) Event *event;
+@property (nonatomic, assign) Event *event;
 
 @end

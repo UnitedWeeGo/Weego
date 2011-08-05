@@ -310,7 +310,7 @@ static NSDateFormatter *displayFormatter;
     [formatter setTimeZone:[NSTimeZone localTimeZone]];
     NSString *prefix = [[NSString alloc] initWithString:@""];
     float dayDiff = [self timeIntervalSinceDate:todayMidnight] / (60*60*24);
-    NSLog(@"dayDiff = %0.2f", dayDiff);
+    //NSLog(@"dayDiff = %0.2f", dayDiff);
     if (dayDiff >= -1 && dayDiff < 8) {
         if (dayDiff < 0) {
             [formatter setDateFormat:@"h:mm a"];

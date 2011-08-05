@@ -339,6 +339,35 @@
     //cell.editing = NO;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Model *model = [Model sharedInstance];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    Event *eventToDelete;
+    if ([cell isKindOfClass: [CellDashboardFeaturedEvent class]])
+    {
+        CellDashboardFeaturedEvent *fecell = (CellDashboardFeaturedEvent *)cell;
+        eventToDelete = fecell.event;
+    }
+    else if ([cell isKindOfClass: [CellDashboardEvent class]])
+    {
+        CellDashboardEvent *fecell = (CellDashboardEvent *)cell;
+        eventToDelete = fecell.event;
+    }
+    if (!model.isInTrial)
+    {
+        if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateEnded)
+        {
+            return @"Cancel Event";
+        }
+        else
+        {
+            return @"Remove Event";
+        }
+    }
+    return @"Remove Event";
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // If row is deleted, remove it from the list.
@@ -359,10 +388,22 @@
         }
         if (!model.isInTrial)
         {
-            [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:(eventToDelete.currentEventState <= EventStateDecided) doCancel:NO];
+            if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateEnded)
+            {
+                NSLog(@"count out:YES cancel event:YES");
+                [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:YES doCancel:YES];
+            }
+            else
+            {
+                NSLog(@"count out:%d cancel event:NO", eventToDelete.currentEventState <= EventStateDecided);
+                [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:(eventToDelete.currentEventState <= EventStateDecided) doCancel:NO];
+                eventToDelete.hasBeenRemoved = YES;
+            }
         }
-        eventToDelete.hasBeenRemoved = YES;
-        [model printModel];
+        else
+        {
+            eventToDelete.hasBeenRemoved = YES;
+        }
         [self createDataSources];
     }
 }
