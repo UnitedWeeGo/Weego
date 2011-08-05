@@ -302,6 +302,7 @@ typedef enum {
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
 {
     searchBar.text = searchString;
+    [searchBar showNetworkActivity:YES];
     if (removePreviousResults)
     {
         [self resignKeyboardAndRemoveModalCover:self];
@@ -338,6 +339,7 @@ typedef enum {
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
 {
     searchBar.text = searchCategory.search_category;
+    [searchBar showNetworkActivity:YES];
     if (removePreviousResults)
     {
         [self resignKeyboardAndRemoveModalCover:self];
@@ -630,6 +632,7 @@ typedef enum {
 }
 
 - (void) mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views {
+    [searchBar showNetworkActivity:NO];
    /*
     int delayIndex = 0;
     CGRect visibleRect = [mapView annotationVisibleRect];
@@ -1139,6 +1142,7 @@ typedef enum {
                 continueToSearchEnabled = true;
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
+//                [searchBar showNetworkActivity:NO];
             }
             
             break;
@@ -1202,6 +1206,7 @@ typedef enum {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
             }
+//            [searchBar showNetworkActivity:NO];
             break;
         case DataFetchTypeAddVoteToLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
@@ -1372,7 +1377,6 @@ typedef enum {
         for (int i=0; i<[[abc addressArray] count]; i++) {
             NSDictionary *addressDict = [[abc addressArray] objectAtIndex:i];
             NSLog(@"%@", [[addressDict allKeys] componentsJoinedByString:@","]);
-//            NSString *addressLabel = [[abc addressLabels] objectAtIndex:i];
             Contact *c = [[Contact alloc] init];
             c.contactName = abc.contactName;
             c.streetAddress = [addressDict objectForKey:@"Street"]; //address;
@@ -1380,8 +1384,7 @@ typedef enum {
             c.state = [addressDict objectForKey:@"State"];
             c.zip = [addressDict objectForKey:@"ZIP"];
             c.countryCode = [addressDict objectForKey:@"CountryCode"];
-            c.emailLabel = @""; //addressLabel;
-//            NSLog(@"%@", c.addressSingleLine);
+//            c.addressLabel = [abc.addressLabels objectAtIndex:i];
             [matchedContacts addObject:c];
             [c release];
         }

@@ -46,7 +46,7 @@
 
 - (void)setUpUI
 {
-    labelName = [[[UILabel alloc] initWithFrame:CGRectMake(8, 8, 230, 16)] autorelease];
+    labelName = [[[UILabel alloc] initWithFrame:CGRectMake(8, 8, 276, 16)] autorelease];
 	labelName.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
 	labelName.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelName.backgroundColor = [ UIColor clearColor ]; 
@@ -54,7 +54,7 @@
 	labelName.numberOfLines = 0;
 	[self addSubview:labelName];
     
-    labelLabel = [[[UILabel alloc] initWithFrame:CGRectMake(8, 25, 230, 14)] autorelease];
+    labelLabel = [[[UILabel alloc] initWithFrame:CGRectMake(8, 25, 276, 14)] autorelease];
 	labelLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:12];
 	labelLabel.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelLabel.backgroundColor = [ UIColor clearColor ]; 
@@ -62,7 +62,7 @@
 	labelLabel.numberOfLines = 0;
 	[self addSubview:labelLabel];
         
-    labelSecondary = [[[UILabel alloc] initWithFrame:CGRectMake(8, 26, 230, 14)] autorelease];
+    labelSecondary = [[[UILabel alloc] initWithFrame:CGRectMake(8, 26, 276, 14)] autorelease];
 	labelSecondary.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
 	labelSecondary.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelSecondary.backgroundColor = [ UIColor clearColor ]; 
@@ -70,7 +70,7 @@
 	labelSecondary.numberOfLines = 0;
 	[self addSubview:labelSecondary];
     
-    labelTertiary = [[[UILabel alloc] initWithFrame:CGRectMake(8, 40, 230, 14)] autorelease];
+    labelTertiary = [[[UILabel alloc] initWithFrame:CGRectMake(8, 40, 276, 14)] autorelease];
 	labelTertiary.font = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
 	labelTertiary.shadowOffset = CGSizeMake(0.0, 1.0);
 	labelTertiary.backgroundColor = [ UIColor clearColor ]; 
@@ -91,7 +91,7 @@
 - (void)setContact:(Contact *)aContact
 {
     avatarImage.hidden = YES;
-    labelName.frame = CGRectMake(8, 8, 230, 16);
+    labelName.frame = CGRectMake(8, 8, 276, 16);
     labelName.text = aContact.contactName;
     NSString *label = [aContact.emailLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
     label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
@@ -100,7 +100,7 @@
     labelLabel.text = label;
     float left = labelLabel.frame.origin.x + labelLabel.frame.size.width + 5;
     if ([[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
-    labelSecondary.frame = CGRectMake(left, 26, 320 - left, 14);
+    labelSecondary.frame = CGRectMake(left, 26, 284 - left, 14);
     labelSecondary.text = aContact.emailAddress;
     separator.frame = CGRectMake(0, 43, 320, 1);
     if (!aContact.isValid) {
@@ -149,13 +149,13 @@
     avatarImage.hidden = YES;
     labelName.frame = CGRectMake(8, 8, 230, 16);
     labelName.text = aContact.contactName;
-    NSString *label = [aContact.emailLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+    NSString *label = [aContact.addressLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
     label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
     CGSize labelSize = [label sizeWithFont:labelLabel.font];
-    labelLabel.frame = CGRectMake(labelLabel.frame.origin.x, labelLabel.frame.origin.y, labelSize.width, labelSize.height);
+    labelLabel.frame = CGRectMake(labelLabel.frame.origin.x, 25, labelSize.width, labelSize.height);
     labelLabel.text = label;
     float left = labelLabel.frame.origin.x + labelLabel.frame.size.width + 5;
-    if ([[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
+    if (!aContact.addressLabel || [[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
     labelSecondary.frame = CGRectMake(left, 26, 284 - left, 14);
     labelSecondary.text = aContact.addressLine1;
     labelTertiary.frame = CGRectMake(left, 42, 284 - left, 14);

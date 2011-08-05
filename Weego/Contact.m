@@ -12,7 +12,7 @@
 @implementation Contact
 
 @synthesize contactName, emailAddress, emailLabel;
-@synthesize streetAddress, city, state, zip, countryCode;
+@synthesize streetAddress, city, state, zip, countryCode, addressLabel;
 
 - (void)dealloc
 {
@@ -25,6 +25,7 @@
     [self.state release];
     [self.zip release];
     [self.countryCode release];
+    [self.addressLabel release];
     
     [super dealloc];
 }

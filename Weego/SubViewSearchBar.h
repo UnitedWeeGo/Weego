@@ -43,7 +43,11 @@
     UIButton *buttonAddressBook;
     UIButton *buttonClear;
     UIButton *buttonCancel;
+    UIActivityIndicatorView *spinner;
     NSString *localText;
+    
+    BOOL canShowActivity;
+    BOOL shouldShowActivity;
 }
 
 @property (nonatomic, assign) id <SubViewSearchBarDelegate> delegate;
@@ -53,5 +57,6 @@
 
 - (void)resetField;
 - (void)showError:(BOOL)shouldShowError;
+- (void)showNetworkActivity:(BOOL)value;
 
 @end

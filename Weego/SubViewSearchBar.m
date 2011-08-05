@@ -104,6 +104,12 @@
     [buttonAddressBook addTarget:self action:@selector(addressBookRequested) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonAddressBook];
     
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(289, 10, 20, 20);
+    spinner.hidden = YES;
+    [self addSubview:spinner];
+    [spinner release];
+    
     UIImage *bg1 = [UIImage imageNamed:@"button_clear_default.png"];
     UIImage *bg2 = [UIImage imageNamed:@"button_clear_pressed.png"];
     CGRect buttonTargetSize = nonEditingCancelFrame;
@@ -167,6 +173,20 @@
     searchField.textColor = (shouldShowError) ? errorColor : normalColor;
 }
 
+- (void)showNetworkActivity:(BOOL)value
+{
+    shouldShowActivity = value;
+    if (value && canShowActivity) {
+        buttonAddressBook.hidden = YES;
+        spinner.hidden = NO;
+        [spinner startAnimating];
+    } else {
+        buttonAddressBook.hidden = NO;
+        spinner.hidden = YES;
+        [spinner stopAnimating];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)showClearButton:(BOOL)shouldShowButton
@@ -221,6 +241,8 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    canShowActivity = NO;
+    [self showNetworkActivity:NO];
     if ([self.delegate respondsToSelector:@selector(searchBarTextDidBeginEditing:)]) [self.delegate searchBarTextDidBeginEditing:self];
     buttonAddressBook.hidden = YES;
     CGPoint fieldOrigin = ([localText isEqualToString:@""]) ? nonEditingFieldOrigin : isEditingFieldOrigin;
@@ -258,6 +280,8 @@
                      completion:^(BOOL finished) {
                          buttonAddressBook.hidden = NO;
                          searchField.placeholder = ([localText isEqualToString:@""]) ? placeholderText : @"";
+                         canShowActivity = YES;
+                         if (shouldShowActivity) [self showNetworkActivity:YES];
                      }];
 }
 

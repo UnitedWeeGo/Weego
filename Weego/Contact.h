@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *state;
 @property (nonatomic, copy) NSString *zip;
 @property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *addressLabel;
 
 @property (nonatomic, readonly) NSString *addressLine1;
 @property (nonatomic, readonly) NSString *addressLine2;
