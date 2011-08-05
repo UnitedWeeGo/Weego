@@ -152,7 +152,7 @@
     NSString *label = [aContact.addressLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
     label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
     CGSize labelSize = [label sizeWithFont:labelLabel.font];
-    labelLabel.frame = CGRectMake(labelLabel.frame.origin.x, 25, labelSize.width, labelSize.height);
+    labelLabel.frame = CGRectMake(8, 25, labelSize.width, labelSize.height);
     labelLabel.text = label;
     float left = labelLabel.frame.origin.x + labelLabel.frame.size.width + 5;
     if (!aContact.addressLabel || [[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
