@@ -831,8 +831,13 @@ enum eventDetailSections {
             {
                 [self pickDateTime];
             }
+            // -- cancel do nothing
+            else if (currentActionSheetState == ActionSheetStateEmailParticipant)
+            {
+                //
+            }
             // ActionSheetStateMorePressEventDecidedAccepted, ActionSheetStateMorePressEventDecidedDeclined - remove event
-            if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined || currentActionSheetState >= ActionSheetStateMorePressEventEnded)
+            else if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined || currentActionSheetState >= ActionSheetStateMorePressEventEnded)
             {
                 [self presentRemoveEventAlert];
             }
