@@ -370,7 +370,9 @@ typedef enum {
 {
     if ([theSearchBar.text length] == 0) return;
     NSLog(@"SEARCH STRING: %@", theSearchBar.text);
+    NSString *searchString = [[NSString alloc] initWithString:theSearchBar.text];
     [self beginLocationSearchWithSearchString:theSearchBar.text andRemovePreviousResults:YES];
+    [searchString release];
 }
 - (void)searchBarCancelButtonClicked:(SubViewSearchBar *)theSearchBar
 {
@@ -1370,7 +1372,7 @@ typedef enum {
         for (int i=0; i<[[abc addressArray] count]; i++) {
             NSDictionary *addressDict = [[abc addressArray] objectAtIndex:i];
             NSLog(@"%@", [[addressDict allKeys] componentsJoinedByString:@","]);
-            NSString *addressLabel = [[abc addressLabels] objectAtIndex:i];
+//            NSString *addressLabel = [[abc addressLabels] objectAtIndex:i];
             Contact *c = [[Contact alloc] init];
             c.contactName = abc.contactName;
             c.streetAddress = [addressDict objectForKey:@"Street"]; //address;
@@ -1394,6 +1396,8 @@ typedef enum {
 - (void)addressBookLocationsTVCDidSelectAddress:(NSString *)anAddress
 {
     NSLog(@"search for: %@", anAddress);
+    continueToSearchEnabled = NO;
+    [self doShowSearchAgainButton:NO];
     [[ViewController sharedInstance] goBack];
     [self beginLocationSearchWithSearchString:anAddress andRemovePreviousResults:YES];
 }
@@ -1434,7 +1438,7 @@ typedef enum {
     [self.view setClipsToBounds:YES];
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
     
-//    [self setUpDataFetcherMessageListeners];
+    [self setUpDataFetcherMessageListeners];
     
     Event *detail = [Model sharedInstance].currentEvent;
     BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
@@ -1449,8 +1453,6 @@ typedef enum {
     [super viewWillAppear:animated];
     [Model sharedInstance].currentViewState = ViewStateMap;
     [[ViewController sharedInstance] showDropShadow:0];
-    
-    [self setUpDataFetcherMessageListeners];
 }
 
 - (void)viewDidUnload
@@ -1463,7 +1465,6 @@ typedef enum {
     [super viewWillDisappear:animated];
     [self doShowSearchAgainButton:NO];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self removeDataFetcherMessageListeners];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
