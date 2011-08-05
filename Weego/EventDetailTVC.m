@@ -705,7 +705,7 @@ enum eventDetailSections {
     {
         currentActionSheetState = ActionSheetStateMorePressEventTrial;
         title = @"Remove this event from your dashboard";
-        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove event", nil];
         userOptions.destructiveButtonIndex = 0;
     }
     else if (detail.currentEventState < EventStateDecided) 
@@ -814,10 +814,10 @@ enum eventDetailSections {
             {
                 [self presentMailModalViewController];
             }
-//            else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
-//            {
-//                [self presentRemoveEventAlert];
-//            }
+            else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
+            {
+                [self presentRemoveEventAlert];
+            }
             break;
         case 1:
             // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
@@ -866,10 +866,10 @@ enum eventDetailSections {
     NSLog(@"Present remove/cancel event alert");
     
     
-    NSString *title = detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event?" : @"Remove event?";
+    NSString *title = detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial? @"Cancel event?" : @"Remove event?";
     NSString *standardMessage = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", detail.currentEventState <= EventStateDecided ? @"." : @" and \"Count you out\"."];
     NSString *ownerMessage = @"Are you sure you want to cancel this event?";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:(detail.iOwnEvent && detail.currentEventState < EventStateEnded ? ownerMessage:standardMessage) delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:(detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial ? ownerMessage:standardMessage) delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     
     
     
@@ -898,6 +898,11 @@ enum eventDetailSections {
                 detail.hasBeenRemoved = YES;
                 [self handleHomePress:self];
             }
+        }
+        else if (currentActionSheetState == ActionSheetStateMorePressEventTrial)
+        {
+            detail.hasBeenRemoved = YES;
+            [self handleHomePress:self];
         }
     }
 }
