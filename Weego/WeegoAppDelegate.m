@@ -440,15 +440,17 @@
     application.applicationIconBadgeNumber = 0;
     NSLog(@"applicationDidBecomeActive");
     Model *model = [Model sharedInstance];
-    if ([Model sharedInstance].currentAppState == AppStateDashboard || [Model sharedInstance].currentAppState == AppStateCreateEvent) {
-        NSLog(@"applicationDidBecomeActive in AppStateDashboard: fetchEvents");
-        [[Controller sharedInstance] fetchEvents];
-    } else if ([Model sharedInstance].currentAppState == AppStateEventDetails) {
-        NSLog(@"applicationDidBecomeActive in AppStateEventDetails: fetchEventWithId: %@", model.currentEvent.eventId);
-        [[Controller sharedInstance] fetchEvents];
-        [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
+    if (!model.isInTrial) {
+        if ([Model sharedInstance].currentAppState == AppStateDashboard || [Model sharedInstance].currentAppState == AppStateCreateEvent) {
+            NSLog(@"applicationDidBecomeActive in AppStateDashboard: fetchEvents");
+            [[Controller sharedInstance] fetchEvents];
+        } else if ([Model sharedInstance].currentAppState == AppStateEventDetails) {
+            NSLog(@"applicationDidBecomeActive in AppStateEventDetails: fetchEventWithId: %@", model.currentEvent.eventId);
+            [[Controller sharedInstance] fetchEvents];
+            [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
+        }
+        [[Controller sharedInstance] getRecentParticipants];
     }
-    [[Controller sharedInstance] getRecentParticipants];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

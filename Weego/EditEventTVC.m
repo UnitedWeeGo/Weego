@@ -94,7 +94,11 @@ typedef enum {
     self.navigationItem.leftBarButtonItem.enabled = NO;
     detail.eventTitle = self.anotherTitle;
 	detail.eventDate = self.anotherDate;
-	[[Controller sharedInstance] updateEvent:detail];
+    if (![Model sharedInstance].isInTrial) {
+        [[Controller sharedInstance] updateEvent:detail];
+    } else {
+        [[ViewController sharedInstance] goBack];
+    }
 }
 
 #pragma mark -

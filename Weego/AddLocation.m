@@ -632,7 +632,7 @@ typedef enum {
 }
 
 - (void) mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views {
-    [searchBar showNetworkActivity:NO];
+    if ([searchBar respondsToSelector:@selector(showNetworkActivity:)]) [searchBar showNetworkActivity:NO];
    /*
     int delayIndex = 0;
     CGRect visibleRect = [mapView annotationVisibleRect];
@@ -1027,6 +1027,17 @@ typedef enum {
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
+    
+//    mapView.delegate = nil;
+    mapView = nil;
+    
+//    searchBar.delegate = nil;
+    searchBar = nil;
+    
+    userLocationFound = NO;
+    isAddingLocation = NO;
+    continueToSearchEnabled = NO;
+    searchAgainButtonShowing = NO;
     
     // Release any cached data, images, etc that aren't in use.
 }
@@ -1459,6 +1470,8 @@ typedef enum {
     [super viewWillAppear:animated];
     [Model sharedInstance].currentViewState = ViewStateMap;
     [[ViewController sharedInstance] showDropShadow:0];
+    
+//    mapView.showsUserLocation = true;
 }
 
 - (void)viewDidUnload

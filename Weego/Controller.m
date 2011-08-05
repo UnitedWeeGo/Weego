@@ -199,8 +199,11 @@ static Controller *sharedInstance;
 - (NSString *)updateEvent:(Event *)anEvent
 {
 	Model *model = [Model sharedInstance];
-	DataFetcher *fetcher = [[[DataFetcher alloc] initAndUpdateEventWithUserId:model.userId withEvent:anEvent delegate:[DataParser sharedInstance]] autorelease];
-    return fetcher.requestId;
+    if (!model.isInTrial) {
+        DataFetcher *fetcher = [[[DataFetcher alloc] initAndUpdateEventWithUserId:model.userId withEvent:anEvent delegate:[DataParser sharedInstance]] autorelease];
+        return fetcher.requestId;
+    }
+    return nil;
 }
 
 - (void)removeEvent
