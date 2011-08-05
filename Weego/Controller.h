@@ -61,7 +61,7 @@
 - (NSString *)getRecentParticipants;
 - (NSString *)removeLocationWithId:(NSString *)locationId;
 - (NSString *)getSimpleGeoCategories;
-- (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut;
+- (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel;
 - (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime;
 
 @end

@@ -50,10 +50,20 @@
     BOOL eventHasBeenRead = [anEvent.eventRead isEqualToString:@"true"];
     AcceptanceType acceptanceStatus = anEvent.acceptanceStatus;
     BOOL doPushDownFeedIcon = NO;
+    BOOL eventCancelled = anEvent.hasBeenCancelled;
     
     labelNewIndicator.text = @"";
+    UIColor *labelColorStandard = HEXCOLOR(0x666666FF);
+    UIColor *labelColorRed = HEXCOLOR(0xFF0000FF);
+    UIColor *labelColor = eventCancelled ? labelColorRed : labelColorStandard;
+    labelNewIndicator.textColor = labelColor;
     
-    if (!eventHasBeenRead && isDashboardMode)
+    if (eventCancelled)
+    {
+        doPushDownFeedIcon = YES;
+        labelNewIndicator.text = @"CANCELLED";
+    }
+    else if (!eventHasBeenRead && isDashboardMode)
     {
         doPushDownFeedIcon = YES;
         labelNewIndicator.text = @"NEW";

@@ -825,7 +825,7 @@
 	return self;
 }
 
-- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut doCancel:(BOOL)cancel delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
 	if (self != nil) {
@@ -837,7 +837,8 @@
                                @"remove.event.php",
                                userId,
                                eventId,
-                                countMeOut ? @"&countMeOut=true" : @""] autorelease];
+                               cancel ? @"&cancel=true" : @"",
+                               countMeOut ? @"&countMeOut=true" : @""] autorelease];
 		[self makeRequest:urlString];
 	}
 	return self;

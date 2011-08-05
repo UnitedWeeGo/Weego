@@ -359,7 +359,7 @@
         }
         if (!model.isInTrial)
         {
-            [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:eventToDelete.currentEventState <= EventStateDecided];
+            [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:(eventToDelete.currentEventState <= EventStateDecided) doCancel:NO];
         }
         eventToDelete.hasBeenRemoved = YES;
         [model printModel];

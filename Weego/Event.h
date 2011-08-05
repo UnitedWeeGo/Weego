@@ -48,6 +48,8 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, retain) NSArray *updatedVotes;
 @property (nonatomic, readonly) AcceptanceType acceptanceStatus;
 @property (nonatomic, assign) BOOL hasBeenRemoved;
+@property (nonatomic, assign) BOOL hasBeenCancelled;
+@property (nonatomic, readonly) BOOL iOwnEvent;
 
 - (id)initWithId:(NSString *)anId;
 

@@ -126,12 +126,14 @@ static LocationReporter *sharedInstance;
         
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
-        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled)) 
+        BOOL eventIsCancelled = e.currentEventState == EventStateCancelled;
+        
+        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
         {
             locationServicesShouldStart = YES;
         }
         
-        BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled);
+        BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled && !eventIsCancelled);
         if (eventEligibleForLocationReporting) 
         {
             [self reportUserLocation:lastLocation andEvent:e];
@@ -190,9 +192,9 @@ static LocationReporter *sharedInstance;
         BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
-        BOOL eventIsDecided = e.currentEventState >= EventStateDecided;
+        BOOL eventIsDecidedOrEnded = e.currentEventState == EventStateDecided || e.currentEventState == EventStateEnded;
         
-        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsDecided)
+        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsDecidedOrEnded)
         {
             Location *loc = [e getLocationByLocationId:e.topLocationId];
             if (loc == nil) continue;

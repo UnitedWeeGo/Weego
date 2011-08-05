@@ -26,7 +26,7 @@
 @synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn;
 @synthesize currentLocationOrder, iVotedFor;
 @synthesize updatedVotes;
-@synthesize acceptanceStatus,hasBeenRemoved;
+@synthesize acceptanceStatus,hasBeenRemoved,hasBeenCancelled;
 
 - (id)initWithId:(NSString *)anId
 {
@@ -47,6 +47,7 @@
     NSString *uEventDate = [[xml attributeForName:@"eventDate"] stringValue];
     NSString *uEventExpireDate = [[xml attributeForName:@"eventExpireDate"] stringValue];
     NSString *uEventRead = [[xml attributeForName:@"hasBeenRead"] stringValue];
+    NSString *uEventCancelled = [[xml attributeForName:@"hasBeenCancelled"] stringValue];
     NSString *uCheckedIn = [[xml attributeForName:@"hasCheckedIn"] stringValue];
     NSString *uEventDescription = ((GDataXMLElement *) [[xml elementsForName:@"eventDescription"] objectAtIndex:0]).stringValue;
     NSString *uLastUpdatedTimestamp = nil;
@@ -58,6 +59,7 @@
     if (uDeclinedParticipantList) self.declinedParticipantList = uDeclinedParticipantList;
 	if (uEventTitle) self.eventTitle = uEventTitle;
     if (uEventRead) self.eventRead = uEventRead;
+    if (uEventCancelled) self.hasBeenCancelled = [uEventCancelled isEqualToString:@"true"];
     if (uCheckedIn) self.hasBeenCheckedIn = [uCheckedIn isEqualToString:@"true"];
 	if (uEventDate) self.eventDate = [self getDateFromString:uEventDate];
     if (uEventExpireDate) self.eventExpireDate = [self getDateFromString:uEventExpireDate];
@@ -252,39 +254,6 @@
 - (NSString *)getFormattedDateString
 {
     return [self.eventDate getWeegoFormattedDateString];
-//    NSDate *now = [NSDate date];
-//    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//    NSDateComponents *todayMidnightComps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:now];   
-//    NSDate *todayMidnight = [gregorian dateFromComponents:todayMidnightComps];
-//    [gregorian release];
-//    
-//	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setTimeZone:[NSTimeZone localTimeZone]];
-//    NSString *prefix = [[NSString alloc] initWithString:@""];
-//    float dayDiff = [self.eventDate timeIntervalSinceDate:todayMidnight] / (60*60*24);
-//    NSLog(@"dayDiff = %0.2f", dayDiff);
-//    if (dayDiff >= -1 && dayDiff < 8) {
-//        if (dayDiff < 0) {
-//            [formatter setDateFormat:@"h:mm a"];
-//            prefix = @"Yesterday ";
-//        } else if (dayDiff < 1) {
-//            [formatter setDateFormat:@"h:mm a"];
-//            prefix = @"Today ";
-//        } else if (dayDiff < 2) {
-//            [formatter setDateFormat:@"h:mm a"];
-//            prefix = @"Tomorrow ";
-//        } else if (dayDiff <= 7) {
-//            [formatter setDateFormat:@"EEEE h:mm a"];
-//        }
-//    } else {
-//        [formatter setDateFormat:@"MMMM d h:mm a"];
-//    }
-//    
-//	NSString *dateString = [formatter stringFromDate:self.eventDate];
-//    NSString *output = [[[NSString alloc] initWithFormat:@"%@%@", prefix, dateString] autorelease];
-//    [prefix release];
-//    [formatter release];
-//	return output;
 }
 
 - (NSString *)getTimestampDateString
@@ -317,6 +286,7 @@
     if (self.minutesToGoUntilVotingEnds <= 0) state = EventStateDecided;
     if (self.minutesToGoUntilEventStarts < -60) state = EventStateEnded;
     if (self.isTemporary) state = EventStateNew;
+    if (self.hasBeenCancelled) state = EventStateCancelled;
 
     return state;
 }
@@ -401,10 +371,16 @@
     [model removeEventWithId:self.eventId];
 }
 
+- (BOOL)iOwnEvent
+{
+    Model *model = [Model sharedInstance];
+    return [self.creatorId isEqualToString:model.userEmail];
+}
+
 - (id)init {
     self = [super init];
     if (self) {
-        
+        //
     }
     return self;
 }

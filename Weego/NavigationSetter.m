@@ -150,7 +150,6 @@ static NavigationSetter *sharedInstance;
             [self addMoreButton:target];
             break;
         case NavStateEventDetailsPending:
-            //[self setNav:target withTitle:@"PENDING" withColor:0x777777FF andShadowColor:0x00000000];
             [self addHeaderCountMeInTitleWithTarget:target];
             [self addHomeButton:target useWhiteIcon:NO];
             [self addMoreButton:target];

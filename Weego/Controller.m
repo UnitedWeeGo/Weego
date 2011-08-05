@@ -405,10 +405,10 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
-- (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut
+- (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel
 {
     Model *model = [Model sharedInstance];
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveEventWithUserId:model.userId andEventId:anEvent.eventId doCountOut:countOut delegate:[DataParser sharedInstance]] autorelease];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveEventWithUserId:model.userId andEventId:anEvent.eventId doCountOut:countOut doCancel:cancel delegate:[DataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 
