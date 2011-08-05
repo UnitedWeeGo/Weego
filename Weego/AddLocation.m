@@ -1142,7 +1142,7 @@ typedef enum {
                 continueToSearchEnabled = true;
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
-//                [searchBar showNetworkActivity:NO];
+                [searchBar showNetworkActivity:NO];
             }
             
             break;
@@ -1200,11 +1200,13 @@ typedef enum {
                 [alert release];
                 [self updateSavedLocationsAnnotationsStateEnabled:true];
                 currentState = AddLocationStateView;
+                [searchBar showNetworkActivity:NO];
             }
             else 
             {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
+//                [searchBar showNetworkActivity:NO];
             }
 //            [searchBar showNetworkActivity:NO];
             break;
@@ -1236,15 +1238,15 @@ typedef enum {
             break;
         case DataFetchTypeSearchSimpleGeo:
             NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
-            //
+            [searchBar showNetworkActivity:NO];
             break;
         case DataFetchTypeGooglePlaceSearch:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGooglePlaceSearch);
-            //
+            [searchBar showNetworkActivity:NO];
             break;
         case DataFetchTypeGoogleAddressSearch:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGoogleAddressSearch);
-            //
+            [searchBar showNetworkActivity:NO];
             break;
         case DataFetchTypeAddVoteToLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
