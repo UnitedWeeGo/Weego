@@ -17,5 +17,6 @@
 }
 
 @property (nonatomic, retain) Participant *participant;
+@property (nonatomic, assign) BOOL editing;
 
 @end

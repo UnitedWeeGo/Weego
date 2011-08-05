@@ -885,6 +885,12 @@ static Model *sharedInstance;
     return [returnParticipants autorelease];
 }
 
+- (void)removeParticipantWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId
+{
+    Participant *p = [self getParticipantWithEmail:email fromEventWithId:eventId];
+    if (p) [self.participants removeObject:p];
+}
+
 #pragma mark -
 #pragma mark ReportedLocations
 

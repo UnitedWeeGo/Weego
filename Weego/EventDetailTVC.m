@@ -301,7 +301,7 @@ enum eventDetailSections {
     BOOL deleteEnabled = detail.currentEventState < EventStateDecided;
     if (indexPath.section == eventDetailSectionLocations)
     {
-        if ([currentSortedLocations count] > 0 && indexPath.row != [currentSortedLocations count])
+        if ([currentSortedLocations count] > 0 && indexPath.row < [currentSortedLocations count])
         {
             Location *loc = [currentSortedLocations objectAtIndex:indexPath.row];
             return loc.addedByMe && deleteEnabled;
@@ -328,8 +328,12 @@ enum eventDetailSections {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         Location *loc = (Location *)[currentSortedLocations objectAtIndex:indexPath.row];
-        NSLog(@"Delete: %@", loc.name);
         [[Controller sharedInstance] removeLocationWithId:loc.locationId];
+        if ([Model sharedInstance].isInTrial) {
+            [self populateCurrentSortedLocations];
+            oldSortedLocations = [currentSortedLocations copy];
+            [self.tableView reloadData];
+        }
     }
 }
 

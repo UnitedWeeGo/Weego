@@ -418,7 +418,7 @@ static Controller *sharedInstance;
 - (NSString *)removeLocationWithId:(NSString *)locationId
 {
 	Model *model = [Model sharedInstance];
-    if (model.currentAppState != AppStateCreateEvent) 
+    if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) 
     {
         DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveLocationWithUserId:[model userId] andEventId:model.currentEvent.eventId andLocationId:locationId withTimestamp:(NSString *)model.currentEvent.lastUpdatedTimestamp delegate:[DataParser sharedInstance]] autorelease];
         return fetcher.requestId;

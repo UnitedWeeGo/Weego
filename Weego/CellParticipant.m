@@ -12,6 +12,7 @@
 @implementation CellParticipant
 
 @synthesize participant;
+@synthesize editing;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

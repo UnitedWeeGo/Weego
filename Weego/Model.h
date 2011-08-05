@@ -162,6 +162,7 @@ typedef enum {
 - (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML;
 - (NSArray *)getRecentParticipants;
 - (NSArray *)getFacebookFriends;
+- (void)removeParticipantWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;
 
 - (void)addFeedMessageWithXml:(GDataXMLElement *)messageXML inEventWithId:(NSString *)eventId;
 - (void)updateUnreadMessageCount:(NSString *)messageCount inEventWithId:(NSString *)eventId;

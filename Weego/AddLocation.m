@@ -739,6 +739,9 @@ typedef enum {
     if ([Model sharedInstance].currentAppState == AppStateCreateEvent || [Model sharedInstance].isInTrial) {
 //        [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
         [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
+        LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
+        [placemark setStateType:LocAnnoStateTypeLiked];
+        [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
     } else {
         [locWidget updateInfoViewWithCorrectButtonState:ActionStateSpinning];
         mapView.userInteractionEnabled = NO;

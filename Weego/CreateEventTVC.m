@@ -211,10 +211,12 @@ typedef enum {
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == eventDetailSectionLocations)
-    {
-        if ([currentSortedLocations count] > 0 && indexPath.row != [currentSortedLocations count])
-        {
+    if (indexPath.section == eventDetailSectionLocations) {
+        if ([currentSortedLocations count] > 0 && indexPath.row != [currentSortedLocations count]) {
+            return YES;
+        }
+    } else if (indexPath.section == eventDetailSectionParticipants) {
+        if ([detail.getParticipants count] > 0 && indexPath.row != [detail.getParticipants count] && indexPath.row != 0) {
             return YES;
         }
     }
@@ -238,10 +240,16 @@ typedef enum {
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        Location *loc = (Location *)[currentSortedLocations objectAtIndex:indexPath.row];
-        NSLog(@"Delete: %@", loc.name);
-        [[Controller sharedInstance] removeLocationWithId:loc.locationId];
-        [self.tableView reloadData];
+        if (indexPath.section == eventDetailSectionLocations) {
+            Location *loc = (Location *)[currentSortedLocations objectAtIndex:indexPath.row];
+            [[Controller sharedInstance] removeLocationWithId:loc.locationId];
+            [self populateCurrentSortedLocations];
+            oldSortedLocations = [currentSortedLocations copy];
+            [self.tableView reloadData];
+        } else if (indexPath.section == eventDetailSectionParticipants) {
+            [[Model sharedInstance] removeParticipantWithEmail:((Participant *)[detail.getParticipantsSortedByName objectAtIndex:indexPath.row]).email fromEventWithId:detail.eventId];
+            [self.tableView reloadData];
+        }
     }
 }
 
