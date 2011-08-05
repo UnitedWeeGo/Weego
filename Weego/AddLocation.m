@@ -683,6 +683,7 @@ typedef enum {
         
         if (skipAdded)
         {
+            if (![annotation isKindOfClass:[LocAnnotation class]]) continue;
             LocAnnotation *loc = (LocAnnotation *)annotation;
             if (!loc.scheduledForZoom) 
             {
