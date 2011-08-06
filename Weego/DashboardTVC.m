@@ -371,10 +371,10 @@
         }
         else
         {
-            return @"Remove Event";
+            return @"Remove";
         }
     }
-    return @"Remove Event";
+    return @"Remove";
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
