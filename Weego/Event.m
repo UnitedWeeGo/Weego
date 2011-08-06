@@ -167,7 +167,7 @@
             break;
         }
     }
-    if (mine) {
+    if (mine && [sortedParticipants containsObject:mine]) {
         [sortedParticipants removeObject:mine];
         [sortedParticipants insertObject:mine atIndex:0];
     }
