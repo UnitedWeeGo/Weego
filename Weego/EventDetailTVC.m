@@ -228,6 +228,9 @@ enum eventDetailSections {
     }
     if (_reloading) [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     _reloading = NO;
+    if (detail.currentEventState == EventStateCancelled) {
+        [self eventReachedDecided];
+    }
     [self.tableView reloadData];
     if ([self orderDidChange] && otherLocationsShowing) [self reorderCells];
 }
