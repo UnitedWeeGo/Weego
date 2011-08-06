@@ -825,7 +825,7 @@
 	return self;
 }
 
-- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut doCancel:(BOOL)cancel delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut doCancel:(BOOL)cancel withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
 	if (self != nil) {
@@ -838,6 +838,7 @@
                                userId,
                                eventId,
                                cancel ? @"&cancel=true" : @"",
+                                (!timestamp) ? @"" : [[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]],
                                countMeOut ? @"&countMeOut=true" : @""] autorelease];
 		[self makeRequest:urlString];
 	}

@@ -411,7 +411,7 @@ static Controller *sharedInstance;
 - (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel
 {
     Model *model = [Model sharedInstance];
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveEventWithUserId:model.userId andEventId:anEvent.eventId doCountOut:countOut doCancel:cancel delegate:[DataParser sharedInstance]] autorelease];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndRemoveEventWithUserId:model.userId andEventId:anEvent.eventId doCountOut:countOut doCancel:cancel withTimestamp:(NSString *)anEvent.lastUpdatedTimestamp delegate:[DataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
 
