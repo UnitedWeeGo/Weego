@@ -186,7 +186,9 @@
             if (_reloading) [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
             _reloading = NO;
             break;
-            
+        case DataFetchTypeGetEvent:
+            [self createDataSources];
+            break;
         default:
             break;
     }
@@ -206,7 +208,14 @@
                 [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView];
             }
             break;
-            
+        case DataFetchTypeRemoveEvent:
+            if (_reloading) {
+                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView];
+                _reloading = NO;
+            } else {
+                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView];
+            }
+            break;
         default:
             break;
     }
