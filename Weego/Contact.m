@@ -55,7 +55,7 @@
     if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
         return output;
     }
-    return nil;
+    return @"";
 }
 
 - (NSString *)addressLine2
@@ -68,7 +68,7 @@
     if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
         return output;
     }
-    return nil;
+    return @"";
 }
 
 - (NSString *)addressSingleLine
