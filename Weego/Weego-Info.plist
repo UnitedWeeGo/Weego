@@ -16,7 +16,7 @@
 		<string>united_appicon_114x114.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.weegoapp.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.unitedweego.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
