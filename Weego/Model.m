@@ -229,7 +229,12 @@ static Model *sharedInstance;
     NSMutableArray *tSortedEvents = [[NSMutableArray alloc] init];
     self.sortedEvents = tSortedEvents;
     [tSortedEvents release];
-	[self.sortedEvents addObjectsFromArray:[self.allEvents allValues]];
+//	[self.sortedEvents addObjectsFromArray:[self.allEvents allValues]];
+    
+    for (Event *ev in [self.allEvents allValues]) {
+        if (!ev.hasBeenRemoved) [self.sortedEvents addObject:ev];
+    }
+    
 	NSSortDescriptor *dateSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"eventDate" ascending:NO selector:@selector(compare:)] autorelease];
 	[self.sortedEvents sortUsingDescriptors:[NSArray arrayWithObjects:dateSortDescriptor, nil]];
 

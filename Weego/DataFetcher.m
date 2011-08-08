@@ -996,11 +996,11 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     dataFetcherFinished = YES;
 	self.delegate = nil;
-    
+        
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
-    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, [NSNumber numberWithInteger:error.code], nil];
+    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
 }
@@ -1017,9 +1017,13 @@
     self.delegate = nil;
     
     NSString *errorMessage = [request.error localizedDescription];
+    int errorCode = request.error.code;
+    if (request.error.code == 1) errorCode = NSURLErrorNotConnectedToInternet;
+    else if (request.error.code == 2) errorCode = NSURLErrorTimedOut;
+    
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
-    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, [NSNumber numberWithInteger:errorCode], nil];
+    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
     [self release];

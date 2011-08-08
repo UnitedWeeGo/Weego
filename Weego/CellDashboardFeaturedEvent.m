@@ -76,6 +76,12 @@
         separator.backgroundColor = HEXCOLOR(0xEDEDEDFF);
         [self.contentView addSubview:separator];
         [separator release];
+        
+//        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        spinner.frame = CGRectMake(300, 10, 20, 20);
+//        [self.contentView addSubview:spinner];
+//        
+//        [spinner startAnimating];
     }
     return self;
 }

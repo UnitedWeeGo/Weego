@@ -37,7 +37,7 @@ typedef enum {
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource, UIAlertViewDelegate> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
     //UISearchBar *searchBar;
@@ -75,6 +75,8 @@ typedef enum {
     BOOL searchAgainButtonShowing;
     
     NSArray *allContactsWithAddress;
+    
+    BOOL alertViewShowing;
 }
 
 @property (nonatomic, copy) NSString *selectedSearchLocationKey;

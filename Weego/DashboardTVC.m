@@ -28,6 +28,7 @@
 - (void)toggleShowHideFutureEvents;
 - (void)showEventDetailWithId:(NSString *)eventId;
 - (void)refreshDecidedEvents;
+- (void)showAlertWithCode:(int)code;
 
 @end
 
@@ -105,6 +106,12 @@
 {
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [_refreshHeaderView reset:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -198,27 +205,45 @@
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeGetDashboardEvents:
             NSLog(@"DataFetchTypeGetDashboardEvents Error");
             if (_reloading) {
-                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView];
+                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView withCode:errorType];
                 _reloading = NO;
             } else {
-                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView];
+                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView withCode:errorType];
             }
             break;
         case DataFetchTypeRemoveEvent:
-            if (_reloading) {
-                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView];
-                _reloading = NO;
-            } else {
-                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView];
-            }
+            [self showAlertWithCode:errorType];
             break;
         default:
             break;
     }
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
 }
 
 

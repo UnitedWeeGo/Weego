@@ -33,6 +33,7 @@
 
 
 @interface EGORefreshTableHeaderView (Private)
+- (void)setStatusLabelForError:(int)code;
 - (void)setState:(EGOPullRefreshState)aState;
 @end
 
@@ -157,7 +158,7 @@
 		[formatter setAMSymbol:@"AM"];
 		[formatter setPMSymbol:@"PM"];
 		[formatter setDateFormat:@"MM/dd/yyyy hh:mm:a"];
-		_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [formatter stringFromDate:date]];
+		_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [date getWeegoFormattedDateString]]; // [formatter stringFromDate:date]];
 		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		[formatter release];
@@ -216,7 +217,7 @@
 			
 			break;
         case EGOOPullRefreshShowError:
-            _statusLabel.text = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+//            _statusLabel.text = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
             [_activityView stopAnimating];
             [CATransaction begin];
 			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 
@@ -228,6 +229,21 @@
 	}
 	
 	_state = aState;
+}
+
+- (void)setStatusLabelForError:(int)code
+{
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            _statusLabel.text = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            _statusLabel.text = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            _statusLabel.text = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
 }
 
 
@@ -329,7 +345,7 @@
         [UIView setAnimationDuration:0.2];
         scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
         [UIView commitAnimations];
-        [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:WAIT_FOR_CLOSE_INTERVAL + 0.1f];
+        [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL + 0.1f];
     }
 }
 
@@ -346,23 +362,24 @@
     _statusLabel.text = NSLocalizedString(@"Saving...", @"Saving Status");
 }
 
-- (void)egoRefreshScrollViewShowError:(UIScrollView *)scrollView
+- (void)egoRefreshScrollViewShowError:(UIScrollView *)scrollView withCode:(int)code
 {
-    NSLog(@"egoRefreshScrollViewShowError");
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     BOOL _loading = NO;
     if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDataSourceIsLoading:)]) {
         _loading = [_delegate egoRefreshTableHeaderDataSourceIsLoading:self];
     }
     if (_loading) {
+        [self setStatusLabelForError:code];
         [self setState:EGOOPullRefreshShowError];
         if (scrollView) [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:WAIT_FOR_CLOSE_INTERVAL];
     }
 }
 
-- (void)egoRefreshScrollViewOpenAndShowError:(UIScrollView *)scrollView
+- (void)egoRefreshScrollViewOpenAndShowError:(UIScrollView *)scrollView withCode:(int)code
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self setStatusLabelForError:code];
     [self setState:EGOOPullRefreshShowError];
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.2];
@@ -371,10 +388,28 @@
     [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:WAIT_FOR_CLOSE_INTERVAL];
 }
 
-- (void)cancelAnimations;
+- (void)cancelAnimations
 {
     _cancelAnimations = YES;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void)reset:(UIScrollView *)scrollView
+{
+    _cancelAnimations = YES;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [UIView animateWithDuration:0 
+                          delay:0 
+                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                     animations:^(void){
+                         [scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+                     } completion:^(BOOL finished){
+                         [self setState:EGOOPullRefreshNormal];
+                         if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderClosed)]) {
+                             [_delegate egoRefreshTableHeaderClosed];
+                         }
+                     }];
+    _cancelAnimations = NO;
 }
 
 #pragma mark -

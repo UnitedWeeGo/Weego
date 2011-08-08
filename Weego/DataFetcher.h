@@ -15,6 +15,7 @@
 #define DATA_FETCHER_SUCCESS @"DataFetcherSuccess"
 #define DataFetcherDidCompleteRequestKey @"DataFetcherDidCompleteRequestKey"
 #define DataFetcherRequestUUIDKey @"DataFetcherRequestUUIDKey"
+#define DataFetcherErrorKey @"DataFetcherErrorKey"
 
 enum {
 	DataFetchTypeUpdateDeviceRecord,

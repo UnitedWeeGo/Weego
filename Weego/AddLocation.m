@@ -53,6 +53,7 @@ typedef enum {
 - (void)doShowSearchAgainButton:(BOOL)doShow;
 - (void)enableSearchCategoryTable;
 - (void)disableSearchCategoryTable;
+- (void)showAlertWithCode:(int)code;
 @end
 
 @implementation AddLocation
@@ -1248,6 +1249,7 @@ typedef enum {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeAddNewLocationToEvent:
             NSLog(@"Unhandled Error: %d", DataFetchTypeAddNewLocationToEvent);
@@ -1279,6 +1281,37 @@ typedef enum {
         default:
             break;
     }
+    if (!alertViewShowing) [self showAlertWithCode:errorType];
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
+    alertViewShowing = YES;
+}
+
+#pragma mark - UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    alertViewShowing = NO;
 }
 
 #pragma mark - UIActionSheetDelegate methods

@@ -647,6 +647,7 @@
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeUpdateParticipants:
 //            NSLog(@"Unhandled Error: %d", fetchType);
@@ -654,7 +655,7 @@
             self.navigationItem.leftBarButtonItem.enabled = YES;
             [contactsSearchBar setUserInteractionEnabled:YES];
 //            [contactEntry setUserInteractionEnabled:YES];
-            [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:nil];
+            [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:nil withCode:errorType];
             [self performSelector:@selector(hideSending) withObject:nil afterDelay:5.0];
             break;
             

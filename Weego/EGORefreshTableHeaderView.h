@@ -26,11 +26,12 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "NSDate+Helper.h"
 
 typedef enum{
 	EGOOPullRefreshPulling = 0,
 	EGOOPullRefreshNormal,
-	EGOOPullRefreshLoading,	
+	EGOOPullRefreshLoading,
     EGOOPullRefreshShowError
 } EGOPullRefreshState;
 
@@ -58,9 +59,10 @@ typedef enum{
 - (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewOpenAndShowLoading:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewOpenAndShowSaving:(UIScrollView *)scrollView;
-- (void)egoRefreshScrollViewShowError:(UIScrollView *)scrollView;
-- (void)egoRefreshScrollViewOpenAndShowError:(UIScrollView *)scrollView;
+- (void)egoRefreshScrollViewShowError:(UIScrollView *)scrollView withCode:(int)code;
+- (void)egoRefreshScrollViewOpenAndShowError:(UIScrollView *)scrollView withCode:(int)code;
 - (void)cancelAnimations;
+- (void)reset:(UIScrollView *)scrollView;
 
 @end
 @protocol EGORefreshTableHeaderDelegate <NSObject>

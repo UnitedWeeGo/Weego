@@ -240,13 +240,14 @@ enum eventDetailSections {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeGetEvent:
             if (_reloading) {
-                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView];
+                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView withCode:errorType];
                 _reloading = NO;
             } else {
-                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView];
+                [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView withCode:errorType];
             }
             break;
         case DataFetchTypeAddVoteToLocation:

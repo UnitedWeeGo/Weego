@@ -35,6 +35,7 @@
     SubViewNoLocations *cellBottomAltView;
     CustomCellBackgroundView *cellBottomBg;
     UIView *separator;
+    UIActivityIndicatorView *spinner;
 }
 
 @property (nonatomic, retain) Event *event;

@@ -733,11 +733,12 @@ typedef enum {
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeCreateNewEvent:
             NSLog(@"DataFetchTypeCreateNewEvent Error");
             if (_saving) {
-                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView];
+                [_refreshHeaderView egoRefreshScrollViewShowError:self.tableView withCode:errorType];
                 _saving = NO;
             }
             self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -751,6 +752,7 @@ typedef enum {
 
 - (void)dealloc {
     NSLog(@"CreateEventTVC dealloc");
+    [_refreshHeaderView cancelAnimations];
     [self removeDataFetcherMessageListeners];
     [detail release];
     [super dealloc];
