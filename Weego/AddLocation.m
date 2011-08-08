@@ -695,20 +695,23 @@ typedef enum {
         MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
-            zoomRect = pointRect;
+            
+            MKMapRect r = [mapView visibleMapRect];
+            r.origin.x = annotationPoint.x - r.size.width * 0.5;
+            r.origin.y = annotationPoint.y - r.size.height * 0.5;
+            
+            zoomRect = r;
+            
         } else {
             zoomRect = MKMapRectUnion(zoomRect, pointRect);
         }
     }
-    zoomRect.size.width *= 1.05;
-    zoomRect.size.height *= 1.05;
-    if (zoomRect.size.width == 0) // case where there is only 1 annotation, set zoom level manually
-    {
-        zoomRect.size.width = 42781.013333328818;
-        zoomRect.size.height = 45369.197849442069;
-    }
+//    zoomRect.size.width *= 1.05;
+//    zoomRect.size.height *= 1.05;
+
     [mapView setVisibleMapRect:zoomRect animated:YES];
 }
+
 
 
 #pragma mark - LocationDetailWidgetDelegate methods
