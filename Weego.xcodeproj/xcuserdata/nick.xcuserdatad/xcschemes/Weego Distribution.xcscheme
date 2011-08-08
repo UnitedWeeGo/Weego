@@ -6,11 +6,11 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
-            buildForAnalyzing = "NO">
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0176109313BE6F3500324EF9"
@@ -34,7 +34,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
-      launchStyle = "0"
+      launchStyle = "4294967295"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Distribution">
       <BuildableProductRunnable>

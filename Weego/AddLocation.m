@@ -695,10 +695,11 @@ typedef enum {
         MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
+                        
+            double width = 81920;
+            double height = 117760;
             
-            MKMapRect r = [mapView visibleMapRect];
-            r.origin.x = annotationPoint.x - r.size.width * 0.5;
-            r.origin.y = annotationPoint.y - r.size.height * 0.5;
+            MKMapRect r = MKMapRectMake(annotationPoint.x - width * 0.5, annotationPoint.y - height * 0.5, width, height);
             
             zoomRect = r;
             
@@ -876,6 +877,10 @@ typedef enum {
 */
 - (void)handleBackPress:(id)sender
 {
+    tapInterceptor.touchesMovedCallback = nil;
+    [mapView removeGestureRecognizer:tapInterceptor];
+    [tapInterceptor release];
+    
     [[ViewController sharedInstance] goBack];
 }
 - (void)handleSearchPress:(id)sender
@@ -1009,7 +1014,6 @@ typedef enum {
 - (void)dealloc
 {
     NSLog(@"AddLocation dealloc");
-    [tapInterceptor release];
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
