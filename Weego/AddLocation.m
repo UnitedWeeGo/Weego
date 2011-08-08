@@ -1393,7 +1393,6 @@ typedef enum {
     for (ABContact *abc in allContactsWithAddress) {
         for (int i=0; i<[[abc addressArray] count]; i++) {
             NSDictionary *addressDict = [[abc addressArray] objectAtIndex:i];
-            NSLog(@"%@", [[addressDict allKeys] componentsJoinedByString:@","]);
             Contact *c = [[Contact alloc] init];
             c.contactName = abc.contactName;
             c.streetAddress = [addressDict objectForKey:@"Street"]; //address;
@@ -1401,8 +1400,7 @@ typedef enum {
             c.state = [addressDict objectForKey:@"State"];
             c.zip = [addressDict objectForKey:@"ZIP"];
             c.countryCode = [addressDict objectForKey:@"CountryCode"];
-//            c.addressLabel = [abc.addressLabels objectAtIndex:i];
-            [matchedContacts addObject:c];
+            if (![[c addressSingleLine] isEqualToString:@""]) [matchedContacts addObject:c];
             [c release];
         }
     }

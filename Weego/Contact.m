@@ -51,9 +51,11 @@
 
 - (NSString *)addressLine1
 {
-    NSString *output = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
-    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-        return output;
+    if (streetAddress) {
+        NSString *output = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
+        if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+            return output;
+        }
     }
     return @"";
 }
@@ -73,11 +75,12 @@
 
 - (NSString *)addressSingleLine
 {
-    NSString *output = [[[NSString alloc] initWithFormat:@"%@, %@", self.addressLine1, self.addressLine2] autorelease];
+    NSString *delimiter = (![self.addressLine1 isEqualToString:@""] && ![self.addressLine2 isEqualToString:@""]) ? @", " : @"";
+    NSString *output = [[[NSString alloc] initWithFormat:@"%@%@%@", self.addressLine1, delimiter, self.addressLine2] autorelease];
     if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
         return output;
     }
-    return nil;
+    return @"";
 }
 
 @end
