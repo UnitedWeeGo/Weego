@@ -58,15 +58,15 @@
 
 - (NSString *)firstNamePossessive
 {
-    NSString *output = firstName;
-    if (output == nil) return @"My";
+    if (firstName == nil) return @"My";
+    NSMutableString *output = [[NSMutableString alloc] initWithString:firstName];
     char lastChar = [[output uppercaseString] characterAtIndex:output.length-1];
     if (lastChar == 'S') {
-        output = [NSString stringWithFormat:@"%@'", output];
+        [output appendString:@"'"];
     } else {
-        output = [NSString stringWithFormat:@"%@'s", output];
+        [output appendString:@"'s"];
     }
-    return output;
+    return [output autorelease];
 }
 
 - (BOOL)hasBeenPaired

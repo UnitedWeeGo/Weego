@@ -17,6 +17,7 @@
 @interface CreateEventTVC : UITableViewController <SubViewLocationDelegate, CellFormEntryDelegate, UIActionSheetDelegate, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, UIAlertViewDelegate> {
 	
 	Event *detail;
+    NSMutableString *placeholderText;
     UIActionSheet *dateActionSheet;
 	UIDatePicker *datePicker;
     EGORefreshTableHeaderView *_refreshHeaderView;

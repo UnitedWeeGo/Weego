@@ -146,10 +146,10 @@
 
 - (void)setPlaceholder:(NSString *)aPlaceholder
 {
-    [placeholderText release];
+//    [placeholderText release];
     placeholderText = aPlaceholder;
-    [placeholderText retain];
-    inputField.placeholder = placeholderText;
+//    [placeholderText retain];
+    inputField.placeholder = aPlaceholder;
 }
 
 #pragma mark -

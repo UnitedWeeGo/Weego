@@ -87,7 +87,9 @@ typedef enum {
 	if (detail == nil) {
         detail = [[[Model sharedInstance] createNewEvent] retain];
     }
-    NSLog(@"detail.eventId = %@", detail.eventId);
+    
+    placeholderText = [[NSMutableString alloc] initWithString:[Model sharedInstance].loginParticipant.firstNamePossessive];
+    [placeholderText appendString:@" Event"];
     
     [Model sharedInstance].currentBGState = BGStateEvent;
     
@@ -189,12 +191,18 @@ typedef enum {
 
 - (void)populateCurrentSortedLocations
 {
-    if (oldSortedLocations != nil) [oldSortedLocations release];
-    oldSortedLocations = [currentSortedLocations copy];
+    if (currentSortedLocations != nil) {
+        [oldSortedLocations release];
+        oldSortedLocations = currentSortedLocations;
+        [oldSortedLocations retain];
+    }
     [currentSortedLocations release];
-    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
-    [currentSortedLocations retain];
-    if (oldSortedLocations == nil) oldSortedLocations = [currentSortedLocations copy];
+    currentSortedLocations = [[NSArray alloc] initWithArray:[detail getLocationsByLocationOrder:detail.currentLocationOrder]];
+    if (oldSortedLocations == nil) {
+        [oldSortedLocations release];
+        oldSortedLocations = currentSortedLocations;
+        [oldSortedLocations retain];
+    }
 }
 
 - (BOOL)orderDidChange
@@ -340,7 +348,7 @@ typedef enum {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"What"];
             [targetCell isFirst:YES isLast:NO];
             targetCell.index = createEventFormRowWhat;
-            targetCell.placeholder = [NSString stringWithFormat:@"%@ Event", [Model sharedInstance].loginParticipant.firstNamePossessive];
+            targetCell.placeholder = placeholderText;
             targetCell.fieldText = detail.eventTitle;
             [targetCell setEntryType:CellFormEntryTypeName];
             [targetCell setReturnKeyType:UIReturnKeyNext];
@@ -754,7 +762,10 @@ typedef enum {
     NSLog(@"CreateEventTVC dealloc");
     [_refreshHeaderView cancelAnimations];
     [self removeDataFetcherMessageListeners];
+    [currentSortedLocations release];
+    [oldSortedLocations release];
     [detail release];
+    [placeholderText release];
     [super dealloc];
 }
 
