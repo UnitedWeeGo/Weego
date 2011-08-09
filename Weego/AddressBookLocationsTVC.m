@@ -59,7 +59,7 @@
     [indexes addObject:@"#"];
     [indexedContacts addObject:[NSMutableArray array]];
     
-    contacts = [[dataSource dataForAddressBookLocationsTVC] retain];
+    contacts = [dataSource dataForAddressBookLocationsTVC];
     
     for (Contact *c in contacts) {
 		NSInteger index = indexes.count - 1; // insert into #
@@ -114,7 +114,10 @@
 
 - (void)dealloc
 {
-    [contacts release];
+    dataSource = nil;
+    delegate = nil;
+    [indexes release];
+    [indexedContacts release];
     [super dealloc];
 }
 

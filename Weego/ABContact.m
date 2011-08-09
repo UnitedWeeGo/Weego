@@ -80,7 +80,6 @@
 
 - (void) dealloc
 {
-    NSLog(@"%@ %@", self.contactName, self.emailaddresses);
 	if (record) CFRelease(record);
 	[super dealloc];
 }

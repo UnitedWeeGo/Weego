@@ -426,12 +426,6 @@ typedef enum {
 }
 - (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)theSearchBar
 {
-    NSArray *allContacts = [[ABContactsHelper contacts] retain];
-    NSPredicate *pred;
-    pred = [NSPredicate predicateWithFormat:@"addressArrayCount > 0"];
-    [allContactsWithAddress release];
-    allContactsWithAddress = [[allContacts filteredArrayUsingPredicate:pred] retain];
-    [allContacts release];
     [[ViewController sharedInstance] navigateToAddressBookLocations:self];
 }
 - (void)searchBarClearButtonClicked:(SubViewSearchBar *)theSearchBar
@@ -1058,7 +1052,7 @@ typedef enum {
     [googleGeoFetchId release];
     [pendingSearchString release];
     [pendingSearchCategory release];
-    [allContactsWithAddress release];
+//    [allContactsWithAddress release];
     [super dealloc];
 }
 
@@ -1460,24 +1454,29 @@ typedef enum {
 
 - (NSArray *)dataForAddressBookLocationsTVC
 {
-    NSMutableArray *matchedContacts = [[NSMutableArray alloc] init];
-    for (ABContact *abc in allContactsWithAddress) {
-        for (int i=0; i<[[abc addressArray] count]; i++) {
-            NSDictionary *addressDict = [[abc addressArray] objectAtIndex:i];
+//    NSArray *allContacts = [ABContactsHelper contacts];
+//    NSPredicate *pred;
+//    pred = [NSPredicate predicateWithFormat:@"addressArrayCount > 0"];
+//    NSArray *allContactsWithAddress = [allContacts filteredArrayUsingPredicate:pred];
+    NSMutableArray *matchedContacts = [[[NSMutableArray alloc] init] autorelease];
+    for (ABContact *abc in [ABContactsHelper contacts]) {
+//        NSDictionary *contactDict = [abc baseDictionaryRepresentation];
+        for (NSDictionary *addressDict in [abc addressArray]) {
+//            NSLog(@"%@", [[addresses allKeys] componentsJoinedByString:@", "]);
+//            NSDictionary *addressDict = [addresses objectForKey:@"value"];
             Contact *c = [[Contact alloc] init];
-            c.contactName = abc.contactName;
-            c.streetAddress = [addressDict objectForKey:@"Street"]; //address;
-            c.city = [addressDict objectForKey:@"City"];
-            c.state = [addressDict objectForKey:@"State"];
-            c.zip = [addressDict objectForKey:@"ZIP"];
-            c.countryCode = [addressDict objectForKey:@"CountryCode"];
-            if (![[c addressSingleLine] isEqualToString:@""]) [matchedContacts addObject:c];
+            c.contactName = abc.contactName; //[contactDict objectForKey:@"First Name"];
+            c.streetAddress = [addressDict objectForKey:@"Street"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"Street"]];
+            c.city = [addressDict objectForKey:@"City"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"City"]];
+            c.state = [addressDict objectForKey:@"State"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"State"]];
+            c.zip = [addressDict objectForKey:@"ZIP"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"ZIP"]];
+            if (c.isValidAddress) [matchedContacts addObject:c];
             [c release];
         }
     }
     NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
-    return [matchedContacts autorelease];
+    return matchedContacts;
 }
 
 #pragma mark - AddressBookLocationsTVCDelegate
@@ -1531,7 +1530,6 @@ typedef enum {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
     [self reportTimerTick];
-    
 }
 
 - (void)reportTimerTick

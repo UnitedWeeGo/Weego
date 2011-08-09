@@ -17,12 +17,12 @@
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic, copy) NSString *emailLabel;
 @property (nonatomic, readonly) BOOL isValid;
+@property (nonatomic, readonly) BOOL isValidAddress;
 
 @property (nonatomic, copy) NSString *streetAddress;
 @property (nonatomic, copy) NSString *city;
 @property (nonatomic, copy) NSString *state;
 @property (nonatomic, copy) NSString *zip;
-@property (nonatomic, copy) NSString *countryCode;
 @property (nonatomic, copy) NSString *addressLabel;
 
 @property (nonatomic, readonly) NSString *addressLine1;

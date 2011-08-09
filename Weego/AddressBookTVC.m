@@ -120,7 +120,6 @@
     dataSource = nil;
     delegate = nil;
     [indexes release];
-//    [indexedContacts removeAllObjects];
     [indexedContacts release];
     [super dealloc];
 }

@@ -26,6 +26,7 @@
 - (void)dealloc
 {
     self.placeholderText = nil;
+    [localText release];
     [super dealloc];
 }
 

@@ -12,7 +12,7 @@
 @implementation Contact
 
 @synthesize contactName, emailAddress, emailLabel;
-@synthesize streetAddress, city, state, zip, countryCode, addressLabel;
+@synthesize streetAddress, city, state, zip, addressLabel;
 
 - (void)dealloc
 {
@@ -24,7 +24,6 @@
     [city release];
     [state release];
     [zip release];
-    [countryCode release];
     [addressLabel release];
     
     [super dealloc];
@@ -47,38 +46,50 @@
 	return [emailTest evaluateWithObject:emailAddress];
 }
 
+- (BOOL)isValidAddress
+{
+    return ![[self addressSingleLine] isEqualToString:@""];
+}
+
 - (NSString *)addressLine1
 {
-    if (streetAddress) {
-        NSString *output = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
-        if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-            return output;
-        }
-    }
-    return @"";
+    //[NSString stringWithFormat:@"%@", [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "]]
+    NSString *output = self.streetAddress; //(self.streetAddress) ? [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "]] : @"";
+    return output;
+    
+//    if (streetAddress) {
+//        NSString *output = [streetAddress stringByReplacingOccurrencesOfString:@"\n" withString:@", "];
+//        if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+//            return output;
+//        }
+//    }
+//    return @"";
 }
 
 - (NSString *)addressLine2
 {
     NSString *cityStr = (city) ? city : @"";
-    NSString *stateStr = (state) ? [[[NSString alloc] initWithFormat:@", %@", state] autorelease] : @"";
-    NSString *zipStr = (zip) ? [[[NSString alloc] initWithFormat:@" %@", zip] autorelease] : @"";
-    NSString *ccStr = @""; //(countryCode) ? [[[NSString alloc] initWithFormat:@", %@", countryCode] autorelease] : @"";
-    NSString *output = [[[NSString alloc] initWithFormat:@"%@%@%@%@", cityStr, stateStr, zipStr, ccStr] autorelease];
-    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-        return output;
-    }
-    return @"";
+    NSString *stateStr = (state) ? [NSString stringWithFormat:@", %@", state] : @"";
+    NSString *zipStr = (zip) ? [NSString stringWithFormat:@" %@", zip] : @"";
+    NSString *output = [NSString stringWithFormat:@"%@%@%@", cityStr, stateStr, zipStr];
+    return output;
+    
+//    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+//        return output;
+//    }
+//    return @"";
 }
 
 - (NSString *)addressSingleLine
 {
-    NSString *delimiter = (![self.addressLine1 isEqualToString:@""] && ![self.addressLine2 isEqualToString:@""]) ? @", " : @"";
-    NSString *output = [[[NSString alloc] initWithFormat:@"%@%@%@", self.addressLine1, delimiter, self.addressLine2] autorelease];
-    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-        return output;
-    }
-    return @"";
+    NSString *line1 = [self addressLine1];
+    NSString *line2 = [self addressLine2];
+    NSString *delimiter = (![line1 isEqualToString:@""] && ![line2 isEqualToString:@""]) ? @", " : @"";
+    NSString *output = [[NSString alloc] initWithFormat:@"%@%@%@", line1, delimiter, line2];
+//    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
+//        return output;
+//    }
+    return [output autorelease];
 }
 
 @end

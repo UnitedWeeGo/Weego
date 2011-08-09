@@ -46,8 +46,7 @@
     contactsTableView.dataSource = nil;
     contactsTableView.delegate = nil;
     [contactsTableView release];
-//    [allContacts release];
-//    allContactsWithEmail = nil;
+    contactsSearchBar.delegate = nil;
     [allContactsWithEmail release];
     [recentParticipants release];
     [facebookFriends release];
@@ -113,7 +112,6 @@
     NSArray *allContacts = [ABContactsHelper contacts];
     NSPredicate *pred;
     pred = [NSPredicate predicateWithFormat:@"emailArrayCount > 0"];
-    
     allContactsWithEmail = [allContacts filteredArrayUsingPredicate:pred];
     [allContactsWithEmail retain];
     
@@ -740,19 +738,17 @@
 - (NSArray *)dataForAddressBookTVC
 {
     NSMutableArray *matchedContacts = [[[NSMutableArray alloc] init] autorelease];
-    int j = 0;
     for (ABContact *abc in allContactsWithEmail) {
         for (int i=0; i<[[abc emailArray] count]; i++) {
             NSString *email = [NSString stringWithFormat:@"%@", [[abc emailArray] objectAtIndex:i]];
             NSString *emailLabel = [NSString stringWithFormat:@"%@", [[abc emailLabels] objectAtIndex:i]];
             Contact *c = [[Contact alloc] init];
-            c.contactName = abc.contactName; //[NSString stringWithFormat:@"%@", abc.contactName]; //[NSString stringWithFormat:@"Name %i", j]; //
-            c.emailAddress = email; //[NSString stringWithFormat:@"email%i\@blah.com", j]; // 
-            c.emailLabel = emailLabel; //[NSString stringWithFormat:@"Label %i", j]; //
+            c.contactName = abc.contactName;
+            c.emailAddress = email;
+            c.emailLabel = emailLabel;
             if (c.isValid) [matchedContacts addObject:c];
             [c release];
         }
-        j++;
     }
     NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
