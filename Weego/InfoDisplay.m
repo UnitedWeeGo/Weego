@@ -113,8 +113,7 @@
 {
     if (numPages == -1) // first page parsing complete
     {
-//        [_spinner stopAnimating];
-//        _spinner.hidden = YES;
+        [self hideLoading];
         if (!delegate) return;
         if ([delegate respondsToSelector:@selector(infoDisplayDidFinishLoading)]) [delegate infoDisplayDidFinishLoading];
         
@@ -194,7 +193,7 @@
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeInfo:
-            [self hideLoading];
+//            [self hideLoading];
             [self layoutInitialCard];
             break;
             

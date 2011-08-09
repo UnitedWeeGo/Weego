@@ -54,7 +54,7 @@
     [self.view addSubview:bevelStripe];
     [bevelStripe release];
         
-    shader = [[[UIView alloc] initWithFrame:self.view.frame] autorelease];
+    shader = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)] autorelease];
     shader.backgroundColor = HEXCOLOR(0xF3F3F3FF);
     [self.view addSubview:shader];
     
@@ -206,7 +206,7 @@
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
     NSString *url = [NSString stringWithFormat:@"http://beta.weegoapp.com/public/"];
     [webView loadHTMLString:html baseURL:[NSURL URLWithString:url]];
-    [self.view addSubview:webView];
+    [self.view insertSubview:webView atIndex:0];
     
     [UIView animateWithDuration:0.30f 
                           delay:0 
