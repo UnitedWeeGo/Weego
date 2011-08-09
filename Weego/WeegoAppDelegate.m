@@ -544,7 +544,7 @@
     SynchMinuteTimer *tMinuteTimer = [[SynchMinuteTimer alloc] init];
     minuteTimer = [tMinuteTimer retain];
     [tMinuteTimer release];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_MINUTE_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
     [minuteTimer startTimer];
     
     [LocationReporter sharedInstance]; // init singleton

@@ -54,6 +54,8 @@ typedef enum {
 - (void)enableSearchCategoryTable;
 - (void)disableSearchCategoryTable;
 - (void)showAlertWithCode:(int)code;
+- (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part;
+- (void)reportTimerTick;
 @end
 
 @implementation AddLocation
@@ -196,6 +198,8 @@ typedef enum {
     Event *detail = [Model sharedInstance].currentEvent;
     int searchResults = [[detail getReportedLocations] count];
 //    NSLog(@"ReportedLocations count: %d", searchResults);
+    BOOL shouldZoom = true;
+    
     for(int i = 0; i < searchResults; i++)
     {
         ReportedLocation *loc = (ReportedLocation *)[[detail getReportedLocations] objectAtIndex:i];
@@ -203,13 +207,36 @@ typedef enum {
         
         if ([p.email isEqualToString:model.userEmail]) continue; // skip the user if it is you
         
-        ReportedLocationAnnotation *placemark = [[[ReportedLocationAnnotation alloc] initWithCoordinate:loc.coordinate andParticipant:p] autorelease];
-        [mapView addAnnotation:placemark];
+        ReportedLocationAnnotation *addedAlready = [self getReportedLocationAnnotationForUser:p];
+        
+        if (addedAlready)
+        {
+            //NSLog(@"%@ addedAlready", p.email);
+            shouldZoom = false;
+            [addedAlready setCoordinate:loc.coordinate];
+        }
+        else
+        {
+            ReportedLocationAnnotation *placemark = [[[ReportedLocationAnnotation alloc] initWithCoordinate:loc.coordinate andParticipant:p] autorelease];
+            [mapView addAnnotation:placemark];
+        }
     }
-    if (searchResults > 0) {
+    if (searchResults > 0 && shouldZoom) {
         userLocationFound = true; // cancels zoom to user location
         [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
     }
+}
+
+- (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part
+{
+    for (id <MKAnnotation> annotation in mapView.annotations) 
+    {
+        if ([annotation isKindOfClass:[ReportedLocationAnnotation class]]) {
+            ReportedLocationAnnotation *anno = annotation;
+            if ([anno.participant.email isEqualToString:part.email]) return anno;
+        }
+    }
+    return nil;
 }
 
 - (void)addSavedLocationAnnotations
@@ -1015,6 +1042,7 @@ typedef enum {
 - (void)dealloc
 {
     NSLog(@"AddLocation dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
@@ -1498,12 +1526,18 @@ typedef enum {
     
     [self setUpDataFetcherMessageListeners];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    [self reportTimerTick];
+    
+}
+
+- (void)reportTimerTick
+{ 
     Event *detail = [Model sharedInstance].currentEvent;
-    BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
+    BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2);
     BOOL eventIsBeingCreated = detail.isTemporary;
     // grab any users reported locations if in the window
     if (eventIsWithinTimeRange && !eventIsBeingCreated) [[Controller sharedInstance] fetchReportedLocations];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated

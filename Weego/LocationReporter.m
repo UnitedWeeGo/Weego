@@ -60,7 +60,7 @@ static LocationReporter *sharedInstance;
             locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             locationManager.distanceFilter = kCLDistanceFilterNone;
             // should wake up the app periodically            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_MINUTE_TIMER_TICK object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
         }
     }
     return self;

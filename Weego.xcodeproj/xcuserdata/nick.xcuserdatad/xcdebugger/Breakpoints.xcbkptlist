@@ -93,11 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "334534427.026347"
+         timestampString = "334543538.620151"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "163"
-         endingLineNumber = "163"
+         startingLineNumber = "165"
+         endingLineNumber = "165"
          landmarkName = "-setupMapView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -107,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "334534462.885436"
+         timestampString = "334544649.57831"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "879"
-         endingLineNumber = "879"
+         startingLineNumber = "906"
+         endingLineNumber = "906"
          landmarkName = "-handleBackPress:"
          landmarkType = "5">
       </FileBreakpoint>

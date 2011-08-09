@@ -10,7 +10,8 @@
 
 @interface SynchMinuteTimer(Private)
 
-- (void)timerTick;
+- (void)fiveSecondTick;
+- (void)tenSecondTick;
 - (void)postNotification:(NSNotification *)aNotification;
 
 @end
@@ -33,18 +34,23 @@
     NSLog(@"startTimer");
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) 
         NSLog(@"startTimer in background...");
-    newThread = [[NSThread alloc] initWithTarget:self selector:@selector(timerTick) object:nil];
-    [newThread start];
+    fiveSecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(fiveSecondTick) object:nil];
+    [fiveSecondThread start];
     
-    [self postNotification:[NSNotification notificationWithName:SYNCH_MINUTE_TIMER_TICK object:self]];
+    tenSecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(tenSecondTick) object:nil];
+    [tenSecondThread start];
+    
+    [self postNotification:[NSNotification notificationWithName:SYNCH_FIVE_SECOND_TIMER_TICK object:self]];
 }
 
 - (void)stopTimer
 {
     NSLog(@"stopTimer");
-    [newThread cancel];
+    [fiveSecondThread cancel];
+    [tenSecondThread cancel];
     threadDone = YES;
-    [newThread release];
+    [fiveSecondThread release];
+    [tenSecondThread release];
 }
 
 - (void)dealloc 
@@ -58,26 +64,39 @@
     [[NSNotificationCenter defaultCenter] postNotification:aNotification];
 }
 
-- (void)timerTick
+- (void)fiveSecondTick
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
     while (!threadDone) {
         NSDate *now = [NSDate date];
         
-//        NSTimeInterval nextMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / 60.0) * 60.0;
-//        NSDate *nextMinute = [NSDate dateWithTimeIntervalSinceReferenceDate:nextMinuteInterval];
-        
-//        NSLog(@"SynchMinuteTimer tick");
-        
         NSTimeInterval fiveSecondsInterval = ceil([now timeIntervalSinceReferenceDate] / 5) * 5;
         NSDate *nextFiveSeconds = [NSDate dateWithTimeIntervalSinceReferenceDate:fiveSecondsInterval];
         
         [NSThread sleepUntilDate:nextFiveSeconds];
-        [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_MINUTE_TIMER_TICK object:self] waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_FIVE_SECOND_TIMER_TICK object:self] waitUntilDone:YES];
     }
     
     [pool drain];
 }
+
+- (void)tenSecondTick
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    
+    while (!threadDone) {
+        NSDate *now = [NSDate date];
+        
+        NSTimeInterval tenSecondsInterval = ceil([now timeIntervalSinceReferenceDate] / 10) * 10;
+        NSDate *nextTenSeconds = [NSDate dateWithTimeIntervalSinceReferenceDate:tenSecondsInterval];
+        
+        [NSThread sleepUntilDate:nextTenSeconds];
+        [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_TEN_SECOND_TIMER_TICK object:self] waitUntilDone:YES];
+    }
+    
+    [pool drain];
+}
+
 
 @end

@@ -8,15 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#define SYNCH_MINUTE_TIMER_TICK @"synchMinuteTimerTick"
-
+#define SYNCH_FIVE_SECOND_TIMER_TICK @"synchFiveMinuteTimerTick"
+#define SYNCH_TEN_SECOND_TIMER_TICK @"synchTenMinuteTimerTick"
 
 @interface SynchMinuteTimer : NSObject {
-//    NSThread *timerThread;
-//    NSRunLoop *runLoop;
-//    NSTimer *synchTimer;
-    
-    NSThread *newThread;
+    NSThread *fiveSecondThread;
+    NSThread *tenSecondThread;
     BOOL threadDone;
 }
 
