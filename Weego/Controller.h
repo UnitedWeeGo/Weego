@@ -18,11 +18,13 @@
 
 @interface Controller : NSObject {
     DataFetcher *simpleGeoFetcher;
+    NSMutableDictionary *geoRequestHolder;
 }
 
 + (Controller *)sharedInstance;
 + (void)destroy;
 
+- (void)releaseSimpleGeoFetcherWithKey:(NSString *)key;
 - (NSString *)loginWithEmailAddress:(NSString *)emailAddress andPassword:(NSString *)password;
 - (NSString *)loginWithFacebookAccessToken:(NSString *)accessToken;
 - (NSString *)registerWithEmailAddress:(NSString *)emailAddress andPassword:(NSString *)password andFirstName:(NSString *)firstName andLastName:(NSString *)lastName;

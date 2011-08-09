@@ -58,7 +58,7 @@ static Controller *sharedInstance;
 - (id)init {
     self = [super init];
     if (self) {
-        
+        geoRequestHolder = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -68,6 +68,14 @@ static Controller *sharedInstance;
     NSLog(@"Controller dealloc");
 //    if (simpleGeoFetcher) [simpleGeoFetcher release];
     [super dealloc];
+}
+
+- (void)releaseSimpleGeoFetcherWithKey:(NSString *)key
+{
+    if ([geoRequestHolder objectForKey:key] != nil)
+    {
+        [geoRequestHolder removeObjectForKey:key];
+    }
 }
 
 #pragma mark -
@@ -371,18 +379,21 @@ static Controller *sharedInstance;
 - (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
 
 - (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius andCategory:(SearchCategory *)category
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithCategory:category andRadius:radius withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
 
 - (NSString *)getSimpleGeoCategories
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetSimpleGeoCategoriesWithDelegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
 

@@ -43,11 +43,8 @@
 @synthesize delegate;
 @synthesize myData;
 @synthesize dataFetcherFinished;
-
-- (NSString *)requestId
-{
-    return requestId;
-}
+@synthesize client;
+@synthesize requestId;
 
 //apiURL
 - (id)init
@@ -84,7 +81,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeUpdateDeviceRecord;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&deviceToken=%@&deviceUuid=%@&deviceName=%@&deviceModel=%@&deviceSystemVersion=%@&pushBadge=%@&pushAlert=%@&pushSound=%@&isSandbox=%@",
@@ -110,7 +107,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeAddMessage;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&message=%@&imageURL=%@&timestamp=%@",
@@ -129,7 +126,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeMarkFeedMessagesRead;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@",
@@ -146,7 +143,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeResetUserBadge;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&deviceUuid=%@",
@@ -163,7 +160,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeLoginWithUserName;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?email=%@&password=%@",
@@ -180,7 +177,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeLoginWithFacebookAccessToken;
 		self.delegate = myDelegate;
         
@@ -216,7 +213,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRegister;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?email=%@&password=%@&firstName=%@&lastName=%@",
@@ -235,7 +232,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGetAllEvents;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@",
@@ -252,7 +249,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGetDashboardEvents;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@",
@@ -276,7 +273,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGetEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@%@%@",
@@ -294,7 +291,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeCreateNewEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getCreateEventXML:[NSArray arrayWithObjects:event, nil]];
@@ -320,7 +317,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeUpdateEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getUpdateEventXML:event];
@@ -346,7 +343,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeUpdateParticipants;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getUpdateParticipantsXML:participants withEventId:event.eventId];
@@ -372,7 +369,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = update ? DataFetchTypeUpdateLocationToEvent : DataFetchTypeAddNewLocationToEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getAddOrUpdateLocationXMLForLocations:locations withEventId:event.eventId];
@@ -398,7 +395,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeAddNewLocationToEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f&name=%@&vicinity=%@&g_id=%@&g_reference=%@&location_type=%@%@%@",
@@ -426,7 +423,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeToggleVotesForEvent;
 		self.delegate = myDelegate;		
 		NSString *xmlString = [[Model sharedInstance] getToggleVotesXML:locationIds withEventId:event.eventId];
@@ -453,7 +450,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeAddVoteToLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@",
@@ -471,7 +468,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRemoveVoteFromLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@&removeVote=true",
@@ -489,7 +486,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeAddParticipant;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&email=%@",
@@ -507,7 +504,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSuggestTime;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&suggestedTime=%@%@",
@@ -528,7 +525,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?logMessage=%@",
                                 apiURL,
                                 @"log.php",
@@ -541,7 +538,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?clearLog=true",
                                 apiURL,
                                 @"log.php"] autorelease];
@@ -554,7 +551,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeCheckin;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@",
@@ -579,7 +576,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeReportNewLocationToEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f",
@@ -605,7 +602,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGetReportedLocations;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
@@ -623,12 +620,11 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeoCategories;
         
         // default to using this as the delegate for potentially helpful error logging
-        [self retain];
-        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.client = [SimpleGeo clientWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         [client getCategories];
     }
@@ -639,12 +635,11 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
         
         // default to using this as the delegate for potentially helpful error logging
-        [self retain];
-        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.client = [SimpleGeo clientWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         
         SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];        
@@ -657,11 +652,10 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
         
         // default to using this as the delegate for potentially helpful error logging
-        [self retain];
         client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         
@@ -675,7 +669,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGooglePlaceSearch;
         self.delegate = myDelegate;
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?location=%f,%f&radius=%d&name=%@&sensor=true&key=%@",
@@ -694,7 +688,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeGoogleAddressSearch;
         self.delegate = myDelegate;
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?address=%@&bounds=%@&sensor=true",
@@ -710,7 +704,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeToggleEventAcceptance;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&didAccept=%@",
@@ -728,7 +722,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeInfo;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
@@ -744,7 +738,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeHelp;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
@@ -760,7 +754,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeTerms;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
@@ -776,7 +770,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypePrivacy;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
@@ -792,7 +786,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeDeal;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&sg_id=%@&timestamp=%@",
@@ -810,7 +804,7 @@
 {
 	self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRemoveLocation;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@%@",
@@ -829,7 +823,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRemoveEvent;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
@@ -849,7 +843,7 @@
 {
     self = [self init];
 	if (self != nil) {
-        requestId = [[self stringWithUUID] retain];
+        self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRecentParticipants;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@",
@@ -985,7 +979,7 @@
     [myData release];
 	[myConnection release];
     
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
@@ -999,7 +993,7 @@
         
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, [NSNumber numberWithInteger:error.code], nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, [NSNumber numberWithInteger:error.code], nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
@@ -1013,7 +1007,6 @@
     NSLog(@"Request failed: %@: %i", [request responseStatusMessage], [request responseStatusCode]);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     dataFetcherFinished = YES;
-    if (client) [client release];
     self.delegate = nil;
     
     NSString *errorMessage = [request.error localizedDescription];
@@ -1022,11 +1015,12 @@
     else if (request.error.code == 2) errorCode = NSURLErrorTimedOut;
     
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, [NSNumber numberWithInteger:errorCode], nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, [NSNumber numberWithInteger:errorCode], nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
-    [self release];
+    
+    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
 
 - (void)requestDidFinish:(ASIHTTPRequest *)request
@@ -1041,13 +1035,13 @@
     dataFetcherFinished = YES;
     if (delegate) [delegate processSimpleGeoCategoryResponse:categories];
 	self.delegate = nil;
-    if (client) [client release];
     
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
-    [self release];
+    
+    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
 - (void)didLoadPlaces:(SGFeatureCollection *)places
              forQuery:(NSDictionary *)query
@@ -1058,13 +1052,13 @@
     
     if (delegate) [delegate processSimpleGeoResponse:places];
 	self.delegate = nil;
-    if (client) [client release];
     
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], requestId, nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
-    [self release];
+    
+    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
 
 
@@ -1081,7 +1075,9 @@
 
 - (void) dealloc
 {
-    [requestId release];
+    [client release];
+    client = nil;
+    [self.requestId release];
 	self.delegate = nil;
     myConnection = nil;
 	[super dealloc];

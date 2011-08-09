@@ -127,14 +127,13 @@ typedef NSInteger DataFetchType;
     NSMutableData *myData;
     BOOL dataFetcherFinished;
 	DataFetchType pendingRequestType;
-    NSString *requestId;
-    SimpleGeo *client;
     NSString *apiURL;
 }
 
 @property (nonatomic, assign) id <DataFetcherDelegate> delegate;
 @property (readonly) BOOL dataFetcherFinished;
-@property (readonly) NSString *requestId;
+@property (nonatomic, retain) NSString *requestId;
+@property (nonatomic, retain) SimpleGeo *client;
 
 - (id)initAndLoginWithUserName:(NSString *)emailAddress andPassword:(NSString *)password delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndLoginWithFacebookAccessToken:(NSString *)accessToken delegate:(id <DataFetcherDelegate>)myDelegate;
