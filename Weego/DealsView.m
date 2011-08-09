@@ -270,6 +270,7 @@
     label.shadowOffset = CGSizeMake(0.0, 1.0);
     UIBarButtonItem *toolBarTitle = [[UIBarButtonItem alloc] initWithCustomView:label];
     [barItems addObject:toolBarTitle];
+    [toolBarTitle release];
     [label release];
     
 	UIBarButtonItem *flexSpace2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];

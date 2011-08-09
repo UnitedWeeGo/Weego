@@ -663,7 +663,7 @@ static Model *sharedInstance;
 
 - (void)duplicateLocationWithLocation:(Location *)origLocation
 {
-    Location *location = [[Location alloc] init];
+    Location *location = [[[Location alloc] init] autorelease];
     location.ownerEventId = self.currentEvent.eventId;
     location.addedById = userEmail;
     location.tempId = [self stringWithUUID];

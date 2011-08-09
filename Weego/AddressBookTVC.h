@@ -28,7 +28,7 @@
     
     NSMutableArray *indexes;
 	NSMutableArray *indexedContacts;
-    NSArray *contacts;
+//    NSArray *contacts;
     
 }
 

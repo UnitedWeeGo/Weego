@@ -9,6 +9,7 @@
 #import "AddressBookTVC.h"
 #import "CellContact.h"
 #import "Participant.h"
+#import "ABContactsHelper.h"
 
 @interface AddressBookTVC (Private)
 
@@ -49,7 +50,7 @@
     [[NavigationSetter sharedInstance] setNavState:NavStateAddressBook withTarget:self];
     
     indexes = [[NSMutableArray alloc] init];
-    indexedContacts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
+    indexedContacts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil]; //[NSMutableArray arrayWithObjects:[NSMutableArray array], nil]; // 
     
     for(char c = 'A'; c <= 'Z'; c++) {
         [indexes addObject:[NSString stringWithFormat:@"%c",c]];
@@ -58,8 +59,8 @@
     
     [indexes addObject:@"#"];
     [indexedContacts addObject:[NSMutableArray array]];
-    
-    contacts = [[dataSource dataForAddressBookTVC] retain];
+
+    NSArray *contacts = [dataSource dataForAddressBookTVC];
     
     for (Contact *c in contacts) {
 		NSInteger index = indexes.count - 1; // insert into #
@@ -71,6 +72,8 @@
 		}
 		[[indexedContacts objectAtIndex:index] addObject:c];
 	}
+    
+//    [contacts release];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -114,7 +117,11 @@
 
 - (void)dealloc
 {
-    [contacts release];
+    dataSource = nil;
+    delegate = nil;
+    [indexes release];
+//    [indexedContacts removeAllObjects];
+    [indexedContacts release];
     [super dealloc];
 }
 

@@ -115,7 +115,7 @@
         labelLabel.textColor = emailLabelColor;
         labelSecondary.textColor = emailLabelColor;
     }
-    if ([aContact.emailAddress isEqualToString:aContact.contactName]) {
+    if ([[aContact.contactName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) { //[aContact.emailAddress isEqualToString:aContact.contactName]
         labelName.frame = CGRectMake(8, 15, 230, 16);
         labelName.text = aContact.emailAddress;
         labelSecondary.text = @"";

@@ -344,14 +344,6 @@
     }
 }
 
-- (void)revertUpdatedVotes
-{
-    NSMutableArray *mIVotedFor = [[NSMutableArray alloc] initWithArray:self.iVotedFor];
-    for (int i=0; i<[updatedVotes count]; i++) {
-        
-    }
-}
-
 - (void)removeVoteFromLocationWithId:(NSString *)locationId
 {
     NSMutableArray *mIVotedFor = [[NSMutableArray alloc] initWithArray:self.iVotedFor];

@@ -16,31 +16,29 @@
 
 - (void)dealloc
 {
-    [self.contactName release];
-    [self.emailAddress release];
-    [self.emailLabel release];
+    [contactName release];
+    [emailAddress release];
+    [emailLabel release];
     
-    [self.streetAddress release];
-    [self.city release];
-    [self.state release];
-    [self.zip release];
-    [self.countryCode release];
-    [self.addressLabel release];
+    [streetAddress release];
+    [city release];
+    [state release];
+    [zip release];
+    [countryCode release];
+    [addressLabel release];
     
     [super dealloc];
 }
 
-- (NSString *)contactName
-{
-    if (contactName == nil || [[contactName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
-        if (self.emailAddress) {
-            contactName = [NSString stringWithString:self.emailAddress];
-        } else {
-            return nil;
-        }
-    }
-    return [contactName copy];
-}
+//- (NSString *)contactName
+//{
+//    if (contactName == nil || [[contactName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
+//        if (emailAddress) {
+//            return [emailAddress copy];
+//        }
+//    }
+//    return [contactName copy];
+//}
 
 - (BOOL)isValid
 {

@@ -838,7 +838,7 @@
                                userId,
                                eventId,
                                cancel ? @"&cancel=true" : @"",
-                                (!timestamp) ? @"" : [[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]],
+                                (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease],
                                countMeOut ? @"&countMeOut=true" : @""] autorelease];
 		[self makeRequest:urlString];
 	}

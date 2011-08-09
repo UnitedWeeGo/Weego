@@ -308,7 +308,7 @@ static NSDateFormatter *displayFormatter;
     
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setTimeZone:[NSTimeZone localTimeZone]];
-    NSString *prefix = [[NSString alloc] initWithString:@""];
+    NSString *prefix = [[[NSString alloc] initWithString:@""] autorelease];
     float dayDiff = [self timeIntervalSinceDate:todayMidnight] / (60*60*24);
     //NSLog(@"dayDiff = %0.2f", dayDiff);
     if (dayDiff >= -1 && dayDiff < 8) {
@@ -330,7 +330,7 @@ static NSDateFormatter *displayFormatter;
     
 	NSString *dateString = [formatter stringFromDate:self];
     NSString *output = [[[NSString alloc] initWithFormat:@"%@%@", prefix, dateString] autorelease];
-    [prefix release];
+//    [prefix release];
     [formatter release];
 	return output;
 }

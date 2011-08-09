@@ -36,7 +36,7 @@
     NSMutableArray *recentParticipants;
     NSMutableArray *facebookFriends;
         
-    NSArray *allContacts;
+//    NSArray *allContacts;
     NSArray *allContactsWithEmail;
     
     NSString *currentSearchTerm;
