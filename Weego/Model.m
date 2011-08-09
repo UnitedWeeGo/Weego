@@ -311,14 +311,30 @@ static Model *sharedInstance;
         [self.participants removeObject:p];
     }
     [removedParticipants release];
-//    NSMutableArray *removedVotes = [[NSMutableArray alloc] init];
-//    for (Vote *v in self.votes) {
-//        if (v.isTemporary) [removedVotes addObject:v];
-//    }
-//    for (Vote *v in removedVotes) {
-//        [self.votes removeObject:v];
-//    }
-//    [removedVotes release];
+}
+
+- (void)flushTempLocationsForEventWithId:(NSString *)eventId
+{
+    NSMutableArray *removedLocations = [[NSMutableArray alloc] init];
+    for (Location *l in self.locations) {
+        if (l.isTemporary && [l.ownerEventId isEqualToString:eventId]) [removedLocations addObject:l];
+    }
+    for (Location *l in removedLocations) {
+        [self.locations removeObject:l];
+    }
+    [removedLocations release];
+}
+
+- (void)flushTempParticipantsForEventWithId:(NSString *)eventId
+{
+    NSMutableArray *removedParticipants = [[NSMutableArray alloc] init];
+    for (Participant *p in self.participants) {
+        if (p.isTemporary && [p.ownerEventId isEqualToString:eventId]) [removedParticipants addObject:p];
+    }
+    for (Participant *p in removedParticipants) {
+        [self.participants removeObject:p];
+    }
+    [removedParticipants release];
 }
 
 #pragma mark -

@@ -47,6 +47,8 @@ enum {
     DataFetchTypeToggleEventAcceptance,
     DataFetchTypeInfo,
     DataFetchTypeHelp,
+    DataFetchTypeTerms,
+    DataFetchTypePrivacy,
     DataFetchTypeDeal,
     DataFetchTypeRemoveLocation,
     DataFetchTypeRemoveEvent,

@@ -402,7 +402,7 @@
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
                      animations:^(void){
-                         [scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+                         if (scrollView) [scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
                      } completion:^(BOOL finished){
                          [self setState:EGOOPullRefreshNormal];
                          if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderClosed)]) {

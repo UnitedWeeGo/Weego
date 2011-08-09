@@ -93,7 +93,7 @@
     [self.view addSubview:contactsSearchBar];
     [contactsSearchBar release];
     
-    Event *detail = [Model sharedInstance].currentEvent;
+    detail = [Model sharedInstance].currentEvent;
     addedContacts = [[[NSMutableArray alloc] init] retain]; //[[NSMutableArray arrayWithArray:[detail getParticipants]] retain]; //
     
     recentParticipants = [[NSMutableArray arrayWithArray:[[Model sharedInstance] getRecentParticipants]] retain]; //[[[Model sharedInstance] getRecentParticipants] retain];
@@ -123,6 +123,12 @@
 //    [recentParticipants release];
 //    recentParticipants = [[NSMutableArray arrayWithArray:[[Model sharedInstance] getRecentParticipants]] retain]; //[[[Model sharedInstance] getRecentParticipants] retain];
 //    hasRecents = ([recentParticipants count] > 0);
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    _refreshHeaderView.delegate = nil;
 }
 
 - (void)viewDidUnload
@@ -193,6 +199,8 @@
 
 - (void)handleBackPress:(id)sender
 {
+    Model *model = [Model sharedInstance];
+    if (!model.isInTrial) [model flushTempParticipantsForEventWithId:detail.eventId];
     [[ViewController sharedInstance] goBack];
 }
 

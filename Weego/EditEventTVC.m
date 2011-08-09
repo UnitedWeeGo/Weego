@@ -38,6 +38,7 @@ typedef enum {
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
 - (void)changeDateTimeInLabel:(id)sender;
+- (void)showAlertWithCode:(int)code;
 
 @end
 
@@ -68,8 +69,12 @@ typedef enum {
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
     
 	if (detail == nil) detail = [[Model sharedInstance].currentEvent retain];
-    self.anotherTitle = detail.eventTitle;
-    self.anotherDate = (detail.eventDate) ? detail.eventDate : [NSDate date];
+    originalTitle = detail.eventTitle;
+    [originalTitle retain];
+    originalDate = (detail.eventDate) ? detail.eventDate : [NSDate date];
+    [originalDate retain];
+    self.anotherTitle = originalTitle;
+    self.anotherDate = originalDate;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -337,17 +342,43 @@ typedef enum {
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeUpdateEvent:
             NSLog(@"Unhandled Error: %d",DataFetchTypeUpdateEvent);
             [self removeDataFetcherMessageListeners];
             self.navigationItem.rightBarButtonItem.enabled = YES;
             self.navigationItem.leftBarButtonItem.enabled = YES;
+            detail.eventTitle = originalTitle;
+            detail.eventDate = originalDate;
+            [self showAlertWithCode:errorType];
             break;
             
         default:
             break;
     }
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)dealloc {
@@ -356,6 +387,8 @@ typedef enum {
 	[detail release];
     [self.anotherTitle release];
     [self.anotherDate release];
+    [originalTitle release];
+    [originalDate release];
     [super dealloc];
 }
 

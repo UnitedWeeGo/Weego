@@ -14,6 +14,8 @@
 - (void)showLoading;
 - (void)hideLoading;
 - (void)showContent:(NSString *)html;
+- (void)showError;
+- (void)showAlertWithCode:(int)code;
 - (void)pickDateTime;
 
 @end
@@ -45,24 +47,22 @@
     [[NavigationSetter sharedInstance] setNavState:(shouldShowTimeSelector ? NavStateDealsWithTimeAvailability : NavStateDeals) withTarget:self];
     [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
     
+    [[ViewController sharedInstance] showDropShadow:0];
+    
     UIView *bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
     bevelStripe.backgroundColor = HEXCOLOR(0xFFFFFFFF);
     [self.view addSubview:bevelStripe];
     [bevelStripe release];
-    
-    UIView *headerViewMask = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320, 60)];
-    headerViewMask.clipsToBounds = YES;
-    [self.view addSubview:headerViewMask];
-    [headerViewMask release];
-    
-    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, -60.0f, 320, 60)];
-    _refreshHeaderView.delegate = self;
-    [headerViewMask addSubview:_refreshHeaderView];
-    [_refreshHeaderView release];
-    
+        
     shader = [[[UIView alloc] initWithFrame:self.view.frame] autorelease];
     shader.backgroundColor = HEXCOLOR(0xF3F3F3FF);
     [self.view addSubview:shader];
+    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(150, 185, 20, 20);
+    [self.view addSubview:spinner];
+    
+    [self showLoading];
     
     [self setUpDataFetcherMessageListeners];
     [[Controller sharedInstance] getDealsHTMLDataWithSGID:self.SGID];
@@ -100,8 +100,11 @@
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
-        case DataFetchTypeDeal:            
+        case DataFetchTypeDeal: 
+            [self showError];
+            [self showAlertWithCode:errorType];
             break;
             
         default:
@@ -124,37 +127,76 @@
 
 - (void)showLoading
 {
-    [_refreshHeaderView egoRefreshScrollViewOpenAndShowLoading:nil];
-    [_refreshHeaderView refreshLastUpdatedDate];
-    [UIView animateWithDuration:0.30f 
-                          delay:0 
-                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-                     animations:^(void){
-                         //                         contactEntry.frame = CGRectMake(0, 60, 320, contactEntry.frame.size.height);
-                         _refreshHeaderView.frame = CGRectMake(0, 0, 320, 60);
-                     }
-                     completion:^(BOOL finished){
-                         
-                     }];
-    [[ViewController sharedInstance] showDropShadow:5];
+    [spinner startAnimating];
 }
 
 - (void)hideLoading
 {
-    [UIView animateWithDuration:0.30f 
-                          delay:0 
-                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-                     animations:^(void){
-                         //                         contactEntry.frame = CGRectMake(0, 0, 320, contactEntry.frame.size.height);
-                         _refreshHeaderView.frame = CGRectMake(0, -60.0f, 320, 60);
-                         
-                     }
-                     completion:^(BOOL finished){
-                         [[ViewController sharedInstance] showDropShadow:0];
-                         NSString *htmlContent = [Model sharedInstance].dealResults;
-                         [self showContent:htmlContent];
-                     }];
+    [spinner stopAnimating];
+    NSString *htmlContent = [Model sharedInstance].dealResults;
+    [self showContent:htmlContent];
 }
+
+- (void)showError
+{
+    [spinner stopAnimating];
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
+}
+
+//- (void)showLoading
+//{
+//    [_refreshHeaderView egoRefreshScrollViewOpenAndShowLoading:nil];
+//    [_refreshHeaderView refreshLastUpdatedDate];
+//    [UIView animateWithDuration:0.30f 
+//                          delay:0 
+//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+//                     animations:^(void){
+//                         //                         contactEntry.frame = CGRectMake(0, 60, 320, contactEntry.frame.size.height);
+//                         _refreshHeaderView.frame = CGRectMake(0, 0, 320, 60);
+//                     }
+//                     completion:^(BOOL finished){
+//                         
+//                     }];
+//    [[ViewController sharedInstance] showDropShadow:5];
+//}
+//
+//- (void)hideLoading
+//{
+//    [UIView animateWithDuration:0.30f 
+//                          delay:0 
+//                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+//                     animations:^(void){
+//                         //                         contactEntry.frame = CGRectMake(0, 0, 320, contactEntry.frame.size.height);
+//                         _refreshHeaderView.frame = CGRectMake(0, -60.0f, 320, 60);
+//                         
+//                     }
+//                     completion:^(BOOL finished){
+//                         [[ViewController sharedInstance] showDropShadow:0];
+//                         NSString *htmlContent = [Model sharedInstance].dealResults;
+//                         [self showContent:htmlContent];
+//                     }];
+//}
 
 - (void)showContent:(NSString *)html
 {
@@ -303,30 +345,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     
-}
-
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-	_saving = YES;
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-	
-	return _saving; // should return if data source model is reloading
-	
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-	return [NSDate date]; // should return date data source was last changed
-}
-
-- (void)egoRefreshTableHeaderClosed
-{
-    //    _refreshHeaderView.hidden = YES;
 }
 
 - (void)dealloc

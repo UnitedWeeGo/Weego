@@ -15,14 +15,13 @@ typedef enum {
     TimeActionSheetStateEventParticipant
 } TimeActionSheetState;
 
-@interface DealsView : UIViewController <EGORefreshTableHeaderDelegate, UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler, UIActionSheetDelegate>
+@interface DealsView : UIViewController <UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler, UIActionSheetDelegate>
 {
-    EGORefreshTableHeaderView *_refreshHeaderView;
-    BOOL _saving;
     UIView *shader;
     UIActionSheet *dateActionSheet;
 	UIDatePicker *datePicker;
     TimeActionSheetState actionSheetState;
+    UIActivityIndicatorView *spinner;
 }
 
 @property (nonatomic, copy) NSString *SGID;

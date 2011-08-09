@@ -282,7 +282,7 @@ static Controller *sharedInstance;
     Model *model = [Model sharedInstance];
     if ([model.currentEvent.updatedVotes count] > 0) {
         DataFetcher *fetcher = [[[DataFetcher alloc] initAndToggleVotesWithUserId:[model userId] withEvent:model.currentEvent withLocations:model.currentEvent.updatedVotes delegate:[DataParser sharedInstance]] autorelease];
-        [model.currentEvent clearNewVotes];
+        if (model.currentViewState == ViewStateMap) [model.currentEvent clearNewVotes];
         return fetcher.requestId;
     }
     return nil;

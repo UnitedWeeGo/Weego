@@ -39,5 +39,6 @@ typedef enum {
 
 - (void)transitionToState:(MessageEntryState)state;
 - (void)resetAfterSendSuccess;
+- (void)resetAfterSendFailure;
 
 @end

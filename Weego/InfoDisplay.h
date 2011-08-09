@@ -22,7 +22,7 @@
     int numPages;
     float pad;
     PageControl *pageControl;
-    UIActivityIndicatorView* _spinner;
+    UIActivityIndicatorView *spinner;
     UIView *shader;
     UIWebView *webView;
 }

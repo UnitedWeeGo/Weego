@@ -17,6 +17,9 @@
     UIActionSheet *dateActionSheet;
 	UIDatePicker *datePicker;
     
+    NSString *originalTitle;
+    NSDate *originalDate;
+    
 }
 
 @property (nonatomic, retain) NSString *anotherTitle;

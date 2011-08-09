@@ -15,12 +15,15 @@
 - (void)removeDataFetcherMessageListeners;
 - (void)loadHTMLContentWithURL:(NSString *)url;
 - (void)setupViews;
-- (void)setupSpinner;
 - (void)setupScrollView;
 - (void)setupPageControl;
 - (void)layoutInitialCard;
 - (void)layoutCards;
 - (UIView *)getCardWithHTMLContent:(NSString *)html withViewIndex:(int)index;
+- (void)showLoading;
+- (void)hideLoading;
+- (void)showError;
+- (void)showAlertWithCode:(int)code;
 
 @end
 
@@ -61,8 +64,13 @@
     shader.clipsToBounds = YES;
     [self addSubview:shader];
     
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(150, 185, 20, 20);
+    [self addSubview:spinner];
+    
+    [self showLoading];
+    
     if ([delegate respondsToSelector:@selector(infoDisplayWillBeginLoading)]) [delegate infoDisplayWillBeginLoading];
-//    [self setupSpinner];
     [[Controller sharedInstance] getInfoHMTLData];
 
 }
@@ -82,19 +90,6 @@
     pageControl = [[[PageControl alloc] initWithFrame:CGRectMake(0, base.size.height, base.size.width, 12)] autorelease];
 //    pageControl.hidesForSinglePage = YES;
     [self addSubview:pageControl];
-}
-
-- (void)setupSpinner
-{
-    _spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
-                UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-    _spinner.autoresizingMask =
-    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin
-    | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [_spinner sizeToFit];
-    [_spinner startAnimating];
-    _spinner.center = self.center;
-    [self addSubview:_spinner];
 }
 
 #pragma mark UIScrollViewDelegate methods
@@ -199,6 +194,7 @@
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeInfo:
+            [self hideLoading];
             [self layoutInitialCard];
             break;
             
@@ -211,18 +207,59 @@
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeInfo:
-            // recover by populating local data
-//            [_spinner stopAnimating];
-//            _spinner.hidden = YES;
-#warning need to add local content
-            
+            [self showError];
+            [self showAlertWithCode:errorType];
             break;
             
         default:
             break;
     }
+}
+
+
+- (void)showLoading
+{
+    [spinner startAnimating];
+}
+
+- (void)hideLoading
+{
+    [spinner stopAnimating];
+}
+
+- (void)showError
+{
+    [spinner stopAnimating];
+    NSString *htmlContent = [Model sharedInstance].infoResults;
+    if (htmlContent && ![htmlContent isEqualToString:@""]) {
+        UIView *card = [self getCardWithHTMLContent:htmlContent withViewIndex:0];
+        [infoScrollView insertSubview:card atIndex:0];
+    }
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet. Content shown may be out of date.", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out. Content shown may be out of date.", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred. Content shown may be out of date.", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
 }
 
 - (void)showContent

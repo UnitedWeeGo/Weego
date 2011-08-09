@@ -31,6 +31,7 @@ enum eventDetailSections {
 - (void)showLoadingIndicator;
 - (void)fetchData;
 - (void)populateCurrentSortedLocations;
+- (void)showAlertWithCode:(int)code;
 - (CellLocation *)getCellForRequestId:(NSString *)requestId;
 - (BOOL)orderDidChange;
 - (void)handleAllEventsUpdated;
@@ -69,6 +70,8 @@ enum eventDetailSections {
     [super loadView];
     detail = [Model sharedInstance].currentEvent;
     detail.eventRead = @"true";
+    originalIVotedFor = detail.iVotedFor;
+    [originalIVotedFor retain];
     
     otherLocationsShowing = detail.currentEventState < EventStateDecided;
     otherParticipantsShowing = detail.currentEventState < EventStateDecided;
@@ -179,6 +182,17 @@ enum eventDetailSections {
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
     switch (fetchType) {
+        case DataFetchTypeGetEvent:
+            [originalIVotedFor release];
+            originalIVotedFor = detail.iVotedFor;
+            [originalIVotedFor retain];
+            break;
+        case DataFetchTypeToggleVotesForEvent:
+            [[Model sharedInstance].currentEvent clearNewVotes];
+            [originalIVotedFor release];
+            originalIVotedFor = detail.iVotedFor;
+            [originalIVotedFor retain];
+            break;
         case DataFetchTypeToggleEventAcceptance:
             if (![pendingCountMeInFetchRequestId isEqualToString:fetchId]) return;
             if (detail.acceptanceStatus == AcceptanceTypeAccepted)
@@ -260,6 +274,11 @@ enum eventDetailSections {
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
             [self.tableView reloadData];
             break;
+        case DataFetchTypeToggleVotesForEvent:
+            detail.iVotedFor = originalIVotedFor;
+            [self.tableView reloadData];
+            if ([Model sharedInstance].currentViewState == ViewStateDetails) [self showAlertWithCode:errorType];
+            break;
         case DataFetchTypeToggleEventAcceptance:
             if (detail.acceptanceStatus == AcceptanceTypeAccepted)
             {
@@ -269,12 +288,39 @@ enum eventDetailSections {
             {
                 [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsPending withTarget:self];
             }
+            if ([Model sharedInstance].currentViewState == ViewStateDetails) [self showAlertWithCode:errorType];
             break;
-            
+        case DataFetchTypeRemoveEvent:
+            [self showAlertWithCode:errorType];
+            break;
         default:
             break;
     }
 }
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
+}
+
+
 
 - (CellLocation *)getCellForRequestId:(NSString *)requestId
 {
@@ -565,8 +611,9 @@ enum eventDetailSections {
     Location *loc = svl.location;
     Controller *controller = [Controller sharedInstance];
     [controller toggleVoteForLocationsWithId:loc.locationId];
-    if (![Model sharedInstance].isInTrial) [self.tableView reloadData];
-    else {
+    if (![Model sharedInstance].isInTrial) {
+        [self.tableView reloadData];
+    } else {
         [self.tableView reloadData];
         [NSObject cancelPreviousPerformRequestsWithTarget:self];
         [self performSelector:@selector(reorderForNonServerVote) withObject:nil afterDelay:0.5];
@@ -1080,6 +1127,7 @@ enum eventDetailSections {
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // removes all observers for object
     [oldSortedLocations release];
     [currentSortedLocations release];
+    [originalIVotedFor release];
     [super dealloc];
 }
 

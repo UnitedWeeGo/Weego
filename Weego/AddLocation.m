@@ -784,8 +784,8 @@ typedef enum {
 - (void)likeButtonPressed
 {
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
-    [placemark setStateType:LocAnnoStateTypeLiked];
-    [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
+//    [placemark setStateType:LocAnnoStateTypeLiked];
+//    [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
     
     Event *detail = [Model sharedInstance].currentEvent;
     Location *loc = [detail getLocationWithUUID:placemark.uuid];
@@ -1281,6 +1281,9 @@ typedef enum {
     switch (fetchType) {
         case DataFetchTypeAddNewLocationToEvent:
             NSLog(@"Unhandled Error: %d", DataFetchTypeAddNewLocationToEvent);
+            [locWidget updateInfoViewWithCorrectButtonState:ActionStateAdd];
+            Model *model = [Model sharedInstance];
+            [model flushTempLocationsForEventWithId:model.currentEvent.eventId];
             mapView.userInteractionEnabled = YES;
             isAddingLocation = NO;
             break;
@@ -1309,7 +1312,7 @@ typedef enum {
         default:
             break;
     }
-    if (!alertViewShowing) [self showAlertWithCode:errorType];
+    if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
 }
 
 - (void)showAlertWithCode:(int)code

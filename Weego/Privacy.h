@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 
-@interface Privacy : UIViewController <EGORefreshTableHeaderDelegate, UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler>
+@interface Privacy : UIViewController <UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler>
 {
-    EGORefreshTableHeaderView *_refreshHeaderView;
-    BOOL _saving;
     UIView *shader;
+    UIActivityIndicatorView *spinner;
 }
 
 @end

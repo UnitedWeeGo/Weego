@@ -279,6 +279,11 @@ const CGRect MaxCharsTextLabelFrame = { { 230.0f, 85.0f }, { 0.0f, 0.0f } };
     [self transitionToState:MessageEntryStateClosed];
 }
 
+- (void)resetAfterSendFailure
+{
+    [self transitionToState:MessageEntryStateEditing];
+}
+
 - (void)dealloc
 {
     //

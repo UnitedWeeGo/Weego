@@ -9,11 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 
-@interface Terms : UIViewController <EGORefreshTableHeaderDelegate, UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler>
+@interface Terms : UIViewController <UIWebViewDelegate, UIScrollViewDelegate, DataFetcherMessageHandler>
 {
-    EGORefreshTableHeaderView *_refreshHeaderView;
-    BOOL _saving;
     UIView *shader;
+    UIActivityIndicatorView *spinner;
 }
 
 @end

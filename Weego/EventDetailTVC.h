@@ -43,6 +43,8 @@ typedef enum {
     UIActionSheet *dateActionSheet;
 	UIDatePicker *datePicker;
     NSDate *suggestedDate;
+    BOOL alertViewShowing;
+    NSArray *originalIVotedFor;
 }
 
 @end

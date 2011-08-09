@@ -16,6 +16,8 @@
 @class DataFetcher;
 
 @interface AddFriends : UIViewController <UITableViewDelegate, UITableViewDataSource, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, AddressBookTVCDataSource, AddressBookTVCDelegate, SubViewSearchBarDelegate> {
+    Event *detail;
+    
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _saving;
     

@@ -120,6 +120,8 @@ typedef enum {
 - (void)clearEvents;
 - (void)sortEvents;
 - (void)flushTempItems;
+- (void)flushTempLocationsForEventWithId:(NSString *)eventId;
+- (void)flushTempParticipantsForEventWithId:(NSString *)eventId;
 
 - (void)createTrialParticipant;
 - (void)createLoginParticipantWithUserName:(NSString *)emailAddress andRegisteredId:(NSString *)registeredId;

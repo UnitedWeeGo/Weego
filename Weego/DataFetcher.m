@@ -734,8 +734,8 @@
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                apiURL,
                                @"info.html"] autorelease];
-//        [self makeRequest:urlString];
-		[self makeRequestRespectingCache:urlString];
+        [self makeRequest:urlString];
+//		[self makeRequestRespectingCache:urlString];
 	}
 	return self;
 }
@@ -750,8 +750,8 @@
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                apiURL,
                                @"help.html"] autorelease];
-//        [self makeRequest:urlString];
-		[self makeRequestRespectingCache:urlString];
+        [self makeRequest:urlString];
+//		[self makeRequestRespectingCache:urlString];
 	}
 	return self;
 }
@@ -761,13 +761,13 @@
     self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
-        pendingRequestType = DataFetchTypeHelp;
+        pendingRequestType = DataFetchTypeTerms;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                 apiURL,
                                 @"terms.html"] autorelease];
-        //        [self makeRequest:urlString];
-		[self makeRequestRespectingCache:urlString];
+        [self makeRequest:urlString];
+//		[self makeRequestRespectingCache:urlString];
 	}
 	return self;
 }
@@ -777,13 +777,13 @@
     self = [self init];
 	if (self != nil) {
         requestId = [[self stringWithUUID] retain];
-        pendingRequestType = DataFetchTypeHelp;
+        pendingRequestType = DataFetchTypePrivacy;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
                                 apiURL,
                                 @"privacy.html"] autorelease];
-        //        [self makeRequest:urlString];
-		[self makeRequestRespectingCache:urlString];
+        [self makeRequest:urlString];
+//		[self makeRequestRespectingCache:urlString];
 	}
 	return self;
 }

@@ -18,6 +18,7 @@
 - (void)setUpUI;
 - (CellFeedMessage *)getCellForFeedMessageWithFeedMessage:(FeedMessage *)aFeedMessage;
 - (void)handleCancelChatPress:(id)sender;
+- (void)showAlertWithCode:(int)code;
 
 @end
 
@@ -190,16 +191,40 @@ const int openWidgetInputHeight = 120;
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
+    int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeAddMessage:
-            NSLog(@"Unhandled Error: %d", fetchType);
+            [self showAlertWithCode:errorType];
+            [messageEntryWidget resetAfterSendFailure];
             break;
         case DataFetchTypeGetEvent:
-            NSLog(@"Unhandled Error: %d", fetchType);
+            [self showAlertWithCode:errorType];
             break;
         default:
             break;
     }
+}
+
+- (void)showAlertWithCode:(int)code
+{
+    NSString *title = @"Error";
+    NSString *message = @"";
+    
+    switch (code) {
+        case NSURLErrorNotConnectedToInternet:
+            message = NSLocalizedString(@"Not Connected To Internet", @"Error Status");
+            break;
+        case NSURLErrorTimedOut:
+            message = NSLocalizedString(@"Request Timed Out, Try Again...", @"Error Status");
+            break;
+        default:
+            message = NSLocalizedString(@"An Error Occurred, Try Again...", @"Error Status");
+            break;
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
+    [alert release];
 }
 
 #pragma mark - View lifecycle
