@@ -58,7 +58,7 @@
 
 - (NSString *)firstNamePossessive
 {
-    NSString *output = self.firstName;
+    NSString *output = firstName;
     if (output == nil) return @"My";
     char lastChar = [[output uppercaseString] characterAtIndex:output.length-1];
     if (lastChar == 'S') {
