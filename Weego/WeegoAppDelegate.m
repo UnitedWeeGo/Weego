@@ -61,7 +61,7 @@
     }
     
     
-    NSString *currentlyInstalledVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *currentlyInstalledVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
     NSString *serverVersion = [userPreferences objectForKey:APP_STORE_VERSION];
     if (![currentlyInstalledVersion isEqualToString:serverVersion] && ![lastDisplayedVersionAlert isEqualToString:serverVersion])
