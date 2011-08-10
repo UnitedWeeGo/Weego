@@ -95,6 +95,7 @@
     [self.messageRead release];
     [self.ownerEventId release];
     [self.messageSentTimestamp release];
+    [self.messageId release];
     [super dealloc];
 }
 

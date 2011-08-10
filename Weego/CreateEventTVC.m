@@ -123,6 +123,7 @@ typedef enum {
     [self setUpDataFetcherMessageListeners];
     
     [self populateCurrentSortedLocations];
+    [oldSortedLocations release];
     oldSortedLocations = [currentSortedLocations copy];
     
     [self.tableView reloadData];
@@ -193,15 +194,13 @@ typedef enum {
 {
     if (currentSortedLocations != nil) {
         [oldSortedLocations release];
-        oldSortedLocations = currentSortedLocations;
-        [oldSortedLocations retain];
+        oldSortedLocations = [currentSortedLocations copy];
     }
     [currentSortedLocations release];
     currentSortedLocations = [[NSArray alloc] initWithArray:[detail getLocationsByLocationOrder:detail.currentLocationOrder]];
     if (oldSortedLocations == nil) {
         [oldSortedLocations release];
-        oldSortedLocations = currentSortedLocations;
-        [oldSortedLocations retain];
+        oldSortedLocations = [currentSortedLocations copy];
     }
 }
 
@@ -252,6 +251,7 @@ typedef enum {
             Location *loc = (Location *)[currentSortedLocations objectAtIndex:indexPath.row];
             [[Controller sharedInstance] removeLocationWithId:loc.locationId];
             [self populateCurrentSortedLocations];
+            [oldSortedLocations release];
             oldSortedLocations = [currentSortedLocations copy];
             [self.tableView reloadData];
         } else if (indexPath.section == eventDetailSectionParticipants) {
