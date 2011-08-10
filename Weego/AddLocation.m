@@ -187,6 +187,7 @@ typedef enum {
     CGRect searchFrame = CGRectMake(0, -41.0, 320.0, 41.0);
     searchBar = [[SubViewSearchBar alloc] initWithFrame:searchFrame];
     searchBar.delegate = self;
+    searchBar.returnKey = UIReturnKeySearch;
     searchBar.placeholderText = @"Search for a location";
     [self.view addSubview:searchBar];
     [searchBar release];

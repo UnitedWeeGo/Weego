@@ -92,6 +92,7 @@
 
     contactsSearchBar = [[SubViewSearchBar alloc] initWithFrame:CGRectMake(0, 0, 320.0, 41.0)];
     contactsSearchBar.delegate = self;
+    contactsSearchBar.keyboardType = UIKeyboardTypeEmailAddress;
     contactsSearchBar.placeholderText = @"Type your friend's name or email";
     [self.view addSubview:contactsSearchBar];
     [contactsSearchBar release];

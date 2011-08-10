@@ -21,7 +21,7 @@
 
 @implementation SubViewSearchBar
 
-@synthesize delegate, placeholderText;
+@synthesize delegate, placeholderText, keyboardType, returnKey;
 
 - (void)dealloc
 {
@@ -85,7 +85,8 @@
 	searchField.backgroundColor = [UIColor clearColor];
     searchField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchField.autocorrectionType = UITextAutocorrectionTypeNo;
-    searchField.keyboardType = UIKeyboardTypeEmailAddress;
+    searchField.keyboardType = UIKeyboardTypeDefault;
+    searchField.returnKeyType = UIReturnKeyDefault;
     searchField.delegate = self;
     searchField.placeholder = self.placeholderText;
 	[self addSubview:searchField];
@@ -140,6 +141,16 @@
     if (placeholderText) [placeholderText release];
     placeholderText = [text retain];
     searchField.placeholder = placeholderText;
+}
+
+- (void)setKeyboardType:(UIKeyboardType)aKeyboardType
+{
+    searchField.keyboardType = aKeyboardType;
+}
+
+- (void)setReturnKey:(UIReturnKeyType)aReturnKey
+{
+    searchField.returnKeyType = aReturnKey;
 }
 
 - (void)setText:(NSString *)aText

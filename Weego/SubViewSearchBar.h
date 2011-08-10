@@ -53,6 +53,8 @@
 @property (nonatomic, assign) id <SubViewSearchBarDelegate> delegate;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, retain) NSString *placeholderText;
+@property (nonatomic, assign) UIKeyboardType keyboardType;
+@property (nonatomic, assign) UIReturnKeyType returnKey;
 //@property (nonatomic, assign) BOOL clearOnReset;
 
 - (void)resetField;
