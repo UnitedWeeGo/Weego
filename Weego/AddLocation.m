@@ -1269,9 +1269,6 @@ typedef enum {
 
 - (void)handleDataFetcherErrorMessage:(NSNotification *)aNotification
 {
-    BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
-    BOOL shouldShowAlert = true;
-    
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
@@ -1284,35 +1281,38 @@ typedef enum {
             [model flushTempLocationsForEventWithId:model.currentEvent.eventId];
             mapView.userInteractionEnabled = YES;
             isAddingLocation = NO;
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeGetReportedLocations:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGetReportedLocations);
             mapView.userInteractionEnabled = YES;
-            shouldShowAlert = false;
             break;
         case DataFetchTypeSearchSimpleGeo:
             NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
             [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeGooglePlaceSearch:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGooglePlaceSearch);
             [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeGoogleAddressSearch:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGoogleAddressSearch);
             [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeAddVoteToLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeRemoveVoteFromLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         default:
             break;
     }
-    
-    if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap && isRunningInForeground && shouldShowAlert) [self showAlertWithCode:errorType];
 }
 
 - (void)showAlertWithCode:(int)code
