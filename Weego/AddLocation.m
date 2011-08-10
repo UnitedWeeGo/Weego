@@ -1268,6 +1268,9 @@ typedef enum {
 
 - (void)handleDataFetcherErrorMessage:(NSNotification *)aNotification
 {
+    BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+    BOOL shouldShowAlert = true;
+    
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
@@ -1284,6 +1287,7 @@ typedef enum {
         case DataFetchTypeGetReportedLocations:
             NSLog(@"Unhandled Error: %d", DataFetchTypeGetReportedLocations);
             mapView.userInteractionEnabled = YES;
+            shouldShowAlert = false;
             break;
         case DataFetchTypeSearchSimpleGeo:
             NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
@@ -1306,7 +1310,8 @@ typedef enum {
         default:
             break;
     }
-    if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
+    
+    if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap && isRunningInForeground && shouldShowAlert) [self showAlertWithCode:errorType];
 }
 
 - (void)showAlertWithCode:(int)code
@@ -1537,8 +1542,9 @@ typedef enum {
     Event *detail = [Model sharedInstance].currentEvent;
     BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2);
     BOOL eventIsBeingCreated = detail.isTemporary;
+    BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
     // grab any users reported locations if in the window
-    if (eventIsWithinTimeRange && !eventIsBeingCreated) [[Controller sharedInstance] fetchReportedLocations];
+    if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
 }
 
 - (void)viewWillAppear:(BOOL)animated
