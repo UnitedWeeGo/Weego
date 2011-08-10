@@ -162,8 +162,9 @@ static LocationReporter *sharedInstance;
         int numMinutesSinceLastFetchAttempt = [self minuteDistanceBetweenNowAndDate:model.lastFetchAttempt];
         if (numMinutesSinceLastFetchAttempt > STALE_DATA_FETCH_MINUTES_THRESHOLD) 
         {
-            NSLog(@"numMinutesSinceLastFetchAttempt: %d, fetchEventsSynchronous", numMinutesSinceLastFetchAttempt);
-            [[Controller sharedInstance] fetchEventsSynchronous];
+            NSLog(@"numMinutesSinceLastFetchAttempt: %d, fetchEvents", numMinutesSinceLastFetchAttempt);
+            //[[Controller sharedInstance] fetchEventsSynchronous];
+            [[Controller sharedInstance] fetchEvents];
         }
     }
     
@@ -214,12 +215,15 @@ static LocationReporter *sharedInstance;
 {
     Model *model = [Model sharedInstance];
     UIApplication *app = [UIApplication sharedApplication];
-    NSLog(@"checking in user %@ for event %@ in background:%@", model.userEmail, event.eventTitle, app.applicationState == UIApplicationStateBackground ? @"YES" : @"NO");    
+    NSLog(@"checking in user %@ for event %@ in background:%@", model.userEmail, event.eventTitle, app.applicationState == UIApplicationStateBackground ? @"YES" : @"NO");
+    /*
     if (app.applicationState == UIApplicationStateBackground) {
         [[Controller sharedInstance] checkinUserForEventSynchronous:event];
     } else {
         [[Controller sharedInstance] checkinUserForEvent:event];
     }
+     */
+    [[Controller sharedInstance] checkinUserForEvent:event];
 }
 
 - (void)reportUserLocation:(CLLocation *)location andEvent:(Event *)event
@@ -232,7 +236,8 @@ static LocationReporter *sharedInstance;
     
     if (app.applicationState == UIApplicationStateBackground) {
         NSLog(@"Reporting location for event: %@ in background", event.eventTitle);
-        [[Controller sharedInstance] reportLocationSynchronous:loc forEvent:event];
+        [[Controller sharedInstance] reportLocation:loc forEvent:event];
+        //[[Controller sharedInstance] reportLocationSynchronous:loc forEvent:event];
     } else {
         NSLog(@"Reporting location for event: %@", event.eventTitle);
         [[Controller sharedInstance] reportLocation:loc forEvent:event];
