@@ -31,6 +31,7 @@ typedef enum {
     Event *detail;
     HeaderViewDetailsEvent *tableHeaderView;
     EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL initialLoadFinished;
     BOOL _reloading;
     BOOL otherLocationsShowing;
     BOOL otherParticipantsShowing;

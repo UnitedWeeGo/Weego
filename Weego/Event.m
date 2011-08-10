@@ -391,6 +391,7 @@
 	[self.eventId release];
 	[self.eventTitle release];
 	[self.eventDate release];
+    [self.eventExpireDate release];
     [self.eventRead release];
 	[self.eventDescription release];
     [self.creatorId release];

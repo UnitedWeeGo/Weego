@@ -111,6 +111,7 @@
 #pragma mark UIWebViewDelegate methods
 - (void)webViewDidFinishLoad:(UIWebView *)myWebView
 {
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
     if (numPages == -1) // first page parsing complete
     {
         [self hideLoading];
@@ -194,7 +195,7 @@
     switch (fetchType) {
         case DataFetchTypeInfo:
 //            [self hideLoading];
-            [self layoutInitialCard];
+//            [self layoutInitialCard];
             break;
             
         default:

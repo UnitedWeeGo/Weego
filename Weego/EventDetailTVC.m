@@ -128,6 +128,7 @@ enum eventDetailSections {
         [self fetchData];
     } else {
         [self populateCurrentSortedLocations];
+        [oldSortedLocations release];
         oldSortedLocations = [currentSortedLocations copy];
     }
     
@@ -154,12 +155,25 @@ enum eventDetailSections {
 
 - (void)populateCurrentSortedLocations
 {
-    if (oldSortedLocations != nil) [oldSortedLocations release];
-    oldSortedLocations = [currentSortedLocations copy];
+    if (currentSortedLocations != nil) {
+        [oldSortedLocations release];
+        oldSortedLocations = currentSortedLocations;
+        [oldSortedLocations retain];
+    }
     [currentSortedLocations release];
-    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
-    [currentSortedLocations retain];
-    if (oldSortedLocations == nil || !otherLocationsShowing) oldSortedLocations = [currentSortedLocations copy];
+    currentSortedLocations = [[NSArray alloc] initWithArray:[detail getLocationsByLocationOrder:detail.currentLocationOrder]];
+    if (oldSortedLocations == nil) {
+        [oldSortedLocations release];
+        oldSortedLocations = currentSortedLocations;
+        [oldSortedLocations retain];
+    }
+    
+//    if (oldSortedLocations != nil) [oldSortedLocations release];
+//    oldSortedLocations = [currentSortedLocations copy];
+//    [currentSortedLocations release];
+//    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
+//    [currentSortedLocations retain];
+//    if (oldSortedLocations == nil || !otherLocationsShowing) oldSortedLocations = [currentSortedLocations copy];
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -232,7 +246,11 @@ enum eventDetailSections {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self populateCurrentSortedLocations];
-    if ([currentSortedLocations count] < 2 || [currentSortedLocations count] < [oldSortedLocations count]) oldSortedLocations = [currentSortedLocations copy];
+    if ([currentSortedLocations count] < 2 || [currentSortedLocations count] < [oldSortedLocations count] || !initialLoadFinished) {
+        [oldSortedLocations release];
+        oldSortedLocations = [currentSortedLocations copy];
+        initialLoadFinished = YES;
+    }
     tableHeaderView.event = detail;
     tableHeaderView.delegate = self;
     self.tableView.tableHeaderView = tableHeaderView;
@@ -381,6 +399,7 @@ enum eventDetailSections {
         [[Controller sharedInstance] removeLocationWithId:loc.locationId];
         if ([Model sharedInstance].isInTrial) {
             [self populateCurrentSortedLocations];
+            [oldSortedLocations release];
             oldSortedLocations = [currentSortedLocations copy];
             [self.tableView reloadData];
         }
