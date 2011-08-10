@@ -200,7 +200,7 @@
 - (void)handleBackPress:(id)sender
 {
     Model *model = [Model sharedInstance];
-    if (!model.isInTrial) [model flushTempParticipantsForEventWithId:detail.eventId];
+    if (!model.isInTrial && model.currentAppState == AppStateEventDetails) [model flushTempParticipantsForEventWithId:detail.eventId];
     [[ViewController sharedInstance] goBack];
 }
 
