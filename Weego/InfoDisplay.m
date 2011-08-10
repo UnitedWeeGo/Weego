@@ -194,8 +194,7 @@
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeInfo:
-//            [self hideLoading];
-//            [self layoutInitialCard];
+            [self layoutInitialCard];
             break;
             
         default:
