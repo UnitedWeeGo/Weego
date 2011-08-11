@@ -194,14 +194,12 @@ static LocationReporter *sharedInstance;
     
     for ( Event *e in allEvents )
     {
-        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts >  (-CHECKIN_TIME_RANGE_MINUTES/2);
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
         BOOL eventIsDecidedOrEnded = e.currentEventState == EventStateDecided || e.currentEventState == EventStateEnded;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;        
-        BOOL eventIsCancelled = e.currentEventState == EventStateCancelled;
         
-        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsDecidedOrEnded && userAcceptedEvent && !eventIsCancelled)
+        if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsDecidedOrEnded && userAcceptedEvent)
         {
             Location *loc = [e getLocationByLocationId:e.topLocationId];
             if (loc == nil) continue;
