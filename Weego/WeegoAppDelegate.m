@@ -336,7 +336,7 @@
     self.loggingInFacebook = NO;
     [facebook release];
     facebook = [[Facebook alloc] initWithAppId:@"221300981231092"];
-    [facebook authorize:[NSArray arrayWithObjects:@"email,offline_access,publish_checkins", nil] delegate:self];
+    [facebook authorize:[NSArray arrayWithObjects:@"email,offline_access,publish_checkins,user_checkins,friends_checkins,user_birthday", nil] delegate:self];
 }
 
 #pragma mark -
