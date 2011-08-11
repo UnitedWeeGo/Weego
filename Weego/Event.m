@@ -54,19 +54,19 @@
     NSString *uTopLocationId = [[xml attributeForName:@"topLocationId"] stringValue];
     NSString *uCount = [[xml attributeForName:@"count"] stringValue];
     
-    if (uCreatorId) self.creatorId = uCreatorId;
-    if (uAcceptedParticipantList) self.acceptedParticipantList = uAcceptedParticipantList;
-    if (uDeclinedParticipantList) self.declinedParticipantList = uDeclinedParticipantList;
-	if (uEventTitle) self.eventTitle = uEventTitle;
-    if (uEventRead) self.eventRead = uEventRead;
-    if (uEventCancelled) self.hasBeenCancelled = [uEventCancelled isEqualToString:@"true"];
-    if (uCheckedIn) self.hasBeenCheckedIn = [uCheckedIn isEqualToString:@"true"];
-	if (uEventDate) self.eventDate = [self getDateFromString:uEventDate];
-    if (uEventExpireDate) self.eventExpireDate = [self getDateFromString:uEventExpireDate];
-	if (uEventDescription) self.eventDescription = uEventDescription;
-    if (uLastUpdatedTimestamp) self.lastUpdatedTimestamp = uLastUpdatedTimestamp;
-    if (uTopLocationId) self.topLocationId = uTopLocationId;
-    if (uCount) self.participantCount = uCount;    
+    if (uCreatorId != nil) self.creatorId = uCreatorId;
+    if (uAcceptedParticipantList != nil) self.acceptedParticipantList = uAcceptedParticipantList;
+    if (uDeclinedParticipantList != nil) self.declinedParticipantList = uDeclinedParticipantList;
+	if (uEventTitle != nil) self.eventTitle = uEventTitle;
+    if (uEventRead != nil) self.eventRead = uEventRead;
+    if (uEventCancelled != nil) self.hasBeenCancelled = [uEventCancelled isEqualToString:@"true"];
+    if (uCheckedIn != nil) self.hasBeenCheckedIn = [uCheckedIn isEqualToString:@"true"];
+	if (uEventDate != nil) self.eventDate = [self getDateFromString:uEventDate];
+    if (uEventExpireDate != nil) self.eventExpireDate = [self getDateFromString:uEventExpireDate];
+	if (uEventDescription != nil) self.eventDescription = uEventDescription;
+    if (uLastUpdatedTimestamp != nil) self.lastUpdatedTimestamp = uLastUpdatedTimestamp;
+    if (uTopLocationId != nil) self.topLocationId = uTopLocationId;
+    if (uCount != nil) self.participantCount = uCount;    
 }
 
 - (AcceptanceType)acceptanceStatus
