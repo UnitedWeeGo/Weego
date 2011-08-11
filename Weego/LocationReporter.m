@@ -110,27 +110,27 @@ static LocationReporter *sharedInstance;
     for ( Event *e in allEvents )
     {
         BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (CHECKIN_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > (-CHECKIN_TIME_RANGE_MINUTES/2);
-        NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
+        //NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
         
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
-        NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
+        //NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
         
-        NSLog(@"topLocationId: %@", e.topLocationId);
+        //NSLog(@"topLocationId: %@", e.topLocationId);
         
         Location *loc = [e getLocationByLocationId:e.topLocationId];
         BOOL hasADecidedLocation = (loc != nil);
-        NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
+        //NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
         
         BOOL eventIsBeingCreated = e.isTemporary;
-        NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
+        //NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
         
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
-        NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
+        //NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
         
         BOOL eventIsCancelled = e.currentEventState == EventStateCancelled;
-        NSLog(@"eventIsCancelled: %d", eventIsCancelled);
+        //NSLog(@"eventIsCancelled: %d", eventIsCancelled);
         
-        NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
+        //NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
         
         if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
         {
