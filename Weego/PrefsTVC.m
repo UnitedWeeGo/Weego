@@ -201,7 +201,7 @@ typedef enum {
         }
     } else if (indexPath.section == PrefsSectionLinks) {
         if (indexPath.row == 0) {
-            cell = [self getCellForLinksWithLabel:@"About" andInfo:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] andIndex:0];
+            cell = [self getCellForLinksWithLabel:@"About" andInfo:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] andIndex:0];
             [cell isFirst:YES isLast:NO];
         } else if (indexPath.row == 1) {
             cell = [self getCellForLinksWithLabel:@"Help" andIndex:1];
@@ -408,7 +408,7 @@ typedef enum {
     Model *model = [Model sharedInstance];
     Participant *me = model.loginParticipant;
     NSString *title = @"weego";
-    NSString *subject = [NSString stringWithFormat:@"weego message from %@ : v %@", me.fullName, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    NSString *subject = [NSString stringWithFormat:@"weego message from %@ : v %@", me.fullName, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     NSString *body = @"";
     NSArray *recipients = [NSArray arrayWithObject:@"feedback@unitedweego.com"];
     
