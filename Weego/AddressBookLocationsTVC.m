@@ -210,7 +210,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Contact *c = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    [delegate addressBookLocationsTVCDidSelectAddress:c.addressSingleLine];
+    [delegate addressBookLocationsTVCDidSelectAddress:c.addressSingleLine withFriendlyName:c.contactName];
 }
 
 @end

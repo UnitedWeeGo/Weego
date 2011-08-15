@@ -8,13 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/EventDetailTVC.m"
-         timestampString = "334274316.053582"
+         filePath = "Weego/AddLocation.m"
+         timestampString = "335144199.700769"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "853"
-         endingLineNumber = "853"
-         landmarkName = "-actionSheet:clickedButtonAtIndex:"
+         startingLineNumber = "1499"
+         endingLineNumber = "1499"
+         landmarkName = "-addressBookLocationsTVCDidSelectAddress:withFriendlyName:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -22,69 +22,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/Model.m"
-         timestampString = "333675894.797739"
+         filePath = "Weego/AddLocation.m"
+         timestampString = "335144173.519986"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1137"
-         endingLineNumber = "1137"
-         landmarkName = "-getCreateEventXML:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/SimpleGeoDataParser.m"
-         timestampString = "334003143.273607"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
-         landmarkName = "-processSimpleGeoResponse:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/NavigationSetter.m"
-         timestampString = "334217376.426144"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "696"
-         endingLineNumber = "696"
-         landmarkName = "-addBackButton:onLightBackground:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "334623095.369428"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "982"
-         endingLineNumber = "982"
-         landmarkName = "-connectionDidFinishLoading:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "334623095.369428"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1050"
-         endingLineNumber = "1050"
-         landmarkName = "-didLoadPlaces:forQuery:"
+         startingLineNumber = "490"
+         endingLineNumber = "490"
+         landmarkName = "-addSearchResultAnnotations"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

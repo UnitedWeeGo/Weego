@@ -76,6 +76,8 @@ typedef enum {
     SearchCategory *pendingSearchCategory;
     BOOL searchAgainButtonShowing;
     
+    NSMutableDictionary *friendlyNameDict;
+    
 //    NSArray *allContactsWithAddress;
     
     BOOL alertViewShowing;

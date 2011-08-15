@@ -497,6 +497,10 @@ typedef enum {
         
         if (!place.hasBeenAddedToMapPreviously)
         {
+            //[friendlyNameDict setValue:friendlyName forKey:anAddress];
+            NSString *friendlyName = [friendlyNameDict valueForKey:pendingSearchString];
+            if (friendlyName) place.name = friendlyName;
+            
             newLocationDetected = YES;
             place.hasBeenAddedToMapPreviously = YES;
             LocAnnotation *mark = [[LocAnnotation alloc] initWithLocation:place withStateType:LocAnnoStateTypeSearch andSelectedState:LocAnnoSelectedStateDefault];
@@ -1047,8 +1051,8 @@ typedef enum {
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
     
-    //[savedSearchResults release];
     [savedSearchResultsDict release];
+    [friendlyNameDict release];
     
     mapView.delegate = nil;
     searchBar.delegate = nil;
@@ -1492,9 +1496,10 @@ typedef enum {
 
 #pragma mark - AddressBookLocationsTVCDelegate
 
-- (void)addressBookLocationsTVCDidSelectAddress:(NSString *)anAddress
+- (void)addressBookLocationsTVCDidSelectAddress:(NSString *)anAddress withFriendlyName:(NSString *)friendlyName
 {
-    NSLog(@"search for: %@", anAddress);
+    NSLog(@"search for: %@ with friendly name: %@", anAddress, friendlyName);
+    [friendlyNameDict setValue:friendlyName forKey:anAddress];
     continueToSearchEnabled = NO;
     [self doShowSearchAgainButton:NO];
     [[ViewController sharedInstance] goBack];
@@ -1510,6 +1515,7 @@ typedef enum {
     [super loadView];
     self.view.backgroundColor = [UIColor whiteColor];
     savedSearchResultsDict = [[NSMutableDictionary alloc] init];
+    friendlyNameDict = [[NSMutableDictionary alloc] init];
     continueToSearchEnabled = false;
     annotationOpenCount = 0;
     searchBarShowing = false;
