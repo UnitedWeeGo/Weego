@@ -56,6 +56,8 @@ typedef enum {
     AddLocationState currentState;
     UIButton *keyboardResigner;
     Boolean userLocationFound;
+    Boolean alreadyZoomedToShowOthersLocations;
+    Boolean alreadyZoomedToShowUserLocation;
     int annotationOpenCount;
     NSString *selectedLocationId;
     BOOL isAddingLocation;

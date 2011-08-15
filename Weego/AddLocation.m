@@ -198,9 +198,7 @@ typedef enum {
     Model *model = [Model sharedInstance];
     Event *detail = [Model sharedInstance].currentEvent;
     int searchResults = [[detail getReportedLocations] count];
-//    NSLog(@"ReportedLocations count: %d", searchResults);
-    BOOL shouldZoom = true;
-    
+//    NSLog(@"ReportedLocations count: %d", searchResults);    
     for(int i = 0; i < searchResults; i++)
     {
         ReportedLocation *loc = (ReportedLocation *)[[detail getReportedLocations] objectAtIndex:i];
@@ -213,7 +211,6 @@ typedef enum {
         if (addedAlready)
         {
             //NSLog(@"%@ addedAlready", p.email);
-            shouldZoom = false;
             [addedAlready setCoordinate:loc.coordinate];
         }
         else
@@ -222,10 +219,11 @@ typedef enum {
             [mapView addAnnotation:placemark];
         }
     }
-    if (searchResults > 0 && shouldZoom) {
+    if (searchResults > 0 && !alreadyZoomedToShowOthersLocations) {
         userLocationFound = true; // cancels zoom to user location
         [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
     }
+    alreadyZoomedToShowOthersLocations = YES;
 }
 
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part
@@ -702,9 +700,16 @@ typedef enum {
 {
     MKMapRect zoomRect = MKMapRectNull;
     for (id <MKAnnotation> annotation in mapView.annotations) {
-        if (mapView.userLocation == annotation) continue;
-        
-        if (skipAdded)
+        BOOL isUserLocation = mapView.userLocation == annotation;
+        if (isUserLocation && !alreadyZoomedToShowUserLocation) 
+        {
+            alreadyZoomedToShowUserLocation = YES;
+        }
+        else if (isUserLocation && alreadyZoomedToShowUserLocation)
+        {
+            continue;
+        }
+        if (skipAdded && !isUserLocation)
         {
             if (![annotation isKindOfClass:[LocAnnotation class]]) continue;
             LocAnnotation *loc = (LocAnnotation *)annotation;
