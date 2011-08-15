@@ -50,7 +50,7 @@
         Model *model = [Model sharedInstance];
         participant = [[[Participant alloc] init] autorelease];
         participant.firstName = @"Weego";
-        participant.avatarURL = @"http://www.unitedweego.com/images/POIs_decided_default.png";
+        participant.avatarURL = @"http://www.unitedweego.com/images/POIs_decided_default_sm.png";
 
         Location *topLocation = [model.currentEvent getLocationByLocationId:model.currentEvent.topLocationId];
         feedMessage.message = [NSString stringWithFormat:@"\"%@\" is where we are going!", topLocation.name];
@@ -102,7 +102,7 @@
     
     if (decidedFeedMessage)
     {
-        avatarImage.frame = CGRectMake(9, 8, 33.25, 37.05);
+        avatarImage.frame = CGRectMake(9, 8, 29, 33);
         [avatarImage asyncLoadWithNSURL:url useCached:YES andBaseImage:BaseImageTypeNone useBorder:NO];
     }
     else

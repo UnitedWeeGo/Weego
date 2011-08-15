@@ -334,7 +334,7 @@ typedef enum {
     {
         [self resignKeyboardAndRemoveModalCover:self];
         [self removeAnnotations:mapView includingSaved:false];
-//        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+        [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
 
     Location *searchLocation = [[[Location alloc] init] autorelease];
@@ -1071,7 +1071,7 @@ typedef enum {
     mapView = nil;
     
 //    searchBar.delegate = nil;
-    searchBar = nil;
+//    searchBar = nil;
     
     userLocationFound = NO;
     isAddingLocation = NO;

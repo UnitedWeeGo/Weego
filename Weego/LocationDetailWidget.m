@@ -49,6 +49,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        NSLog(@"LocationDetailWidget init");
+        
         iAmShowing = false;
         actionBtnRect = CGRectMake(5, 3, 52, 52);
         dealBtnRect = CGRectMake(286, 20, 28, 28);
@@ -710,7 +713,7 @@
     // hide any action buttons
     primaryInfoLabel.alpha = secondaryInfoLabel.alpha = editNameButton.alpha = 0;
     addButton.alpha = likeButton.alpha = unlikeButton.alpha = winnerButton.alpha = 0;
-    editNameInput.text = currentAnnotation.title;
+    editNameInput.text = @"";
     [editNameInput becomeFirstResponder];
     CGRect infoViewBGRect = CGRectMake(0, 0, self.bounds.size.width, 40);
     [UIView animateWithDuration:0.30f
@@ -719,7 +722,7 @@
                      animations:^(void){
                          self.frame = infoViewBGRect;
                          editNameInput.alpha = 1;
-                         clearTextButton.alpha = 1;
+                         clearTextButton.alpha = 0;
                      }
                      completion:NULL];
 }
@@ -755,6 +758,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"LocationDetailWidget dealloc");
     currentAnnotation = nil;
     delegate = nil;
     [self.featureId release];

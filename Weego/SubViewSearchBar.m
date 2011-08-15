@@ -25,6 +25,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"SubViewSearchBar dealloc");
     self.placeholderText = nil;
     [localText release];
     [super dealloc];
@@ -34,6 +35,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        NSLog(@"SubViewSearchBar init");
+        
         nonEditingFieldOrigin = CGPointMake(35, 13);
         isEditingFieldOrigin = CGPointMake(35, 12);
         nonEditingFieldSize = CGSizeMake(220, 16);
@@ -90,6 +93,8 @@
     searchField.delegate = self;
     searchField.placeholder = self.placeholderText;
 	[self addSubview:searchField];
+    
+    [searchField release];
     
     buttonClear = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *iconClearButton = [UIImage imageNamed:@"icon_clearTextField_01.png"];
