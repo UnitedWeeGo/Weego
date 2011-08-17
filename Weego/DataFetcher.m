@@ -14,6 +14,7 @@
 
 #define GOOGLE_PLACE_URL @"https://maps.googleapis.com/maps/api/place/search/json"
 #define GOOGLE_MAPS_API_V3 @"http://maps.google.com/maps/api/geocode/json"
+#define PUBLIC_HTTP_URL @"http://unitedweego.com/"
 
 /* depricated
  //#define apiURL @"http://api.bigbabyservice.com/public/"
@@ -726,7 +727,7 @@
         pendingRequestType = DataFetchTypeInfo;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                               apiURL,
+                               PUBLIC_HTTP_URL,
                                @"info.html"] autorelease];
         [self makeRequest:urlString];
 //		[self makeRequestRespectingCache:urlString];
@@ -742,7 +743,7 @@
         pendingRequestType = DataFetchTypeHelp;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                               apiURL,
+                               PUBLIC_HTTP_URL,
                                @"help.html"] autorelease];
         [self makeRequest:urlString];
 //		[self makeRequestRespectingCache:urlString];
@@ -758,7 +759,7 @@
         pendingRequestType = DataFetchTypeTerms;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                                apiURL,
+                                PUBLIC_HTTP_URL,
                                 @"terms.html"] autorelease];
         [self makeRequest:urlString];
 //		[self makeRequestRespectingCache:urlString];
@@ -774,7 +775,7 @@
         pendingRequestType = DataFetchTypePrivacy;
 		self.delegate = myDelegate;
 		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@",
-                                apiURL,
+                                PUBLIC_HTTP_URL,
                                 @"privacy.html"] autorelease];
         [self makeRequest:urlString];
 //		[self makeRequestRespectingCache:urlString];
