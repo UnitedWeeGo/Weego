@@ -9,12 +9,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "335144199.700769"
+         timestampString = "335319899.383786"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1499"
-         endingLineNumber = "1499"
-         landmarkName = "-addressBookLocationsTVCDidSelectAddress:withFriendlyName:"
+         startingLineNumber = "201"
+         endingLineNumber = "201"
+         landmarkName = "-resetMapViewFrameWithState:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -23,12 +23,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "335144173.519986"
+         timestampString = "335319844.111148"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "490"
-         endingLineNumber = "490"
-         landmarkName = "-addSearchResultAnnotations"
+         startingLineNumber = "100"
+         endingLineNumber = "100"
+         landmarkName = "-doShowSearchAgainButton:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

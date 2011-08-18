@@ -78,6 +78,8 @@ typedef enum {
     
     NSMutableDictionary *friendlyNameDict;
     
+    BOOL feedShowing;
+    
 //    NSArray *allContactsWithAddress;
     
     BOOL alertViewShowing;

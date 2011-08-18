@@ -374,7 +374,7 @@ static NavigationSetter *sharedInstance;
     UIImage *bottombar_background = [UIImage imageNamed:@"bottombar_background_clear.png"];
     [vc.navigationController.toolbar insertSubview:[[[UIImageView alloc] initWithImage:bottombar_background] autorelease] atIndex:0];
     
-    [vc.navigationController setToolbarHidden:NO animated:YES];
+    [vc.navigationController setToolbarHidden:NO animated:NO];
     vc.toolbarItems = items;
     
 }
@@ -444,7 +444,7 @@ static NavigationSetter *sharedInstance;
     UIImage *bottombar_background = [UIImage imageNamed:@"bottombar_background.png"];
     [vc.navigationController.toolbar insertSubview:[[[UIImageView alloc] initWithImage:bottombar_background] autorelease] atIndex:0];
     
-    [vc.navigationController setToolbarHidden:NO animated:YES];
+    [vc.navigationController setToolbarHidden:NO animated:NO];
     vc.toolbarItems = items;
 }
 

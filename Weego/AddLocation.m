@@ -56,6 +56,7 @@ typedef enum {
 - (void)showAlertWithCode:(int)code;
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part;
 - (void)reportTimerTick;
+- (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton;
 @end
 
 @implementation AddLocation
@@ -92,17 +93,21 @@ typedef enum {
     {
         searchAgainButtonShowing = YES;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateSearchAgain withTarget:self];
+        [self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:YES];
     }
     else
     {
         searchAgainButtonShowing = NO;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+        [self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:NO];
     }
 }
 
 #pragma mark - SearchAndDetailState handler
 - (void)doGoToSearchAndDetailState:(SearchAndDetailState)state
 {
+    BOOL isTemp = [Model sharedInstance].currentEvent.isTemporary;
+    Event *detail = [Model sharedInstance].currentEvent;
     int searchOffState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOffTab):(NavStateLocationAddSearchOff);
     int searchOnState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOnTab):(NavStateLocationAddSearchOn);
     
@@ -116,6 +121,12 @@ typedef enum {
             }
             [locWidget setState:WidgetStateClosed withDelay:0];
             [[NavigationSetter sharedInstance] setNavState:searchOffState withTarget:self];
+            if (!isTemp)
+            {
+                feedShowing = true;
+                [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[detail.unreadMessageCount intValue]];
+            }
+            [self resetMapViewFrameWithState:SearchAndDetailStateNone andShowsToolbarButton:!isTemp];
             break;
         case SearchAndDetailStateDetail:
             if (searchBarShowing) {
@@ -126,6 +137,12 @@ typedef enum {
                 [locWidget setState:WidgetStateOpen withDelay:0];
             }
             [[NavigationSetter sharedInstance] setNavState:searchOffState withTarget:self];
+            if (!isTemp)
+            {
+                feedShowing = true;
+                [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[detail.unreadMessageCount intValue]];
+            }
+            [self resetMapViewFrameWithState:SearchAndDetailStateDetail andShowsToolbarButton:!isTemp];
             break;
         case SearchAndDetailStateSearch:
             if (locWidget.iAmShowing) {
@@ -135,17 +152,26 @@ typedef enum {
                 [self showSearchBar:true withAnimationDelay:0];
             }
             [[NavigationSetter sharedInstance] setNavState:searchOnState withTarget:self];
+            [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+            [self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:NO];
             break;
         case SearchAndDetailStateBoth:
             [self showSearchBar:true withAnimationDelay:0];
             [locWidget setState:WidgetStateOpenWithSearch withDelay:0];
             [[NavigationSetter sharedInstance] setNavState:searchOnState withTarget:self];
+            [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+            [self resetMapViewFrameWithState:SearchAndDetailStateBoth andShowsToolbarButton:NO];
             break;
         case SearchAndDetailStateEditName:
             [self showSearchBar:false withAnimationDelay:0];
             [locWidget setState:WidgetStateOpen withDelay:0.00f];
             [[NavigationSetter sharedInstance] setNavState:NavStateLocationNameEdit withTarget:self];
-            // nav state
+            if (!isTemp)
+            {
+                feedShowing = true;
+                [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[detail.unreadMessageCount intValue]];
+            }
+            [self resetMapViewFrameWithState:SearchAndDetailStateEditName andShowsToolbarButton:!isTemp];
             break;
         default:
             break;
@@ -156,7 +182,7 @@ typedef enum {
 #pragma mark - UI setup
 - (void)setupMapView
 {
-    CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    CGRect rect = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-44);
     mapView = [[MKMapView alloc] initWithFrame:rect];
     mapView.delegate = self;
     mapView.showsUserLocation = true;
@@ -171,6 +197,28 @@ typedef enum {
         }
     };
     [mapView addGestureRecognizer:tapInterceptor];
+}
+- (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton
+{
+    /*
+     SearchAndDetailStateSearch = 0,
+     SearchAndDetailStateDetail,
+     SearchAndDetailStateBoth,
+     SearchAndDetailStateNone
+     */
+    int y = state == SearchAndDetailStateSearch || state == SearchAndDetailStateBoth ? 40 : 0;
+    int height = showsToolbarButton ? 375-y : 418-y;
+    // y=0 h375 - with bottom button search off
+    // y=44 h375 - NO bottom button search on
+    
+    CGRect rect = CGRectMake(0, y, self.view.bounds.size.width, height);
+    [UIView animateWithDuration:0.20f 
+                          delay:0.0f 
+                        options:(UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction) 
+                     animations:^(void){
+                         mapView.frame = rect;
+                     }
+                     completion:NULL];
 }
 
 - (void)setupInfoView
@@ -316,7 +364,7 @@ typedef enum {
     searchBarShowing = toShow;
     CGRect rectIn = CGRectMake(0, 0, searchBar.bounds.size.width, searchBar.bounds.size.height);
     CGRect rectOut = CGRectMake(0, -searchBar.bounds.size.height, searchBar.bounds.size.width, searchBar.bounds.size.height);
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                           delay:delay 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -420,7 +468,6 @@ typedef enum {
 }
 - (void)searchBar:(SubViewSearchBar *)theSearchBar textDidChange:(NSString *)searchText
 {
-    //categoryTable.hidden = [searchText length] == 0;
     [categoryTable updateSearchContentsWithSearchString:searchText];
 }
 - (void)searchBarBookmarkButtonClicked:(SubViewSearchBar *)theSearchBar
@@ -497,7 +544,6 @@ typedef enum {
         
         if (!place.hasBeenAddedToMapPreviously)
         {
-            //[friendlyNameDict setValue:friendlyName forKey:anAddress];
             NSString *friendlyName = [friendlyNameDict valueForKey:pendingSearchString];
             if (friendlyName) place.name = friendlyName;
             
@@ -541,20 +587,16 @@ typedef enum {
         LocAnnotation *placeMark = view.annotation;
         [placeMark setSelectedState:LocAnnoSelectedStateSelected];
         view.image = [placeMark imageForCurrentState];
-//        selectedSearchLocationIndex = -1;
-//        selectedLocationIndex = -1;
         
         self.selectedLocationKey = nil;
         self.selectedSearchLocationKey = nil;
         
         if (placeMark.isSavedLocation)
         {
-//            selectedLocationIndex = placeMark.dataLocationIndex;
             self.selectedLocationKey = placeMark.uuid;
         }
         else
         {
-//            selectedSearchLocationIndex = placeMark.dataLocationIndex;
             self.selectedSearchLocationKey = placeMark.uuid;
         }
         [locWidget updateInfoViewWithLocationAnnotation:placeMark];
@@ -586,8 +628,6 @@ typedef enum {
         if (annotationOpenCount <= 0)
         {
             annotationOpenCount = 0;
-//            selectedSearchLocationIndex = -1;
-//            selectedLocationIndex = -1;
             
             self.selectedLocationKey = nil;
             self.selectedSearchLocationKey = nil;
@@ -603,8 +643,6 @@ typedef enum {
         if (annotationOpenCount <= 0)
         {
             annotationOpenCount = 0;
-//            selectedSearchLocationIndex = -1;
-//            selectedLocationIndex = -1;
             
             self.selectedLocationKey = nil;
             self.selectedSearchLocationKey = nil;
@@ -684,8 +722,6 @@ typedef enum {
 {
 	// remove observers and annotation
     currentState = AddLocationStateView;
-//	selectedSearchLocationIndex = -1;
-//    selectedLocationIndex = -1;
     
     self.selectedLocationKey = nil;
     self.selectedSearchLocationKey = nil;
@@ -876,6 +912,12 @@ typedef enum {
 }
 
 #pragma mark - Navigation handlers
+- (void)handleFeedPress:(id)sender
+{
+    //	NSLog(@"handleFeedPress");
+    [[ViewController sharedInstance] showModalFeed:self];
+    
+}
 - (void)handleSearchAgainPress:(id)sender
 {
     if (pendingSearchString)
@@ -1071,12 +1113,6 @@ typedef enum {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
-//    mapView.delegate = nil;
-    mapView = nil;
-    
-//    searchBar.delegate = nil;
-//    searchBar = nil;
-    
     userLocationFound = NO;
     isAddingLocation = NO;
     continueToSearchEnabled = NO;
@@ -1261,9 +1297,7 @@ typedef enum {
             {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
-//                [searchBar showNetworkActivity:NO];
             }
-//            [searchBar showNetworkActivity:NO];
             break;
         case DataFetchTypeAddVoteToLocation:
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
@@ -1469,22 +1503,15 @@ typedef enum {
 
 - (NSArray *)dataForAddressBookLocationsTVC
 {
-//    NSArray *allContacts = [ABContactsHelper contacts];
-//    NSPredicate *pred;
-//    pred = [NSPredicate predicateWithFormat:@"addressArrayCount > 0"];
-//    NSArray *allContactsWithAddress = [allContacts filteredArrayUsingPredicate:pred];
     NSMutableArray *matchedContacts = [[[NSMutableArray alloc] init] autorelease];
     for (ABContact *abc in [ABContactsHelper contacts]) {
-//        NSDictionary *contactDict = [abc baseDictionaryRepresentation];
         for (NSDictionary *addressDict in [abc addressArray]) {
-//            NSLog(@"%@", [[addresses allKeys] componentsJoinedByString:@", "]);
-//            NSDictionary *addressDict = [addresses objectForKey:@"value"];
             Contact *c = [[Contact alloc] init];
-            c.contactName = abc.contactName; //[contactDict objectForKey:@"First Name"];
-            c.streetAddress = [addressDict objectForKey:@"Street"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"Street"]];
-            c.city = [addressDict objectForKey:@"City"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"City"]];
-            c.state = [addressDict objectForKey:@"State"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"State"]];
-            c.zip = [addressDict objectForKey:@"ZIP"]; //[NSString stringWithFormat:@"%@", [addressDict objectForKey:@"ZIP"]];
+            c.contactName = abc.contactName;
+            c.streetAddress = [addressDict objectForKey:@"Street"];
+            c.city = [addressDict objectForKey:@"City"];
+            c.state = [addressDict objectForKey:@"State"];
+            c.zip = [addressDict objectForKey:@"ZIP"];
             if (c.isValidAddress) [matchedContacts addObject:c];
             [c release];
         }
@@ -1513,6 +1540,8 @@ typedef enum {
 - (void)loadView
 {
     [super loadView];
+    [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     savedSearchResultsDict = [[NSMutableDictionary alloc] init];
     friendlyNameDict = [[NSMutableDictionary alloc] init];
@@ -1541,7 +1570,7 @@ typedef enum {
     }
     
     [self.view setClipsToBounds:YES];
-    [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self withFeedCount:0];
+    
     
     [self setUpDataFetcherMessageListeners];
     
@@ -1564,8 +1593,6 @@ typedef enum {
     [super viewWillAppear:animated];
     [Model sharedInstance].currentViewState = ViewStateMap;
     [[ViewController sharedInstance] showDropShadow:0];
-    
-//    mapView.showsUserLocation = true;
 }
 
 - (void)viewDidUnload
@@ -1576,8 +1603,7 @@ typedef enum {
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self doShowSearchAgainButton:NO];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (!feedShowing) [self doShowSearchAgainButton:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
