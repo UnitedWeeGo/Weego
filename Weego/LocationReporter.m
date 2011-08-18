@@ -106,10 +106,13 @@ static LocationReporter *sharedInstance;
 //    NSLog(@"LocationReporter::reportTimerTick :: model.allEvents count: %d", [model.allEvents count]);
     
     NSArray *allEvents = [model.allEvents allValues];
+    //LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES
+    
+    int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
     
     for ( Event *e in allEvents )
     {
-        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > (-LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
+        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
         //NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
         
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;

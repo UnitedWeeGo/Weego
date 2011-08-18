@@ -8,69 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "335345601.537739"
+         filePath = "Weego/LocationReporter.m"
+         timestampString = "335346602.970571"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "202"
-         endingLineNumber = "202"
-         landmarkName = "-resetMapViewFrameWithState:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "335319844.111148"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
-         landmarkName = "-doShowSearchAgainButton:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/WeegoAppDelegate.m"
-         timestampString = "335343989.97631"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "502"
-         endingLineNumber = "502"
-         landmarkName = "-checkForNeededDataFetch"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/WeegoAppDelegate.m"
-         timestampString = "335343989.97631"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "464"
-         endingLineNumber = "464"
-         landmarkName = "-application:didReceiveRemoteNotification:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "335345601.537739"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1159"
-         endingLineNumber = "1159"
-         landmarkName = "-handleDataFetcherSuccessMessage:"
+         startingLineNumber = "106"
+         endingLineNumber = "106"
+         landmarkName = "-reportTimerTick"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

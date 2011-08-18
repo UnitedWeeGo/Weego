@@ -231,7 +231,7 @@
     
     if (annotationImage == nil) annotationImage = [[[UIImageView alloc] init] autorelease];
     UIImage *anno = [UIImage imageNamed:@"POIs_decided_default_sm.png"];
-    annotationImage.frame = CGRectMake(20, 18, anno.size.width, anno.size.height);
+    annotationImage.frame = CGRectMake(21, 15, anno.size.width, anno.size.height);
     annotationImage.image = anno;
     [self addSubview:annotationImage];
     
