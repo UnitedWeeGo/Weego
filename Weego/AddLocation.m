@@ -106,6 +106,7 @@ typedef enum {
 #pragma mark - SearchAndDetailState handler
 - (void)doGoToSearchAndDetailState:(SearchAndDetailState)state
 {
+    feedShowing = false;
     BOOL isTemp = [Model sharedInstance].currentEvent.isTemporary;
     Event *detail = [Model sharedInstance].currentEvent;
     int searchOffState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOffTab):(NavStateLocationAddSearchOff);
@@ -1157,6 +1158,9 @@ typedef enum {
 
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification
 {
+    Model *model = [Model sharedInstance];
+    if (feedShowing && model.currentEvent.currentEventState > EventStateNew) [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[model.currentEvent.unreadMessageCount intValue]];
+    
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
@@ -1593,6 +1597,9 @@ typedef enum {
     [super viewWillAppear:animated];
     [Model sharedInstance].currentViewState = ViewStateMap;
     [[ViewController sharedInstance] showDropShadow:0];
+    
+    Model *model = [Model sharedInstance];
+    if (feedShowing && model.currentEvent.currentEventState > EventStateNew) [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[model.currentEvent.unreadMessageCount intValue]];
 }
 
 - (void)viewDidUnload
