@@ -1401,7 +1401,7 @@ static Model *sharedInstance;
 {
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease]];
-    [dateFormatter setDateFormat:@"z"];
+    [dateFormatter setDateFormat:@"zzz"];
     [NSTimeZone resetSystemTimeZone];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
     NSDate *date = [NSDate date];
