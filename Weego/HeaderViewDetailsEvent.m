@@ -86,7 +86,7 @@
                                       labelTimer.frame.size.height);
     } else if (anEvent.currentEventState == EventStateVotingWarning) {
         [self setVotingWarningTimerLabel];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setVotingWarningTimerLabel) name:TIMER_EVENT_MINUTE object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setVotingWarningTimerLabel) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
     } else if (anEvent.currentEventState >= EventStateDecided) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         nextY = cellView.frame.origin.y + cellView.frame.size.height;

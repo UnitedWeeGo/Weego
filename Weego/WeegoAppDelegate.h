@@ -43,6 +43,7 @@
     
     NSString *lastDisplayedVersionAlert;
     NSDate *lastDisplayedVersionAlertDate;
+    NSDate *nextDataFetchAttempt;
 }
 
 @property (nonatomic, retain) UIWindow *window;

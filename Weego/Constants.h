@@ -3,7 +3,7 @@ green:((c>>16)&0xFF)/255.0 \
 blue:((c>>8)&0xFF)/255.0 \
 alpha:((c)&0xFF)/255.0];
 
-#define TIMER_EVENT_MINUTE @"timerEventMinute"
+//#define TIMER_EVENT_MINUTE @"timerEventMinute"
 
 #define LOCATION_REPORTING_TIME_RANGE_MINUTES 90
 #define FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES 180

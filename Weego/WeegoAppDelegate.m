@@ -25,6 +25,7 @@
 - (void)initDefaultPrefs;
 - (void)initSimpleGeoCategories;
 - (void)showLoginError;
+- (void)checkForNeededDataFetch;
 @end
 
 @implementation WeegoAppDelegate
@@ -491,13 +492,35 @@
         {
             NSLog(@"notificationTypeRefresh notification received");
         }
-        if ([Model sharedInstance].currentAppState == AppStateDashboard || [Model sharedInstance].currentAppState == AppStateCreateEvent) {
-            NSLog(@"notification in AppStateDashboard: fetchEvents");
-            [[Controller sharedInstance] fetchEvents];
-        } else if ([Model sharedInstance].currentAppState == AppStateEventDetails) {
-            NSLog(@"notification in AppStateEventDetails: fetchEventWithId: %@", model.currentEvent.eventId);
-            [[Controller sharedInstance] fetchEvents];
-            [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
+        
+        NSDate *now = [NSDate date];
+        NSTimeInterval fiveSecondsInterval = ceil([now timeIntervalSinceReferenceDate] / 5) * 5;
+        if (nextDataFetchAttempt != nil) [nextDataFetchAttempt release];
+        nextDataFetchAttempt = [[NSDate dateWithTimeIntervalSinceReferenceDate:fiveSecondsInterval] retain];
+        
+    }
+}
+
+#pragma mark -
+#pragma mark Date Fetch handlers for refresh notifications
+- (void)checkForNeededDataFetch
+{
+    if (nextDataFetchAttempt != nil)
+    {
+        NSDate *now = [NSDate date];
+        if (now > nextDataFetchAttempt)
+        {
+            [nextDataFetchAttempt release];
+            nextDataFetchAttempt = nil;
+            Model *model = [Model sharedInstance];
+            if ([Model sharedInstance].currentAppState == AppStateDashboard || [Model sharedInstance].currentAppState == AppStateCreateEvent) {
+                NSLog(@"notification in AppStateDashboard: fetchEvents");
+                [[Controller sharedInstance] fetchEvents];
+            } else if ([Model sharedInstance].currentAppState == AppStateEventDetails) {
+                NSLog(@"notification in AppStateEventDetails: fetchEventWithId: %@", model.currentEvent.eventId);
+                [[Controller sharedInstance] fetchEvents];
+                [[Controller sharedInstance] fetchEventWithId:model.currentEvent.eventId andTimestamp:model.currentEvent.lastUpdatedTimestamp];
+            }
         }
     }
 }
@@ -553,8 +576,7 @@
 
 - (void)reportTimerTick
 {
-    //    NSLog(@"Timer Tick!");
-    [[NSNotificationCenter defaultCenter] postNotificationName:TIMER_EVENT_MINUTE object:nil];
+    [self checkForNeededDataFetch];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
