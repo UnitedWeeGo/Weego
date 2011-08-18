@@ -98,7 +98,7 @@
     CGRect leftButtonRect = CGRectMake(addButton.frame.origin.x, ceilf((infoViewBGRect.size.height - addButton.frame.size.height)/2), addButton.frame.size.width, addButton.frame.size.height);
     CGRect dealRect = CGRectMake(286, ceilf(infoViewBGRect.size.height - 38), 28, 28);
     
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                         delay:delay 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -340,7 +340,7 @@
 {
     dealButton.hidden = YES;
     CGRect infoViewBGRect = CGRectMake(0, self.frame.origin.y, self.frame.size.width, [UIScreen mainScreen].bounds.size.height);
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -364,8 +364,8 @@
     [dealImage addSubview:closeButton];
     [dealImage bringSubviewToFront:closeButton];
     [dealImage setUserInteractionEnabled:YES];
-    [UIView animateWithDuration:0.30f 
-                          delay:0.30f 
+    [UIView animateWithDuration:0.20f 
+                          delay:0.20f 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
                          dealImage.alpha = 1;
@@ -379,7 +379,7 @@
     int yLoc = currentState == WidgetStateOpen ? 0 : 41;
     CGRect infoViewBGRect = CGRectMake(0, yLoc, currentBaseInfoSize.width, currentBaseInfoSize.height);
     
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -495,7 +495,7 @@
     avatarImage.alpha = 0;
     [self addSubview:avatarImage];
     
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -586,7 +586,7 @@
     CGRect dealRect = CGRectMake(286, ceilf(infoViewBGRect.size.height - 38), 28, 28);
     CGRect editNameRect = CGRectMake(286, 10, 28, 28);
     
-    [UIView animateWithDuration:0.30f 
+    [UIView animateWithDuration:0.20f 
                           delay:0 
                         options:(UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^(void){
@@ -716,7 +716,7 @@
     editNameInput.text = @"";
     [editNameInput becomeFirstResponder];
     CGRect infoViewBGRect = CGRectMake(0, 0, self.bounds.size.width, 40);
-    [UIView animateWithDuration:0.30f
+    [UIView animateWithDuration:0.20f
                           delay:0
                         options:(UIViewAnimationOptionBeginFromCurrentState)
                      animations:^(void){
@@ -734,8 +734,8 @@
     clearTextButton.alpha = 0;
     // restore any action buttons
     [self updateInfoViewWithLocationAnnotation:currentAnnotation];
-    [UIView animateWithDuration:0.30f
-                          delay:0.30f
+    [UIView animateWithDuration:0.20f
+                          delay:0.20f
                         options:(UIViewAnimationOptionBeginFromCurrentState)
                      animations:^(void){
                          primaryInfoLabel.alpha = 1;
