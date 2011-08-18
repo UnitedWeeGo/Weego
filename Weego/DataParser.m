@@ -326,10 +326,6 @@ static DataParser *sharedInstance;
         for (GDataXMLElement *participant in participants) {
             [[Model sharedInstance] addOrUpdateParticipantWithXml:participant inEventWithId:eventId];
         }
-//        NSArray *votes = [(GDataXMLElement *) [[event elementsForName:@"votes"] objectAtIndex:0] elementsForName:@"vote"];
-//        for (GDataXMLElement *vote in votes) {
-//            [[Model sharedInstance] addOrRemoveVoteWithXml:vote inEventWithId:eventId];
-//        }
         GDataXMLElement *feedMessageNode = (GDataXMLElement *) [[event elementsForName:@"feedMessages"] objectAtIndex:0];
         NSString *unreadMessageCount = [[feedMessageNode attributeForName:@"unreadMessageCount"] stringValue];
         NSArray *feedMessages = [(GDataXMLElement *) [[event elementsForName:@"feedMessages"] objectAtIndex:0] elementsForName:@"feedMessage"];
@@ -369,10 +365,6 @@ static DataParser *sharedInstance;
             for (GDataXMLElement *participant in participants) {
                 [[Model sharedInstance] addOrUpdateParticipantWithXml:participant inEventWithId:eventId];
             }
-//            NSArray *votes = [(GDataXMLElement *) [[event elementsForName:@"votes"] objectAtIndex:0] elementsForName:@"vote"];
-//            for (GDataXMLElement *vote in votes) {
-//                [[Model sharedInstance] addOrRemoveVoteWithXml:vote inEventWithId:eventId];
-//            }
             GDataXMLElement *feedMessageNode = (GDataXMLElement *) [[event elementsForName:@"feedMessages"] objectAtIndex:0];
             NSString *unreadMessageCount = [[feedMessageNode attributeForName:@"unreadMessageCount"] stringValue];
             NSArray *feedMessages = [(GDataXMLElement *) [[event elementsForName:@"feedMessages"] objectAtIndex:0] elementsForName:@"feedMessage"];

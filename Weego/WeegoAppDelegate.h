@@ -44,6 +44,9 @@
     NSString *lastDisplayedVersionAlert;
     NSDate *lastDisplayedVersionAlertDate;
     NSDate *nextDataFetchAttempt;
+    
+    BOOL playInviteSoundUponFetchResponse;
+    BOOL playFeedSoundUponFetchResponse;
 }
 
 @property (nonatomic, retain) UIWindow *window;

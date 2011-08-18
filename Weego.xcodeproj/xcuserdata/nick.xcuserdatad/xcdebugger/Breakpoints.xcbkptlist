@@ -37,12 +37,26 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/WeegoAppDelegate.m"
-         timestampString = "335327447.642532"
+         timestampString = "335343989.97631"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "503"
-         endingLineNumber = "503"
+         startingLineNumber = "502"
+         endingLineNumber = "502"
          landmarkName = "-checkForNeededDataFetch"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/WeegoAppDelegate.m"
+         timestampString = "335343989.97631"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "464"
+         endingLineNumber = "464"
+         landmarkName = "-application:didReceiveRemoteNotification:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -404,6 +404,7 @@
     [self initStartView];
     [self registerDeviceForRemoteNotifications:application];
     [self initSimpleGeoCategories];
+    [self setUpDataFetcherMessageListeners];
     
     loadView = [[LoadView alloc] initWithFrame:self.window.frame];
     [self.window addSubview:loadView];
@@ -470,19 +471,17 @@
     if (application.applicationState == UIApplicationStateActive) {
         // Nothing to do if applicationState is Inactive, the iOS already displayed an alert view.
         
-        Model *model = [Model sharedInstance];
         NSString *notificationType = [userInfo valueForKey:@"messageType"];
         
         if ([notificationType isEqualToString:@"feed"])
         {
             NSLog(@"notificationTypeFeed notification received");
-            [[SoundManager sharedInstance] playSoundWithId:SoundManagerSoundIdFeedMessageReceived withVibration:YES];
-            
+            playFeedSoundUponFetchResponse = YES;
         }
         else if ([notificationType isEqualToString:@"invite"])
         {
             NSLog(@"notificationTypeInvite notification received");
-            [[SoundManager sharedInstance] playSoundWithId:SoundManagerSoundIdInvite withVibration:YES];
+            playInviteSoundUponFetchResponse = YES;
         }
         else if ([notificationType isEqualToString:@"upcoming"])
         {
@@ -602,13 +601,13 @@
     NSLog(@"FB fbDidLogin!! %@", facebook.accessToken);
     self.startOnRegister = NO;
     self.loggingInFacebook = YES;
-    [self setUpDataFetcherMessageListeners];
+    //[self setUpDataFetcherMessageListeners];
     [[Controller sharedInstance] loginWithFacebookAccessToken:facebook.accessToken];
 }
 
 - (void)continueToDashboard
 {
-    [self removeDataFetcherMessageListeners];
+    //[self removeDataFetcherMessageListeners];
 	[[ViewController sharedInstance] navigateToDashboard];
     self.loggingInFacebook = NO;
     [self hideLoadView];
@@ -688,6 +687,16 @@
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     Model *model = [Model sharedInstance];
+    if (playFeedSoundUponFetchResponse)
+    {
+        playFeedSoundUponFetchResponse = NO;
+        [[SoundManager sharedInstance] playSoundWithId:SoundManagerSoundIdFeedMessageReceived withVibration:YES];
+    }
+    if (playInviteSoundUponFetchResponse)
+    {
+        playInviteSoundUponFetchResponse = NO;
+        [[SoundManager sharedInstance] playSoundWithId:SoundManagerSoundIdInvite withVibration:YES];
+    }
     switch (fetchType) {
         case DataFetchTypeLoginWithFacebookAccessToken:
             if (model.isInTrial) model.loginAfterTrial = YES;
