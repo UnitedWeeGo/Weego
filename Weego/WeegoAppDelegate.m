@@ -493,11 +493,8 @@
             NSLog(@"notificationTypeRefresh notification received");
         }
         
-        NSDate *now = [NSDate date];
-        NSTimeInterval fiveSecondsInterval = ceil([now timeIntervalSinceReferenceDate] / 5) * 5;
         if (nextDataFetchAttempt != nil) [nextDataFetchAttempt release];
-        nextDataFetchAttempt = [[NSDate dateWithTimeIntervalSinceReferenceDate:fiveSecondsInterval] retain];
-        
+        nextDataFetchAttempt = [[NSDate alloc] initWithTimeIntervalSinceNow:5];
     }
 }
 
@@ -508,7 +505,10 @@
     if (nextDataFetchAttempt != nil)
     {
         NSDate *now = [NSDate date];
-        if (now > nextDataFetchAttempt)
+        
+        NSTimeInterval interval = [now timeIntervalSinceDate: nextDataFetchAttempt];
+        NSLog(@"timeIntervalSinceDate :: %f", interval);
+        if (interval > 0)
         {
             [nextDataFetchAttempt release];
             nextDataFetchAttempt = nil;
@@ -760,6 +760,7 @@
 
 - (void)dealloc {
     NSLog(@"BigBabyAppDelegate dealloc");
+    [nextDataFetchAttempt release];
     [lastDisplayedVersionAlertDate release];
     [lastDisplayedVersionAlert release];
     [minuteTimer stopTimer];
