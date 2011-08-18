@@ -22,6 +22,7 @@
     UIImageView *checkIconView;
     UIImageView *locationIconView;
     UIImageView *peopleIconView;
+    UIImageView *timeIconView;
 }
 
 @property (nonatomic, retain) FeedMessage *feedMessage;

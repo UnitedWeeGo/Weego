@@ -44,6 +44,7 @@
     BOOL locationFeedMessage = [aFeedMessage.type isEqualToString:@"locationadd"];
     BOOL locationCheckinMessage = [aFeedMessage.type isEqualToString:@"checkin"];
     BOOL timeSuggestionFeedMessage = [feedMessage.type isEqualToString:@"timesuggestion"];
+    BOOL timeChangeFeedMessage = [feedMessage.type isEqualToString:@"timechange"];
     
     if (decidedFeedMessage)
     {
@@ -93,6 +94,7 @@
     checkIconView.hidden = !locationCheckinMessage;
     peopleIconView.hidden = !inviteFeedMessage;
     locationIconView.hidden = !locationFeedMessage;
+    timeIconView.hidden = !timeChangeFeedMessage;
     
     if (avatarImage != nil) [avatarImage removeFromSuperview];
     avatarImage = nil;
@@ -169,6 +171,12 @@
     peopleIconView.frame = CGRectMake(296, 26, peopleIcon.size.width, peopleIcon.size.height);
     peopleIconView.hidden = YES;
     [self addSubview:peopleIconView];
+    
+    UIImage *timeIcon = [UIImage imageNamed:@"icon_feed_time_01.png"];
+    if (timeIconView == nil) timeIconView = [[[UIImageView alloc] initWithImage:timeIcon] autorelease];
+    timeIconView.frame = CGRectMake(296, 26, timeIcon.size.width, timeIcon.size.height);
+    timeIconView.hidden = YES;
+    [self addSubview:timeIconView];
 
 }
 /*
