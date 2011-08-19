@@ -199,10 +199,10 @@ static LocationReporter *sharedInstance;
     {
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
-        BOOL eventIsDecidedOrEnded = e.currentEventState == EventStateDecided || e.currentEventState == EventStateEnded;
+        BOOL eventIsInRange = e.currentEventState >= EventStateStarted && e.currentEventState < EventStateCancelled;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;        
         
-        if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsDecidedOrEnded && userAcceptedEvent)
+        if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsInRange && userAcceptedEvent)
         {
             Location *loc = [e getLocationByLocationId:e.topLocationId];
             if (loc == nil) continue;

@@ -59,6 +59,7 @@ typedef enum {
 	EventStateVoting,
     EventStateVotingWarning,
     EventStateDecided,
+    EventStateStarted,
     EventStateEnded,
     EventStateCancelled
 } EventState;
