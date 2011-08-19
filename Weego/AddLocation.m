@@ -27,6 +27,9 @@ typedef enum {
     SearchAndDetailStateEditName
 } SearchAndDetailState;
 
+#define AddressLabelTypeHome @"_$!<Home>!$_"
+#define AddressLabelTypeWork @"_$!<Work>!$_"
+
 @interface AddLocation ()
 - (void)setupMapView;
 - (void)zoomToFitMapAnnotationsAndSkipPreviouslyAdded:(BOOL)skipAdded;
@@ -57,6 +60,7 @@ typedef enum {
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part;
 - (void)reportTimerTick;
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton;
+- (NSString *)getFormattedContactNameForAddressLabelType:(NSString *)type withContact:(ABContact *)contact;
 @end
 
 @implementation AddLocation
@@ -1509,9 +1513,13 @@ typedef enum {
 {
     NSMutableArray *matchedContacts = [[[NSMutableArray alloc] init] autorelease];
     for (ABContact *abc in [ABContactsHelper contacts]) {
-        for (NSDictionary *addressDict in [abc addressArray]) {
+        NSArray *addressLabels = [abc addressLabels];
+        NSArray *addressArray = [abc addressArray];
+        for (int i=0; i<[[abc addressArray] count]; i++) {
+            NSString *addressLabel = [addressLabels objectAtIndex:i];
+            NSDictionary *addressDict = [addressArray objectAtIndex:i];
             Contact *c = [[Contact alloc] init];
-            c.contactName = abc.contactName;
+            c.contactName = [self getFormattedContactNameForAddressLabelType:addressLabel withContact:abc];
             c.streetAddress = [addressDict objectForKey:@"Street"];
             c.city = [addressDict objectForKey:@"City"];
             c.state = [addressDict objectForKey:@"State"];
@@ -1523,6 +1531,44 @@ typedef enum {
     NSSortDescriptor *contactSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"contactName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[matchedContacts sortUsingDescriptors:[NSArray arrayWithObjects:contactSortDescriptor, nil]];
     return matchedContacts;
+}
+
+- (NSString *)getFormattedContactNameForAddressLabelType:(NSString *)type withContact:(ABContact *)contact
+{
+    BOOL hasCompanyName = contact.organization != nil;
+    NSMutableString *output = [NSMutableString stringWithString:@""];
+    if ([type isEqualToString:AddressLabelTypeHome])
+    {
+        [output appendString:contact.firstname];
+        char lastChar = [[contact.firstname uppercaseString] characterAtIndex:contact.firstname.length-1];
+        if (lastChar == 'S') {
+            [output appendString:@"' Home"];
+        } else {
+            [output appendString:@"'s Home"];
+        }
+    }
+    else if ([type isEqualToString:AddressLabelTypeWork])
+    {
+        if (hasCompanyName)
+        {
+            [output appendString:contact.organization];
+        }
+        else
+        {
+            [output appendString:contact.firstname];
+            char lastChar = [[contact.firstname uppercaseString] characterAtIndex:contact.firstname.length-1];
+            if (lastChar == 'S') {
+                [output appendString:@"' Work"];
+            } else {
+                [output appendString:@"'s Work"];
+            }
+        }
+    }
+    else
+    {
+        [output appendString:contact.contactName];
+    }
+    return output;
 }
 
 #pragma mark - AddressBookLocationsTVCDelegate
