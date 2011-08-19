@@ -390,7 +390,7 @@
     }
     if (!model.isInTrial)
     {
-        if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateEnded)
+        if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateStarted)
         {
             return @"Cancel Event";
         }
@@ -422,7 +422,7 @@
         }
         if (!model.isInTrial)
         {
-            if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateEnded)
+            if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateStarted)
             {
                 NSLog(@"count out:YES cancel event:YES");
                 [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:YES doCancel:YES];

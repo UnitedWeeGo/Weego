@@ -36,6 +36,7 @@
 
 // Instance utility methods
 - (BOOL) removeSelfFromAddressBook: (NSError **) error;
+- (NSString *) getFormattedContactNameForAddressLabelType:(NSString *)type;
 
 @property (nonatomic, readonly) ABRecordRef record;
 @property (nonatomic, readonly) ABRecordID recordID;

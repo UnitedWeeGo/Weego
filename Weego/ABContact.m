@@ -43,6 +43,9 @@
 
 #define IMAGE_STRING	@"Image"
 
+#define AddressLabelTypeHome @"_$!<Home>!$_"
+#define AddressLabelTypeWork @"_$!<Work>!$_"
+
 @implementation ABContact
 @synthesize record;
 
@@ -324,6 +327,78 @@
 	
 	if (self.organization) [string appendString:self.organization];
 	return [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+#pragma mark Contact Name Utility
+- (NSString *) getFormattedContactNameForAddressLabelType:(NSString *)type
+{
+    BOOL hasContactName = self.firstname != nil || self.lastname != nil;
+    BOOL hasCompanyName = self.organization != nil;
+    
+    NSMutableString *contactname = [NSMutableString string];
+    
+    NSMutableString *returnname = [NSMutableString string];
+	
+    // build out the contact name if applicable - eg. Brett Rampata, Sr.
+	if (hasContactName)
+	{
+		if (self.prefix) [contactname appendFormat:@"%@ ", self.prefix];
+		if (self.firstname) [contactname appendFormat:@"%@ ", self.firstname];
+		if (self.nickname) [contactname appendFormat:@"\"%@\" ", self.nickname];
+		if (self.lastname) [contactname appendFormat:@"%@", self.lastname];
+		
+		if (self.suffix && contactname.length)
+			[contactname appendFormat:@", %@ ", self.suffix];
+		
+	}
+    
+    if ([type isEqualToString:AddressLabelTypeHome]) // Address label type - _$!<Home>!$_
+    {
+        if (hasContactName)
+        {
+            [returnname appendFormat:@"%@%@", contactname, [[contactname uppercaseString] characterAtIndex:contactname.length-1] == 'S' ? @"' Home" : @"'s Home"];
+        }
+        else if (hasCompanyName)
+        {
+            [returnname appendString:self.organization];
+        }
+        else
+        {
+            [returnname appendFormat:@" "];
+        }
+    }
+    else if ([type isEqualToString:AddressLabelTypeWork]) // Address label type - _$!<Work>!$_
+    {
+        if (hasCompanyName)
+        {
+            [returnname appendString:self.organization];
+        }
+        else if (hasContactName)
+        {
+            [returnname appendFormat:@"%@%@", contactname, [[contactname uppercaseString] characterAtIndex:contactname.length-1] == 'S' ? @"' Work" : @"'s Work"];
+        }
+        else
+        {
+            [returnname appendFormat:@" "];
+        }
+    }
+    else
+    {
+        if (hasContactName)
+        {
+            [returnname appendString:contactname];
+        }
+        else if (hasCompanyName)
+        {
+            [returnname appendString:self.organization];
+        }
+        else
+        {
+            [returnname appendFormat:@" "];
+        }
+    }
+    
+    return [returnname stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (NSString *) compositeName

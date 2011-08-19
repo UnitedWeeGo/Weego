@@ -807,7 +807,7 @@ enum eventDetailSections {
                 break;
         }
     }
-    else if (detail.currentEventState == EventStateDecided)
+    else if (detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted)
     {
         switch (detail.acceptanceStatus) {
             case AcceptanceTypePending:
