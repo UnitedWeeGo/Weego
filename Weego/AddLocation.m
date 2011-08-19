@@ -1536,19 +1536,11 @@ typedef enum {
 - (NSString *)getFormattedContactNameForAddressLabelType:(NSString *)type withContact:(ABContact *)contact
 {
     BOOL hasCompanyName = [contact.organization length] > 0;
-    BOOL hasFirstname = [contact.firstname length] > 0;
     BOOL hasContactname = [contact.contactName length] > 0;
     
     NSString *contactNameToUse = @"";
     
-    if (hasFirstname)
-    {
-        contactNameToUse = contact.firstname;
-    }
-    else if (hasContactname)
-    {
-        contactNameToUse = contact.contactName;
-    }    
+    contactNameToUse = contact.contactName;
     
     NSLog(@"contactNameToUse: %@", contactNameToUse);
     
@@ -1556,7 +1548,7 @@ typedef enum {
     if ([type isEqualToString:AddressLabelTypeHome])
     {
         
-        if (!hasFirstname && !hasContactname) return @"";
+        if (!hasContactname) return @"";
         
         [output appendString:contactNameToUse];
         char lastChar = [[contactNameToUse uppercaseString] characterAtIndex:contactNameToUse.length-1];
@@ -1574,7 +1566,7 @@ typedef enum {
         }
         else
         {
-            if (!hasFirstname && !hasContactname) return @"";
+            if (!hasContactname) return @"";
             
             [output appendString:contactNameToUse];
             char lastChar = [[contactNameToUse uppercaseString] characterAtIndex:contactNameToUse.length-1];
