@@ -441,6 +441,7 @@
 	for (int i = 0; i < ABMultiValueGetCount(theProperty); i++)
 	{
 		NSString *label = (NSString *)ABMultiValueCopyLabelAtIndex(theProperty, i);
+        if (label == nil) label = @"other";
 		[labels addObject:label];
 		[label release];
 	}
