@@ -48,7 +48,7 @@
 
 - (BOOL)isValidAddress
 {
-    return ![[self addressSingleLine] isEqualToString:@""];
+    return ![[self addressLine1] isEqualToString:@""] && [self addressLine1] != nil;
 }
 
 - (NSString *)addressLine1
@@ -86,6 +86,7 @@
     NSString *line2 = [self addressLine2];
     NSString *delimiter = (![line1 isEqualToString:@""] && ![line2 isEqualToString:@""]) ? @", " : @"";
     NSString *output = [[NSString alloc] initWithFormat:@"%@%@%@", line1, delimiter, line2];
+    //NSLog(@"%@", output);
 //    if (![[output stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
 //        return output;
 //    }

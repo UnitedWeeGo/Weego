@@ -149,16 +149,16 @@
     avatarImage.hidden = YES;
     labelName.frame = CGRectMake(8, 8, 230, 16);
     labelName.text = aContact.contactName;
-    NSString *label = [aContact.addressLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
-    label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
-    CGSize labelSize = [label sizeWithFont:labelLabel.font];
-    labelLabel.frame = CGRectMake(8, 25, labelSize.width, labelSize.height);
-    labelLabel.text = label;
-    float left = labelLabel.frame.origin.x + labelLabel.frame.size.width + 5;
-    if (!aContact.addressLabel || [[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
-    labelSecondary.frame = CGRectMake(left, 26, 284 - left, 14);
+//    NSString *label = [aContact.addressLabel stringByReplacingOccurrencesOfString:@"_$!<" withString:@""];
+//    label = [label stringByReplacingOccurrencesOfString:@">!$_" withString:@""];
+//    CGSize labelSize = [label sizeWithFont:labelLabel.font];
+//    labelLabel.frame = CGRectMake(8, 25, labelSize.width, labelSize.height);
+//    labelLabel.text = label;
+//    float left = labelLabel.frame.origin.x + labelLabel.frame.size.width + 5;
+//    if (!aContact.addressLabel || [[label stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) left = labelLabel.frame.origin.x;
+    labelSecondary.frame = CGRectMake(8, 26, 284, 14);
     labelSecondary.text = aContact.addressLine1;
-    labelTertiary.frame = CGRectMake(left, 42, 284 - left, 14);
+    labelTertiary.frame = CGRectMake(8, 42, 284, 14);
     labelTertiary.text = aContact.addressLine2;
     separator.frame = CGRectMake(0, 59, 320, 1);
     UIColor *titleLabelColor = HEXCOLOR(0x333333FF);
@@ -168,7 +168,7 @@
     labelSecondary.textColor = emailLabelColor;
     labelTertiary.textColor = emailLabelColor;
     if (!aContact.contactName) {
-        labelLabel.frame = CGRectMake(labelLabel.frame.origin.x, 15, labelLabel.frame.size.width, labelLabel.frame.size.height);
+//        labelLabel.frame = CGRectMake(labelLabel.frame.origin.x, 15, labelLabel.frame.size.width, labelLabel.frame.size.height);
         labelSecondary.frame = CGRectMake(labelSecondary.frame.origin.x, 16, labelSecondary.frame.size.width, labelSecondary.frame.size.height);
         labelTertiary.frame = CGRectMake(labelTertiary.frame.origin.x, 32, labelTertiary.frame.size.width, labelTertiary.frame.size.height);
     }

@@ -369,13 +369,13 @@
     }
     else if ([type isEqualToString:AddressLabelTypeWork]) // Address label type - _$!<Work>!$_
     {
-        if (hasCompanyName)
-        {
-            [returnname appendString:self.organization];
-        }
-        else if (hasContactName)
+        if (hasContactName)
         {
             [returnname appendFormat:@"%@%@", contactname, [[contactname uppercaseString] characterAtIndex:contactname.length-1] == 'S' ? @"' Work" : @"'s Work"];
+        }
+        else if (hasCompanyName)
+        {
+            [returnname appendString:self.organization];
         }
         else
         {
