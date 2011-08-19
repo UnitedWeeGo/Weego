@@ -1535,12 +1535,31 @@ typedef enum {
 
 - (NSString *)getFormattedContactNameForAddressLabelType:(NSString *)type withContact:(ABContact *)contact
 {
-    BOOL hasCompanyName = contact.organization != nil;
+    BOOL hasCompanyName = [contact.organization length] > 0;
+    BOOL hasFirstname = [contact.firstname length] > 0;
+    BOOL hasContactname = [contact.contactName length] > 0;
+    
+    NSString *contactNameToUse = @"";
+    
+    if (hasFirstname)
+    {
+        contactNameToUse = contact.firstname;
+    }
+    else if (hasContactname)
+    {
+        contactNameToUse = contact.contactName;
+    }    
+    
+    NSLog(@"contactNameToUse: %@", contactNameToUse);
+    
     NSMutableString *output = [NSMutableString stringWithString:@""];
     if ([type isEqualToString:AddressLabelTypeHome])
     {
-        [output appendString:contact.firstname];
-        char lastChar = [[contact.firstname uppercaseString] characterAtIndex:contact.firstname.length-1];
+        
+        if (!hasFirstname && !hasContactname) return @"";
+        
+        [output appendString:contactNameToUse];
+        char lastChar = [[contactNameToUse uppercaseString] characterAtIndex:contactNameToUse.length-1];
         if (lastChar == 'S') {
             [output appendString:@"' Home"];
         } else {
@@ -1555,8 +1574,10 @@ typedef enum {
         }
         else
         {
-            [output appendString:contact.firstname];
-            char lastChar = [[contact.firstname uppercaseString] characterAtIndex:contact.firstname.length-1];
+            if (!hasFirstname && !hasContactname) return @"";
+            
+            [output appendString:contactNameToUse];
+            char lastChar = [[contactNameToUse uppercaseString] characterAtIndex:contactNameToUse.length-1];
             if (lastChar == 'S') {
                 [output appendString:@"' Work"];
             } else {
