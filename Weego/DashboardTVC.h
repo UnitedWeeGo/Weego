@@ -13,7 +13,7 @@
 
 @class DataFetcher;
 
-@interface DashboardTVC : UITableViewController <EGORefreshTableHeaderDelegate, CellDashboardFeaturedEventDelegate, DataFetcherMessageHandler, InfoDisplayDelegate> {
+@interface DashboardTVC : UITableViewController <EGORefreshTableHeaderDelegate, CellDashboardFeaturedEventDelegate, DataFetcherMessageHandler, InfoDisplayDelegate, UIAlertViewDelegate> {
     NSMutableArray *dataSources;
     BOOL futureShowing;
     BOOL pastShowing;
@@ -24,6 +24,7 @@
     NSTimer *refreshTimer;
     InfoDisplay *infoDisplay;
     BOOL showingInfoDisplay;
+    Event *eventToDeleteOrRemove;
 }
 
 @end

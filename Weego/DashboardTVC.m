@@ -29,6 +29,8 @@
 - (void)showEventDetailWithId:(NSString *)eventId;
 - (void)refreshDecidedEvents;
 - (void)showAlertWithCode:(int)code;
+- (void)presentRemoveEventAlertWithCancel:(BOOL)isCancel;
+- (void)confirmDeleteOrRemovalOfEvent;
 
 @end
 
@@ -407,39 +409,43 @@
     // If row is deleted, remove it from the list.
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        Model *model = [Model sharedInstance];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        Event *eventToDelete;
         if ([cell isKindOfClass: [CellDashboardFeaturedEvent class]])
         {
             CellDashboardFeaturedEvent *fecell = (CellDashboardFeaturedEvent *)cell;
-            eventToDelete = fecell.event;
+            eventToDeleteOrRemove = fecell.event;
         }
         else if ([cell isKindOfClass: [CellDashboardEvent class]])
         {
             CellDashboardEvent *fecell = (CellDashboardEvent *)cell;
-            eventToDelete = fecell.event;
+            eventToDeleteOrRemove = fecell.event;
         }
-        if (!model.isInTrial)
+        [self presentRemoveEventAlertWithCancel:eventToDeleteOrRemove.iOwnEvent && eventToDeleteOrRemove.currentEventState < EventStateStarted && eventToDeleteOrRemove.currentEventState != EventStateNew];
+    }
+}
+
+- (void)confirmDeleteOrRemovalOfEvent
+{
+    Model *model = [Model sharedInstance];
+    if (!model.isInTrial)
+    {
+        if (eventToDeleteOrRemove.iOwnEvent && eventToDeleteOrRemove.currentEventState < EventStateStarted)
         {
-            if (eventToDelete.iOwnEvent && eventToDelete.currentEventState < EventStateStarted)
-            {
-                NSLog(@"count out:YES cancel event:YES");
-                [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:YES doCancel:YES];
-            }
-            else
-            {
-                NSLog(@"count out:%d cancel event:NO", eventToDelete.currentEventState <= EventStateDecided);
-                [[Controller sharedInstance] setRemovedForEvent:eventToDelete doCountOut:(eventToDelete.currentEventState <= EventStateDecided) doCancel:NO];
-                eventToDelete.hasBeenRemoved = YES;
-            }
+            NSLog(@"count out:YES cancel event:YES");
+            [[Controller sharedInstance] setRemovedForEvent:eventToDeleteOrRemove doCountOut:YES doCancel:YES];
         }
         else
         {
-            eventToDelete.hasBeenRemoved = YES;
+            NSLog(@"count out:%d cancel event:NO", eventToDeleteOrRemove.currentEventState <= EventStateDecided);
+            [[Controller sharedInstance] setRemovedForEvent:eventToDeleteOrRemove doCountOut:(eventToDeleteOrRemove.currentEventState <= EventStateDecided) doCancel:NO];
+            eventToDeleteOrRemove.hasBeenRemoved = YES;
         }
-        [self createDataSources];
     }
+    else
+    {
+        eventToDeleteOrRemove.hasBeenRemoved = YES;
+    }
+    [self createDataSources];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -502,6 +508,9 @@
     return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
 }
 
+
+#pragma mark -
+#pragma mark Table view helpers
 - (void)toggleShowHidePastEvents
 {
     pastShowing = !pastShowing;
@@ -529,8 +538,35 @@
 - (void)showEventDetailWithId:(NSString *)eventId
 {
     [[ViewController sharedInstance] navigateToEventDetailWithId:eventId];
-//                                                  andPushOnStack:YES];
 }
+
+#pragma mark -
+#pragma mark remove/cancel verification UIAlertViewDelegate
+- (void)presentRemoveEventAlertWithCancel:(BOOL)isCancel
+{
+    NSLog(@"Present remove/cancel event alert");
+    
+    NSString *title = isCancel? @"Cancel event?" : @"Remove event?";
+    NSString *standardMessage = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", eventToDeleteOrRemove.currentEventState <= EventStateDecided ? @"." : @" and \"Count you out\"."];
+    NSString *ownerMessage = @"Are you sure you want to cancel this event?";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:(isCancel ? ownerMessage:standardMessage) delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    
+    [alert show];
+    [alert release];
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [self confirmDeleteOrRemovalOfEvent];
+    }
+    eventToDeleteOrRemove = nil;
+}
+
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
@@ -574,20 +610,10 @@
     [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
-//    NSLog(@"eventReachedDecided : %i", index);
-//    if (decidedSections == nil) {
-//        decidedSections = [[[NSMutableIndexSet alloc] init] retain];
-//    }
-//    [decidedSections addIndex:index];
-//    NSLog(@"decidedSections count = %i", [decidedSections count]);
-//    if (refreshTimer == nil) {
-//        refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(refreshDecidedEvents) userInfo:nil repeats:NO];
-//    }
 }
                     
 - (void)refreshDecidedEvents
 {
-    NSLog(@"refreshDecidedEvents");
     [refreshTimer release];
     refreshTimer = nil;
     [self.tableView beginUpdates];
