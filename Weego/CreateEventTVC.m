@@ -725,11 +725,13 @@ typedef enum {
             }
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:
-            [Model sharedInstance].currentEvent = detail;
-            [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
-            [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];
-            [Model sharedInstance].isInTrial = NO;
-            [Model sharedInstance].loginAfterTrial = YES;
+            if (![Model sharedInstance].loginDidFail) {
+                [Model sharedInstance].currentEvent = detail;
+                [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
+                [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];
+                [Model sharedInstance].isInTrial = NO;
+                [Model sharedInstance].loginAfterTrial = YES;
+            }
             [self.tableView reloadData];
             break;
         default:
