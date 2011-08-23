@@ -198,6 +198,9 @@
         case DataFetchTypeGetEvent:
             [self createDataSources];
             break;
+        case DataFetchTypeRemoveEvent:
+            [self createDataSources];
+            break;
         default:
             break;
     }
