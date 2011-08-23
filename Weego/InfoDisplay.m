@@ -162,7 +162,7 @@
     webView.delegate = self;
     webView.tag = index;
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
-    NSString *url = [NSString stringWithFormat:@"http://beta.weegoapp.com/public/?%d", index];
+    NSString *url = [NSString stringWithFormat:@"https://api.unitedweego.com/?%d", index];
     [webView loadHTMLString:html baseURL:[NSURL URLWithString:url]];
     [view addSubview:webView];
     

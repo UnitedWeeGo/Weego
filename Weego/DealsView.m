@@ -204,7 +204,7 @@
     UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
     webView.delegate = self;
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
-    NSString *url = [NSString stringWithFormat:@"http://beta.weegoapp.com/public/"];
+    NSString *url = [NSString stringWithFormat:@"https://api.unitedweego.com/"];
     [webView loadHTMLString:html baseURL:[NSURL URLWithString:url]];
     [self.view insertSubview:webView atIndex:0];
     
