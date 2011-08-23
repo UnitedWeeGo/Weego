@@ -51,5 +51,6 @@ typedef enum {
 - (LocAnnoSelectedState)getSelectedState;
 
 - (UIImage *)imageForCurrentState;
+- (CGPoint)offsetForCurrentState;
 
 @end

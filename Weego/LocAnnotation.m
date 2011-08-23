@@ -88,6 +88,12 @@
     return [UIImage imageNamed:imageName];
 }
 
+- (CGPoint)offsetForCurrentState
+{
+    CGPoint pt = CGPointMake(stateType > LocAnnoStateTypeSearch ? 0 : 7, -15);
+    return pt;
+}
+
 #pragma mark -
 #pragma mark Helpers
 #pragma mark -

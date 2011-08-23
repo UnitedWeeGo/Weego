@@ -675,6 +675,7 @@ typedef enum {
 		}
         pinView.enabled = placeMark.isEnabled;
         pinView.image = [placeMark imageForCurrentState];
+        pinView.centerOffset = [placeMark offsetForCurrentState];
         return pinView;
     } 
     else if ([annotation isKindOfClass:[ReportedLocationAnnotation class]])
@@ -687,6 +688,7 @@ typedef enum {
             // if an existing pin view was not available, create one
             pinView = [[[ReportedLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier] autorelease];
             pinView.canShowCallout = NO;
+            pinView.centerOffset = CGPointMake(7,-20);
 		}
 //        [pinView setView:[placeMark imageViewForCurrentState:ReportedLocationAnnoSelectedStateDefault]];
         [pinView setCurrentState:ReportedLocationAnnoSelectedStateDefault andParticipantImageURL:placeMark.participant.avatarURL];
