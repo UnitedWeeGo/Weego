@@ -40,7 +40,7 @@
 @synthesize currentAppState, currentBGState, currentViewState;
 @synthesize allEvents, locations, participants, messages, reportedLocations;
 @synthesize facebookFriends;
-@synthesize isInTrial, loginAfterTrial;
+@synthesize isInTrial, loginAfterTrial, loginDidFail;
 @synthesize userId, userEmail, userPassword, lastUpdateTimeStamp;
 @synthesize sortedEvents, weeksEvents, futureEvents, pastEvents; //daysEvents
 @synthesize loginParticipant;

@@ -84,6 +84,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray *facebookFriends;
 
 @property (nonatomic, assign) BOOL isInTrial;
+@property (nonatomic, assign) BOOL loginDidFail;
 @property (nonatomic, assign) BOOL loginAfterTrial;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userEmail;

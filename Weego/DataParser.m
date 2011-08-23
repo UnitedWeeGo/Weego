@@ -31,6 +31,7 @@
 #define RESPONSE_EVENT_REPORTED_LOCATIONS 291
 
 #define RESPONSE_GENERIC_ERROR 500
+#define RESPONSE_FACEBOOK_LOGIN_ERROR 502
 #define RESPONSE_MISSING_PARAM_ERROR 600
 #define RESPONSE_RUID_ERROR 610
 #define RESPONSE_INVALID_PARAM_ERROR 620
@@ -58,6 +59,7 @@
 - (void)saveLoginInfo:(NSString *)ruid withFirstName:(NSString *)firstName andLastName:(NSString *)lastName andParticipantId:(NSString *)participantId andAvatarURL:(NSString *)avatarURL;
 - (void)parseResponseAddRemoveVote:(GDataXMLDocument *)doc;
 - (void)checkAppVersion:(NSString *)version withAppId:(NSString *)appId;
+- (void)parseResponseFacebookLoginError:(GDataXMLDocument *)doc;
 
 @end
 
@@ -198,6 +200,10 @@ static DataParser *sharedInstance;
         case RESPONSE_EVENT_REPORTED_LOCATIONS:
 //            NSLog(@"RESPONSE_EVENT_REPORTED_LOCATIONS");
             [self parseResponseReportedLocation:doc];
+            break;
+        case RESPONSE_FACEBOOK_LOGIN_ERROR:
+//            NSLog(@"RESPONSE_FACEBOOK_LOGIN_ERROR");
+            [self parseResponseFacebookLoginError:doc];
             break;
 		default:
 			break;
@@ -468,6 +474,26 @@ static DataParser *sharedInstance;
     }
 	
     [[NSNotificationCenter defaultCenter] postNotificationName:MODEL_EVENT_GENERIC_ERROR object:nil];
+}
+
+#pragma mark -
+#pragma mark RESPONSE_FACEBOOK_LOGIN_ERROR
+
+- (void)parseResponseFacebookLoginError:(GDataXMLDocument *)doc
+{
+	NSString *title = ((GDataXMLElement *) [[doc.rootElement elementsForName:@"title"] objectAtIndex:0]).stringValue;
+	NSString *moreInfo = ((GDataXMLElement *) [[doc.rootElement elementsForName:@"moreInfo"] objectAtIndex:0]).stringValue;
+    
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:title message:moreInfo delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [alert show];
+        
+        [Model sharedInstance].loginDidFail = YES;
+    }
+    else
+    {
+        NSLog(@"parseResponseGenericError: %@, %@", title, moreInfo);
+    }
 }
 
 #pragma mark -

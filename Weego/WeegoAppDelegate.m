@@ -699,6 +699,17 @@
     }
     switch (fetchType) {
         case DataFetchTypeLoginWithFacebookAccessToken:
+            
+            if (model.loginDidFail && !model.isInTrial)
+            {
+                [[ViewController sharedInstance] enterOnEntryScreen]; // kick user back to login screen
+                [[KeychainManager sharedInstance] resetKeychain];
+                [self hideLoadView];
+                [model flushTempItems];
+                model.loginDidFail = NO;
+                break;
+            }
+            
             if (model.isInTrial) model.loginAfterTrial = YES;
             model.isInTrial = NO;
             if (model.currentViewState == ViewStatePrefs) {

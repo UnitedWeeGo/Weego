@@ -827,7 +827,7 @@
         self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeRemoveEvent;
 		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@%@%@",
                                apiURL,
                                @"remove.event.php",
                                userId,
