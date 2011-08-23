@@ -711,8 +711,10 @@
             }
             
             if (model.loginDidFail && model.isInTrial) {
+                [self hideLoadView];
                 model.loginAfterTrial = NO;
                 model.isInTrial = YES;
+                model.loginDidFail = NO;
                 break;
             }
             
