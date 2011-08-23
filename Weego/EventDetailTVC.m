@@ -221,12 +221,14 @@ enum eventDetailSections {
             return;
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:
-            detail = [Model sharedInstance].currentEvent;
-            detail.creatorId = [Model sharedInstance].userEmail;
-            [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
+            if (![Model sharedInstance].loginDidFail) {
+                detail = [Model sharedInstance].currentEvent;
+                detail.creatorId = [Model sharedInstance].userEmail;
+                [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
+                [Model sharedInstance].isInTrial = NO;
+                [Model sharedInstance].loginAfterTrial = YES;
+            }
             [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];
-            [Model sharedInstance].isInTrial = NO;
-            [Model sharedInstance].loginAfterTrial = YES;
             _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
             _refreshHeaderView.delegate = self;
             [self.tableView addSubview:_refreshHeaderView];
@@ -238,6 +240,7 @@ enum eventDetailSections {
             self.tableView.tableHeaderView = tableHeaderView;
             [tableHeaderView release];
             [self.tableView reloadData];
+            
             break;
         case DataFetchTypeRecentParticipants:
             return;
