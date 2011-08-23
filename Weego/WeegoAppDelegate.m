@@ -710,6 +710,12 @@
                 break;
             }
             
+            if (model.loginDidFail && model.isInTrial) {
+                model.loginAfterTrial = NO;
+                model.isInTrial = YES;
+                break;
+            }
+            
             if (model.isInTrial) model.loginAfterTrial = YES;
             model.isInTrial = NO;
             if (model.currentViewState == ViewStatePrefs) {
