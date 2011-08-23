@@ -333,6 +333,7 @@
 
 - (void)authenticateWithFacebook
 {
+    [Model sharedInstance].loginDidFail = NO;
     self.startOnRegister = YES;
     self.loggingInFacebook = NO;
     [facebook release];
@@ -706,7 +707,6 @@
                 [[KeychainManager sharedInstance] resetKeychain];
                 [self hideLoadView];
                 [model flushTempItems];
-                model.loginDidFail = NO;
                 break;
             }
             
@@ -714,7 +714,6 @@
                 [self hideLoadView];
                 model.loginAfterTrial = NO;
                 model.isInTrial = YES;
-                model.loginDidFail = NO;
                 break;
             }
             

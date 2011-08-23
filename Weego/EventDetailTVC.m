@@ -227,8 +227,8 @@ enum eventDetailSections {
                 [[Model sharedInstance] replaceTrialParticipantsWithLoginParticipant];
                 [Model sharedInstance].isInTrial = NO;
                 [Model sharedInstance].loginAfterTrial = YES;
+                [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];
             }
-            [[ViewController sharedInstance] hideFacebookPopupWithAnimation:NO];
             _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
             _refreshHeaderView.delegate = self;
             [self.tableView addSubview:_refreshHeaderView];
