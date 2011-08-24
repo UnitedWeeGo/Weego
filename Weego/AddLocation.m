@@ -572,15 +572,16 @@ typedef enum {
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     if (userLocationFound) return;
+    if (theMapView.userLocation.location == nil) return;
+    
     MKCoordinateRegion region;
-    region.center.latitude = userLocation.coordinate.latitude;
-    region.center.longitude = userLocation.coordinate.longitude;
+    region.center = theMapView.userLocation.coordinate;
     region.span.latitudeDelta = 0.101;
     region.span.longitudeDelta = 0.101;
     [theMapView setRegion:region animated:NO];
-    theMapView.showsUserLocation = true;
     userLocationFound = true;
 }
+
 - (void)mapView:(MKMapView *)theMapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     if ([view.annotation isKindOfClass:[LocAnnotation class]]) {
@@ -853,9 +854,9 @@ typedef enum {
 
 - (void)winnerButtonPressed
 {
-    LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];    
-    Event *detail = [Model sharedInstance].currentEvent;
-    winningLocationSelected = [detail getLocationWithUUID:placemark.uuid];
+    
+    Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
+    winningLocationSelected = aPlace;
     
     //BOOL hasPhoneCapability = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:123"]];
     NSString *phoneButtonCopy = ([winningLocationSelected.formatted_phone_number length] > 0) ? [NSString stringWithFormat:@"Call %@", winningLocationSelected.formatted_phone_number] : nil;
@@ -1116,10 +1117,12 @@ typedef enum {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
+    /*
     userLocationFound = NO;
     isAddingLocation = NO;
     continueToSearchEnabled = NO;
     searchAgainButtonShowing = NO;
+    */
     
     // Release any cached data, images, etc that aren't in use.
 }
@@ -1438,7 +1441,7 @@ typedef enum {
 - (void)getDirectionsForLocation:(Location *)loc
 {
     NSLog(@"directions %@", loc.formatted_address);
-    NSString* addr = [NSString stringWithFormat:@"http://maps.google.com/maps?daddr=Current Location&saddr=%@",loc.formatted_address];
+    NSString* addr = [NSString stringWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=Current Location",loc.formatted_address];
     NSURL* url = [[NSURL alloc] initWithString:[addr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [[UIApplication sharedApplication] openURL:url];
     [url release];

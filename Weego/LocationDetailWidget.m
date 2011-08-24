@@ -30,6 +30,7 @@
 - (NSString *)friendlyDistanceBetweenPoint:(CLLocationCoordinate2D)pt1 andPoint:(CLLocationCoordinate2D)pt2;
 - (void)createUserActionButton;
 - (void)createEditInputField;
+- (void)createGetDirectionsButton;
 //- (void)createDeleteLocationButton;
 
 - (void)showLoading;
@@ -68,6 +69,7 @@
         [self createErrorView];
         [self createEditInputField];
         [self createClearTextButton];
+        [self createGetDirectionsButton];
 //        [self createDeleteLocationButton];
     }
     return self;
@@ -452,6 +454,7 @@
     editNameButton.hidden = YES;
     winnerButton.hidden = YES;
     distanceIconView.hidden = NO;
+    getDirectionsButton.hidden = YES;
     
     currentReportedLocationAnnotation = nil;
     currentReportedLocationAnnotation = annotation;
@@ -536,6 +539,7 @@
     distanceLabel.hidden = YES;
     distanceIconView.hidden = YES;
     userActionButton.hidden = YES;
+    getDirectionsButton.hidden = NO;
     
     UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:18];
     UIFont *secondaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
@@ -581,6 +585,10 @@
     CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+14, width, secondaryCopySize.height);
     [secondaryInfoLabel setText:subTitleCopy];
     [secondaryInfoLabel setFont:secondaryFont];
+    
+    int getDirectionsButtonHeight = (secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height) - primaryInfoLabelRect.origin.y;
+    CGRect getDirectionsButtonRect = CGRectMake(primaryInfoLabelRect.origin.x, primaryInfoLabelRect.origin.y, secondaryInfoLabelRect.size.width, getDirectionsButtonHeight);
+    getDirectionsButton.frame = getDirectionsButtonRect;
     
     CGRect leftButtonRect = CGRectMake(addButton.frame.origin.x, ceilf((infoViewBGRect.size.height - addButton.frame.size.height)/2), addButton.frame.size.width, addButton.frame.size.height);
     CGRect dealRect = CGRectMake(286, ceilf(infoViewBGRect.size.height - 38), 28, 28);
@@ -689,6 +697,16 @@
     [clearTextButton addTarget:self action:@selector(clearTextButtonPressed) forControlEvents:UIControlEventTouchUpInside];    
     [self addSubview:clearTextButton];
 }
+
+- (void)createGetDirectionsButton
+{
+    getDirectionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    getDirectionsButton.hidden = YES;
+    [getDirectionsButton setBackgroundColor:[UIColor clearColor]];
+    [getDirectionsButton addTarget:self action:@selector(getDirectionsButtonPressed) forControlEvents:UIControlEventTouchUpInside];    
+    [self addSubview:getDirectionsButton];
+}
+
 /*
 - (void)createDeleteLocationButton
 {
@@ -708,11 +726,17 @@
     clearTextButton.alpha = 0;
 }
 
+- (void)getDirectionsButtonPressed
+{
+    [delegate winnerButtonPressed];
+}
+
 - (void)transitionToEditNameState
 {
     // hide any action buttons
     primaryInfoLabel.alpha = secondaryInfoLabel.alpha = editNameButton.alpha = 0;
     addButton.alpha = likeButton.alpha = unlikeButton.alpha = winnerButton.alpha = 0;
+    getDirectionsButton.hidden = YES;
     editNameInput.text = @"";
     [editNameInput becomeFirstResponder];
     CGRect infoViewBGRect = CGRectMake(0, 0, self.bounds.size.width, 40);

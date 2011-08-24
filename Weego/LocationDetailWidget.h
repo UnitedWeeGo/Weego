@@ -51,6 +51,7 @@ typedef enum {
     UIButton *dealButton;
     UIButton *editNameButton;
     UIButton *clearTextButton;
+    UIButton *getDirectionsButton;
 //    UIButton *deleteLocationButton;
     WidgetState currentState;
     Boolean iAmShowing;
