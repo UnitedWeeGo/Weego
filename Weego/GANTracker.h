@@ -1,7 +1,7 @@
 //
 //  GANTracker.h
 //  Google Analytics iPhone SDK.
-//  Version: 1.1
+//  Version: 1.2
 //
 //  Copyright 2009 Google Inc. All rights reserved.
 //
@@ -24,7 +24,18 @@ typedef struct __GANTrackerPrivate GANTrackerPrivate;
 @interface GANTracker : NSObject {
  @private
   GANTrackerPrivate *private_;
+
+  // debug flag results in debug messages being written to the log.  Useful
+  // for debugging calls to the Google Analytics SDK.
+  BOOL debug_;
+
+  // dryRun flag results in hits not actually being sent to Google Analytics.
+  // Useful for testing and debugging calls to the Google Analytics SDK.
+  BOOL dryRun_;
 }
+
+@property(readwrite) BOOL debug;
+@property(readwrite) BOOL dryRun;
 
 // Singleton instance of this class for convenience.
 + (GANTracker *)sharedTracker;
@@ -76,7 +87,37 @@ typedef struct __GANTrackerPrivate GANTrackerPrivate;
 
 // Returns the value of the custom variable at the index requested.  Returns
 // nil if no variable is found or index is out of range.
-- (NSString *) getVisitorCustomVarAtIndex:(NSUInteger)index;
+- (NSString *)getVisitorCustomVarAtIndex:(NSUInteger)index;
+
+// Add a transaction to the Ecommerce buffer.  If a transaction with an orderId
+// of orderID is already present, it will be replaced by a new one. All
+// transactions and all the items in the buffer will be queued for dispatch once
+// trackTransactions is called.
+- (BOOL)addTransaction:(NSString *)orderID
+            totalPrice:(double)totalPrice
+             storeName:(NSString *)storeName
+              totalTax:(double)totalTax
+          shippingCost:(double)shippingCost
+             withError:(NSError **)error;
+
+// Add an item to the Ecommerce buffer for the transaction whose orderId matches
+// the input parameter orderID.  If no transaction exists, one will be created.
+// If an item with the same itemSKU exists, it will be replaced with a new item.
+// All the transactions and items in the Ecommerce buffer will be queued for
+// dispatch once trackTransactions is called.
+- (BOOL)addItem:(NSString *)orderID
+        itemSKU:(NSString *)itemSKU
+      itemPrice:(double)itemPrice
+      itemCount:(double)itemCount
+       itemName:(NSString *)itemName
+   itemCategory:(NSString *)itemCategory
+      withError:(NSError **)error;
+
+// Tracks all the Ecommerce hits pending in the Ecommerce buffer.
+- (BOOL)trackTransactions:(NSError **)error;
+
+// Clears out the buffer of pending Ecommerce hits without sending them.
+- (BOOL)clearTransactions:(NSError **)error;
 
 // Manually dispatch pageviews/events to the server. Returns YES if
 // a new dispatch starts.
