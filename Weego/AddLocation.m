@@ -854,9 +854,20 @@ typedef enum {
 
 - (void)winnerButtonPressed
 {
-    
-    Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
-    winningLocationSelected = aPlace;
+    if (self.selectedSearchLocationKey != nil)
+    {
+        winningLocationSelected = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
+    }
+    else if (self.selectedLocationKey != nil)
+    {
+        LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
+        Event *detail = [Model sharedInstance].currentEvent;
+        winningLocationSelected = [detail getLocationWithUUID:placemark.uuid];
+    }
+    else
+    {
+        NSLog(@"ERROR - No location found!");
+    }
     
     //BOOL hasPhoneCapability = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:123"]];
     NSString *phoneButtonCopy = ([winningLocationSelected.formatted_phone_number length] > 0) ? [NSString stringWithFormat:@"Call %@", winningLocationSelected.formatted_phone_number] : nil;
@@ -1442,8 +1453,17 @@ typedef enum {
 {
     NSLog(@"directions %@", loc.formatted_address);
     NSString* addr = [NSString stringWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=Current Location",loc.formatted_address];
-    NSURL* url = [[NSURL alloc] initWithString:[addr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    addr = [addr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    NSURL* url = [[NSURL alloc] initWithString:addr];
+    
+    //NSURL *theURL = [[NSURL alloc] initWithScheme:@"http" host:@"maps.google.com" path:[@"?daddr=%@&saddr=Current Location" stringByAppendingString:loc.formatted_address]];
+    
+    
     [[UIApplication sharedApplication] openURL:url];
+    
+    //[theURL release];
     [url release];
 }
 
