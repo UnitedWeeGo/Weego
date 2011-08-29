@@ -14,8 +14,12 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>united_appicon_57x57.png</string>
-		<string>united_appicon_114x114.png</string>
+		<string>Icon.png</string>
+		<string>Icon@2x.png</string>
+		<string>Icon-72.png</string>
+		<string>Icon-Small-50.png</string>
+		<string>Icon-Small.png</string>
+		<string>Icon-Small@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.unitedweego.${PRODUCT_NAME:rfc1034identifier}</string>
@@ -39,7 +43,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.32</string>
+	<string>0.35</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>

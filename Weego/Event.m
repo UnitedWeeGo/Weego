@@ -278,7 +278,7 @@
 
 - (EventState)currentEventState
 {
-    int state = 0;
+    EventState state = 0;
     
     if (self.minutesToGoUntilVotingEnds > 90) state = EventStateVoting;
     if (self.minutesToGoUntilVotingEnds <= 90) state = EventStateVotingWarning;

@@ -200,10 +200,22 @@ static LocationReporter *sharedInstance;
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
         BOOL eventIsInRange = e.currentEventState >= EventStateStarted && e.currentEventState < EventStateEnded;
-        BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;        
+        BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
+        /*
+        NSLog(@"eventTitle: %@", e.eventTitle);
+        NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
+        NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
+        NSLog(@"eventIsInRange: %i", eventIsInRange);
+        NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
+        */
+         
         if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsInRange && userAcceptedEvent)
         {
+            /*
+            NSLog(@"testing user location for %@", e.eventTitle);
+             */
+            
             Location *loc = [e getLocationByLocationId:e.topLocationId];
             if (loc == nil) continue;
             // location is within range to test location CHECKIN_RADIUS_THRESHHOLD, CHECKIN_ACCURACY_THRESHHOLD
