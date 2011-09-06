@@ -9,12 +9,24 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/DataFetcher.m"
-         timestampString = "336963799.210355"
+         timestampString = "336972705.697308"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1047"
-         endingLineNumber = "1047"
-         landmarkName = "-didLoadPlaces:forQuery:"
+         startingLineNumber = "1103"
+         endingLineNumber = "1103">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336968936.834911"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "565"
+         endingLineNumber = "565"
+         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -23,54 +35,40 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/DataFetcher.m"
-         timestampString = "336963859.708672"
+         timestampString = "336972705.697308"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "564"
-         endingLineNumber = "564"
-         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "336963861.245697"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "579"
-         endingLineNumber = "579"
-         landmarkName = "-initAndSearchSimpleGeoWithCategory:andRadius:withLatitude:andLongitude:delegate:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "336963862.786692"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "596"
-         endingLineNumber = "596"
+         startingLineNumber = "646"
+         endingLineNumber = "646"
          landmarkName = "-initAndSearchSimpleGeoWithRadius:andName:withLatitude:andLongitude:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/DataFetcher.m"
-         timestampString = "336964969.325766"
+         timestampString = "336970467.483889"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "580"
-         endingLineNumber = "580"
-         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
+         startingLineNumber = "595"
+         endingLineNumber = "595"
+         landmarkName = "-initAndSearchSimpleGeoWithCategory:andRadius:withLatitude:andLongitude:delegate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/UIImageViewAsyncLoader.m"
+         timestampString = "336982424.815724"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "92"
+         endingLineNumber = "92"
+         landmarkName = "-asyncLoadWithNSURL:useCached:andBaseImage:useBorder:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SimpleGeo/ASIHTTPRequest.h>
+#import <SimpleGeo/SGASIHTTPRequest.h>
 
 typedef enum {
 	BaseImageTypeAvatar = 0,
@@ -15,13 +15,13 @@ typedef enum {
     BaseImageTypeNone
 } BaseImageType;
 
-@interface UIImageViewAsyncLoader : UIImageView <ASIHTTPRequestDelegate> {
-    @private ASIHTTPRequest *heldRequest;
+@interface UIImageViewAsyncLoader : UIImageView <SGASIHTTPRequestDelegate> {
+    @private SGASIHTTPRequest *heldRequest;
     @private BOOL _useCached;
     UIImageView *loadedImage;
 }
 
-@property (nonatomic,retain) ASIHTTPRequest *heldRequest;
+@property (nonatomic,retain) SGASIHTTPRequest *heldRequest;
 
 -(void)asyncLoadWithNSURL:(NSURL *)url useCached:(BOOL)useCached andBaseImage:(BaseImageType)type useBorder:(BOOL)useBorder;
 

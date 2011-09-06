@@ -396,13 +396,13 @@ static Controller *sharedInstance;
     [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
-
+/*
 - (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchGooglePlacesWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[GoogleDataParser sharedInstance]] autorelease];
     return fetcher.requestId;
 }
-
+*/
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
     NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];

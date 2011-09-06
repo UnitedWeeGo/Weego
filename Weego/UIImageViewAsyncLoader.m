@@ -7,7 +7,7 @@
 //
 
 #import "UIImageViewAsyncLoader.h"
-#import "BBDownloadCache.h"
+#import <SimpleGeo/SGASIDownloadCache.h>
 
 @interface UIImageViewAsyncLoader (Private)
 
@@ -27,7 +27,7 @@
     [self.layer setBorderWidth: 1.0];
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+-(void)requestFinished:(SGASIHTTPRequest *)request
 {    
     NSData *response = [request responseData];
     BOOL animate = ![request didUseCachedResponse];
@@ -53,7 +53,7 @@
                               completion:NULL];
     }
 }
--(void)requestFailed:(ASIHTTPRequest *)request
+-(void)requestFailed:(SGASIHTTPRequest *)request
 {
     NSError *error = [request error];
     NSLog(@"error: %@", [error description]);
@@ -89,7 +89,7 @@
     if (!url) return;
     
     // check for cached response data
-    NSData *response = [[BBDownloadCache sharedCache] cachedResponseDataForURL:url];
+    NSData *response = [[SGASIDownloadCache sharedCache] cachedResponseDataForURL:url];
     if (response)
     {
 //        NSLog(@"found cached version: %@", url);
@@ -97,7 +97,7 @@
         return;
     }
     
-    self.heldRequest = [[ASIHTTPRequest requestWithURL:url] copy];
+    self.heldRequest = [[SGASIHTTPRequest requestWithURL:url] copy];
     
     
     // Set secondsToCache on the request to override any expiry date for the content set by the server, and store 
@@ -105,7 +105,7 @@
     [self.heldRequest setSecondsToCache:60*60*24*30]; // Cache for 2 days
     
 //    [self.heldRequest setDownloadCache:[ASIDownloadCache sharedCache]]; // I do this in app delegate so it is global not per request
-    int cachePolicy = (_useCached)?(ASIUseDefaultCachePolicy):(ASIAskServerIfModifiedCachePolicy);
+    int cachePolicy = (_useCached)?(SGASIUseDefaultCachePolicy):(SGASIAskServerIfModifiedCachePolicy);
 //    int cachePolicy = (_useCached)?(ASIAskServerIfModifiedCachePolicy):(ASIAskServerIfModifiedCachePolicy);
     [self.heldRequest setCacheStoragePolicy:cachePolicy];
     self.heldRequest.showAccurateProgress = NO;
@@ -117,7 +117,7 @@
 
 #pragma mark - ASIHTTPRequestDelegate
 
-- (void)requestRedirected:(ASIHTTPRequest *)request
+- (void)requestRedirected:(SGASIHTTPRequest *)request
 {
     
 }

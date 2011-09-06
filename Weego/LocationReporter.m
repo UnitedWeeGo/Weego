@@ -265,12 +265,12 @@ static LocationReporter *sharedInstance;
 
 #pragma mark SimpleGeoDelegate methods
 
-- (void)requestDidFail:(ASIHTTPRequest *)request
+- (void)requestDidFail:(SGASIHTTPRequest *)request
 {
     NSLog(@"Request failed: %@: %i", [request responseStatusMessage], [request responseStatusCode]);
 }
 
-- (void)requestDidFinish:(ASIHTTPRequest *)request
+- (void)requestDidFinish:(SGASIHTTPRequest *)request
 {
     NSLog(@"Request finished: %@", [request responseString]);
 }

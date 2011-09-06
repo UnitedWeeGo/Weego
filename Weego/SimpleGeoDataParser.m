@@ -36,12 +36,13 @@ static SimpleGeoDataParser *sharedInstance;
     return sharedInstance;
 }
 
-- (void)processSimpleGeoResponse:(SGFeatureCollection *)places
+- (void)processSimpleGeoResponse:(NSArray *)places
 {
+    
     NSMutableArray *results = [NSMutableArray arrayWithCapacity:[places count]];
     for (int i=0; i<[places count]; i++)
     {
-        SGFeature *place = [[places features] objectAtIndex:i];
+        SGPlace *place = [places objectAtIndex:i];
         Location *loc = [[[Location alloc] initWithSimpleGeoFeatureResult:place] autorelease];
         [results addObject:loc];
     }

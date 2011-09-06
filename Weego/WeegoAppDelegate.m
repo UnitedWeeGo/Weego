@@ -8,8 +8,8 @@
 
 #import "WeegoAppDelegate.h"
 #import "DashboardTVC.h"
-#import <SimpleGeo/ASIHTTPRequest.h>
-#import "BBDownloadCache.h"
+#import <SimpleGeo/SGASIHTTPRequest.h>
+#import <SimpleGeo/SGASIDownloadCache.h>
 #import "DataParser.h"
 #import "KeychainManager.h"
 #import <AudioToolbox/AudioToolbox.h>
@@ -41,11 +41,10 @@
 {
     //NSLog(@"initCache");
     // init the caching mechanism
-    [ASIHTTPRequest setDefaultCache:[BBDownloadCache sharedCache]];
-    //[[BBDownloadCache sharedCache] clearCachedResponsesForStoragePolicy:ASICachePermanentlyCacheStoragePolicy | ASICacheForSessionDurationCacheStoragePolicy];
+    [SGASIHTTPRequest setDefaultCache:[SGASIDownloadCache sharedCache]];
     // When you turn shouldRespectCacheControlHeaders off, the cache will store responses even if the server 
     // has explictly asked for them not be be cached (eg with a cache-control or pragma: no-cache header)
-    [[BBDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];
+    //[[SGASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];
 }
 
 - (void)checkForUpdateWithServerReportedVerion

@@ -569,17 +569,24 @@
         self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeoCategories;
         
-        // default to using this as the delegate for potentially helpful error logging
-        self.client = [SimpleGeo clientWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
-        
-        self.client = [SimpleGeo clientWithConsumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];        
         self.delegate = myDelegate;
         
         [self.client getCategoriesWithCallback:[SGCallback callbackWithSuccessBlock:
                                                 ^(id response) {
-                                                    NSLog(@"categories received.");
-                                                } failureBlock^(NSError *error) {
-                                                    //
+                                                    NSLog(@"SimpleGeo didLoadCategories");
+                                                    dataFetcherFinished = YES;
+                                                    if (delegate) [delegate processSimpleGeoCategoryResponse:response];
+                                                    self.delegate = nil;
+                                                    
+                                                    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
+                                                    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+                                                    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
+                                                    
+                                                    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
+                                                } failureBlock: ^(NSError *error) {
+                                                    [self handleError:error];
                                                 }]];
     }
     return self;
@@ -587,53 +594,101 @@
 
 - (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
+
     self = [self init];
 	if (self != nil) {
         self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
         
         // default to using this as the delegate for potentially helpful error logging
-        self.client = [SimpleGeo clientWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         
-        SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];        
-        [client getPlacesNear:point matching:nil inCategory:category.search_category within:radiusKilo];
+        SGPoint *point = [SGPoint pointWithLat:latitude lon:longitude];
+        
+        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithPoint:point] autorelease];
+        [query setRadius:radiusKilo];
+        [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
+        [query setCategories:[NSArray arrayWithObjects:category.search_category,
+                              nil]];
+        
+        [client getPlacesForQuery:query callback:[SGCallback callbackWithSuccessBlock:
+                                                  ^(id response) {
+                                                      // you've got Places!
+                                                      // to create an array of SGPlace objects...
+                                                      NSArray *places = [NSArray arrayWithSGCollection:response
+                                                                                                  type:SGCollectionTypePlaces];
+                                                      
+                                                      
+                                                      NSLog(@"SimpleGeo didLoadPlaces");
+                                                      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                                      dataFetcherFinished = YES;
+                                                      
+                                                      if (delegate) [delegate processSimpleGeoResponse:places];
+                                                      self.delegate = nil;
+                                                      
+                                                      NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
+                                                      NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+                                                      NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
+                                                      
+                                                      [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
+                                                      
+                                                      
+                                                  } failureBlock: ^(NSError *error) {
+                                                      [self handleError:error];
+                                                  }]];
+        
     }
     return self;
 }
 
 - (id)initAndSearchSimpleGeoWithRadius:(int)radiusKilo andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
 {
+    
     self = [self init];
 	if (self != nil) {
         self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeSearchSimpleGeo;
         
         // default to using this as the delegate for potentially helpful error logging
-        client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
         
-        SGPoint *point = [SGPoint pointWithLatitude:latitude longitude:longitude];
-        [client getPlacesNear:point matching:name within:radiusKilo count:SIMLE_GEO_SEARCH_RESULTS_COUNT];
-    }
-    return self;
-}
-
-- (id)initAndSearchGooglePlacesWithRadius:(int)radius andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
-{
-    self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        pendingRequestType = DataFetchTypeGooglePlaceSearch;
-        self.delegate = myDelegate;
-        NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?location=%f,%f&radius=%d&name=%@&sensor=true&key=%@",
-                                GOOGLE_PLACE_URL,
-                                latitude,
-                                longitude,
-                                radius,
-                                name,
-                                GOOGLE_API_KEY] autorelease];
-        [self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        SGPoint *point = [SGPoint pointWithLat:latitude lon:longitude];
+        
+        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithPoint:point] autorelease];
+        [query setSearchString:name];
+        [query setRadius:radiusKilo];
+        [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
+        
+        [client getPlacesForQuery:query callback:[SGCallback callbackWithSuccessBlock:
+                                                  ^(id response) {
+                                                      // you've got Places!
+                                                      // to create an array of SGPlace objects...
+                                                      NSArray *places = [NSArray arrayWithSGCollection:response
+                                                                                                  type:SGCollectionTypePlaces];
+                                                      
+                                                      
+                                                      NSLog(@"SimpleGeo didLoadPlaces");
+                                                      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                                      dataFetcherFinished = YES;
+                                                      
+                                                      if (delegate) [delegate processSimpleGeoResponse:places];
+                                                      self.delegate = nil;
+                                                      
+                                                      NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
+                                                      NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
+                                                      NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
+                                                      
+                                                      [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
+                                                      
+                                                      
+                                                  } failureBlock: ^(NSError *error) {
+                                                      [self handleError:error];
+                                                  }]];
+        
     }
     return self;
 }
@@ -944,6 +999,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     dataFetcherFinished = YES;
 	self.delegate = nil;
+    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId]; // will only release if this is a SimpleGeo error
         
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
@@ -955,8 +1011,8 @@
 
 #pragma mark -
 #pragma mark SimpleGeoDelegate methods
-
-- (void)requestDidFail:(ASIHTTPRequest *)request
+/*
+- (void)requestDidFail:(SGASIHTTPRequest *)request
 {
     NSLog(@"Request failed: %@: %i", [request responseStatusMessage], [request responseStatusCode]);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -977,7 +1033,7 @@
     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
 
-- (void)requestDidFinish:(ASIHTTPRequest *)request
+- (void)requestDidFinish:(SGASIHTTPRequest *)request
 {
     //NSLog(@"Request finished: %@", [request responseString]);
     
@@ -997,6 +1053,7 @@
     
     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
+
 - (void)didLoadPlaces:(SGFeatureCollection *)places
              forQuery:(NSDictionary *)query
 {
@@ -1014,7 +1071,7 @@
     
     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
 }
-
+*/
 
 #pragma mark -
 #pragma mark Unique ID Generator
@@ -1029,8 +1086,8 @@
 
 - (void) dealloc
 {
-    [client release];
-    client = nil;
+    //[client release];
+    //client = nil;
     [self.requestId release];
 	self.delegate = nil;
     myConnection = nil;

@@ -1,13 +1,13 @@
 //
 //  ASIDownloadCache.m
-//  Part of ASIHTTPRequest -> http://allseeing-i.com/ASIHTTPRequest
+//  Part of SGASIHTTPRequest -> http://allseeing-i.com/SGASIHTTPRequest
 //
 //  Created by Ben Copsey on 01/05/2010.
 //  Copyright 2010 All-Seeing Interactive. All rights reserved.
 //
-
+/*
 #import "BBDownloadCache.h"
-#import <SimpleGeo/ASIHTTPRequest.h>
+#import <SimpleGeo/SGASIHTTPRequest.h>
 #import <CommonCrypto/CommonHMAC.h>
 
 static BBDownloadCache *sharedCache = nil;
@@ -25,7 +25,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 {
 	self = [super init];
 	[self setShouldRespectCacheControlHeaders:YES];
-	[self setDefaultCachePolicy:ASIUseDefaultCachePolicy];
+	[self setDefaultCachePolicy:SGASIUseDefaultCachePolicy];
 	[self setAccessLock:[[[NSRecursiveLock alloc] init] autorelease]];
 	return self;
 }
@@ -34,7 +34,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 {
 	if (!sharedCache) {
 		sharedCache = [[self alloc] init];
-		[sharedCache setStoragePath:[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"ASIHTTPRequestCache"]];
+		[sharedCache setStoragePath:[[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"SGASIHTTPRequestCache"]];
 
 	}
 	return sharedCache;
@@ -59,7 +59,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 - (void)setStoragePath:(NSString *)path
 {
 	[[self accessLock] lock];
-	[self clearCachedResponsesForStoragePolicy:ASICacheForSessionDurationCacheStoragePolicy];
+	[self clearCachedResponsesForStoragePolicy:SGASICacheForSessionDurationCacheStoragePolicy];
 	[storagePath release];
 	storagePath = [path retain];
 
@@ -80,15 +80,15 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 			}
 		}
 	}
-	[self clearCachedResponsesForStoragePolicy:ASICacheForSessionDurationCacheStoragePolicy];
+	[self clearCachedResponsesForStoragePolicy:SGASICacheForSessionDurationCacheStoragePolicy];
 	[[self accessLock] unlock];
 }
 
-- (void)storeResponseForRequest:(ASIHTTPRequest *)request maxAge:(NSTimeInterval)maxAge
+- (void)storeResponseForRequest:(SGASIHTTPRequest *)request maxAge:(NSTimeInterval)maxAge
 {
 	[[self accessLock] lock];
 	
-	if ([request error] || ![request responseHeaders] || ([request responseStatusCode] != 200) || ([request cachePolicy] & ASIDoNotWriteToCacheCachePolicy)) {
+	if ([request error] || ![request responseHeaders] || ([request responseStatusCode] != 200) || ([request cachePolicy] & SGASIDoNotWriteToCacheCachePolicy)) {
 		[[self accessLock] unlock];
 		return;
 	}
@@ -110,7 +110,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[responseHeaders setObject:[NSString stringWithFormat:@"max-age=%i",(int)maxAge] forKey:@"Cache-Control"];
 	}
 	// We use this special key to help expire the request when we get a max-age header
-	[responseHeaders setObject:[[[self class] rfc1123DateFormatter] stringFromDate:[NSDate date]] forKey:@"X-ASIHTTPRequest-Fetch-date"];
+	[responseHeaders setObject:[[[self class] rfc1123DateFormatter] stringFromDate:[NSDate date]] forKey:@"X-SGASIHTTPRequest-Fetch-date"];
 	[responseHeaders writeToFile:headerPath atomically:NO];
 	
 	if ([request responseData]) {
@@ -201,7 +201,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	return nil;
 }
 
-- (NSString *)pathToStoreCachedResponseDataForRequest:(ASIHTTPRequest *)request
+- (NSString *)pathToStoreCachedResponseDataForRequest:(SGASIHTTPRequest *)request
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
@@ -209,7 +209,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		return nil;
 	}
 
-	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == SGASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
 
 	// Grab the file extension, if there is one. We do this so we can save the cached response with the same file extension - this is important if you want to display locally cached data in a web view 
     NSURL *urlToUse = [request originalURL] != nil ? [request originalURL] : [request url];
@@ -223,7 +223,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	return path;
 }
 
-- (NSString *)pathToStoreCachedResponseHeadersForRequest:(ASIHTTPRequest *)request
+- (NSString *)pathToStoreCachedResponseHeadersForRequest:(SGASIHTTPRequest *)request
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
@@ -231,14 +231,14 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		return nil;
 	}
     NSURL *urlToUse = [request originalURL] != nil ? [request originalURL] : [request url];
-	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == SGASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
 	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:urlToUse] stringByAppendingPathExtension:@"cachedheaders"]];
 	[[self accessLock] unlock];
 	return path;
 }
 
 
-- (void)removeCachedDataForRequest:(ASIHTTPRequest *)request
+- (void)removeCachedDataForRequest:(SGASIHTTPRequest *)request
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
@@ -263,7 +263,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	[[self accessLock] unlock];
 }
 
-- (BOOL)isCachedDataCurrentForRequest:(ASIHTTPRequest *)request
+- (BOOL)isCachedDataCurrentForRequest:(SGASIHTTPRequest *)request
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
@@ -313,7 +313,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 				NSTimeInterval maxAge = 0;
 				[scanner scanDouble:&maxAge];
 
-				NSDate *fetchDate = [ASIHTTPRequest dateFromRFC1123String:[cachedHeaders objectForKey:@"X-ASIHTTPRequest-Fetch-date"]];
+				NSDate *fetchDate = [SGASIHTTPRequest dateFromRFC1123String:[cachedHeaders objectForKey:@"X-SGASIHTTPRequest-Fetch-date"]];
 				NSDate *expiryDate = [[[NSDate alloc] initWithTimeInterval:maxAge sinceDate:fetchDate] autorelease];
 
 				if ([expiryDate timeIntervalSinceNow] >= 0) {
@@ -329,7 +329,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		// Look for an Expires header to see if the content is out of date
 		NSString *expires = [cachedHeaders objectForKey:@"Expires"];
 		if (expires) {
-			if ([[ASIHTTPRequest dateFromRFC1123String:expires] timeIntervalSinceNow] >= 0) {
+			if ([[SGASIHTTPRequest dateFromRFC1123String:expires] timeIntervalSinceNow] >= 0) {
 				[[self accessLock] unlock];
 				return YES;
 			}
@@ -345,34 +345,34 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	return YES;
 }
 
-- (ASICachePolicy)defaultCachePolicy
+- (SGASICachePolicy)defaultCachePolicy
 {
 	[[self accessLock] lock];
-	ASICachePolicy cp = defaultCachePolicy;
+	SGASICachePolicy cp = defaultCachePolicy;
 	[[self accessLock] unlock];
 	return cp;
 }
 
 
-- (void)setDefaultCachePolicy:(ASICachePolicy)cachePolicy
+- (void)setDefaultCachePolicy:(SGASICachePolicy)cachePolicy
 {
 	[[self accessLock] lock];
 	if (!cachePolicy) {
-		defaultCachePolicy = ASIAskServerIfModifiedWhenStaleCachePolicy;
+		defaultCachePolicy = SGASIAskServerIfModifiedWhenStaleCachePolicy;
 	}  else {
 		defaultCachePolicy = cachePolicy;	
 	}
 	[[self accessLock] unlock];
 }
 
-- (void)clearCachedResponsesForStoragePolicy:(ASICacheStoragePolicy)storagePolicy
+- (void)clearCachedResponsesForStoragePolicy:(SGASICacheStoragePolicy)storagePolicy
 {
 	[[self accessLock] lock];
 	if (![self storagePath]) {
 		[[self accessLock] unlock];
 		return;
 	}
-	NSString *path = [[self storagePath] stringByAppendingPathComponent:(storagePolicy == ASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
+	NSString *path = [[self storagePath] stringByAppendingPathComponent:(storagePolicy == SGASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
 
 	NSFileManager *fileManager = [[[NSFileManager alloc] init] autorelease];
 
@@ -398,7 +398,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	[[self accessLock] unlock];
 }
 
-+ (BOOL)serverAllowsResponseCachingForRequest:(ASIHTTPRequest *)request
++ (BOOL)serverAllowsResponseCachingForRequest:(SGASIHTTPRequest *)request
 {
 	NSString *cacheControl = [[[request responseHeaders] objectForKey:@"Cache-Control"] lowercaseString];
 	if (cacheControl) {
@@ -419,7 +419,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 + (NSString *)keyForURL:(NSURL *)url
 {
 	NSString *urlString = [url absoluteString];
-	// Strip trailing slashes so http://allseeing-i.com/ASIHTTPRequest/ is cached the same as http://allseeing-i.com/ASIHTTPRequest
+	// Strip trailing slashes so http://allseeing-i.com/SGASIHTTPRequest/ is cached the same as http://allseeing-i.com/SGASIHTTPRequest
 	if ([[urlString substringFromIndex:[urlString length]-1] isEqualToString:@"/"]) {
 		urlString = [urlString substringToIndex:[urlString length]-1];
 	}
@@ -444,14 +444,14 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 }
 
 
-- (BOOL)canUseCachedDataForRequest:(ASIHTTPRequest *)request
+- (BOOL)canUseCachedDataForRequest:(SGASIHTTPRequest *)request
 {
 	// Ensure the request is allowed to read from the cache
-	if ([request cachePolicy] & ASIDoNotReadFromCacheCachePolicy) {
+	if ([request cachePolicy] & SGASIDoNotReadFromCacheCachePolicy) {
 		return NO;
 
 	// If we don't want to load the request whatever happens, always pretend we have cached data even if we don't
-	} else if ([request cachePolicy] & ASIDontLoadCachePolicy) {
+	} else if ([request cachePolicy] & SGASIDontLoadCachePolicy) {
 		return YES;
 	}
 
@@ -467,21 +467,21 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	// If we get here, we have cached data
 
 	// If we have cached data, we can use it
-	if ([request cachePolicy] & ASIOnlyLoadIfNotCachedCachePolicy) {
+	if ([request cachePolicy] & SGASIOnlyLoadIfNotCachedCachePolicy) {
 		return YES;
 
 	// If we want to fallback to the cache after an error
-	} else if ([request complete] && [request cachePolicy] & ASIFallbackToCacheIfLoadFailsCachePolicy) {
+	} else if ([request complete] && [request cachePolicy] & SGASIFallbackToCacheIfLoadFailsCachePolicy) {
 		return YES;
 
 	// If we have cached data that is current, we can use it
-	} else if ([request cachePolicy] & ASIAskServerIfModifiedWhenStaleCachePolicy) {
+	} else if ([request cachePolicy] & SGASIAskServerIfModifiedWhenStaleCachePolicy) {
 		if ([self isCachedDataCurrentForRequest:request]) {
 			return YES;
 		}
 
 	// If we've got headers from a conditional GET and the cached data is still current, we can use it
-	} else if ([request cachePolicy] & ASIAskServerIfModifiedCachePolicy) {
+	} else if ([request cachePolicy] & SGASIAskServerIfModifiedCachePolicy) {
 		if (![request responseHeaders]) {
 			return NO;
 		} else if ([self isCachedDataCurrentForRequest:request]) {
@@ -496,3 +496,4 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 @synthesize accessLock;
 @synthesize shouldRespectCacheControlHeaders;
 @end
+*/

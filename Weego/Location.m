@@ -26,16 +26,19 @@
 @synthesize hasBeenRemoved;
 
 // SimpleGeo search
-- (id)initWithSimpleGeoFeatureResult:(SGFeature *)place
+- (id)initWithSimpleGeoFeatureResult:(SGPlace *)place
 {
     self = [super init];
 	if (!self)
 		return nil;
-    NSString *uName = [[place properties] objectForKey:@"name"];
-    NSString *uStreet = [[place properties] objectForKey:@"address"];
-    NSString *uCity = [[place properties] objectForKey:@"city"];
-    NSString *uState = [[place properties] objectForKey:@"province"];
-    NSString *uZip = [[place properties] objectForKey:@"postcode"];
+    
+    SGAddress *address = place.address;
+    
+    NSString *uName = place.name;
+    NSString *uStreet = address.street;
+    NSString *uCity = address.city;
+    NSString *uState = address.province;
+    NSString *uZip = address.postalCode;
     NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
     NSString *uPhone = [[place properties] objectForKey:@"phone"];
     NSString *uDealFlag = [[place properties] objectForKey:@"hasDeal"];
@@ -46,7 +49,7 @@
     
     self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
     self.longitude = [NSString stringWithFormat:@"%f", point.longitude];
-    self.g_id = place.featureId;
+    self.g_id = place.identifier;
     hasDeal = [uDealFlag isEqualToString:@"true"];
     
     self.location_type = @"place";
