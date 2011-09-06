@@ -4,17 +4,17 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/DashboardTVC.m"
-         timestampString = "336958841.363856"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336963799.210355"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "280"
-         endingLineNumber = "280"
-         landmarkName = "-tableView:numberOfRowsInSection:"
+         startingLineNumber = "1047"
+         endingLineNumber = "1047"
+         landmarkName = "-didLoadPlaces:forQuery:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -22,13 +22,55 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/DashboardTVC.m"
-         timestampString = "336958477.52737"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336963859.708672"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "159"
-         endingLineNumber = "159"
-         landmarkName = "-createDataSources"
+         startingLineNumber = "564"
+         endingLineNumber = "564"
+         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336963861.245697"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "579"
+         endingLineNumber = "579"
+         landmarkName = "-initAndSearchSimpleGeoWithCategory:andRadius:withLatitude:andLongitude:delegate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336963862.786692"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "596"
+         endingLineNumber = "596"
+         landmarkName = "-initAndSearchSimpleGeoWithRadius:andName:withLatitude:andLongitude:delegate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "336964969.325766"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "580"
+         endingLineNumber = "580"
+         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

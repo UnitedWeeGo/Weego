@@ -36,6 +36,7 @@
 - (void)handleError:(NSError *)error;
 - (void)makeSynchronousRequest:(NSString *)urlString;
 - (NSString*) stringWithUUID;
+- (void)handleError:(NSError *)error;
 
 @end
 
@@ -391,35 +392,6 @@
 	return self;
 }
 
-/* DEPRICATED
-- (id)initAndAddNewLocationToEventWithUserId:(NSString *)userId withEventId:(NSString *)eventId withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate
-{
-	self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        pendingRequestType = DataFetchTypeAddNewLocationToEvent;
-		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f&name=%@&vicinity=%@&g_id=%@&g_reference=%@&location_type=%@%@%@",
-							   apiURL,
-							   @"mod.location.php",
-							   userId,
-							   eventId,
-							   aLocation.coordinate.latitude,
-							   aLocation.coordinate.longitude,
-							   [self urlencode:aLocation.name],
-                                aLocation.vicinity != nil ? [self urlencode:aLocation.vicinity] : @"",
-                                aLocation.g_id != nil ? aLocation.g_id : @"",
-                                aLocation.g_reference != nil ?  aLocation.g_reference : @"",
-                                aLocation.location_type,
-                                (aLocation.isTemporary && aLocation.locationId) ? [NSString stringWithFormat:@"&requestId=%@", aLocation.locationId] : @"",
-                                ([aLocation.location_type isEqualToString:@"address"]) ? [NSString stringWithFormat:@"&formatted_address=%@", [self urlencode:aLocation.formatted_address]] : @""
-                                ] autorelease];
-		[self makeRequest:urlString];
-	}
-	return self;
-}
- */
-
 - (id)initAndToggleVotesWithUserId:(NSString *)userId withEvent:(Event *)event withLocations:(NSArray *)locationIds delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -521,33 +493,6 @@
 	return self;
 }
 
-/*
-- (id)initAndWriteStringToLog:(NSString *)logMessage
-{
-    self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?logMessage=%@",
-                                apiURL,
-                                @"log.php",
-                                logMessage] autorelease];
-		[self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }
-    return self;
-}
-- (id)initAndClearLog
-{
-    self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?clearLog=true",
-                                apiURL,
-                                @"log.php"] autorelease];
-        [self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    }
-    return self;
-}
- */
 - (id)initAndCheckinWithUserId:(NSString *)userId toEventId:(NSString *)eventId intoLocationId:(NSString *)locationId overrideSynchronous:(BOOL)useSync delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -626,8 +571,16 @@
         
         // default to using this as the delegate for potentially helpful error logging
         self.client = [SimpleGeo clientWithDelegate:self consumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
+        
+        self.client = [SimpleGeo clientWithConsumerKey:SIMLE_GEO_CONSUMER_KEY consumerSecret:SIMLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
-        [client getCategories];
+        
+        [self.client getCategoriesWithCallback:[SGCallback callbackWithSuccessBlock:
+                                                ^(id response) {
+                                                    NSLog(@"categories received.");
+                                                } failureBlock^(NSError *error) {
+                                                    //
+                                                }]];
     }
     return self;
 }
