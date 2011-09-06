@@ -17,4 +17,3 @@ build/*
 *.pbxuser
 *.xcworkspace
 #xcuserdata
-Resources/SimpleGeo.framework
