@@ -405,7 +405,6 @@ static Controller *sharedInstance;
 
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
-    //bounds=34.172684,-118.604794|34.236144,-118.500938
     NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchGoogleGeoWithAddress:address andBoundsString:bounds delegate:[GoogleDataParser sharedInstance]] autorelease];
     
