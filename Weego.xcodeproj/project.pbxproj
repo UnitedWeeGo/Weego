@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 010A6E5013CD74D800D8F191 /* Entitlements.plist */; };
 		01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */; };
-		0131719513CA8B4A0068B383 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719413CA8B4A0068B383 /* YAJL.framework */; };
 		0131719813CABDF00068B383 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719713CABDF00068B383 /* libz.dylib */; };
 		013CF51A13DA296F0086B5B2 /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CF51813DA296F0086B5B2 /* NSDate+Helper.m */; };
 		013CF51B13DA296F0086B5B2 /* README.textile in Resources */ = {isa = PBXBuildFile; fileRef = 013CF51913DA296F0086B5B2 /* README.textile */; };
@@ -43,7 +42,6 @@
 		017610D213BE720F00324EF9 /* MyriadPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 017610CF13BE720F00324EF9 /* MyriadPro-Semibold.otf */; };
 		017610D313BE720F00324EF9 /* MyriadPro-SemiboldIt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 017610D013BE720F00324EF9 /* MyriadPro-SemiboldIt.otf */; };
 		017610E013BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */; };
-		017610E413BE747800324EF9 /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610E313BE747800324EF9 /* SimpleGeo.framework */; };
 		017610E613BE74AD00324EF9 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */; };
 		017610EA13BE750E00324EF9 /* GoogleDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 017610E913BE750E00324EF9 /* GoogleDataParser.m */; };
 		017610EC13BE752A00324EF9 /* Private.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 017610EB13BE752A00324EF9 /* Private.xcconfig */; };
@@ -605,7 +603,6 @@
 		010A6E5013CD74D800D8F191 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGeoDataParser.h; sourceTree = "<group>"; };
 		01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleGeoDataParser.m; sourceTree = "<group>"; };
-		0131719413CA8B4A0068B383 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = "<group>"; };
 		0131719713CABDF00068B383 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		013CF51713DA296F0086B5B2 /* NSDate+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helper.h"; sourceTree = "<group>"; };
 		013CF51813DA296F0086B5B2 /* NSDate+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper.m"; sourceTree = "<group>"; };
@@ -646,7 +643,6 @@
 		017610DC13BE73E000324EF9 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		017610DE13BE741800324EF9 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
 		017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics_NoThumb.a; sourceTree = "<group>"; };
-		017610E313BE747800324EF9 /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SimpleGeo.framework; sourceTree = "<group>"; };
 		017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		017610E813BE750E00324EF9 /* GoogleDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleDataParser.h; sourceTree = "<group>"; };
 		017610E913BE750E00324EF9 /* GoogleDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleDataParser.m; sourceTree = "<group>"; };
@@ -1353,8 +1349,6 @@
 				0176109B13BE6F3600324EF9 /* Foundation.framework in Frameworks */,
 				0176109D13BE6F3600324EF9 /* CoreGraphics.framework in Frameworks */,
 				017610E013BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a in Frameworks */,
-				017610E413BE747800324EF9 /* SimpleGeo.framework in Frameworks */,
-				0131719513CA8B4A0068B383 /* YAJL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1402,8 +1396,6 @@
 			children = (
 				0131719713CABDF00068B383 /* libz.dylib */,
 				017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */,
-				0131719413CA8B4A0068B383 /* YAJL.framework */,
-				017610E313BE747800324EF9 /* SimpleGeo.framework */,
 				017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */,
 				017610CB13BE718D00324EF9 /* CoreLocation.framework */,
 				017610C913BE718000324EF9 /* MapKit.framework */,
