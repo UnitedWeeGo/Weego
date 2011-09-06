@@ -64,7 +64,7 @@ typedef NSInteger DataFetchType;
 
 @optional
 - (void)processServerResponse:(NSMutableData *)myData;
-- (void)processSimpleGeoResponse:(SGFeatureCollection *)places;
+- (void)processSimpleGeoResponse:(NSArray *)places;
 - (void)processSimpleGeoCategoryResponse:(NSArray *)categories;
 @end
 
