@@ -552,7 +552,7 @@
 		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
 		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
 		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
-		01B460DF1415B08D006A58BC /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B460DE1415B08D006A58BC /* SimpleGeo.framework */; };
+		01B0A31D141613D700944537 /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B0A31C141613D700944537 /* SimpleGeo.framework */; };
 		01BB3F7413E89CE600E491FB /* icon_addfrom_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */; };
 		01BB3F7513E89CE600E491FB /* icon_addfrom_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */; };
 		01BB3F7613E89CE600E491FB /* icon_time_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7013E89CE600E491FB /* icon_time_01.png */; };
@@ -1269,7 +1269,7 @@
 		018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategoryTable.m; sourceTree = "<group>"; };
 		018212CD13D4D73900BF9EF4 /* CellCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellCategory.h; sourceTree = "<group>"; };
 		018212CE13D4D73900BF9EF4 /* CellCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellCategory.m; sourceTree = "<group>"; };
-		01B460DE1415B08D006A58BC /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SimpleGeo.framework; path = Resources/SimpleGeo.framework; sourceTree = "<group>"; };
+		01B0A31C141613D700944537 /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SimpleGeo.framework; sourceTree = "<group>"; };
 		01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_addfrom_01.png; sourceTree = "<group>"; };
 		01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_addfrom_01@2x.png"; sourceTree = "<group>"; };
 		01BB3F7013E89CE600E491FB /* icon_time_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_time_01.png; sourceTree = "<group>"; };
@@ -1351,7 +1351,7 @@
 				0176109B13BE6F3600324EF9 /* Foundation.framework in Frameworks */,
 				0176109D13BE6F3600324EF9 /* CoreGraphics.framework in Frameworks */,
 				017610E013BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a in Frameworks */,
-				01B460DF1415B08D006A58BC /* SimpleGeo.framework in Frameworks */,
+				01B0A31D141613D700944537 /* SimpleGeo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1397,7 +1397,7 @@
 		0176109713BE6F3600324EF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				01B460DE1415B08D006A58BC /* SimpleGeo.framework */,
+				01B0A31C141613D700944537 /* SimpleGeo.framework */,
 				0131719713CABDF00068B383 /* libz.dylib */,
 				017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */,
 				017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */,

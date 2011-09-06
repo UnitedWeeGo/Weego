@@ -44,7 +44,9 @@
     [SGASIHTTPRequest setDefaultCache:[SGASIDownloadCache sharedCache]];
     // When you turn shouldRespectCacheControlHeaders off, the cache will store responses even if the server 
     // has explictly asked for them not be be cached (eg with a cache-control or pragma: no-cache header)
-    //[[SGASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];
+    [[SGASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];
+    [[SGASIDownloadCache sharedCache] clearCachedResponsesForStoragePolicy:SGASICacheForSessionDurationCacheStoragePolicy];
+    [[SGASIDownloadCache sharedCache] clearCachedResponsesForStoragePolicy:SGASICachePermanentlyCacheStoragePolicy];
 }
 
 - (void)checkForUpdateWithServerReportedVerion
