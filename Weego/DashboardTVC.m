@@ -130,9 +130,9 @@
 
 - (void)createDataSources
 {
+    NSLog(@"createDataSources");
     [dataSources release];
     dataSources = [[NSMutableArray alloc] init];
-    [dataSources removeAllObjects];
     Model *model = [Model sharedInstance];
     [model sortEvents];
     if ([model.weeksEvents count] > 0) {
@@ -276,7 +276,8 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     Model *model = [Model sharedInstance];
-    NSArray *sectionData = [dataSources objectAtIndex:section];
+    if (section >= [dataSources count]) return 0;
+    NSArray *sectionData = [dataSources objectAtIndex:section]; // crashed (2 out of range) - 0...1
     if (sectionData == model.futureEvents) return (futureShowing) ? [sectionData count]+1 : 1;
     else if (sectionData == model.pastEvents) return (pastShowing) ? [sectionData count]+1 : 1;
     else {

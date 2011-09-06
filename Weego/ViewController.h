@@ -18,6 +18,7 @@
 }
 
 @property (nonatomic, readonly) UINavigationController *currentNavController;
+@property (nonatomic, retain) NSString *stack;
 
 + (ViewController *)sharedInstance;
 + (void)destroy;

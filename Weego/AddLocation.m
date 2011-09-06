@@ -93,13 +93,13 @@ typedef enum {
     {
         searchAgainButtonShowing = YES;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateSearchAgain withTarget:self];
-        [self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:YES];
+        //[self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:YES];
     }
     else
     {
         searchAgainButtonShowing = NO;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
-        [self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:NO];
+        //[self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:NO];
     }
 }
 
@@ -1127,14 +1127,6 @@ typedef enum {
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    /*
-    userLocationFound = NO;
-    isAddingLocation = NO;
-    continueToSearchEnabled = NO;
-    searchAgainButtonShowing = NO;
-    */
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -1455,15 +1447,10 @@ typedef enum {
     NSString* addr = [NSString stringWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=Current Location",loc.formatted_address];
     addr = [addr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    
     NSURL* url = [[NSURL alloc] initWithString:addr];
-    
-    //NSURL *theURL = [[NSURL alloc] initWithScheme:@"http" host:@"maps.google.com" path:[@"?daddr=%@&saddr=Current Location" stringByAppendingString:loc.formatted_address]];
-    
     
     [[UIApplication sharedApplication] openURL:url];
     
-    //[theURL release];
     [url release];
 }
 
@@ -1480,7 +1467,6 @@ typedef enum {
 
 - (void)presentMailModalViewController
 {
-    //participantSelectedOnMap
     Model *model = [Model sharedInstance];
     Participant *me = [model getParticipantWithEmail:model.userEmail fromEventWithId:model.currentEvent.eventId];
     NSString *title = @"weego";

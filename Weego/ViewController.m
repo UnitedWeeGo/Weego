@@ -34,6 +34,8 @@
 
 @implementation ViewController
 
+@synthesize stack;
+
 static ViewController *sharedInstance;
 
 #pragma mark -
@@ -73,6 +75,7 @@ static ViewController *sharedInstance;
 - (void) dealloc
 {
     NSLog(@"ViewController dealloc");
+    [self.stack release];
     [navigationIndexingCollection release];
     appDelegate = nil;
     nController = nil;
@@ -467,32 +470,32 @@ static ViewController *sharedInstance;
 #pragma mark Google Analytics
 - (NSString *)getCurrentViewStack
 {
-    NSString *stack = @"";
+    self.stack = @"";
     int stackCount = [navigationIndexingCollection count];
     for (int i=0; i<stackCount; i++) {
         NSString *curView = [navigationIndexingCollection objectAtIndex:i];
-        stack = [stack stringByAppendingString:curView];
+        self.stack = [self.stack stringByAppendingString:curView];
     }
-    return stack;
+    return self.stack;
 }
 - (void)addAndReportViewWithName:(NSString *)name
 {
     [navigationIndexingCollection addObject:name];
-    NSLog(@"GANTracker send nav: %@", [self getCurrentViewStack]);
     NSError *error;
-    if (![[GANTracker sharedTracker] trackPageview:[self getCurrentViewStack]
+    NSString *toReportPath = [self getCurrentViewStack];
+    if (toReportPath == nil) return;
+    if (![[GANTracker sharedTracker] trackPageview:toReportPath
                                          withError:&error]) {
-        NSLog(@"GANTracker error: %@", [error description]);
     }
 }
 - (void)removeCurrentAndReportPreviousView
 {
     [navigationIndexingCollection removeLastObject];
-    NSLog(@"GANTracker send nav: %@", [self getCurrentViewStack]);
     NSError *error;
-    if (![[GANTracker sharedTracker] trackPageview:[self getCurrentViewStack]
+    NSString *toReportPath = [self getCurrentViewStack];
+    if (toReportPath == nil) return;
+    if (![[GANTracker sharedTracker] trackPageview:toReportPath
                                          withError:&error]) {
-        NSLog(@"GANTracker error: %@", [error description]);
     }
 }
 - (void)removeAllViewsFromStack

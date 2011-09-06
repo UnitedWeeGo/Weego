@@ -883,7 +883,7 @@ enum eventDetailSections {
                 if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
             }
-            else if (currentActionSheetState == ActionSheetStateMorePressEventEnded) // duplicate event
+            else if (currentActionSheetState == ActionSheetStateMorePressEventEnded || currentActionSheetState == ActionSheetStateMorePressEventCancelled) // duplicate event
             {
                 [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
             }

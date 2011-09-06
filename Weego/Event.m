@@ -160,7 +160,7 @@
     NSMutableArray *sortedParticipants = [[NSMutableArray alloc] initWithArray:[self getParticipants]];
     NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease];
 	[sortedParticipants sortUsingDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
-    Participant *mine;
+    Participant *mine = nil;
     for (Participant *p in sortedParticipants) {
         if ([p.email isEqualToString:[Model sharedInstance].userEmail]) {
             mine = p;
