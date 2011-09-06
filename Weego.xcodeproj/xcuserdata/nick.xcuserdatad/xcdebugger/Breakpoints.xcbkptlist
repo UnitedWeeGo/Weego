@@ -48,13 +48,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "336970467.483889"
+         filePath = "Weego/SimpleGeoDataParser.m"
+         timestampString = "334003143.273607"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "595"
-         endingLineNumber = "595"
-         landmarkName = "-initAndSearchSimpleGeoWithCategory:andRadius:withLatitude:andLongitude:delegate:"
+         startingLineNumber = "45"
+         endingLineNumber = "45"
+         landmarkName = "-processSimpleGeoResponse:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -62,13 +62,55 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/UIImageViewAsyncLoader.m"
-         timestampString = "336982424.815724"
+         filePath = "Weego/NavigationSetter.m"
+         timestampString = "334217376.426144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
-         landmarkName = "-asyncLoadWithNSURL:useCached:andBaseImage:useBorder:"
+         startingLineNumber = "696"
+         endingLineNumber = "696"
+         landmarkName = "-addBackButton:onLightBackground:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "334633894.616992"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "989"
+         endingLineNumber = "989"
+         landmarkName = "-connectionDidFinishLoading:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/AddLocation.m"
+         timestampString = "334545496.450607"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "162"
+         endingLineNumber = "162"
+         landmarkName = "-setupMapView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/AddLocation.m"
+         timestampString = "334545496.450607"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "903"
+         endingLineNumber = "903"
+         landmarkName = "-handleBackPress:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
