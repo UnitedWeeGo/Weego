@@ -40,7 +40,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "646"
          endingLineNumber = "646"
-         landmarkName = "-initAndSearchSimpleGeoWithRadius:andName:withLatitude:andLongitude:delegate:"
+         landmarkName = "-initAndSearchSimpleGeoWithAddress:withLatitude:andLongitude:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -111,6 +111,20 @@
          startingLineNumber = "903"
          endingLineNumber = "903"
          landmarkName = "-handleBackPress:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "337042534.001856"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "676"
+         endingLineNumber = "676"
+         landmarkName = "-initAndSearchSimpleGeoWithRadius:andName:withLatitude:andLongitude:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
