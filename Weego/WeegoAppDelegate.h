@@ -69,6 +69,7 @@
 - (void)hideFacebookPopupWithAnimation:(BOOL)animated;
 - (void)hideLoadView;
 - (void)authenticateWithFacebook;
+- (void)logoutFromFacebook;
 - (void)hideLoadView;
 - (void)checkForUpdateWithServerReportedVerion;
 

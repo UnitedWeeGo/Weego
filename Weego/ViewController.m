@@ -170,6 +170,7 @@ static ViewController *sharedInstance;
     [Model sharedInstance].currentViewState = ViewStateEntry;
     [[Model sharedInstance] clearData];
     [self clearLoginKeyChainData];
+    [appDelegate logoutFromFacebook];
     EntryPoint *entryView = [[EntryPoint alloc] init];
     NSArray *newviews = [[NSArray alloc] initWithObjects:entryView, nil];
     nController = appDelegate.navigationController;

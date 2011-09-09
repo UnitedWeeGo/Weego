@@ -57,11 +57,13 @@ static NSString* kSDKVersion = @"2";
 /**
  * Initialize the Facebook object with application ID.
  */
-- (id)initWithAppId:(NSString *)app_id {
+- (id)initWithAppId:(NSString *)appId
+           andDelegate:(id<FBSessionDelegate>)delegate {
   self = [super init];
   if (self) {
     [_appId release];
-    _appId = [app_id copy];
+    _appId = [appId copy];
+    self.sessionDelegate = delegate;
   }
   return self;
 }
@@ -70,7 +72,6 @@ static NSString* kSDKVersion = @"2";
  * Override NSObject : free the space
  */
 - (void)dealloc {
-    NSLog(@"Facebook dealloc");
   [_accessToken release];
   [_expirationDate release];
   [_request release];
@@ -157,26 +158,29 @@ static NSString* kSDKVersion = @"2";
   // This minimizes the chance that the user will have to enter his or
   // her credentials in order to authorize the application.
   BOOL didOpenOtherApp = NO;
-  UIDevice *device = [UIDevice currentDevice];
-  if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
-    if (tryFBAppAuth) {
-      NSString *scheme = kFBAppAuthURLScheme;
-      if (_localAppId) {
-        scheme = [scheme stringByAppendingString:@"2"];
-      }
-      NSString *urlPrefix = [NSString stringWithFormat:@"%@://%@", scheme, kFBAppAuthURLPath];
-      NSString *fbAppUrl = [FBRequest serializeURL:urlPrefix params:params];
-      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
-    }
-
-    if (trySafariAuth && !didOpenOtherApp) {
-      NSString *nextUrl = [self getOwnBaseUrl];
-      [params setValue:nextUrl forKey:@"redirect_uri"];
-
-      NSString *fbAppUrl = [FBRequest serializeURL:loginDialogURL params:params];
-      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
-    }
-  }
+    
+//  REMOVED TO PREVENT FB SAFARI AUTH  
+//  UIDevice *device = [UIDevice currentDevice];
+//  if ([device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported]) {
+//    if (tryFBAppAuth) {
+//      NSString *scheme = kFBAppAuthURLScheme;
+//      if (_localAppId) {
+//        scheme = [scheme stringByAppendingString:@"2"];
+//      }
+//      NSString *urlPrefix = [NSString stringWithFormat:@"%@://%@", scheme, kFBAppAuthURLPath];
+//      NSString *fbAppUrl = [FBRequest serializeURL:urlPrefix params:params];
+//      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+//    }
+//
+//    if (trySafariAuth && !didOpenOtherApp) {
+//      NSString *nextUrl = [self getOwnBaseUrl];
+//      [params setValue:nextUrl forKey:@"redirect_uri"];
+//
+//      NSString *fbAppUrl = [FBRequest serializeURL:loginDialogURL params:params];
+//      didOpenOtherApp = [[UIApplication sharedApplication] openURL:[NSURL URLWithString:fbAppUrl]];
+//    }
+//  }
+//  REMOVED TO PREVENT FB SAFARI AUTH 
 
   // If single sign-on failed, open an inline login dialog. This will require the user to
   // enter his or her credentials.
@@ -210,10 +214,8 @@ static NSString* kSDKVersion = @"2";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //public
 
-- (void)authorize:(NSArray *)permissions
-         delegate:(id<FBSessionDelegate>)delegate {
+- (void)authorize:(NSArray *)permissions {
   [self authorize:permissions
-         delegate:delegate
        localAppId:nil];
 }
 
@@ -266,14 +268,11 @@ static NSString* kSDKVersion = @"2";
  *            and redirect the user to Safari.
  */
 - (void)authorize:(NSArray *)permissions
-         delegate:(id<FBSessionDelegate>)delegate
        localAppId:(NSString *)localAppId {
   self.localAppId = localAppId;
   self.permissions = permissions;
 
-  _sessionDelegate = delegate;
-
-  [self authorizeWithFBAppAuth:YES safariAuth:YES];
+  [self authorizeWithFBAppAuth:YES safariAuth:NO]; //safariAuth:YES
 }
 
 /**
@@ -319,7 +318,7 @@ static NSString* kSDKVersion = @"2";
     // If the error response indicates that we should try again using Safari, open
     // the authorization dialog in Safari.
     if (errorReason && [errorReason isEqualToString:@"service_disabled_use_browser"]) {
-      [self authorizeWithFBAppAuth:NO safariAuth:YES];
+      [self authorizeWithFBAppAuth:NO safariAuth:NO]; // safariAuth:YES
       return YES;
     }
 
@@ -357,11 +356,10 @@ static NSString* kSDKVersion = @"2";
 
 /**
  * Invalidate the current user session by removing the access token in
- * memory, clearing the browser cookie, and calling auth.expireSession
- * through the API.
+ * memory and clearing the browser cookie.
  *
  * Note that this method dosen't unauthorize the application --
- * it just invalidates the access token. To unauthorize the application,
+ * it just removes the access token. To unauthorize the application,
  * the user must remove the app in the app settings page under the privacy
  * settings screen on facebook.com.
  *
@@ -371,14 +369,7 @@ static NSString* kSDKVersion = @"2";
  */
 - (void)logout:(id<FBSessionDelegate>)delegate {
 
-  _sessionDelegate = delegate;
-
-  NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
-  [self requestWithMethodName:@"auth.expireSession"
-                    andParams:params andHttpMethod:@"GET"
-                  andDelegate:nil];
-
-  [params release];
+  self.sessionDelegate = delegate;
   [_accessToken release];
   _accessToken = nil;
   [_expirationDate release];
