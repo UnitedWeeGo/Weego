@@ -308,7 +308,7 @@ static NavigationSetter *sharedInstance;
     UIButton *feedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     feedBtn.frame = CGRectMake(0, 0, feedImageDefault.size.width, feedImageDefault.size.height);
     feedBtn.enabled = YES;
-    [feedBtn setTitle:@"Feed" forState:UIControlStateNormal];
+    [feedBtn setTitle:@"Messages" forState:UIControlStateNormal];
     [feedBtn setTitleColor:col forState:UIControlStateNormal];
     feedBtn.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:16];
     feedBtn.titleLabel.lineBreakMode = UILineBreakModeClip;
@@ -319,7 +319,7 @@ static NavigationSetter *sharedInstance;
     
     UIImage *feedIcon = [UIImage imageNamed:@"icon_feed.png"];
     UIImageView *feedIconView = [[[UIImageView alloc] initWithImage:feedIcon] autorelease];
-    feedIconView.frame = CGRectMake(125, 13, feedIcon.size.width, feedIcon.size.height);
+    feedIconView.frame = CGRectMake(108, 13, feedIcon.size.width, feedIcon.size.height);
     
     [feedBtnView addSubview:feedBtn];
     [feedBtnView addSubview:feedIconView];
@@ -395,7 +395,7 @@ static NavigationSetter *sharedInstance;
     feedBtn.enabled = YES;
     [feedBtn setBackgroundImage:feedImageDefault forState:UIControlStateNormal];
 //    [feedBtn setBackgroundImage:feedImagePressed forState:UIControlStateHighlighted];
-    [feedBtn setTitle:@"Feed" forState:UIControlStateNormal];
+    [feedBtn setTitle:@"Messages" forState:UIControlStateNormal];
     [feedBtn setTitleColor:col forState:UIControlStateNormal];
     feedBtn.titleLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:16];
     feedBtn.titleLabel.lineBreakMode = UILineBreakModeClip;
@@ -407,7 +407,7 @@ static NavigationSetter *sharedInstance;
     
     UIImage *feedIcon = [UIImage imageNamed:@"icon_feed.png"];
     UIImageView *feedIconView = [[[UIImageView alloc] initWithImage:feedIcon] autorelease];
-    feedIconView.frame = CGRectMake(130, 13, feedIcon.size.width, feedIcon.size.height);
+    feedIconView.frame = CGRectMake(113, 13, feedIcon.size.width, feedIcon.size.height);
     
    
     
@@ -426,7 +426,7 @@ static NavigationSetter *sharedInstance;
         [label sizeToFit];
         
         CGRect frame = label.bounds;
-        frame.origin.x = 130;
+        frame.origin.x = 113;
         frame.origin.y = 15;
         frame.size.width = 20;
         label.frame = frame;

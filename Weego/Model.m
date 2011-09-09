@@ -222,6 +222,11 @@ static Model *sharedInstance;
     NSMutableArray *tAllReportedLocations = [[NSMutableArray alloc] init];
     self.reportedLocations = tAllReportedLocations;
     [tAllReportedLocations release];
+    
+    [self.facebookFriends removeAllObjects];
+    NSMutableArray *tFacebookFriends = [[NSMutableArray alloc] init];
+    self.facebookFriends = tFacebookFriends;
+    [tFacebookFriends release];
 }
 
 - (void)sortEvents
@@ -456,6 +461,15 @@ static Model *sharedInstance;
     for (Participant *p in [origEvent getParticipants]) {
         [self duplicateParticipantWithEmail:p.email];
     }
+    
+    NSMutableArray *locs = [[NSMutableArray alloc] initWithArray:[self.currentEvent getLocations]];
+    NSMutableArray *locIds = [[NSMutableArray alloc] init];
+    for (Location *loc in locs) {
+        [locIds addObject:loc.locationId];
+    }
+    self.currentEvent.currentLocationOrder = [locIds componentsJoinedByString:@","];
+    [locs release];
+    [self determineLocationOrderForCreateOrTrial];
         
     [self addEvent:dupEvent];
     return dupEvent;
