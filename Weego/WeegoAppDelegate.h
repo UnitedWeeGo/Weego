@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "LoadView.h"
 #import "SynchMinuteTimer.h"
-#import "TempDealPopup.h"
 #import "FBConnect.h"
 #import "LocationReporter.h"
 #import "LoginFacebookPopup.h"
@@ -27,7 +26,6 @@
     UIView *dropShadowScroll;
     UIView *dropShadowScrollUp;
     UIView *whiteView;
-    TempDealPopup *dealView;
     LoginFacebookPopup *facebookPopup;
     
     LoadView *loadView;
@@ -63,8 +61,8 @@
 - (void)showDropShadow:(int)amount;
 - (void)showToolbarShadow;
 - (void)hideToolbarShadow;
-- (void)showDeal;
-- (void)hideDeal;
+//- (void)showDeal;
+//- (void)hideDeal;
 - (void)showFacebookPopup;
 - (void)hideFacebookPopupWithAnimation:(BOOL)animated;
 - (void)hideLoadView;

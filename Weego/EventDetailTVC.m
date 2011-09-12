@@ -542,6 +542,11 @@ enum eventDetailSections {
     return cell;
 }
 
+- (BBTableViewCell *)getCellForFriendsLocations
+{
+    
+}
+
 - (BBTableViewCell *)getCellForLocationWithLocation:(Location *)aLocation andIndex:(int)anIndex
 {
     CellLocation *cell = (CellLocation *) [self.tableView dequeueReusableCellWithIdentifier:@"LocationTableCellId"];

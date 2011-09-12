@@ -270,7 +270,7 @@
                               loadView = nil;
                           }];
 }
-
+/*
 - (void)showDeal
 {
     dealView = [[TempDealPopup alloc] initWithFrame:window.frame];
@@ -299,7 +299,7 @@
                          [dealView release];
                      }];
 }
-
+*/
 - (void)showFacebookPopup
 {
     facebookPopup = [[LoginFacebookPopup alloc] initWithFrame:window.frame];

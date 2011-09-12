@@ -497,7 +497,6 @@
 		017614CE13BE78F100324EF9 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 017614C613BE78F100324EF9 /* whiteArrow.png */; };
 		017614CF13BE78F100324EF9 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 017614C713BE78F100324EF9 /* whiteArrow@2x.png */; };
 		0176153213BE793C00324EF9 /* SubViewNoLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614D113BE793C00324EF9 /* SubViewNoLocations.m */; };
-		0176153313BE793C00324EF9 /* CustomPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614D313BE793C00324EF9 /* CustomPlacemark.m */; };
 		0176153413BE793C00324EF9 /* CellDashboardEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614D513BE793C00324EF9 /* CellDashboardEvent.m */; };
 		0176153513BE793C00324EF9 /* EventDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614D713BE793C00324EF9 /* EventDetailTVC.m */; };
 		0176153613BE793C00324EF9 /* SubViewEventInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 017614D913BE793C00324EF9 /* SubViewEventInfo.m */; };
@@ -1160,8 +1159,6 @@
 		017614C713BE78F100324EF9 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		017614D013BE793C00324EF9 /* SubViewNoLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewNoLocations.h; sourceTree = "<group>"; };
 		017614D113BE793C00324EF9 /* SubViewNoLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewNoLocations.m; sourceTree = "<group>"; };
-		017614D213BE793C00324EF9 /* CustomPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPlacemark.h; sourceTree = "<group>"; };
-		017614D313BE793C00324EF9 /* CustomPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPlacemark.m; sourceTree = "<group>"; };
 		017614D413BE793C00324EF9 /* CellDashboardEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellDashboardEvent.h; sourceTree = "<group>"; };
 		017614D513BE793C00324EF9 /* CellDashboardEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellDashboardEvent.m; sourceTree = "<group>"; };
 		017614D613BE793C00324EF9 /* EventDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTVC.h; sourceTree = "<group>"; };
@@ -1358,13 +1355,138 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01232A0B13CA7C8900435DBD /* SimpleGeo */ = {
+		0133D206141E974F00713AC9 /* Custom Table Cells */ = {
 			isa = PBXGroup;
 			children = (
-				01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */,
-				01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */,
+				0133D207141E97AE00713AC9 /* Cell Sub-Views */,
+				0176150013BE793C00324EF9 /* BBTableViewCell.h */,
+				0176150113BE793C00324EF9 /* BBTableViewCell.m */,
+				017614D413BE793C00324EF9 /* CellDashboardEvent.h */,
+				017614D513BE793C00324EF9 /* CellDashboardEvent.m */,
+				017614F413BE793C00324EF9 /* CellLocation.h */,
+				017614F513BE793C00324EF9 /* CellLocation.m */,
+				0176150413BE793C00324EF9 /* CellEventCallToAction.h */,
+				0176150513BE793C00324EF9 /* CellEventCallToAction.m */,
+				017614F813BE793C00324EF9 /* CellParticipant.h */,
+				017614F913BE793C00324EF9 /* CellParticipant.m */,
+				017614FA13BE793C00324EF9 /* CellDashboardFeaturedEvent.h */,
+				017614FB13BE793C00324EF9 /* CellDashboardFeaturedEvent.m */,
+				017614FC13BE793C00324EF9 /* CustomCellBackgroundView.h */,
+				017614FD13BE793C00324EF9 /* CustomCellBackgroundView.m */,
+				017614FE13BE793C00324EF9 /* CellDashboardCallToAction.h */,
+				017614FF13BE793C00324EF9 /* CellDashboardCallToAction.m */,
+				0176150C13BE793C00324EF9 /* CellFormEntry.h */,
+				0176150D13BE793C00324EF9 /* CellFormEntry.m */,
+				0176151C13BE793C00324EF9 /* CellContact.h */,
+				0176151D13BE793C00324EF9 /* CellContact.m */,
+				0176152213BE793C00324EF9 /* CellParticipantsSummary.h */,
+				0176152313BE793C00324EF9 /* CellParticipantsSummary.m */,
+				0176152813BE793C00324EF9 /* CellPrefsLinks.h */,
+				0176152913BE793C00324EF9 /* CellPrefsLinks.m */,
+				0176152A13BE793C00324EF9 /* CellPrefsControls.h */,
+				0176152B13BE793C00324EF9 /* CellPrefsControls.m */,
+				0176152C13BE793C00324EF9 /* CellPrefsLoginParticipant.h */,
+				0176152D13BE793C00324EF9 /* CellPrefsLoginParticipant.m */,
 			);
-			name = SimpleGeo;
+			name = "Custom Table Cells";
+			sourceTree = "<group>";
+		};
+		0133D207141E97AE00713AC9 /* Cell Sub-Views */ = {
+			isa = PBXGroup;
+			children = (
+				017614E813BE793C00324EF9 /* SubViewDateTime.h */,
+				017614E913BE793C00324EF9 /* SubViewDateTime.m */,
+				017614EA13BE793C00324EF9 /* SubViewLabel.h */,
+				017614EB13BE793C00324EF9 /* SubViewLabel.m */,
+				017614D813BE793C00324EF9 /* SubViewEventInfo.h */,
+				017614D913BE793C00324EF9 /* SubViewEventInfo.m */,
+				017614D013BE793C00324EF9 /* SubViewNoLocations.h */,
+				017614D113BE793C00324EF9 /* SubViewNoLocations.m */,
+				017614F213BE793C00324EF9 /* SubViewLocation.h */,
+				017614F313BE793C00324EF9 /* SubViewLocation.m */,
+				017614F613BE793C00324EF9 /* SubViewParticipant.h */,
+				017614F713BE793C00324EF9 /* SubViewParticipant.m */,
+				0176150213BE793C00324EF9 /* SubViewNoLocations.h */,
+				0176150313BE793C00324EF9 /* SubViewNoLocations.m */,
+				0176151813BE793C00324EF9 /* SubViewContactEntry.h */,
+				0176151913BE793C00324EF9 /* SubViewContactEntry.m */,
+			);
+			name = "Cell Sub-Views";
+			sourceTree = "<group>";
+		};
+		0133D208141E981300713AC9 /* Table Headers */ = {
+			isa = PBXGroup;
+			children = (
+				0176150813BE793C00324EF9 /* HeaderViewDetailsEvent.h */,
+				0176150913BE793C00324EF9 /* HeaderViewDetailsEvent.m */,
+				0176152013BE793C00324EF9 /* HeaderViewLoginRegister.h */,
+				0176152113BE793C00324EF9 /* HeaderViewLoginRegister.m */,
+				017614DA13BE793C00324EF9 /* HeaderViewLocations.h */,
+				017614DB13BE793C00324EF9 /* HeaderViewLocations.m */,
+				017614DC13BE793C00324EF9 /* HeaderViewCreateEvent.h */,
+				017614DD13BE793C00324EF9 /* HeaderViewCreateEvent.m */,
+			);
+			name = "Table Headers";
+			sourceTree = "<group>";
+		};
+		0133D209141E98CD00713AC9 /* Table View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0176151213BE793C00324EF9 /* EditEventTVC.h */,
+				0176151313BE793C00324EF9 /* EditEventTVC.m */,
+				A93A584B13EB1CA700EF1C44 /* AddressBookLocationsTVC.h */,
+				A93A584C13EB1CA700EF1C44 /* AddressBookLocationsTVC.m */,
+				017614EC13BE793C00324EF9 /* DashboardTVC.h */,
+				017614ED13BE793C00324EF9 /* DashboardTVC.m */,
+				017614D613BE793C00324EF9 /* EventDetailTVC.h */,
+				017614D713BE793C00324EF9 /* EventDetailTVC.m */,
+				017614DE13BE793C00324EF9 /* CreateEventTVC.h */,
+				017614DF13BE793C00324EF9 /* CreateEventTVC.m */,
+				0176152613BE793C00324EF9 /* PrefsTVC.h */,
+				0176152713BE793C00324EF9 /* PrefsTVC.m */,
+				A979A7A913D10757008A7002 /* AddressBookTVC.h */,
+				A979A7AA13D10757008A7002 /* AddressBookTVC.m */,
+				0176151E13BE793C00324EF9 /* LoginRegisterTVC.h */,
+				0176151F13BE793C00324EF9 /* LoginRegisterTVC.m */,
+				0176150E13BE793C00324EF9 /* LoginTVC.h */,
+				0176150F13BE793C00324EF9 /* LoginTVC.m */,
+			);
+			name = "Table View Controllers";
+			sourceTree = "<group>";
+		};
+		0133D20A141E9BB100713AC9 /* Depricated */ = {
+			isa = PBXGroup;
+			children = (
+				017614F013BE793C00324EF9 /* Prefs.h */,
+				017614F113BE793C00324EF9 /* Prefs.m */,
+				0176150A13BE793C00324EF9 /* RegisterTVC.h */,
+				0176150B13BE793C00324EF9 /* RegisterTVC.m */,
+				0176151413BE793C00324EF9 /* TempDealPopup.h */,
+				0176151513BE793C00324EF9 /* TempDealPopup.m */,
+			);
+			name = Depricated;
+			sourceTree = "<group>";
+		};
+		0133D20B141E9CC900713AC9 /* Help, Terms, Privacy */ = {
+			isa = PBXGroup;
+			children = (
+				0176152E13BE793C00324EF9 /* Help.h */,
+				0176152F13BE793C00324EF9 /* Help.m */,
+				A9FBA29313E8C79200FAC5CA /* Terms.h */,
+				A9FBA29413E8C79200FAC5CA /* Terms.m */,
+				A9FBA29613E8C7B300FAC5CA /* Privacy.h */,
+				A9FBA29713E8C7B400FAC5CA /* Privacy.m */,
+			);
+			name = "Help, Terms, Privacy";
+			sourceTree = "<group>";
+		};
+		0133D20C141E9D3800713AC9 /* Search Bar */ = {
+			isa = PBXGroup;
+			children = (
+				A9E8813D13D79EF100ABB78D /* SubViewSearchBar.h */,
+				A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */,
+			);
+			name = "Search Bar";
 			sourceTree = "<group>";
 		};
 		013CF51613DA29560086B5B2 /* nsdate-helper */ = {
@@ -1439,8 +1561,6 @@
 				0176139413BE75A300324EF9 /* LocationManager */,
 				0176138413BE757C00324EF9 /* Facebook */,
 				017610ED13BE753D00324EF9 /* Images */,
-				01232A0B13CA7C8900435DBD /* SimpleGeo */,
-				017610E713BE74E400324EF9 /* GoogleGeo */,
 				017610DD13BE73FB00324EF9 /* Analytics */,
 				017610D513BE728100324EF9 /* SoundFiles */,
 				017610D413BE725D00324EF9 /* SoundManager */,
@@ -1508,15 +1628,6 @@
 				017610DE13BE741800324EF9 /* GANTracker.h */,
 			);
 			name = Analytics;
-			sourceTree = "<group>";
-		};
-		017610E713BE74E400324EF9 /* GoogleGeo */ = {
-			isa = PBXGroup;
-			children = (
-				017610E813BE750E00324EF9 /* GoogleDataParser.h */,
-				017610E913BE750E00324EF9 /* GoogleDataParser.m */,
-			);
-			name = GoogleGeo;
 			sourceTree = "<group>";
 		};
 		017610ED13BE753D00324EF9 /* Images */ = {
@@ -1887,6 +1998,8 @@
 		0176138413BE757C00324EF9 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				0176152413BE793C00324EF9 /* LoginFacebookPopup.h */,
+				0176152513BE793C00324EF9 /* LoginFacebookPopup.m */,
 				0176138513BE758F00324EF9 /* Facebook.h */,
 				0176138613BE758F00324EF9 /* Facebook.m */,
 				0176138713BE758F00324EF9 /* FBConnect.h */,
@@ -2028,6 +2141,16 @@
 				017613E913BE772700324EF9 /* Model.m */,
 				017613EA13BE772700324EF9 /* DataParser.h */,
 				017613EB13BE772700324EF9 /* DataParser.m */,
+				A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */,
+				A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */,
+				A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */,
+				A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */,
+				01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */,
+				01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */,
+				017610E813BE750E00324EF9 /* GoogleDataParser.h */,
+				017610E913BE750E00324EF9 /* GoogleDataParser.m */,
+				0176153013BE793C00324EF9 /* HelpDataParser.h */,
+				0176153113BE793C00324EF9 /* HelpDataParser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2062,22 +2185,10 @@
 		0176140713BE777200324EF9 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				017614D013BE793C00324EF9 /* SubViewNoLocations.h */,
-				017614D113BE793C00324EF9 /* SubViewNoLocations.m */,
-				017614D213BE793C00324EF9 /* CustomPlacemark.h */,
-				017614D313BE793C00324EF9 /* CustomPlacemark.m */,
-				017614D413BE793C00324EF9 /* CellDashboardEvent.h */,
-				017614D513BE793C00324EF9 /* CellDashboardEvent.m */,
-				017614D613BE793C00324EF9 /* EventDetailTVC.h */,
-				017614D713BE793C00324EF9 /* EventDetailTVC.m */,
-				017614D813BE793C00324EF9 /* SubViewEventInfo.h */,
-				017614D913BE793C00324EF9 /* SubViewEventInfo.m */,
-				017614DA13BE793C00324EF9 /* HeaderViewLocations.h */,
-				017614DB13BE793C00324EF9 /* HeaderViewLocations.m */,
-				017614DC13BE793C00324EF9 /* HeaderViewCreateEvent.h */,
-				017614DD13BE793C00324EF9 /* HeaderViewCreateEvent.m */,
-				017614DE13BE793C00324EF9 /* CreateEventTVC.h */,
-				017614DF13BE793C00324EF9 /* CreateEventTVC.m */,
+				0133D20C141E9D3800713AC9 /* Search Bar */,
+				0133D20B141E9CC900713AC9 /* Help, Terms, Privacy */,
+				0133D20A141E9BB100713AC9 /* Depricated */,
+				0133D209141E98CD00713AC9 /* Table View Controllers */,
 				017614E013BE793C00324EF9 /* BBTextField.h */,
 				017614E113BE793C00324EF9 /* BBTextField.m */,
 				017614E213BE793C00324EF9 /* FormTextField.h */,
@@ -2086,100 +2197,24 @@
 				017614E513BE793C00324EF9 /* BBTextView.m */,
 				017614E613BE793C00324EF9 /* FormTextView.h */,
 				017614E713BE793C00324EF9 /* FormTextView.m */,
-				017614E813BE793C00324EF9 /* SubViewDateTime.h */,
-				017614E913BE793C00324EF9 /* SubViewDateTime.m */,
-				017614EA13BE793C00324EF9 /* SubViewLabel.h */,
-				017614EB13BE793C00324EF9 /* SubViewLabel.m */,
-				017614EC13BE793C00324EF9 /* DashboardTVC.h */,
-				017614ED13BE793C00324EF9 /* DashboardTVC.m */,
 				017614EE13BE793C00324EF9 /* BaseFormInputView.h */,
 				017614EF13BE793C00324EF9 /* BaseFormInputView.m */,
-				017614F013BE793C00324EF9 /* Prefs.h */,
-				017614F113BE793C00324EF9 /* Prefs.m */,
-				017614F213BE793C00324EF9 /* SubViewLocation.h */,
-				017614F313BE793C00324EF9 /* SubViewLocation.m */,
-				017614F413BE793C00324EF9 /* CellLocation.h */,
-				017614F513BE793C00324EF9 /* CellLocation.m */,
-				017614F613BE793C00324EF9 /* SubViewParticipant.h */,
-				017614F713BE793C00324EF9 /* SubViewParticipant.m */,
-				017614F813BE793C00324EF9 /* CellParticipant.h */,
-				017614F913BE793C00324EF9 /* CellParticipant.m */,
-				017614FA13BE793C00324EF9 /* CellDashboardFeaturedEvent.h */,
-				017614FB13BE793C00324EF9 /* CellDashboardFeaturedEvent.m */,
-				017614FC13BE793C00324EF9 /* CustomCellBackgroundView.h */,
-				017614FD13BE793C00324EF9 /* CustomCellBackgroundView.m */,
-				017614FE13BE793C00324EF9 /* CellDashboardCallToAction.h */,
-				017614FF13BE793C00324EF9 /* CellDashboardCallToAction.m */,
-				0176150013BE793C00324EF9 /* BBTableViewCell.h */,
-				0176150113BE793C00324EF9 /* BBTableViewCell.m */,
-				0176150213BE793C00324EF9 /* SubViewNoLocations.h */,
-				0176150313BE793C00324EF9 /* SubViewNoLocations.m */,
-				0176150413BE793C00324EF9 /* CellEventCallToAction.h */,
-				0176150513BE793C00324EF9 /* CellEventCallToAction.m */,
 				0176150613BE793C00324EF9 /* LoadView.h */,
 				0176150713BE793C00324EF9 /* LoadView.m */,
-				0176150813BE793C00324EF9 /* HeaderViewDetailsEvent.h */,
-				0176150913BE793C00324EF9 /* HeaderViewDetailsEvent.m */,
-				0176150A13BE793C00324EF9 /* RegisterTVC.h */,
-				0176150B13BE793C00324EF9 /* RegisterTVC.m */,
-				0176150C13BE793C00324EF9 /* CellFormEntry.h */,
-				0176150D13BE793C00324EF9 /* CellFormEntry.m */,
-				0176150E13BE793C00324EF9 /* LoginTVC.h */,
-				0176150F13BE793C00324EF9 /* LoginTVC.m */,
 				0176151013BE793C00324EF9 /* EntryPoint.h */,
 				0176151113BE793C00324EF9 /* EntryPoint.m */,
-				0176151213BE793C00324EF9 /* EditEventTVC.h */,
-				0176151313BE793C00324EF9 /* EditEventTVC.m */,
-				0176151413BE793C00324EF9 /* TempDealPopup.h */,
-				0176151513BE793C00324EF9 /* TempDealPopup.m */,
 				0176151613BE793C00324EF9 /* AddFriends.h */,
 				0176151713BE793C00324EF9 /* AddFriends.m */,
-				0176151813BE793C00324EF9 /* SubViewContactEntry.h */,
-				0176151913BE793C00324EF9 /* SubViewContactEntry.m */,
 				0176151A13BE793C00324EF9 /* ButtonContact.h */,
 				0176151B13BE793C00324EF9 /* ButtonContact.m */,
-				0176151C13BE793C00324EF9 /* CellContact.h */,
-				0176151D13BE793C00324EF9 /* CellContact.m */,
-				A979A7A913D10757008A7002 /* AddressBookTVC.h */,
-				A979A7AA13D10757008A7002 /* AddressBookTVC.m */,
-				0176151E13BE793C00324EF9 /* LoginRegisterTVC.h */,
-				0176151F13BE793C00324EF9 /* LoginRegisterTVC.m */,
-				0176152013BE793C00324EF9 /* HeaderViewLoginRegister.h */,
-				0176152113BE793C00324EF9 /* HeaderViewLoginRegister.m */,
-				0176152213BE793C00324EF9 /* CellParticipantsSummary.h */,
-				0176152313BE793C00324EF9 /* CellParticipantsSummary.m */,
-				0176152413BE793C00324EF9 /* LoginFacebookPopup.h */,
-				0176152513BE793C00324EF9 /* LoginFacebookPopup.m */,
-				0176152613BE793C00324EF9 /* PrefsTVC.h */,
-				0176152713BE793C00324EF9 /* PrefsTVC.m */,
-				0176152813BE793C00324EF9 /* CellPrefsLinks.h */,
-				0176152913BE793C00324EF9 /* CellPrefsLinks.m */,
-				0176152A13BE793C00324EF9 /* CellPrefsControls.h */,
-				0176152B13BE793C00324EF9 /* CellPrefsControls.m */,
-				0176152C13BE793C00324EF9 /* CellPrefsLoginParticipant.h */,
-				0176152D13BE793C00324EF9 /* CellPrefsLoginParticipant.m */,
-				0176152E13BE793C00324EF9 /* Help.h */,
-				0176152F13BE793C00324EF9 /* Help.m */,
-				0176153013BE793C00324EF9 /* HelpDataParser.h */,
-				0176153113BE793C00324EF9 /* HelpDataParser.m */,
+				0133D208141E981300713AC9 /* Table Headers */,
+				0133D206141E974F00713AC9 /* Custom Table Cells */,
 				A901BFE113E76211002D68CA /* Deals */,
 				017614B913BE789200324EF9 /* EGOTableViewPullRefresh */,
 				0176142C13BE783200324EF9 /* Location Mgmt */,
 				0176142513BE781500324EF9 /* Navigation Setter */,
 				0176141513BE77E300324EF9 /* Feed */,
 				0176140813BE778000324EF9 /* Help/About Components */,
-				A9E8813D13D79EF100ABB78D /* SubViewSearchBar.h */,
-				A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */,
-				A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */,
-				A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */,
-				A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */,
-				A9FBA29113E8C6BF00FAC5CA /* PrivacyDataParser.m */,
-				A9FBA29313E8C79200FAC5CA /* Terms.h */,
-				A9FBA29413E8C79200FAC5CA /* Terms.m */,
-				A9FBA29613E8C7B300FAC5CA /* Privacy.h */,
-				A9FBA29713E8C7B400FAC5CA /* Privacy.m */,
-				A93A584B13EB1CA700EF1C44 /* AddressBookLocationsTVC.h */,
-				A93A584C13EB1CA700EF1C44 /* AddressBookLocationsTVC.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -2943,7 +2978,6 @@
 				0176143B13BE784700324EF9 /* ReportedLocationAnnotationView.m in Sources */,
 				017614BE13BE78CA00324EF9 /* EGORefreshTableHeaderView.m in Sources */,
 				0176153213BE793C00324EF9 /* SubViewNoLocations.m in Sources */,
-				0176153313BE793C00324EF9 /* CustomPlacemark.m in Sources */,
 				0176153413BE793C00324EF9 /* CellDashboardEvent.m in Sources */,
 				0176153513BE793C00324EF9 /* EventDetailTVC.m in Sources */,
 				0176153613BE793C00324EF9 /* SubViewEventInfo.m in Sources */,
@@ -3221,7 +3255,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "5DCBAAEF-3F80-458C-92FD-E4B853BEECDB";
+				PROVISIONING_PROFILE = "ECF9E383-8670-4F8C-B735-1D0C5A31C0E3";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3256,7 +3290,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5DCBAAEF-3F80-458C-92FD-E4B853BEECDB";
+				PROVISIONING_PROFILE = "ECF9E383-8670-4F8C-B735-1D0C5A31C0E3";
 				TOKEN_ENV_SANDBOX = 0;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
