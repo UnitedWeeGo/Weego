@@ -376,16 +376,16 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
-- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius
+- (id)searchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope
 {
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithCategory:category andEnvelope:envelope delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
     [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
 
-- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius andCategory:(SearchCategory *)category
+- (id)searchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name
 {
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithCategory:category andRadius:radius withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoWithEnvelope:envelope andName:name delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
     [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
@@ -396,13 +396,7 @@ static Controller *sharedInstance;
     [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
-/*
-- (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius
-{
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchGooglePlacesWithRadius:radius andName:location.name withLatitude:location.coordinate.latitude andLongitude:location.coordinate.longitude delegate:[GoogleDataParser sharedInstance]] autorelease];
-    return fetcher.requestId;
-}
-*/
+
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
     NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];

@@ -386,24 +386,16 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
 
-    Location *searchLocation = [[[Location alloc] init] autorelease];
-    searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
-    searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
-    searchLocation.name = searchString;
-    
-    MKCoordinateRegion region = mapView.region;
-    CLLocationCoordinate2D centerCoordinate = mapView.centerCoordinate;
-    CLLocation * newLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude+region.span.latitudeDelta longitude:centerCoordinate.longitude] autorelease];
-    CLLocation * centerLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude] autorelease];
-    int radius = [centerLocation distanceFromLocation:newLocation];
-    int radiusKilo = ceil(radius/1000);
-    /* trying out simple geo
-     if (googlePlacesFetchId) [googlePlacesFetchId release];
-     googlePlacesFetchId = [[[Controller sharedInstance] searchGooglePlacesForLocation:searchLocation withRadius:radius] retain];
-     */
-    
     if (simpleGeoFetchId) [simpleGeoFetchId release];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radiusKilo] retain];
+    
+    MKMapRect mRect = mapView.visibleMapRect;
+    MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
+    MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
+    CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
+    CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
+    
+    SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoWithEnvelope:envelope andName:searchString] retain];
     
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = [searchBar.text retain];
@@ -422,19 +414,17 @@ typedef enum {
         [self removeAnnotations:mapView includingSaved:false];
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
-    Location *searchLocation = [[[Location alloc] init] autorelease];
-    searchLocation.latitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.latitude];
-    searchLocation.longitude = [NSString stringWithFormat:@"%f", mapView.centerCoordinate.longitude];
     
-    MKCoordinateRegion region = mapView.region;
-    CLLocationCoordinate2D centerCoordinate = mapView.centerCoordinate;
-    CLLocation * newLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude+region.span.latitudeDelta longitude:centerCoordinate.longitude] autorelease];
-    CLLocation * centerLocation = [[[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude] autorelease];
-    int radius = [centerLocation distanceFromLocation:newLocation];
-    int radiusKilo = ceil(radius/1000);
-
     if (simpleGeoFetchId) [simpleGeoFetchId release];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForLocation:searchLocation withRadius:radiusKilo andCategory:searchCategory] retain];
+    
+    MKMapRect mRect = mapView.visibleMapRect;
+    MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
+    MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
+    CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
+    CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
+    
+    SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoWithCategory:searchCategory andEnvelope:envelope] retain];
     
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = nil;

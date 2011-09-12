@@ -38,10 +38,6 @@
 - (NSString *)reportLocationSynchronous:(Location *)aLocation forEvent:(Event *)anEvent;
 - (NSString *)addParticipants:(NSArray *)participants;
 - (NSString *)toggleVoteForLocationsWithId:(NSString *)locationId;
-
-//- (NSString *)voteForLocationWithId:(NSString *)locationId;
-//- (NSString *)removeVoteForLocationWithId:(NSString *)locationId;
-
 - (NSString *)updateUserDeviceRecord;
 - (NSString *)sendFeedMessage:(FeedMessage *)message;
 - (NSString *)markFeedMessagesRead;
@@ -49,10 +45,13 @@
 - (NSString *)checkinUserForEvent:(Event *)anEvent;
 - (NSString *)checkinUserForEventSynchronous:(Event *)anEvent;
 - (NSString *)fetchEventsSynchronous;
+
+
 - (NSString *)fetchReportedLocations;
-- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius;
-- (NSString *)searchSimpleGeoForLocation:(Location *)location withRadius:(int)radius andCategory:(SearchCategory *)category;
-//- (NSString *)searchGooglePlacesForLocation:(Location *)location withRadius:(int)radius;
+- (id)searchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope;
+- (id)searchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name;
+
+
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;
 - (NSString *)getInfoHMTLData;

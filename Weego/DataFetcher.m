@@ -592,9 +592,9 @@
     return self;
 }
 
-- (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andRadius:(int)radiusKilo withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope delegate:(id <DataFetcherDelegate>)myDelegate
 {
-
+    
     self = [self init];
 	if (self != nil) {
         self.requestId = [self stringWithUUID];
@@ -603,14 +603,10 @@
         // default to using this as the delegate for potentially helpful error logging
         self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
-        
-        SGPoint *point = [SGPoint pointWithLat:latitude lon:longitude];
-        
-        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithPoint:point] autorelease];
-        [query setRadius:radiusKilo];
+                
+        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithEnvelope:envelope] autorelease];
         [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
-        [query setCategories:[NSArray arrayWithObjects:category.search_category,
-                              nil]];
+        [query setCategories:[NSArray arrayWithObjects:category.search_category, nil]];
         
         [client getPlacesForQuery:query callback:[SGCallback callbackWithSuccessBlock:
                                                   ^(id response) {
@@ -643,7 +639,7 @@
     return self;
 }
 
-- (id)initAndSearchSimpleGeoWithRadius:(int)radiusKilo andName:(NSString *)name withLatitude:(float)latitude andLongitude:(float)longitude delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndSearchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name delegate:(id <DataFetcherDelegate>)myDelegate
 {
     
     self = [self init];
@@ -654,12 +650,9 @@
         // default to using this as the delegate for potentially helpful error logging
         self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
-        
-        SGPoint *point = [SGPoint pointWithLat:latitude lon:longitude];
-        
-        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithPoint:point] autorelease];
+                
+        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithEnvelope:envelope] autorelease];
         [query setSearchString:name];
-        [query setRadius:radiusKilo];
         [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
         
         [client getPlacesForQuery:query callback:[SGCallback callbackWithSuccessBlock:
