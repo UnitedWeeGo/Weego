@@ -143,7 +143,6 @@ enum eventDetailSections {
     [self removeDataFetcherMessageListeners];
     [_refreshHeaderView cancelAnimations];
     [_refreshHeaderView reset:self.tableView];
-    _refreshHeaderView.delegate = nil;
 }
 
 - (void)showLoadingIndicator
@@ -1185,6 +1184,8 @@ enum eventDetailSections {
     [pendingCountMeInFetchRequestId release];
     [self removeDataFetcherMessageListeners];
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // removes all observers for object
+    [_refreshHeaderView cancelAnimations];
+    _refreshHeaderView.delegate = nil;
     [oldSortedLocations release];
     [currentSortedLocations release];
     [originalIVotedFor release];

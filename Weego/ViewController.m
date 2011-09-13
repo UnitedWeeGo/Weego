@@ -410,8 +410,8 @@ static ViewController *sharedInstance;
 - (void)dismissDuplicateEventModalAndReturnToDashboard:(UIViewController *)modalView
 {
     nController = appDelegate.navigationController;
-    [modalView dismissModalViewControllerAnimated:YES];
     [nController popToViewController:dashboardVC animated:NO];
+    [modalView dismissModalViewControllerAnimated:YES];
     [self removeCurrentAndReportPreviousView];
 }
 

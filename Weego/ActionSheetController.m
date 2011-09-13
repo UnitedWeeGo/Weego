@@ -147,7 +147,7 @@ static ActionSheetController *sharedInstance;
     NSString *title = [NSString stringWithFormat:@"How would you like to contact %@?", part.fullName];
     UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send Email", nil];
     userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    //    [userOptions showInView:self.view];
+//    [userOptions showInView:self.view];
     [userOptions showInView:[UIApplication sharedApplication].keyWindow];
     [userOptions release];
 }
@@ -165,6 +165,7 @@ static ActionSheetController *sharedInstance;
 //                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 NSString* pendingCountMeInFetchRequestId = [[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:YES];
                 [delegate setPendingCountMeInFetchRequestId:pendingCountMeInFetchRequestId];
+                delegate = nil;
             }
             // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventDecidedAccepted - count me out
             else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted)
@@ -172,15 +173,18 @@ static ActionSheetController *sharedInstance;
 //                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 NSString *pendingCountMeInFetchRequestId = [[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO];
                 [delegate setPendingCountMeInFetchRequestId:pendingCountMeInFetchRequestId];
+                delegate = nil;
             }
             else if (currentActionSheetState == ActionSheetStateMorePressEventEnded || currentActionSheetState == ActionSheetStateMorePressEventCancelled) // duplicate event
             {
                 [delegate showModalDuplicateEventRequest];
+                delegate = nil;
 //                [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
             }
             else if (currentActionSheetState == ActionSheetStateEmailParticipant) // email modal
             {
                 [delegate presentMailModalViewControllerRequested];
+                delegate = nil;
 //                [self presentMailModalViewController];
             }
             else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
@@ -195,6 +199,7 @@ static ActionSheetController *sharedInstance;
 //                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
                 NSString *pendingCountMeInFetchRequestId = [[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO];
                 [delegate setPendingCountMeInFetchRequestId:pendingCountMeInFetchRequestId];
+                delegate = nil;
             }
             // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined - suggest new time
             else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined)
@@ -273,6 +278,7 @@ static ActionSheetController *sharedInstance;
                 [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:(detail.currentEventState <= EventStateDecided) doCancel:NO];
                 detail.hasBeenRemoved = YES;
                 [delegate removeEventRequest];
+                delegate = nil;
 //                [self handleHomePress:self];
             }
         }
@@ -280,6 +286,7 @@ static ActionSheetController *sharedInstance;
         {
             detail.hasBeenRemoved = YES;
             [delegate removeEventRequest];
+            delegate = nil;
 //            [self handleHomePress:self];
         }
     }
@@ -359,11 +366,13 @@ static ActionSheetController *sharedInstance;
     NSString *suggestedTimeString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     NSLog(@"suggestedTimeString: %@", suggestedTimeString);
     [[Controller sharedInstance] suggestTimeForEvent:detail withSuggestedTime:suggestedTimeString];
+    delegate = nil;
 }
 
 - (void)datePickerCancelClick:(id)sender
 {
-	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES]; 
+	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES];
+    delegate = nil;
 }
 
 - (void)setNewDateTime:(id)sender

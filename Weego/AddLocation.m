@@ -956,9 +956,9 @@ typedef enum {
 */
 - (void)handleBackPress:(id)sender
 {
-    tapInterceptor.touchesMovedCallback = nil;
-    [mapView removeGestureRecognizer:tapInterceptor];
-    [tapInterceptor release];
+//    tapInterceptor.touchesMovedCallback = nil;
+//    [mapView removeGestureRecognizer:tapInterceptor];
+//    [tapInterceptor release];
     
     [[ViewController sharedInstance] goBack];
 }
@@ -1646,6 +1646,10 @@ typedef enum {
     [self removeDataFetcherMessageListeners];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    
+    tapInterceptor.touchesMovedCallback = nil;
+    [mapView removeGestureRecognizer:tapInterceptor];
+    [tapInterceptor release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
