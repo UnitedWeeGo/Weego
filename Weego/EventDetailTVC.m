@@ -141,7 +141,9 @@ enum eventDetailSections {
 {
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
-    tableHeaderView.delegate = nil;
+    [_refreshHeaderView cancelAnimations];
+    [_refreshHeaderView reset:self.tableView];
+    _refreshHeaderView.delegate = nil;
 }
 
 - (void)showLoadingIndicator

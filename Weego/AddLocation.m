@@ -1598,20 +1598,24 @@ typedef enum {
     [self.view setClipsToBounds:YES];
     
     
-    [self setUpDataFetcherMessageListeners];
+//    [self setUpDataFetcherMessageListeners];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
-    [self reportTimerTick];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+//    [self reportTimerTick];
 }
 
 - (void)reportTimerTick
 { 
     Event *detail = [Model sharedInstance].currentEvent;
-    BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2);
-    BOOL eventIsBeingCreated = detail.isTemporary;
-    BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
-    // grab any users reported locations if in the window
-    if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
+    if (detail) {
+        BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2);
+        BOOL eventIsBeingCreated = detail.isTemporary;
+        BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
+        // grab any users reported locations if in the window
+        if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1622,6 +1626,11 @@ typedef enum {
     
     Model *model = [Model sharedInstance];
     if (feedShowing && model.currentEvent.currentEventState > EventStateNew) [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[model.currentEvent.unreadMessageCount intValue]];
+    
+    [self setUpDataFetcherMessageListeners];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    [self reportTimerTick];
 }
 
 - (void)viewDidUnload
@@ -1633,6 +1642,10 @@ typedef enum {
 {
     [super viewWillDisappear:animated];
     if (!feedShowing) [self doShowSearchAgainButton:NO];
+    
+    [self removeDataFetcherMessageListeners];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

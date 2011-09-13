@@ -147,7 +147,8 @@ typedef enum {
 {
     Controller *controller = [Controller sharedInstance];
     [controller removeEvent];
-	[[ViewController sharedInstance] dismissModal:self];
+    [[ViewController sharedInstance] dismissDuplicateEventModalAndReturnToDashboard:self];
+//	[[ViewController sharedInstance] dismissModal:self];
 }
 
 - (void)handleRightActionPress:(id)sender
@@ -719,9 +720,10 @@ typedef enum {
             _saving = NO;
             [[Model sharedInstance] flushTempItems];
             if (isInDuplicate) {
-                [[ViewController sharedInstance] dismissDuplicateEventModalAfterSuccess:self];
+                [[ViewController sharedInstance] dismissDuplicateEventModalAndReturnToDashboard:self];
             } else {
-                [[ViewController sharedInstance] dismissModal:self];
+                [[ViewController sharedInstance] dismissDuplicateEventModalAndReturnToDashboard:self];
+//                [[ViewController sharedInstance] dismissModal:self];
             }
             break;
         case DataFetchTypeLoginWithFacebookAccessToken:

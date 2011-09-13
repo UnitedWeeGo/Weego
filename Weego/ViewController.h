@@ -47,7 +47,7 @@
 - (void)goBack;
 - (void)goBackToDashboardFromAddLocations;
 - (void)dismissModal:(UIViewController *)modalView;
-- (void)dismissDuplicateEventModalAfterSuccess:(UIViewController *)modalView;
+- (void)dismissDuplicateEventModalAndReturnToDashboard:(UIViewController *)modalView;
 - (void)showHomeBackground;
 - (void)showEventBackground;
 - (void)showFeedBackground;
