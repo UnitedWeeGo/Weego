@@ -299,11 +299,13 @@ typedef enum {
 #pragma mark -
 #pragma mark Navigation
 
+#warning Check this to see if it's needed
 - (void)doGotoMapView 
 {
     [[ViewController sharedInstance] navigateToAddLocationsWithEntryState:AddLocationInitStateFromNewEvent];
 }
 
+#warning Check this to see if it's needed
 - (void)doGotoAddView 
 {
     [[ViewController sharedInstance] navigateToAddParticipants];

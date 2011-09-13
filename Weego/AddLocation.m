@@ -962,6 +962,11 @@ typedef enum {
     
     [[ViewController sharedInstance] goBack];
 }
+- (void)handleMorePress:(id)sender
+{
+    [[ActionSheetController sharedInstance:self] showActionSheetForMorePress];
+    //    [self showActionSheetForMorePress];
+}
 - (void)handleSearchPress:(id)sender
 {
     if (locWidget.iAmShowing) {
@@ -1540,6 +1545,18 @@ typedef enum {
     [self doShowSearchAgainButton:NO];
     [[ViewController sharedInstance] goBack];
     [self beginLocationSearchWithSearchString:anAddress andRemovePreviousResults:YES];
+}
+
+#pragma mark - ActionSheetControllerDelegate
+
+- (void)showModalDuplicateEventRequest
+{
+    [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:[Model sharedInstance].currentEvent];
+}
+
+- (void)removeEventRequest
+{
+    [[ViewController sharedInstance] goBackToDashboardFromAddLocations];
 }
 
 

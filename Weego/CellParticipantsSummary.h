@@ -15,6 +15,7 @@
     UIImageView *icon;
     UILabel *labelNumParticipants;
     UIImageView *expandDisclosure;
+    NSMutableArray *avatarImages;
 }
 
 @property (nonatomic, assign) NSString *numParticipants;

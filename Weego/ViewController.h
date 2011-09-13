@@ -15,6 +15,7 @@
     WeegoAppDelegate *appDelegate;
     UINavigationController *nController;
     NSMutableArray *navigationIndexingCollection;
+    UIViewController *dashboardVC;
 }
 
 @property (nonatomic, readonly) UINavigationController *currentNavController;
@@ -44,6 +45,7 @@
 //- (void)showModalEditEvent:(UIViewController *)inView;
 - (void)navigateToEditEvent;
 - (void)goBack;
+- (void)goBackToDashboardFromAddLocations;
 - (void)dismissModal:(UIViewController *)modalView;
 - (void)dismissDuplicateEventModalAfterSuccess:(UIViewController *)modalView;
 - (void)showHomeBackground;

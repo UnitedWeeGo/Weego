@@ -134,6 +134,7 @@ static NavigationSetter *sharedInstance;
         case NavStateLocationDecided:
             [self addCenterSegmentedControlWithDecidedIcon:target];
             [self addBackButton:target onLightBackground:true];
+            [self addMoreButton:target];
             break;
         case NavStateLocationView:
             [self addCenterSegmentedControlWithSearch:target searchOn:false];

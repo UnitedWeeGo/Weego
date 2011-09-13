@@ -47,11 +47,11 @@ enum eventDetailSections {
 - (void)reorderCells;
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move;
 - (void)presentMailModalViewController;
-- (void)showActionSheetForMorePress;
-- (void)showUserActionSheetForUser:(Participant *)part;
-- (void)pickDateTime;
-- (void)datePickerDoneClick:(id)sender;
-- (void)presentRemoveEventAlert;
+//- (void)showActionSheetForMorePress;
+//- (void)showUserActionSheetForUser:(Participant *)part;
+//- (void)pickDateTime;
+//- (void)datePickerDoneClick:(id)sender;
+//- (void)presentRemoveEventAlert;
 
 @end
 
@@ -77,7 +77,7 @@ enum eventDetailSections {
     otherParticipantsShowing = detail.currentEventState < EventStateDecided;
     
     [self populateCurrentSortedLocations];
-
+    
 	UIView *bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
     bevelStripe.backgroundColor = HEXCOLOR(0xFFFFFFFF);
     [self.tableView addSubview:bevelStripe];
@@ -95,7 +95,7 @@ enum eventDetailSections {
     {
         [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsEnded withTarget:self];
     }
-        
+    
     self.tableView.backgroundColor = [UIColor clearColor];
     
     if (![Model sharedInstance].isInTrial) {
@@ -122,6 +122,8 @@ enum eventDetailSections {
 	self.tableView.tableHeaderView = tableHeaderView;
     [tableHeaderView release];
     
+    hasBeenCancelled = detail.currentEventState == EventStateCancelled;
+    
     [self setUpDataFetcherMessageListeners];
     
     if (![Model sharedInstance].isInTrial) {
@@ -139,6 +141,7 @@ enum eventDetailSections {
 {
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
+    tableHeaderView.delegate = nil;
 }
 
 - (void)showLoadingIndicator
@@ -168,12 +171,12 @@ enum eventDetailSections {
         [oldSortedLocations retain];
     }
     
-//    if (oldSortedLocations != nil) [oldSortedLocations release];
-//    oldSortedLocations = [currentSortedLocations copy];
-//    [currentSortedLocations release];
-//    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
-//    [currentSortedLocations retain];
-//    if (oldSortedLocations == nil || !otherLocationsShowing) oldSortedLocations = [currentSortedLocations copy];
+    //    if (oldSortedLocations != nil) [oldSortedLocations release];
+    //    oldSortedLocations = [currentSortedLocations copy];
+    //    [currentSortedLocations release];
+    //    currentSortedLocations = [detail getLocationsByLocationOrder:detail.currentLocationOrder];
+    //    [currentSortedLocations retain];
+    //    if (oldSortedLocations == nil || !otherLocationsShowing) oldSortedLocations = [currentSortedLocations copy];
 }
 
 #pragma mark - DataFetcherMessageHandler
@@ -245,10 +248,17 @@ enum eventDetailSections {
         case DataFetchTypeRecentParticipants:
             return;
             break;
+        case DataFetchTypeGetReportedLocations:
+            return;
+            break;
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self populateCurrentSortedLocations];
+    if (detail.currentEventState == EventStateCancelled && initialLoadFinished && !hasBeenCancelled) {
+        [self eventReachedDecided];
+        hasBeenCancelled = YES;
+    }
     if ([currentSortedLocations count] < 2 || [currentSortedLocations count] < [oldSortedLocations count] || !initialLoadFinished) {
         [oldSortedLocations release];
         oldSortedLocations = [currentSortedLocations copy];
@@ -263,9 +273,9 @@ enum eventDetailSections {
     }
     if (_reloading) [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     _reloading = NO;
-    if (detail.currentEventState == EventStateCancelled) {
-        [self eventReachedDecided];
-    }
+//    if (detail.currentEventState == EventStateCancelled) {
+//        [self eventReachedDecided];
+//    }
     [self.tableView reloadData];
     if ([self orderDidChange] && otherLocationsShowing) [self reorderCells];
 }
@@ -424,7 +434,8 @@ enum eventDetailSections {
                     [self doGotoAddView];
                 } else {
                     Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row - 1];
-                    [self showUserActionSheetForUser:p];
+                    [[ActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
+//                    [self showUserActionSheetForUser:p];
                     pendingMailParticipant = p;
                 }
             } else {
@@ -432,7 +443,8 @@ enum eventDetailSections {
                     [self doGotoAddView];
                 } else {
                     Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row];
-                    [self showUserActionSheetForUser:p];
+                    [[ActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
+//                    [self showUserActionSheetForUser:p];
                     pendingMailParticipant = p;
                 }
             }
@@ -542,11 +554,6 @@ enum eventDetailSections {
     return cell;
 }
 
-- (BBTableViewCell *)getCellForFriendsLocations
-{
-    
-}
-
 - (BBTableViewCell *)getCellForLocationWithLocation:(Location *)aLocation andIndex:(int)anIndex
 {
     CellLocation *cell = (CellLocation *) [self.tableView dequeueReusableCellWithIdentifier:@"LocationTableCellId"];
@@ -614,12 +621,12 @@ enum eventDetailSections {
 {
     otherParticipantsShowing = !otherParticipantsShowing;
     
-//    if ([[detail getLocationsSortedByVotes] count] > 1) {
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-        [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
-//    }
+    //    if ([[detail getLocationsSortedByVotes] count] > 1) {
+    [self.tableView beginUpdates];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+    [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
+    //    }
 }
 
 
@@ -686,13 +693,13 @@ enum eventDetailSections {
     [oldSortedLocations release];
     oldSortedLocations = [currentSortedLocations copy];
     [self.tableView endUpdates];
-     
+    
 }
 
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move
 {    
     if (iFrom == iTo && !move) return;
-
+    
     NSUInteger fromPath[2] = {0, iFrom};
     NSIndexPath *fromIndexPath = [[NSIndexPath alloc] initWithIndexes:fromPath length:2];
     
@@ -707,11 +714,11 @@ enum eventDetailSections {
         // Figure out a way to tell if number of votes changed. Only animate if number of votes changed from old to current.
         Location *location = [currentSortedLocations objectAtIndex:iTo];
         Boolean iLikedLocation = [[Model sharedInstance] loginUserDidVoteForLocationWithId:location.locationId inEventWithId:location.ownerEventId];
-
+        
         if (delta >= 1 && iLikedLocation) animType = UITableViewRowAnimationBottom;
         [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:animType];
     }
-
+    
     if (iTo < [oldSortedLocations count]) [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:fromIndexPath] withRowAnimation:UITableViewRowAnimationNone]; //(iTo>iFrom) ? UITableViewRowAnimationBottom : UITableViewRowAnimationTop];
     [fromIndexPath release];
     [toIndexPath release];    
@@ -733,7 +740,7 @@ enum eventDetailSections {
 
 - (void)editEventRequested
 {
-//    [[ViewController sharedInstance] showModalEditEvent:self];
+    //    [[ViewController sharedInstance] showModalEditEvent:self];
     [[ViewController sharedInstance] navigateToEditEvent];
 }
 
@@ -759,13 +766,14 @@ enum eventDetailSections {
 
 - (void)handleMorePress:(id)sender
 {
-    [self showActionSheetForMorePress];
+    [[ActionSheetController sharedInstance:self] showActionSheetForMorePress];
+//    [self showActionSheetForMorePress];
 }
 
 
 - (void)handleFeedPress:(id)sender
 {
-//	NSLog(@"handleFeedPress");
+    //	NSLog(@"handleFeedPress");
     [[ViewController sharedInstance] showModalFeed:self];
     
 }
@@ -777,222 +785,222 @@ enum eventDetailSections {
     pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:YES] retain];
 }
 
-#pragma mark - UIActionSheet
-- (void)showActionSheetForMorePress
-{
-    
-    NSString *title;
-    UIActionSheet *userOptions;
-    if (detail.currentEventState == EventStateNew)
-    {
-        currentActionSheetState = ActionSheetStateMorePressEventTrial;
-        title = @"Remove this event from your dashboard";
-        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove event", nil];
-        userOptions.destructiveButtonIndex = 0;
-    }
-    else if (detail.currentEventState < EventStateDecided) 
-    {
-        switch (detail.acceptanceStatus) {
-            case AcceptanceTypePending:
-                currentActionSheetState = ActionSheetStateMorePressEventVotingPending;
-                title = @"Let the group know if you are coming or not, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 3;
-                break;
-            case AcceptanceTypeAccepted:
-                currentActionSheetState = ActionSheetStateMorePressEventVotingAccepted;
-                title = @"Let the group know that you are not going to make it, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 2;
-                break;
-            case AcceptanceTypeDeclined:
-                currentActionSheetState = ActionSheetStateMorePressEventVotingDeclined;
-                title = @"Let the group know you decided to come, or if there is a better time for you.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 2;
-                break;
-            default:
-                break;
-        }
-    }
-    else if (detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted)
-    {
-        switch (detail.acceptanceStatus) {
-            case AcceptanceTypePending:
-                currentActionSheetState = ActionSheetStateMorePressEventDecidedPending;
-                title = @"Let the group know if you are coming or not. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 2;
-                break;
-            case AcceptanceTypeAccepted:
-                currentActionSheetState = ActionSheetStateMorePressEventDecidedAccepted;
-                title = @"Let the group know that you are not going to make it. If you decline the event you will not receive any updates from the group.";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 1;
-                break;
-            case AcceptanceTypeDeclined:
-                currentActionSheetState = ActionSheetStateMorePressEventDecidedDeclined;
-                title = @"Let the group know you decided to come!";
-                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-                userOptions.destructiveButtonIndex = 1;
-                break;
-            default:
-                break;
-        }
-    }
-    else if (detail.currentEventState == EventStateEnded)
-    {
-        currentActionSheetState = ActionSheetStateMorePressEventEnded;
-        title = @"Remove this event from your dashboard, or create a new event with the same group and locations.";
-        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Duplicate event", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
-        userOptions.destructiveButtonIndex = 1;
-    }
-    else if (detail.currentEventState == EventStateCancelled)
-    {
-        currentActionSheetState = ActionSheetStateMorePressEventCancelled;
-        title = @"Remove this event from your dashboard, or create a new event with the same group and locations.";
-        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Duplicate event", @"Remove event", nil];
-        userOptions.destructiveButtonIndex = 1;
-    }
-    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
-    [userOptions release];
-}
-
-- (void)showUserActionSheetForUser:(Participant *)part
-{
-    currentActionSheetState = ActionSheetStateEmailParticipant;
-    NSString *title = [NSString stringWithFormat:@"How would you like to contact %@?", part.fullName];
-    UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send Email", nil];
-    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-//    [userOptions showInView:self.view];
-    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
-    [userOptions release];
-}
-
-#pragma mark - UIActionSheetDelegate methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 0:
-            //ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending, ActionSheetStateMorePressEventDecidedDeclined - count me in
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined)
-            {
-                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
-                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:YES] retain];
-            }
-            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventDecidedAccepted - count me out
-            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted)
-            {
-                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
-                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
-            }
-            else if (currentActionSheetState == ActionSheetStateMorePressEventEnded || currentActionSheetState == ActionSheetStateMorePressEventCancelled) // duplicate event
-            {
-                [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
-            }
-            else if (currentActionSheetState == ActionSheetStateEmailParticipant) // email modal
-            {
-                [self presentMailModalViewController];
-            }
-            else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
-            {
-                [self presentRemoveEventAlert];
-            }
-            break;
-        case 1:
-            // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
-            {
-                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
-                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
-            }
-            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined - suggest new time
-            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined)
-            {
-                [self pickDateTime];
-            }
-            // -- cancel do nothing
-            else if (currentActionSheetState == ActionSheetStateEmailParticipant)
-            {
-                //
-            }
-            // ActionSheetStateMorePressEventDecidedAccepted, ActionSheetStateMorePressEventDecidedDeclined - remove event
-            else if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined || currentActionSheetState >= ActionSheetStateMorePressEventEnded)
-            {
-                [self presentRemoveEventAlert];
-            }
-            break;
-        case 2:
-            // ActionSheetStateMorePressEventVotingPending - suggest new time
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
-            {
-                [self pickDateTime];
-            }
-            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending - remove event
-            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
-            {
-                [self presentRemoveEventAlert];
-            }
-            break;
-        case 3:
-            //ActionSheetStateMorePressEventVotingPending remove event
-            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
-            {
-                [self presentRemoveEventAlert];
-            }
-            break;   
-        default:
-            break;
-    }
-}
-
-- (void)presentRemoveEventAlert
-{
-    NSLog(@"Present remove/cancel event alert");
-    
-    
-    NSString *title = detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial? @"Cancel event?" : @"Remove event?";
-    NSString *standardMessage = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", detail.currentEventState <= EventStateDecided ? @"." : @" and \"Count you out\"."];
-    NSString *ownerMessage = @"Are you sure you want to cancel this event?";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:(detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial ? ownerMessage:standardMessage) delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-    
-    
-    
-    [alert show];
-    [alert release];
-}
-
-#pragma mark -
-#pragma mark UIAlertViewDelegate Methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        if (currentActionSheetState != ActionSheetStateMorePressEventTrial)
-        {
-            if (detail.iOwnEvent && detail.currentEventState < EventStateEnded)
-            {
-                //NSLog(@"count out:YES cancel event:YES");
-                [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:YES doCancel:YES];
-            }
-            else
-            {
-                //NSLog(@"count out:%d cancel event:NO", detail.currentEventState <= EventStateDecided);
-                [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:(detail.currentEventState <= EventStateDecided) doCancel:NO];
-                detail.hasBeenRemoved = YES;
-                [self handleHomePress:self];
-            }
-        }
-        else if (currentActionSheetState == ActionSheetStateMorePressEventTrial)
-        {
-            detail.hasBeenRemoved = YES;
-            [self handleHomePress:self];
-        }
-    }
-}
+//#pragma mark - UIActionSheet
+//- (void)showActionSheetForMorePress
+//{
+//    
+//    NSString *title;
+//    UIActionSheet *userOptions;
+//    if (detail.currentEventState == EventStateNew)
+//    {
+//        currentActionSheetState = ActionSheetStateMorePressEventTrial;
+//        title = @"Remove this event from your dashboard";
+//        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove event", nil];
+//        userOptions.destructiveButtonIndex = 0;
+//    }
+//    else if (detail.currentEventState < EventStateDecided) 
+//    {
+//        switch (detail.acceptanceStatus) {
+//            case AcceptanceTypePending:
+//                currentActionSheetState = ActionSheetStateMorePressEventVotingPending;
+//                title = @"Let the group know if you are coming or not, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 3;
+//                break;
+//            case AcceptanceTypeAccepted:
+//                currentActionSheetState = ActionSheetStateMorePressEventVotingAccepted;
+//                title = @"Let the group know that you are not going to make it, or if there is a better time for you. If you decline the event you will not receive any updates from the group.";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 2;
+//                break;
+//            case AcceptanceTypeDeclined:
+//                currentActionSheetState = ActionSheetStateMorePressEventVotingDeclined;
+//                title = @"Let the group know you decided to come, or if there is a better time for you.";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"Suggest a new time", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 2;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    else if (detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted)
+//    {
+//        switch (detail.acceptanceStatus) {
+//            case AcceptanceTypePending:
+//                currentActionSheetState = ActionSheetStateMorePressEventDecidedPending;
+//                title = @"Let the group know if you are coming or not. If you decline the event you will not receive any updates from the group.";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", @"I'm not coming", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 2;
+//                break;
+//            case AcceptanceTypeAccepted:
+//                currentActionSheetState = ActionSheetStateMorePressEventDecidedAccepted;
+//                title = @"Let the group know that you are not going to make it. If you decline the event you will not receive any updates from the group.";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"I'm not coming", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 1;
+//                break;
+//            case AcceptanceTypeDeclined:
+//                currentActionSheetState = ActionSheetStateMorePressEventDecidedDeclined;
+//                title = @"Let the group know you decided to come!";
+//                userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Count me in!", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//                userOptions.destructiveButtonIndex = 1;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    else if (detail.currentEventState == EventStateEnded)
+//    {
+//        currentActionSheetState = ActionSheetStateMorePressEventEnded;
+//        title = @"Remove this event from your dashboard, or create a new event with the same group and locations.";
+//        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Duplicate event", detail.iOwnEvent && detail.currentEventState < EventStateEnded ? @"Cancel event" : @"Remove event", nil];
+//        userOptions.destructiveButtonIndex = 1;
+//    }
+//    else if (detail.currentEventState == EventStateCancelled)
+//    {
+//        currentActionSheetState = ActionSheetStateMorePressEventCancelled;
+//        title = @"Remove this event from your dashboard, or create a new event with the same group and locations.";
+//        userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Duplicate event", @"Remove event", nil];
+//        userOptions.destructiveButtonIndex = 1;
+//    }
+//    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+//    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
+//    [userOptions release];
+//}
+//
+//- (void)showUserActionSheetForUser:(Participant *)part
+//{
+//    currentActionSheetState = ActionSheetStateEmailParticipant;
+//    NSString *title = [NSString stringWithFormat:@"How would you like to contact %@?", part.fullName];
+//    UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Send Email", nil];
+//    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+//    //    [userOptions showInView:self.view];
+//    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
+//    [userOptions release];
+//}
+//
+//#pragma mark - UIActionSheetDelegate methods
+//
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    switch (buttonIndex) {
+//        case 0:
+//            //ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending, ActionSheetStateMorePressEventDecidedDeclined - count me in
+//            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined)
+//            {
+//                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
+//                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:YES] retain];
+//            }
+//            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventDecidedAccepted - count me out
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted)
+//            {
+//                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
+//                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
+//            }
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventEnded || currentActionSheetState == ActionSheetStateMorePressEventCancelled) // duplicate event
+//            {
+//                [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
+//            }
+//            else if (currentActionSheetState == ActionSheetStateEmailParticipant) // email modal
+//            {
+//                [self presentMailModalViewController];
+//            }
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventTrial) // email modal
+//            {
+//                [self presentRemoveEventAlert];
+//            }
+//            break;
+//        case 1:
+//            // ActionSheetStateMorePressEventVotingPending, ActionSheetStateMorePressEventDecidedPending - im not coming
+//            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
+//            {
+//                if (pendingCountMeInFetchRequestId != nil) [pendingCountMeInFetchRequestId release];
+//                pendingCountMeInFetchRequestId = [[[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:NO] retain];
+//            }
+//            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined - suggest new time
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined)
+//            {
+//                [self pickDateTime];
+//            }
+//            // -- cancel do nothing
+//            else if (currentActionSheetState == ActionSheetStateEmailParticipant)
+//            {
+//                //
+//            }
+//            // ActionSheetStateMorePressEventDecidedAccepted, ActionSheetStateMorePressEventDecidedDeclined - remove event
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventDecidedAccepted || currentActionSheetState == ActionSheetStateMorePressEventDecidedDeclined || currentActionSheetState >= ActionSheetStateMorePressEventEnded)
+//            {
+//                [self presentRemoveEventAlert];
+//            }
+//            break;
+//        case 2:
+//            // ActionSheetStateMorePressEventVotingPending - suggest new time
+//            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
+//            {
+//                [self pickDateTime];
+//            }
+//            // ActionSheetStateMorePressEventVotingAccepted, ActionSheetStateMorePressEventVotingDeclined, ActionSheetStateMorePressEventDecidedPending - remove event
+//            else if (currentActionSheetState == ActionSheetStateMorePressEventVotingAccepted || currentActionSheetState == ActionSheetStateMorePressEventVotingDeclined || currentActionSheetState == ActionSheetStateMorePressEventDecidedPending)
+//            {
+//                [self presentRemoveEventAlert];
+//            }
+//            break;
+//        case 3:
+//            //ActionSheetStateMorePressEventVotingPending remove event
+//            if (currentActionSheetState == ActionSheetStateMorePressEventVotingPending)
+//            {
+//                [self presentRemoveEventAlert];
+//            }
+//            break;   
+//        default:
+//            break;
+//    }
+//}
+//
+//- (void)presentRemoveEventAlert
+//{
+//    NSLog(@"Present remove/cancel event alert");
+//    
+//    
+//    NSString *title = detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial? @"Cancel event?" : @"Remove event?";
+//    NSString *standardMessage = [NSString stringWithFormat:@"Removing this event will remove it from your dashboard", detail.currentEventState <= EventStateDecided ? @"." : @" and \"Count you out\"."];
+//    NSString *ownerMessage = @"Are you sure you want to cancel this event?";
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:(detail.iOwnEvent && detail.currentEventState < EventStateEnded && currentActionSheetState != ActionSheetStateMorePressEventTrial ? ownerMessage:standardMessage) delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+//    
+//    
+//    
+//    [alert show];
+//    [alert release];
+//}
+//
+//#pragma mark -
+//#pragma mark UIAlertViewDelegate Methods
+//
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    if (buttonIndex == 1)
+//    {
+//        if (currentActionSheetState != ActionSheetStateMorePressEventTrial)
+//        {
+//            if (detail.iOwnEvent && detail.currentEventState < EventStateEnded)
+//            {
+//                //NSLog(@"count out:YES cancel event:YES");
+//                [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:YES doCancel:YES];
+//            }
+//            else
+//            {
+//                //NSLog(@"count out:%d cancel event:NO", detail.currentEventState <= EventStateDecided);
+//                [[Controller sharedInstance] setRemovedForEvent:detail doCountOut:(detail.currentEventState <= EventStateDecided) doCancel:NO];
+//                detail.hasBeenRemoved = YES;
+//                [self handleHomePress:self];
+//            }
+//        }
+//        else if (currentActionSheetState == ActionSheetStateMorePressEventTrial)
+//        {
+//            detail.hasBeenRemoved = YES;
+//            [self handleHomePress:self];
+//        }
+//    }
+//}
 
 #pragma mark -
 #pragma mark MFMailComposeViewController Methods
@@ -1062,93 +1070,116 @@ enum eventDetailSections {
 	
 }
 
-#pragma mark -
-#pragma mark Date Picker Methods
+//#pragma mark -
+//#pragma mark Date Picker Methods
+//
+//- (void)pickDateTime
+//{
+//    if (suggestedDate != nil) [suggestedDate release];
+//    suggestedDate = [detail.eventDate copy];
+//    
+//	SEL changeSelector = @selector(setNewDateTime:);
+//	int pickerMode = UIDatePickerModeDateAndTime;
+//    
+//	dateActionSheet = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+//	
+//	UIToolbar *pickerDateToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//	pickerDateToolbar.barStyle = UIBarStyleBlackOpaque;
+//	[pickerDateToolbar sizeToFit];
+//	
+//	NSMutableArray *barItems = [[NSMutableArray alloc] init];
+//    
+//    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(datePickerCancelClick:)];
+//    [barItems addObject:cancelBtn];
+//    [cancelBtn release];
+//    
+//	UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+//	[barItems addObject:flexSpace];
+//    [flexSpace release];
+//	
+//	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(datePickerDoneClick:)];
+//	[barItems addObject:doneBtn];
+//    [doneBtn release];
+//    
+//	
+//	[pickerDateToolbar setItems:barItems animated:YES];
+//    [barItems release];
+//	
+//	[dateActionSheet addSubview:pickerDateToolbar];
+//    [pickerDateToolbar release];
+//	
+//	datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 325, 250)];
+//	datePicker.datePickerMode = pickerMode;
+//	datePicker.hidden = NO;
+//    
+//    int minuteInterval = 5;
+//    NSDate *now = [NSDate date];
+//	datePicker.minuteInterval = minuteInterval;
+//    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval); // Current time rounded up to the nearest minuteInterval
+//    NSDate *minimumDate = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
+//    datePicker.minimumDate = minimumDate;
+//    
+//	datePicker.date = detail.eventDate;
+//    
+//	[datePicker addTarget:self
+//	               action:changeSelector
+//	     forControlEvents:UIControlEventValueChanged];
+//	[dateActionSheet addSubview:datePicker];
+//	[datePicker release];
+//	
+//	[dateActionSheet showInView:self.view];
+//	[dateActionSheet setBounds:CGRectMake(0,0,320, 464)];
+//    [dateActionSheet release];
+//}
+//
+//- (void)datePickerDoneClick:(id)sender
+//{
+//    if ([detail.eventDate compare:suggestedDate] == NSOrderedSame) return; //exit if suggested date is same as current date
+//    
+//	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES];
+//    NSString *suggestedTimeString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+//    NSLog(@"suggestedTimeString: %@", suggestedTimeString);
+//    [[Controller sharedInstance] suggestTimeForEvent:detail withSuggestedTime:suggestedTimeString];
+//}
+//
+//- (void)datePickerCancelClick:(id)sender
+//{
+//	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES]; 
+//}
+//
+//- (void)setNewDateTime:(id)sender
+//{
+//    if (suggestedDate != nil) [suggestedDate release];
+//    suggestedDate = [datePicker.date retain];
+//    
+//}
 
-- (void)pickDateTime
+#pragma mark - ActionSheetControllerDelegate
+
+- (void)showModalDuplicateEventRequest
 {
-    if (suggestedDate != nil) [suggestedDate release];
-    suggestedDate = [detail.eventDate copy];
-    
-	SEL changeSelector = @selector(setNewDateTime:);
-	int pickerMode = UIDatePickerModeDateAndTime;
-    
-	dateActionSheet = [[UIActionSheet alloc] initWithTitle:@"Date" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-	
-	UIToolbar *pickerDateToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-	pickerDateToolbar.barStyle = UIBarStyleBlackOpaque;
-	[pickerDateToolbar sizeToFit];
-	
-	NSMutableArray *barItems = [[NSMutableArray alloc] init];
-    
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(datePickerCancelClick:)];
-    [barItems addObject:cancelBtn];
-    [cancelBtn release];
-    
-	UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-	[barItems addObject:flexSpace];
-    [flexSpace release];
-	
-	UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(datePickerDoneClick:)];
-	[barItems addObject:doneBtn];
-    [doneBtn release];
-    
-	
-	[pickerDateToolbar setItems:barItems animated:YES];
-    [barItems release];
-	
-	[dateActionSheet addSubview:pickerDateToolbar];
-    [pickerDateToolbar release];
-	
-	datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 325, 250)];
-	datePicker.datePickerMode = pickerMode;
-	datePicker.hidden = NO;
-    
-    int minuteInterval = 5;
-    NSDate *now = [NSDate date];
-	datePicker.minuteInterval = minuteInterval;
-    NSTimeInterval nextAllowedMinuteInterval = ceil([now timeIntervalSinceReferenceDate] / (60 * minuteInterval)) * (60 * minuteInterval); // Current time rounded up to the nearest minuteInterval
-    NSDate *minimumDate = [NSDate dateWithTimeIntervalSinceReferenceDate:nextAllowedMinuteInterval];
-    datePicker.minimumDate = minimumDate;
-    
-	datePicker.date = detail.eventDate;
-    
-	[datePicker addTarget:self
-	               action:changeSelector
-	     forControlEvents:UIControlEventValueChanged];
-	[dateActionSheet addSubview:datePicker];
-	[datePicker release];
-	
-	[dateActionSheet showInView:self.view];
-	[dateActionSheet setBounds:CGRectMake(0,0,320, 464)];
-    [dateActionSheet release];
+    [[ViewController sharedInstance] showModalDuplicateEvent:self withEvent:detail];
 }
 
-- (void)datePickerDoneClick:(id)sender
+- (void)removeEventRequest
 {
-    if ([detail.eventDate compare:suggestedDate] == NSOrderedSame) return; //exit if suggested date is same as current date
-    
-	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    NSString *suggestedTimeString = [NSDate stringFromDate:suggestedDate withFormat:@"yyyy-MM-dd HH:mm:ss" timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    NSLog(@"suggestedTimeString: %@", suggestedTimeString);
-    [[Controller sharedInstance] suggestTimeForEvent:detail withSuggestedTime:suggestedTimeString];
+    [self handleHomePress:self];
 }
 
-- (void)datePickerCancelClick:(id)sender
+- (void)setPendingCountMeInFetchRequestId:(NSString *)requestId
 {
-	[dateActionSheet dismissWithClickedButtonIndex:0 animated:YES]; 
+    pendingCountMeInFetchRequestId = requestId;
+    [pendingCountMeInFetchRequestId retain];
 }
 
-- (void)setNewDateTime:(id)sender
+- (void)presentMailModalViewControllerRequested
 {
-    if (suggestedDate != nil) [suggestedDate release];
-    suggestedDate = [datePicker.date retain];
-    
+    [self presentMailModalViewController];
 }
 
 - (void)dealloc {
     NSLog(@"EventDetailTVC dealloc");
-    [suggestedDate release];
+//    [suggestedDate release];
     [pendingCountMeInFetchRequestId release];
     [self removeDataFetcherMessageListeners];
     [[NSNotificationCenter defaultCenter] removeObserver:self]; // removes all observers for object
