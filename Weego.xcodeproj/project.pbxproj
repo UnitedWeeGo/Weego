@@ -1437,7 +1437,7 @@
 			name = "Table Headers";
 			sourceTree = "<group>";
 		};
-		0133D209141E98CD00713AC9 /* Table View Controllers */ = {
+		0133D209141E98CD00713AC9 /* Table View Controllers & Base Views */ = {
 			isa = PBXGroup;
 			children = (
 				0176151213BE793C00324EF9 /* EditEventTVC.h */,
@@ -1458,8 +1458,16 @@
 				0176151F13BE793C00324EF9 /* LoginRegisterTVC.m */,
 				0176150E13BE793C00324EF9 /* LoginTVC.h */,
 				0176150F13BE793C00324EF9 /* LoginTVC.m */,
+				017614EE13BE793C00324EF9 /* BaseFormInputView.h */,
+				017614EF13BE793C00324EF9 /* BaseFormInputView.m */,
+				0176150613BE793C00324EF9 /* LoadView.h */,
+				0176150713BE793C00324EF9 /* LoadView.m */,
+				0176151013BE793C00324EF9 /* EntryPoint.h */,
+				0176151113BE793C00324EF9 /* EntryPoint.m */,
+				0176151613BE793C00324EF9 /* AddFriends.h */,
+				0176151713BE793C00324EF9 /* AddFriends.m */,
 			);
-			name = "Table View Controllers";
+			name = "Table View Controllers & Base Views";
 			sourceTree = "<group>";
 		};
 		0133D20A141E9BB100713AC9 /* Depricated */ = {
@@ -1495,6 +1503,23 @@
 				A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */,
 			);
 			name = "Search Bar";
+			sourceTree = "<group>";
+		};
+		0133D21E141FD21100713AC9 /* Custom UI Elements */ = {
+			isa = PBXGroup;
+			children = (
+				017614E013BE793C00324EF9 /* BBTextField.h */,
+				017614E113BE793C00324EF9 /* BBTextField.m */,
+				017614E213BE793C00324EF9 /* FormTextField.h */,
+				017614E313BE793C00324EF9 /* FormTextField.m */,
+				017614E413BE793C00324EF9 /* BBTextView.h */,
+				017614E513BE793C00324EF9 /* BBTextView.m */,
+				017614E613BE793C00324EF9 /* FormTextView.h */,
+				017614E713BE793C00324EF9 /* FormTextView.m */,
+				0176151A13BE793C00324EF9 /* ButtonContact.h */,
+				0176151B13BE793C00324EF9 /* ButtonContact.m */,
+			);
+			name = "Custom UI Elements";
 			sourceTree = "<group>";
 		};
 		013CF51613DA29560086B5B2 /* nsdate-helper */ = {
@@ -2195,28 +2220,9 @@
 		0176140713BE777200324EF9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0133D209141E98CD00713AC9 /* Table View Controllers & Base Views */,
 				0133D20C141E9D3800713AC9 /* Search Bar */,
 				0133D20B141E9CC900713AC9 /* Help, Terms, Privacy */,
-				0133D20A141E9BB100713AC9 /* Depricated */,
-				0133D209141E98CD00713AC9 /* Table View Controllers */,
-				017614E013BE793C00324EF9 /* BBTextField.h */,
-				017614E113BE793C00324EF9 /* BBTextField.m */,
-				017614E213BE793C00324EF9 /* FormTextField.h */,
-				017614E313BE793C00324EF9 /* FormTextField.m */,
-				017614E413BE793C00324EF9 /* BBTextView.h */,
-				017614E513BE793C00324EF9 /* BBTextView.m */,
-				017614E613BE793C00324EF9 /* FormTextView.h */,
-				017614E713BE793C00324EF9 /* FormTextView.m */,
-				017614EE13BE793C00324EF9 /* BaseFormInputView.h */,
-				017614EF13BE793C00324EF9 /* BaseFormInputView.m */,
-				0176150613BE793C00324EF9 /* LoadView.h */,
-				0176150713BE793C00324EF9 /* LoadView.m */,
-				0176151013BE793C00324EF9 /* EntryPoint.h */,
-				0176151113BE793C00324EF9 /* EntryPoint.m */,
-				0176151613BE793C00324EF9 /* AddFriends.h */,
-				0176151713BE793C00324EF9 /* AddFriends.m */,
-				0176151A13BE793C00324EF9 /* ButtonContact.h */,
-				0176151B13BE793C00324EF9 /* ButtonContact.m */,
 				0133D208141E981300713AC9 /* Table Headers */,
 				0133D206141E974F00713AC9 /* Custom Table Cells */,
 				A901BFE113E76211002D68CA /* Deals */,
@@ -2225,6 +2231,8 @@
 				0176142513BE781500324EF9 /* Navigation Setter */,
 				0176141513BE77E300324EF9 /* Feed */,
 				0176140813BE778000324EF9 /* Help/About Components */,
+				0133D21E141FD21100713AC9 /* Custom UI Elements */,
+				0133D20A141E9BB100713AC9 /* Depricated */,
 			);
 			name = View;
 			sourceTree = "<group>";

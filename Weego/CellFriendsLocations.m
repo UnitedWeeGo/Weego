@@ -8,6 +8,7 @@
 
 #import "CellFriendsLocations.h"
 #import "ReportedLocation.h"
+#import "ReportedLocationAnnotationView.h"
 
 @interface CellFriendsLocations (Private)
 
@@ -17,6 +18,7 @@
 - (void)zoomToFitMapAnnotations;
 - (void)setUpDataFetcherMessageListeners;
 - (void)removeDataFetcherMessageListeners;
+- (void)addWinningLocation;
 
 @end
 
@@ -42,7 +44,7 @@
     CGRect mapFrame = CGRectMake(0, 
 							0, 
 							300,
-							CellFriendsLocationsHeight-2);
+							CellFriendsLocationsHeight-1);
     
     mapView = [[[MKMapView alloc] initWithFrame:mapFrame] autorelease];
     mapView.userInteractionEnabled = NO;
@@ -57,6 +59,7 @@
 							CellFriendsLocationsHeight);
     
     [self setUpDataFetcherMessageListeners];
+    [self addWinningLocation];
 }
 
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification
@@ -66,7 +69,7 @@
     
     switch (fetchType) {
         case DataFetchTypeGetReportedLocations:
-            [self addOrUpdateUserLocationAnnotations];
+            if ([Model sharedInstance].currentViewState == ViewStateDetails) [self addOrUpdateUserLocationAnnotations];
             break;
         default:
             break;
@@ -89,7 +92,7 @@
         ReportedLocation *loc = (ReportedLocation *)[[detail getReportedLocations] objectAtIndex:i];
         Participant *p = [model getParticipantWithEmail:loc.userId fromEventWithId:detail.eventId];
         
-        //if ([p.email isEqualToString:model.userEmail]) continue; // skip the user if it is you
+        if ([p.email isEqualToString:model.userEmail]) continue; // skip the user if it is you
         
         ReportedLocationAnnotation *addedAlready = [self getReportedLocationAnnotationForUser:p];
         
@@ -116,9 +119,9 @@
         if (MKMapRectIsNull(zoomRect)) {
             
             double z_width = 3000;
-            double z_height = 5000;
+            double z_height = 1440;
             
-            MKMapRect r = MKMapRectMake(annotationPoint.x - z_width * 0.5, annotationPoint.y - z_height * 0.5, z_width, z_height);
+            MKMapRect r = MKMapRectMake(annotationPoint.x - z_width, annotationPoint.y - z_height, z_width, z_height);
             
             zoomRect = r;
             
@@ -126,6 +129,17 @@
             zoomRect = MKMapRectUnion(zoomRect, pointRect);
         }
     }
+    
+    float origWidth = zoomRect.size.width;
+    float paddedWidth = zoomRect.size.width *= 1.5;
+    float origHeight = zoomRect.size.height;
+    float paddedHeight = zoomRect.size.height *= 1.5;
+        
+    zoomRect.origin.x += (origWidth - paddedWidth) / 2;
+    zoomRect.origin.y += (origHeight - paddedHeight) / 2;
+    
+    zoomRect.size.width = paddedWidth;
+    zoomRect.size.height = paddedHeight;
     
     [mapView setVisibleMapRect:zoomRect animated:NO];
 }
@@ -144,12 +158,18 @@
 
 - (void)refreshUserLocations
 { 
+    [[Controller sharedInstance] fetchReportedLocations];
+}
+
+- (void)addWinningLocation
+{
     Event *detail = [Model sharedInstance].currentEvent;
-    BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  (-FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2);
-    BOOL eventIsBeingCreated = detail.isTemporary;
-    BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
-    // grab any users reported locations if in the window
-    if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
+    Location *loc = (Location *)[[detail getLocations] objectAtIndex:0];
+    LocAnnoSelectedState state = LocAnnoSelectedStateDefault;
+    LocAnnoStateType type = LocAnnoStateTypeDecided;
+    LocAnnotation *mark = [[[LocAnnotation alloc] initWithLocation:loc withStateType:type andSelectedState:state] autorelease];
+    [mapView addAnnotation:mark];
+    [self zoomToFitMapAnnotations];
 }
 
 #pragma mark - MKMapViewDelegate methods
@@ -158,7 +178,48 @@
 {
     [self zoomToFitMapAnnotations];
 }
-
+- (MKAnnotationView *) mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>) annotation {
+	
+	if ([annotation isKindOfClass:[MKUserLocation class]]) 
+    {
+		return nil;
+	}
+    NSString* annotationIdentifier = nil;
+	if ([annotation isKindOfClass:[LocAnnotation class]])
+    {
+        LocAnnotation *placeMark = (LocAnnotation *)annotation;
+        // try to dequeue an existing pin view first
+        annotationIdentifier = @"LocAnnotationIdentifier";
+        MKAnnotationView* pinView = (MKAnnotationView *) [theMapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        if (!pinView)
+        {
+            // if an existing pin view was not available, create one
+            pinView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier] autorelease];            
+            pinView.canShowCallout = NO;
+		}
+        pinView.enabled = placeMark.isEnabled;
+        pinView.image = [placeMark imageForCurrentState];
+        pinView.centerOffset = [placeMark offsetForCurrentState];
+        return pinView;
+    } 
+    else if ([annotation isKindOfClass:[ReportedLocationAnnotation class]])
+    {
+        ReportedLocationAnnotation *placeMark = (ReportedLocationAnnotation *)annotation;
+        annotationIdentifier = @"ReportedLocationAnnotationIdentifier";
+        ReportedLocationAnnotationView *pinView = (ReportedLocationAnnotationView *) [theMapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        if (!pinView)
+        {
+            // if an existing pin view was not available, create one
+            pinView = [[[ReportedLocationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier] autorelease];
+            pinView.canShowCallout = NO;
+            pinView.centerOffset = CGPointMake(7,-20);
+		}
+        //        [pinView setView:[placeMark imageViewForCurrentState:ReportedLocationAnnoSelectedStateDefault]];
+        [pinView setCurrentState:ReportedLocationAnnoSelectedStateDefault andParticipantImageURL:placeMark.participant.avatarURL];
+        return pinView;
+    }
+	return nil;
+}
 
 #pragma mark - DataFetcherMessageHandler
 

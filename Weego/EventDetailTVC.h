@@ -11,6 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "SubViewLocation.h"
 #import "ActionSheetController.h"
+#import "CellFriendsLocations.h"
 
 //typedef enum {
 //	ActionSheetStateMorePressEventVotingPending = 0,
@@ -48,6 +49,7 @@
 //    BOOL alertViewShowing;
     NSArray *originalIVotedFor;
     BOOL hasBeenCancelled;
+    CellFriendsLocations *friendsLocationsCell;
 }
 
 @end

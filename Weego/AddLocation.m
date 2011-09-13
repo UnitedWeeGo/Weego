@@ -761,10 +761,10 @@ typedef enum {
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
                         
-            double width = 3000;
-            double height = 5000;
+            double z_width = 3000;
+            double z_height = 5000;
             
-            MKMapRect r = MKMapRectMake(annotationPoint.x - width * 0.5, annotationPoint.y - height * 0.5, width, height);
+            MKMapRect r = MKMapRectMake(annotationPoint.x - z_width, annotationPoint.y - (z_height  * 0.5), z_width, z_height);
             
             zoomRect = r;
             

@@ -113,27 +113,26 @@ static LocationReporter *sharedInstance;
     for ( Event *e in allEvents )
     {
         BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
-        //NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
-        
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
-        //NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
-        
-        //NSLog(@"topLocationId: %@", e.topLocationId);
         
         Location *loc = [e getLocationByLocationId:e.topLocationId];
         BOOL hasADecidedLocation = (loc != nil);
-        //NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
-        
         BOOL eventIsBeingCreated = e.isTemporary;
-        //NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
-        
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
-        //NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
-        
         BOOL eventIsCancelled = e.currentEventState == EventStateCancelled;
-        //NSLog(@"eventIsCancelled: %d", eventIsCancelled);
         
-        //NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
+        /*
+        NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
+        NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
+        NSLog(@"topLocationId: %@", e.topLocationId);
+        NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
+        NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
+        NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
+        NSLog(@"eventIsCancelled: %d", eventIsCancelled);
+        NSLog(@"locationTrackingUserEnabled: %d", locationTrackingUserEnabled);
+        NSLog(@"checkinUserEnabled: %d", checkinUserEnabled);
+        NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
+         */
         
         if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
         {
@@ -146,7 +145,6 @@ static LocationReporter *sharedInstance;
             [self reportUserLocation:lastLocation andEvent:e];
             locationChangedSignificantly = NO;
         }
-        
     }
     
     // start and stop location services

@@ -8,13 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "336968936.834911"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647324.967468"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "565"
-         endingLineNumber = "565"
-         landmarkName = "-initAndGetSimpleGeoCategoriesWithDelegate:"
+         startingLineNumber = "572"
+         endingLineNumber = "572"
+         landmarkName = "-eventWithinLocationReportingRange"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -22,13 +22,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "334545496.450607"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647324.967468"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
-         landmarkName = "-doGoToSearchAndDetailState:"
+         startingLineNumber = "596"
+         endingLineNumber = "596"
+         landmarkName = "-getCellForUserReportedLocations"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -36,13 +36,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "337495869.190742"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647324.967468"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "893"
-         endingLineNumber = "893"
-         landmarkName = "-editNameSubmittedWithNewName:"
+         startingLineNumber = "509"
+         endingLineNumber = "509"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -50,13 +50,69 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/DataFetcher.m"
-         timestampString = "337495869.190742"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647324.967468"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "595"
-         endingLineNumber = "595"
-         landmarkName = "-initAndSearchSimpleGeoWithCategory:andEnvelope:delegate:"
+         startingLineNumber = "455"
+         endingLineNumber = "455"
+         landmarkName = "-tableView:heightForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/CellFriendsLocations.m"
+         timestampString = "337637721.611093"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "97"
+         endingLineNumber = "97"
+         landmarkName = "-addOrUpdateUserLocationAnnotations"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/CellFriendsLocations.m"
+         timestampString = "337645775.063165"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
+         landmarkName = "-refreshUserLocations"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647547.2134"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "415"
+         endingLineNumber = "415"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337647324.967468"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "671"
+         endingLineNumber = "671"
+         landmarkName = "-mapButtonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
