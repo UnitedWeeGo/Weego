@@ -112,7 +112,10 @@ typedef enum {
     int searchOffState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOffTab):(NavStateLocationAddSearchOff);
     int searchOnState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOnTab):(NavStateLocationAddSearchOn);
     
-    if ( [Model sharedInstance].currentEvent.currentEventState >= EventStateDecided && initState != AddLocationInitStateFromNewEvent ) searchOffState = NavStateLocationDecided;
+    if ( [Model sharedInstance].currentEvent.currentEventState >= EventStateDecided && initState != AddLocationInitStateFromNewEvent ) {
+        searchOffState = NavStateLocationDecided;
+        decidedShowing = YES;
+    }
     
     switch (state) {
         case SearchAndDetailStateNone:
@@ -1613,6 +1616,34 @@ typedef enum {
         BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
         // grab any users reported locations if in the window
         if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
+        
+        
+        if (!decidedShowing && detail.currentEventState >= EventStateDecided) {
+            Event *detail = [Model sharedInstance].currentEvent;
+            SearchAndDetailState state = (self.selectedLocationKey) ? SearchAndDetailStateDetail : SearchAndDetailStateNone; 
+            NSLog(@"------------ SELECTED LOCATION ID = %@", self.selectedLocationKey);
+            [self doGoToSearchAndDetailState:state];
+            for (id <MKAnnotation> annotation in mapView.annotations) {
+                MKAnnotationView *view = [mapView viewForAnnotation:annotation];
+                if ([view.annotation isKindOfClass:[LocAnnotation class]]) {
+                    LocAnnotation *placeMark = view.annotation;
+                    if (placeMark.isSavedLocation) {
+                        if (!placeMark.isEnabled) [placeMark setSelectedState:LocAnnoSelectedStateDefault];
+                        Location *loc = [detail getLocationWithUUID:placeMark.uuid];
+                        if ([detail.topLocationId isEqualToString:loc.locationId]) {
+                            [placeMark setStateType:LocAnnoStateTypeDecided];
+                        }
+                        view.image = [placeMark imageForCurrentState];
+                        view.enabled = YES;
+                        if ([self.selectedLocationKey isEqualToString:placeMark.uuid]) {
+                            [placeMark setSelectedState:LocAnnoSelectedStateSelected];
+                            [locWidget updateInfoViewWithLocationAnnotation:placeMark];
+                        }
+                    }
+                }
+            }
+            [self removeAnnotations:mapView includingSaved:false];
+        }
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
     }

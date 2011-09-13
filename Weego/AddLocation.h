@@ -84,6 +84,8 @@ typedef enum {
 //    NSArray *allContactsWithAddress;
     
     BOOL alertViewShowing;
+    
+    BOOL decidedShowing;
 }
 
 @property (nonatomic, copy) NSString *selectedSearchLocationKey;
