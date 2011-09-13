@@ -178,6 +178,7 @@
     NSLog(@"CellFriendsLocations dealloc");
     [self removeDataFetcherMessageListeners];
     mapView = nil;
+    [super dealloc];
 }
 
 @end
