@@ -10,6 +10,7 @@
 		010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 010A6E5013CD74D800D8F191 /* Entitlements.plist */; };
 		01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */; };
 		0131719813CABDF00068B383 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719713CABDF00068B383 /* libz.dylib */; };
+		0133D20F141EA20000713AC9 /* CellFriendsLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */; };
 		013CF51A13DA296F0086B5B2 /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 013CF51813DA296F0086B5B2 /* NSDate+Helper.m */; };
 		013CF51B13DA296F0086B5B2 /* README.textile in Resources */ = {isa = PBXBuildFile; fileRef = 013CF51913DA296F0086B5B2 /* README.textile */; };
 		016D26231407174700A41C80 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 016D261F1407174700A41C80 /* Icon-72.png */; };
@@ -604,6 +605,8 @@
 		01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGeoDataParser.h; sourceTree = "<group>"; };
 		01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleGeoDataParser.m; sourceTree = "<group>"; };
 		0131719713CABDF00068B383 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0133D20D141EA1FF00713AC9 /* CellFriendsLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellFriendsLocations.h; sourceTree = "<group>"; };
+		0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellFriendsLocations.m; sourceTree = "<group>"; };
 		013CF51713DA296F0086B5B2 /* NSDate+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helper.h"; sourceTree = "<group>"; };
 		013CF51813DA296F0086B5B2 /* NSDate+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper.m"; sourceTree = "<group>"; };
 		013CF51913DA296F0086B5B2 /* README.textile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.textile; sourceTree = "<group>"; };
@@ -1387,6 +1390,8 @@
 				0176152B13BE793C00324EF9 /* CellPrefsControls.m */,
 				0176152C13BE793C00324EF9 /* CellPrefsLoginParticipant.h */,
 				0176152D13BE793C00324EF9 /* CellPrefsLoginParticipant.m */,
+				0133D20D141EA1FF00713AC9 /* CellFriendsLocations.h */,
+				0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -3041,6 +3046,7 @@
 				A9FBA29513E8C79200FAC5CA /* Terms.m in Sources */,
 				A9FBA29813E8C7B400FAC5CA /* Privacy.m in Sources */,
 				A93A584D13EB1CA700EF1C44 /* AddressBookLocationsTVC.m in Sources */,
+				0133D20F141EA20000713AC9 /* CellFriendsLocations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
