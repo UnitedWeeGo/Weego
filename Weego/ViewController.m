@@ -453,12 +453,12 @@ static ViewController *sharedInstance;
     
 //    [appDelegate showDeal];
 }
-
+/*
 - (void)hideDeal
 {
     [appDelegate hideDeal];
 }
-
+*/
 - (void)showFacebookPopup
 {
     [appDelegate showFacebookPopup];

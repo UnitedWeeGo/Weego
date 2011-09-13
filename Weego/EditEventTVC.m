@@ -296,21 +296,6 @@ typedef enum {
     targetCell.fieldText = [self.anotherDate getWeegoFormattedDateString];
 }
 
-#pragma mark -
-#pragma mark Navigation
-
-#warning Check this to see if it's needed
-- (void)doGotoMapView 
-{
-    [[ViewController sharedInstance] navigateToAddLocationsWithEntryState:AddLocationInitStateFromNewEvent];
-}
-
-#warning Check this to see if it's needed
-- (void)doGotoAddView 
-{
-    [[ViewController sharedInstance] navigateToAddParticipants];
-}
-
 #pragma mark - DataFetcherMessageHandler
 
 - (void)setUpDataFetcherMessageListeners

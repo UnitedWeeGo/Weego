@@ -53,7 +53,7 @@
 - (void)showFeedBackground;
 - (void)showDropShadow:(int)amount;
 - (void)showDeal:(NSString *)SGID;
-- (void)hideDeal;
+//- (void)hideDeal;
 - (void)showFacebookPopup;
 - (void)hideFacebookPopupWithAnimation:(BOOL)animated;
 - (void)authenticateWithFacebook;

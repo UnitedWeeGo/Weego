@@ -57,9 +57,6 @@
 							CellFriendsLocationsHeight);
     
     [self setUpDataFetcherMessageListeners];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
-    [self reportTimerTick];
 }
 
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification

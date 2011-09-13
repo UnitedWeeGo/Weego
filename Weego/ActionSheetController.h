@@ -34,7 +34,7 @@ typedef enum {
 @end
 
 @interface ActionSheetController : NSObject <UIActionSheetDelegate> {
-    NSString *pendingCountMeInFetchRequestId;
+    //NSString *pendingCountMeInFetchRequestId;
     ActionSheetState currentActionSheetState;
     UIActionSheet *dateActionSheet;
     UIDatePicker *datePicker;
