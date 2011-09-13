@@ -525,6 +525,7 @@
     [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
+    [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }
 
 - (void)toggleShowHideFutureEvents
@@ -537,6 +538,7 @@
     [self.tableView beginUpdates];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
+    [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }
 
 - (void)showEventDetailWithId:(NSString *)eventId

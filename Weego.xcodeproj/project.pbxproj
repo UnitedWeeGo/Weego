@@ -591,6 +591,7 @@
 		A94B966413D89416007BC057 /* searchBarField_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B965E13D89416007BC057 /* searchBarField_bg@2x.png */; };
 		A94B966713D89DDC007BC057 /* searchBar_bookmark_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B966513D89DDC007BC057 /* searchBar_bookmark_icon.png */; };
 		A94B966813D89DDC007BC057 /* searchBar_bookmark_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A94B966613D89DDC007BC057 /* searchBar_bookmark_icon@2x.png */; };
+		A95B3EF5141EBAB4001D91E0 /* ActionSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = A95B3EF4141EBAB4001D91E0 /* ActionSheetController.m */; };
 		A979A7AB13D10757008A7002 /* AddressBookTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A979A7AA13D10757008A7002 /* AddressBookTVC.m */; };
 		A9E8813F13D79EF200ABB78D /* SubViewSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E8813E13D79EF100ABB78D /* SubViewSearchBar.m */; };
 		A9FBA28E13E8C6A400FAC5CA /* TermsDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */; };
@@ -1310,6 +1311,8 @@
 		A94B965E13D89416007BC057 /* searchBarField_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchBarField_bg@2x.png"; sourceTree = "<group>"; };
 		A94B966513D89DDC007BC057 /* searchBar_bookmark_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchBar_bookmark_icon.png; sourceTree = "<group>"; };
 		A94B966613D89DDC007BC057 /* searchBar_bookmark_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchBar_bookmark_icon@2x.png"; sourceTree = "<group>"; };
+		A95B3EF3141EBAB4001D91E0 /* ActionSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetController.h; sourceTree = "<group>"; };
+		A95B3EF4141EBAB4001D91E0 /* ActionSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetController.m; sourceTree = "<group>"; };
 		A979A7A913D10757008A7002 /* AddressBookTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressBookTVC.h; sourceTree = "<group>"; };
 		A979A7AA13D10757008A7002 /* AddressBookTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressBookTVC.m; sourceTree = "<group>"; };
 		A9E8813D13D79EF100ABB78D /* SubViewSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewSearchBar.h; sourceTree = "<group>"; };
@@ -2130,6 +2133,8 @@
 				017613E213BE770B00324EF9 /* Controller.m */,
 				017613E313BE770B00324EF9 /* ViewController.h */,
 				017613E413BE770B00324EF9 /* ViewController.m */,
+				A95B3EF3141EBAB4001D91E0 /* ActionSheetController.h */,
+				A95B3EF4141EBAB4001D91E0 /* ActionSheetController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3041,6 +3046,7 @@
 				A9FBA29513E8C79200FAC5CA /* Terms.m in Sources */,
 				A9FBA29813E8C7B400FAC5CA /* Privacy.m in Sources */,
 				A93A584D13EB1CA700EF1C44 /* AddressBookLocationsTVC.m in Sources */,
+				A95B3EF5141EBAB4001D91E0 /* ActionSheetController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

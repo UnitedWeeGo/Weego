@@ -17,6 +17,7 @@
 #import "WildcardGestureRecognizer.h"
 #import "SubViewSearchBar.h"
 #import "AddressBookLocationsTVC.h"
+#import "ActionSheetController.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -37,7 +38,7 @@ typedef enum {
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource, UIAlertViewDelegate> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource, UIAlertViewDelegate, ActionSheetControllerDelegate> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
     //UISearchBar *searchBar;

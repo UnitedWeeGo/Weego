@@ -10,6 +10,12 @@
 #import "UIImageViewAsyncLoader.h"
 #import "Participant.h"
 
+@interface CellParticipantsSummary (Private)
+
+- (void)clearParticipants;
+
+@end
+
 @implementation CellParticipantsSummary
 
 @synthesize numParticipants;
@@ -47,12 +53,15 @@
 //    NSString *countCopy = [NSString stringWithFormat:@"%d", value];
     [labelNumParticipants setText:value];
     [labelNumParticipants sizeToFit];
+//    [self clearParticipants];
 }
 
 - (void)setParticipants:(NSArray *)participants
 {
     [labelNumParticipants setText:[[[NSString alloc] initWithFormat:@"%i", [participants count]] autorelease]];
     [labelNumParticipants sizeToFit];
+//    [self clearParticipants];
+//    avatarImages = [[NSMutableArray alloc] init];
     CGFloat left = 78;
     int i = 0;
     for (Participant *p in participants) {
@@ -62,11 +71,29 @@
             NSURL *url = [NSURL URLWithString:p.avatarURL];
             [avatarImage asyncLoadWithNSURL:url useCached:YES andBaseImage:BaseImageTypeAvatar useBorder:YES];
             [self addSubview:avatarImage];
+//            [avatarImages addObject:avatarImage];
             [avatarImage release];
             i++;
             if (i == 5) break;
         }
     }
 }
+
+- (void)clearParticipants
+{
+    if (avatarImages) {
+        for (UIImageViewAsyncLoader *avatarImage in avatarImages) {
+            [avatarImage removeFromSuperview];
+        }
+        [avatarImages release];
+    }
+}
+
+- (void)dealloc
+{
+//    [self clearParticipants];
+    [super dealloc];
+}
+
 
 @end

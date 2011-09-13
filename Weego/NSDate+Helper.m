@@ -311,7 +311,7 @@ static NSDateFormatter *displayFormatter;
     NSString *prefix = [[[NSString alloc] initWithString:@""] autorelease];
     float dayDiff = [self timeIntervalSinceDate:todayMidnight] / (60*60*24);
     //NSLog(@"dayDiff = %0.2f", dayDiff);
-    if (dayDiff >= -1 && dayDiff < 8) {
+    if (dayDiff >= -1 && dayDiff < 7) {
         if (dayDiff < 0) {
             [formatter setDateFormat:@"h:mm a"];
             prefix = @"Yesterday ";
@@ -321,11 +321,11 @@ static NSDateFormatter *displayFormatter;
         } else if (dayDiff < 2) {
             [formatter setDateFormat:@"h:mm a"];
             prefix = @"Tomorrow ";
-        } else if (dayDiff < 8) {
+        } else if (dayDiff < 7) {
             [formatter setDateFormat:@"EEEE h:mm a"];
         }
     } else {
-        [formatter setDateFormat:@"MMMM d h:mm a"];
+        [formatter setDateFormat:@"EEEE MMM d h:mm a"];
     }
     
 	NSString *dateString = [formatter stringFromDate:self];

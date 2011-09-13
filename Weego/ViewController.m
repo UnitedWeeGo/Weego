@@ -25,6 +25,7 @@
 #import "Terms.h"
 #import "Privacy.h"
 #import "DealsView.h"
+#import "ActionSheetController.h"
 
 @interface ViewController(Private)
 - (void)clearLoginKeyChainData;
@@ -94,6 +95,7 @@ static ViewController *sharedInstance;
     [Model sharedInstance].currentAppState = AppStateEntry;
     [Model sharedInstance].currentViewState = ViewStateEntry;
     [self showHomeBackground];
+    dashboardVC = nil;
     EntryPoint *entryView = [[EntryPoint alloc] init];
     NSArray *newviews = [[NSArray alloc] initWithObjects:entryView, nil];
     nController = appDelegate.navigationController;
@@ -130,6 +132,7 @@ static ViewController *sharedInstance;
     [[Model sharedInstance] setCurrentEventById:nil];
     [self showHomeBackground];
     DashboardTVC *dashboardView = [[DashboardTVC alloc] init];
+    if (!dashboardVC) dashboardVC = dashboardView;
     nController = appDelegate.navigationController;
     [nController pushViewController:dashboardView animated:NO];
     [dashboardView release];
@@ -171,6 +174,7 @@ static ViewController *sharedInstance;
     [[Model sharedInstance] clearData];
     [self clearLoginKeyChainData];
     [appDelegate logoutFromFacebook];
+    dashboardVC = nil;
     EntryPoint *entryView = [[EntryPoint alloc] init];
     NSArray *newviews = [[NSArray alloc] initWithObjects:entryView, nil];
     nController = appDelegate.navigationController;
@@ -193,6 +197,7 @@ static ViewController *sharedInstance;
     [[Model sharedInstance] setCurrentEventById:nil];
     [self showHomeBackground];
     DashboardTVC *dashboardController = [[DashboardTVC alloc] init];
+    if (!dashboardVC) dashboardVC = dashboardController;
     nController = appDelegate.navigationController;
 	[nController pushViewController:dashboardController animated:animated];
 	[dashboardController release];
@@ -388,6 +393,13 @@ static ViewController *sharedInstance;
     [self removeCurrentAndReportPreviousView];
 }
 
+- (void)goBackToDashboardFromAddLocations
+{
+    nController = appDelegate.navigationController;
+    [nController popToViewController:dashboardVC animated:YES];
+    [self removeCurrentAndReportPreviousView];
+}
+
 - (void)dismissModal:(UIViewController *)modalView
 {
     nController = appDelegate.navigationController;
@@ -398,7 +410,7 @@ static ViewController *sharedInstance;
 - (void)dismissDuplicateEventModalAfterSuccess:(UIViewController *)modalView
 {
     nController = appDelegate.navigationController;
-    [nController popViewControllerAnimated:NO];
+    [nController popToViewController:dashboardVC animated:NO];
     [modalView dismissModalViewControllerAnimated:YES];
     [self removeCurrentAndReportPreviousView];
 }

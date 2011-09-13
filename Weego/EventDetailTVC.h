@@ -10,24 +10,25 @@
 #import "HeaderViewDetailsEvent.h"
 #import "EGORefreshTableHeaderView.h"
 #import "SubViewLocation.h"
+#import "ActionSheetController.h"
 
-typedef enum {
-	ActionSheetStateMorePressEventVotingPending = 0,
-    ActionSheetStateMorePressEventVotingAccepted,
-    ActionSheetStateMorePressEventVotingDeclined,
-    ActionSheetStateMorePressEventDecidedPending,
-    ActionSheetStateMorePressEventDecidedAccepted,
-    ActionSheetStateMorePressEventDecidedDeclined,
-    ActionSheetStateMorePressEventTrial,
-    ActionSheetStateMorePressEventEnded,
-    ActionSheetStateMorePressEventCancelled,
-	ActionSheetStateEmailParticipant
-} ActionSheetState;
+//typedef enum {
+//	ActionSheetStateMorePressEventVotingPending = 0,
+//    ActionSheetStateMorePressEventVotingAccepted,
+//    ActionSheetStateMorePressEventVotingDeclined,
+//    ActionSheetStateMorePressEventDecidedPending,
+//    ActionSheetStateMorePressEventDecidedAccepted,
+//    ActionSheetStateMorePressEventDecidedDeclined,
+//    ActionSheetStateMorePressEventTrial,
+//    ActionSheetStateMorePressEventEnded,
+//    ActionSheetStateMorePressEventCancelled,
+//	ActionSheetStateEmailParticipant
+//} ActionSheetState;
 
 @class Event;
 @class DataFetcher;
 
-@interface EventDetailTVC : UITableViewController <EGORefreshTableHeaderDelegate, SubViewLocationDelegate, HeaderViewDetailsEventDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate ,UIAlertViewDelegate> {
+@interface EventDetailTVC : UITableViewController <EGORefreshTableHeaderDelegate, SubViewLocationDelegate, HeaderViewDetailsEventDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate ,UIAlertViewDelegate, ActionSheetControllerDelegate> {
     Event *detail;
     HeaderViewDetailsEvent *tableHeaderView;
     EGORefreshTableHeaderView *_refreshHeaderView;
@@ -39,13 +40,14 @@ typedef enum {
     NSArray *oldSortedLocations;
     NSArray *currentSortedLocations;
     NSString *pendingCountMeInFetchRequestId;
-    ActionSheetState currentActionSheetState;
+//    ActionSheetState currentActionSheetState;
     Participant *pendingMailParticipant;
-    UIActionSheet *dateActionSheet;
-	UIDatePicker *datePicker;
-    NSDate *suggestedDate;
-    BOOL alertViewShowing;
+//    UIActionSheet *dateActionSheet;
+//	UIDatePicker *datePicker;
+//    NSDate *suggestedDate;
+//    BOOL alertViewShowing;
     NSArray *originalIVotedFor;
+    BOOL hasBeenCancelled;
 }
 
 @end

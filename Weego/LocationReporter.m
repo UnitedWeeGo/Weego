@@ -199,7 +199,7 @@ static LocationReporter *sharedInstance;
     {
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
-        BOOL eventIsInRange = e.currentEventState >= EventStateStarted && e.currentEventState < EventStateEnded;
+        BOOL eventIsInRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateEnded;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
         /*
