@@ -25,7 +25,7 @@
 #import "Terms.h"
 #import "Privacy.h"
 #import "DealsView.h"
-#import "ActionSheetController.h"
+#import "MoreButtonActionSheetController.h"
 
 @interface ViewController(Private)
 - (void)clearLoginKeyChainData;

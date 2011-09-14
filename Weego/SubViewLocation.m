@@ -356,13 +356,12 @@
 
 - (void)createLocationPOIIcon
 {
-    locationPOIIcon = [[[UIImageView alloc] init] autorelease];
+    locationPOIIcon = [UIButton buttonWithType:UIButtonTypeCustom];
     locationPOIIcon.hidden = YES;
-    locationPOIIcon.userInteractionEnabled = NO;
-    locationPOIIcon.exclusiveTouch = NO;
-    UIImage *poiIcon = [UIImage imageNamed:@"button_decided_default.png"];
+    locationPOIIcon.adjustsImageWhenHighlighted = NO;
+    [locationPOIIcon setImage:[UIImage imageNamed:@"button_decided_default.png"] forState:UIControlStateNormal];
     locationPOIIcon.frame = actionBtnRect;
-    locationPOIIcon.image = poiIcon;
+    [locationPOIIcon addTarget:self action:@selector(mapButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:locationPOIIcon];
 }
 

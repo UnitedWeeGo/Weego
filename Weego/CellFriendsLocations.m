@@ -42,9 +42,9 @@
     
     
     CGRect mapFrame = CGRectMake(0, 
-							0, 
+							1, 
 							300,
-							CellFriendsLocationsHeight-1);
+							CellFriendsLocationsHeight-2);
     
     mapView = [[[MKMapView alloc] initWithFrame:mapFrame] autorelease];
     mapView.userInteractionEnabled = NO;
@@ -141,7 +141,8 @@
     zoomRect.size.width = paddedWidth;
     zoomRect.size.height = paddedHeight;
     
-    [mapView setVisibleMapRect:zoomRect animated:NO];
+    [mapView setVisibleMapRect:zoomRect animated:YES];
+    mapView.userInteractionEnabled = NO; // retardedly, you have to reset this every time
 }
 
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part

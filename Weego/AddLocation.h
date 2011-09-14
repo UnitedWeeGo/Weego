@@ -17,7 +17,7 @@
 #import "WildcardGestureRecognizer.h"
 #import "SubViewSearchBar.h"
 #import "AddressBookLocationsTVC.h"
-#import "ActionSheetController.h"
+#import "MoreButtonActionSheetController.h"
 
 typedef enum {
 	AddLocationInitStateFromExistingEvent = 0,
@@ -31,14 +31,12 @@ typedef enum {
 } AddLocationState;
 
 typedef enum {
-	LocationActionSheetStateWinnerWithPhone = 0,
-    LocationActionSheetStateWinnerWithoutPhone,
-	LocationActionSheetStateEmailParticipant
+	LocationActionSheetStateEmailParticipant = 0
 } LocationActionSheetState;
 
 @class DataFetcher;
 
-@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource, UIAlertViewDelegate, ActionSheetControllerDelegate> {
+@interface AddLocation : UIViewController <MKMapViewDelegate, LocationDetailWidgetDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, SearchCategoryTableDelegate, SubViewSearchBarDelegate, AddressBookLocationsTVCDelegate, AddressBookLocationsTVCDataSource, UIAlertViewDelegate, MoreButtonActionSheetControllerDelegate> {
     MKMapView *mapView;
     LocationDetailWidget *locWidget;
     //UISearchBar *searchBar;
@@ -70,7 +68,6 @@ typedef enum {
     NSString *pendingSearchString;
     Participant *participantSelectedOnMap;
     LocationActionSheetState locationActionSheetState;
-    Location *winningLocationSelected;
     
     BOOL continueToSearchEnabled;
     SearchCategoryTable *categoryTable;
