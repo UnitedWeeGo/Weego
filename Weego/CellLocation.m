@@ -16,7 +16,7 @@
 @synthesize index;
 @synthesize eventState;
 @synthesize editing;
-
+@synthesize doShowReportingLocationIcon;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -33,6 +33,11 @@
 - (void)setDelegate:(id<SubViewLocationDelegate>)aDelegate
 {
     cellView.delegate = aDelegate;
+}
+
+- (void)setDoShowReportingLocationIcon:(BOOL)toShowReportingLocationIcon
+{
+    cellView.doShowReportingLocationIcon = toShowReportingLocationIcon;
 }
 
 - (void)setLocation:(Location *)aLocation

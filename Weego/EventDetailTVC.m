@@ -268,6 +268,10 @@ enum eventDetailSections {
 
     [self.tableView reloadData];
     if ([self orderDidChange] && otherLocationsShowing) [self reorderCells];
+    
+    if ([self eventWithinLocationReportingRange] && fetchType == DataFetchTypeGetEvent) {
+        [friendsLocationsCell refreshUserLocations];
+    }
 }
 
 - (void)handleDataFetcherErrorMessage:(NSNotification *)aNotification
@@ -572,10 +576,12 @@ enum eventDetailSections {
 // Determine if event is within location reporting range --
 - (BOOL)eventWithinLocationReportingRange
 {
-    BOOL eventHasDecidedLocations = rowsForLocations > 0;
+    BOOL eventHasDecidedLocations = [currentSortedLocations count] > 0;
     int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
     BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  timeFollowingEventStartToTrack;
-    if (eventIsWithinTimeRange && eventHasDecidedLocations && ![Model sharedInstance].isInTrial) return YES;
+    BOOL eventIsDecided = detail.currentEventState >= EventStateDecided;
+    
+    if (eventIsWithinTimeRange && eventHasDecidedLocations && eventIsDecided) return YES;
     return NO;
 }
 
@@ -588,6 +594,7 @@ enum eventDetailSections {
         cell.delegate = self;
 	}
     cell.index = anIndex;
+    cell.doShowReportingLocationIcon = [self eventWithinLocationReportingRange];
     cell.eventState = detail.currentEventState;
     cell.location = aLocation;
     cell.cellHostView = CellHostViewEvent;
@@ -597,10 +604,10 @@ enum eventDetailSections {
 - (BBTableViewCell *)getCellForUserReportedLocations
 {
     CellFriendsLocations *cell = (CellFriendsLocations *) [self.tableView dequeueReusableCellWithIdentifier:@"CellFriendsLocationsTableCellId"];
-    friendsLocationsCell = cell;
 	if (cell == nil) {
 		cell = [[[CellFriendsLocations alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellFriendsLocationsTableCellId"] autorelease];
 	}
+    friendsLocationsCell = cell;
     cell.cellHostView = CellHostViewEvent;
     return cell;
 }
@@ -880,7 +887,6 @@ enum eventDetailSections {
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
 	_reloading = YES;
 	[self fetchData];
-	if ([self eventWithinLocationReportingRange]) [friendsLocationsCell refreshUserLocations];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{

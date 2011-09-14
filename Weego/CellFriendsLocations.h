@@ -9,7 +9,7 @@
 #import "BBTableViewCell.h"
 #import "Event.h"
 
-#define CellFriendsLocationsHeight 144.0
+#define CellFriendsLocationsHeight 140.0
 
 @interface CellFriendsLocations : BBTableViewCell <MKMapViewDelegate> {
     

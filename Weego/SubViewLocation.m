@@ -17,9 +17,9 @@
 - (void)createSeeLocationButton;
 - (void)createLikeButton;
 - (void)createUnlikeButton;
-- (void)createLoadingView;
 - (void)createErrorView;
 - (void)createDealButton;
+- (void)createLocationPOIIcon;
 
 // these are state related methods
 - (void)setUIState;
@@ -44,6 +44,7 @@
 @synthesize index;
 @synthesize eventState;
 @synthesize editing;
+@synthesize doShowReportingLocationIcon;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -65,19 +66,6 @@
     labelTitle.text = [self urldecode:aLocation.name];
     imageOwnerIndicator.hidden = !aLocation.addedByMe;
     
-    /*
-    BOOL isCreateMode = [Model sharedInstance].currentAppState == AppStateCreateEvent;
-    
-    if ((isCreateMode && [aLocation.location_type isEqualToString:@"place"]) || ([Model sharedInstance].isInTrial && [aLocation.location_type isEqualToString:@"place"]))
-    {
-        //labelSecondaryInfo.text = [self urldecode:aLocation.vicinity]; // for use with 
-        [self setFormattedAddress];
-    }
-    else
-    {
-        [self setFormattedAddress];
-    }
-     */
     [self setFormattedAddress];
     [self resetUIState];
     [self setUIState];
@@ -104,16 +92,20 @@
 - (void)setUIState
 {
     isDashboardMode = [Model sharedInstance].currentAppState == AppStateDashboard;
-//    NSLog(@"SubViewLocation isDashboardMode: %d", isDashboardMode);
-//    NSLog(@"SubViewLocation eventState: %d", eventState);
+
     if (location.hasPendingVoteRequest) {
         [self showLoading];
     } else {
-        if (eventState < EventStateDecided)
+        
+        if ( doShowReportingLocationIcon && !isDashboardMode)
+        {
+            [self showPOIIcon];
+        } 
+        else if (eventState < EventStateDecided)
         {
             [self showLikeUnlike];
         }
-        if (eventState >= EventStateDecided)
+        else if (eventState >= EventStateDecided)
         {
             if (index==0)  [self addMap];
             else [self showLikeUnlike];
@@ -121,7 +113,6 @@
     }
     if (!isDashboardMode)
     {
-        [self showPOIIcon];
         [self showSeeLocButton];
         [self showDealButton];
     }
@@ -235,12 +226,6 @@
     annotationImage.image = anno;
     [self addSubview:annotationImage];
     
-//    if (locationPOIIcon == nil) locationPOIIcon = [[[UIImageView alloc] init] autorelease];
-//    UIImage *poiIcon = [UIImage imageNamed:@"icon_locationPOI_off.png"];
-//    locationPOIIcon.frame = CGRectMake(275, 13, poiIcon.size.width, poiIcon.size.height);
-//    locationPOIIcon.image = poiIcon;
-//    [self addSubview:locationPOIIcon];
-    
     float textLeftPos = leftMargin + 60 + 8;
     fieldWidth = 320 - textLeftPos - 50;
     fieldEditingWidth = 320 - textLeftPos - 90;
@@ -285,13 +270,6 @@
     
 	nextY = labelTertiaryInfo.frame.origin.y + labelTertiaryInfo.frame.size.height;
     
-//    labelOwnerIndicator = [[[UILabel alloc] initWithFrame:CGRectMake(232, 11, 59, 14)] autorelease];
-//    labelOwnerIndicator.font = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
-//    labelOwnerIndicator.textAlignment = UITextAlignmentRight;
-//    [labelOwnerIndicator setBackgroundColor:[UIColor clearColor]];
-//    [labelOwnerIndicator setTextColor:mineLabelColor];
-//    [self addSubview:labelOwnerIndicator];
-    
     UIImage *iconImage = [UIImage imageNamed:@"icon_MyLocation_01.png"];
     imageOwnerIndicator = [[UIImageView alloc] initWithImage:iconImage];
     imageOwnerIndicator.frame = CGRectMake(277, 11, iconImage.size.width, iconImage.size.height);
@@ -304,8 +282,9 @@
     [self createUnlikeButton];
     [self createSeeLocationButton];
     [self createDealButton];
-    [self createLoadingView];
+    //[self createLoadingView];
     [self createErrorView];
+    [self createLocationPOIIcon];
     
     [self resetUIState]; // hides everything (button related)
 	
@@ -317,7 +296,6 @@
 
 - (void)setEditing:(BOOL)isEditing
 {
-//    labelOwnerIndicator.hidden = isEditing;
     imageOwnerIndicator.hidden = isEditing;
     int newWidth = isEditing ? fieldEditingWidth : fieldWidth;
     CGRect titleFrame = CGRectMake(labelTitle.frame.origin.x, labelTitle.frame.origin.y, newWidth, labelTitle.frame.size.height);
@@ -376,28 +354,22 @@
     [self addSubview:unlikeButton];
 }
 
-- (void)createLoadingView
+- (void)createLocationPOIIcon
 {
-    loading = [[UIView alloc] initWithFrame:actionBtnRect];
-    loading.hidden = YES;
-    UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"button_like_pressed.png"]];
-    [loading addSubview:bg];
-    [bg release];
-    activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityView.frame = actionBtnRect = CGRectMake(12, 12, 25, 25);
-    [loading addSubview:activityView];
-    [activityView release];
-    [self addSubview:loading];
-    [loading release];
+    locationPOIIcon = [[[UIImageView alloc] init] autorelease];
+    locationPOIIcon.hidden = YES;
+    locationPOIIcon.userInteractionEnabled = NO;
+    locationPOIIcon.exclusiveTouch = NO;
+    UIImage *poiIcon = [UIImage imageNamed:@"button_decided_default.png"];
+    locationPOIIcon.frame = actionBtnRect;
+    locationPOIIcon.image = poiIcon;
+    [self addSubview:locationPOIIcon];
 }
 
 - (void)createErrorView
 {
     errorView = [[UIView alloc] initWithFrame:actionBtnRect];
     errorView.hidden = YES;
-//    UIImageView *bg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"button_like_pressed.png"]];
-//    [errorView addSubview:bg];
-//    [bg release];
     UIImageView *errorImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_error.png"]];
     errorImage.frame = CGRectMake(17, 17, 16, 16);
     [errorView addSubview:errorImage];

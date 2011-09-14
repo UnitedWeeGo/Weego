@@ -9,13 +9,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647324.967468"
+         timestampString = "337652913.373828"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "572"
-         endingLineNumber = "572"
-         landmarkName = "-eventWithinLocationReportingRange"
-         landmarkType = "5">
+         startingLineNumber = "576"
+         endingLineNumber = "576"
+         landmarkName = "@implementation EventDetailTVC"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -23,13 +23,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647324.967468"
+         timestampString = "337655396.775911"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "596"
-         endingLineNumber = "596"
-         landmarkName = "-getCellForUserReportedLocations"
-         landmarkType = "5">
+         startingLineNumber = "603"
+         endingLineNumber = "603"
+         landmarkName = "@implementation EventDetailTVC"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -37,13 +37,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647324.967468"
+         timestampString = "337652913.373828"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "509"
-         endingLineNumber = "509"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "513"
+         endingLineNumber = "513"
+         landmarkName = "@implementation EventDetailTVC"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -51,13 +51,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647324.967468"
+         timestampString = "337652913.373828"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "455"
-         endingLineNumber = "455"
-         landmarkName = "-tableView:heightForRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "459"
+         endingLineNumber = "459"
+         landmarkName = "@implementation EventDetailTVC"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -78,26 +78,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/CellFriendsLocations.m"
-         timestampString = "337645775.063165"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-refreshUserLocations"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647547.2134"
+         timestampString = "337652913.373828"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "415"
-         endingLineNumber = "415"
+         startingLineNumber = "419"
+         endingLineNumber = "419"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -107,12 +93,68 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "337647324.967468"
+         timestampString = "337655396.775911"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "671"
-         endingLineNumber = "671"
-         landmarkName = "-mapButtonPressed:"
+         startingLineNumber = "678"
+         endingLineNumber = "678"
+         landmarkName = "@implementation EventDetailTVC"
+         landmarkType = "3">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/EventDetailTVC.m"
+         timestampString = "337652913.373828"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "584"
+         endingLineNumber = "584"
+         landmarkName = "-eventWithinLocationReportingRange"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/SubViewLocation.m"
+         timestampString = "337716257.818771"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "188"
+         endingLineNumber = "188"
+         landmarkName = "-showPOIIcon"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/SubViewLocation.m"
+         timestampString = "337716257.818771"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "357"
+         endingLineNumber = "357"
+         landmarkName = "-createLocationPOIIcon"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/SubViewLocation.m"
+         timestampString = "337716257.818771"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "102"
+         endingLineNumber = "102"
+         landmarkName = "-setUIState"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

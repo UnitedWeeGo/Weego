@@ -57,6 +57,7 @@
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) EventState eventState;
 @property (nonatomic, assign) BOOL editing;
+@property (nonatomic, assign) BOOL doShowReportingLocationIcon;
 
 - (void)showLoading;
 - (void)showError;
