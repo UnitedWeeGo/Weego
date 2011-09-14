@@ -22,7 +22,7 @@ typedef enum {
 	ActionSheetStateEmailParticipant
 } ActionSheetState;
 
-@protocol ActionSheetControllerDelegate <NSObject>
+@protocol MoreButtonActionSheetControllerDelegate <NSObject>
 
 - (void)showModalDuplicateEventRequest;
 - (void)removeEventRequest;
@@ -33,7 +33,7 @@ typedef enum {
 
 @end
 
-@interface ActionSheetController : NSObject <UIActionSheetDelegate> {
+@interface MoreButtonActionSheetController : NSObject <UIActionSheetDelegate> {
     //NSString *pendingCountMeInFetchRequestId;
     ActionSheetState currentActionSheetState;
     UIActionSheet *dateActionSheet;
@@ -42,9 +42,9 @@ typedef enum {
     BOOL alertViewShowing;
 }
 
-@property (nonatomic, assign) id <ActionSheetControllerDelegate> delegate;
+@property (nonatomic, assign) id <MoreButtonActionSheetControllerDelegate> delegate;
 
-+ (ActionSheetController *)sharedInstance:(id <ActionSheetControllerDelegate>)aDelegate;
++ (MoreButtonActionSheetController *)sharedInstance:(id <MoreButtonActionSheetControllerDelegate>)aDelegate;
 + (void)destroy;
 
 - (void)showActionSheetForMorePress;
