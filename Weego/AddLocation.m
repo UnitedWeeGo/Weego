@@ -1196,19 +1196,25 @@ typedef enum {
                     if ([[Model sharedInstance] locationExistsInCurrentEvent:loc]) [toRemoveKeys addObject:loc.g_id];
                 }
                 [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
-            }
-            if ([savedSearchResultsDict count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
-            {
-                [self doSecondaryAddressSearch];
-            }
-            else 
-            {
-                continueToSearchEnabled = true;
-                [self addSearchResultAnnotations];
-                currentState = AddLocationStateSearch;
-                [searchBar showNetworkActivity:NO];
-            }
             
+                if ([locations count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
+                {
+                    [self doSecondaryAddressSearch];
+                }
+                else
+                {
+                    if ([locations count] == 0) 
+                    {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        [alert show];
+                        [alert release];
+                    }
+                    continueToSearchEnabled = true;
+                    [self addSearchResultAnnotations];
+                    currentState = AddLocationStateSearch;
+                    [searchBar showNetworkActivity:NO];
+                }
+            }
             break;
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
