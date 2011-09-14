@@ -451,11 +451,34 @@ enum eventDetailSections {
 	}
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+-(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
-	float headerHeight = 44;
-	return headerHeight;
+    if(section == 0)
+        return 16.0;
+    return 1.0;
 }
+
+
+-(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 11.0;
+}
+
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
+}
+
+-(UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//	float headerHeight = 44;
+//	return headerHeight;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
