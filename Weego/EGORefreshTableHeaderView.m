@@ -341,10 +341,17 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self setState:EGOOPullRefreshLoading];
     if (scrollView) {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.2];
-        scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.30f 
+                              delay:0 
+                            options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                         animations:^(void){
+                             [scrollView setContentInset:UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f)];
+                         }
+                         completion:NULL];
+//        [UIView beginAnimations:nil context:NULL];
+//        [UIView setAnimationDuration:0.2];
+//        scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+//        [UIView commitAnimations];
         [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL + 0.1f];
     }
 }
@@ -354,10 +361,17 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self setState:EGOOPullRefreshLoading];
     if (scrollView) {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.2];
-        scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.30f 
+                              delay:0 
+                            options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                         animations:^(void){
+                             [scrollView setContentInset:UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f)];
+                         }
+                         completion:NULL];
+//        [UIView beginAnimations:nil context:NULL];
+//        [UIView setAnimationDuration:0.2];
+//        scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+//        [UIView commitAnimations];
     }
     _statusLabel.text = NSLocalizedString(@"Saving...", @"Saving Status");
 }
@@ -381,10 +395,17 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self setStatusLabelForError:code];
     [self setState:EGOOPullRefreshShowError];
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.2];
-    scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.30f 
+                          delay:0 
+                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                     animations:^(void){
+                         [scrollView setContentInset:UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f)];
+                     }
+                     completion:NULL];
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:0.2];
+//    scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+//    [UIView commitAnimations];
     [self performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:scrollView afterDelay:WAIT_FOR_CLOSE_INTERVAL];
 }
 

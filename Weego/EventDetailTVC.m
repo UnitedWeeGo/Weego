@@ -29,6 +29,7 @@ enum eventDetailSections {
 
 - (void)handleHomePress:(id)sender;
 - (void)handleMorePress:(id)sender;
+- (void)showLoadingIndicatorForInitialLoad;
 - (void)showLoadingIndicator;
 - (void)fetchData;
 - (void)populateCurrentSortedLocations;
@@ -102,7 +103,7 @@ enum eventDetailSections {
         [self.tableView addSubview:_refreshHeaderView];
         [_refreshHeaderView release];
         [_refreshHeaderView refreshLastUpdatedDate];
-        [self showLoadingIndicator];
+        [self performSelector:@selector(showLoadingIndicatorForInitialLoad) withObject:self afterDelay:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL - 3];
     }
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -141,6 +142,13 @@ enum eventDetailSections {
     [self removeDataFetcherMessageListeners];
     [_refreshHeaderView cancelAnimations];
     [_refreshHeaderView reset:self.tableView];
+}
+
+- (void)showLoadingIndicatorForInitialLoad
+{
+    if (!initialLoadFinished) {
+        [self showLoadingIndicator];
+    }
 }
 
 - (void)showLoadingIndicator
