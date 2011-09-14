@@ -18,6 +18,7 @@
 #import "Contact.h"
 #import "ABContactsHelper.h"
 #import "ABContact.h"
+#import "GetDirectionsActionSheetController.h"
 
 typedef enum {
 	SearchAndDetailStateSearch = 0,
@@ -45,8 +46,6 @@ typedef enum {
 - (void)presentMailModalViewController;
 - (void)showKeyboardResignerAndEnable:(BOOL)enabled;
 - (void)hideKeyboardResigner;
-- (void)getDirectionsForLocation:(Location *)loc;
-- (void)callLocation:(Location *)loc;
 - (void)doSecondaryAddressSearch;
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
 - (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
@@ -93,13 +92,11 @@ typedef enum {
     {
         searchAgainButtonShowing = YES;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateSearchAgain withTarget:self];
-        //[self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:YES];
     }
     else
     {
         searchAgainButtonShowing = NO;
         [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
-        //[self resetMapViewFrameWithState:SearchAndDetailStateSearch andShowsToolbarButton:NO];
     }
 }
 
@@ -204,12 +201,6 @@ typedef enum {
 }
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton
 {
-    /*
-     SearchAndDetailStateSearch = 0,
-     SearchAndDetailStateDetail,
-     SearchAndDetailStateBoth,
-     SearchAndDetailStateNone
-     */
     int y = state == SearchAndDetailStateSearch || state == SearchAndDetailStateBoth ? 40 : 0;
     int height = showsToolbarButton ? 375-y : 418-y;
     // y=0 h375 - with bottom button search off
@@ -684,7 +675,6 @@ typedef enum {
             pinView.canShowCallout = NO;
             pinView.centerOffset = CGPointMake(7,-20);
 		}
-//        [pinView setView:[placeMark imageViewForCurrentState:ReportedLocationAnnoSelectedStateDefault]];
         [pinView setCurrentState:ReportedLocationAnnoSelectedStateDefault andParticipantImageURL:placeMark.participant.avatarURL];
         return pinView;
     }
@@ -772,8 +762,16 @@ typedef enum {
             zoomRect = MKMapRectUnion(zoomRect, pointRect);
         }
     }
-//    zoomRect.size.width *= 1.05;
-//    zoomRect.size.height *= 1.05;
+    float origWidth = zoomRect.size.width;
+    float paddedWidth = zoomRect.size.width *= 1.5;
+    float origHeight = zoomRect.size.height;
+    float paddedHeight = zoomRect.size.height *= 1.5;
+    
+    zoomRect.origin.x += (origWidth - paddedWidth) / 2;
+    zoomRect.origin.y += (origHeight - paddedHeight);
+    
+    zoomRect.size.width = paddedWidth;
+    zoomRect.size.height = paddedHeight;
 
     [mapView setVisibleMapRect:zoomRect animated:YES];
 }
@@ -782,15 +780,12 @@ typedef enum {
 
 #pragma mark - LocationDetailWidgetDelegate methods
 - (void)addButtonPressed
-{
-   // Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
-    
+{    
     Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
     
 	Location *location = [[Model sharedInstance] createNewLocationWithPlace:aPlace];
     
     NSString *uuid = location.g_id; //[location stringWithUUID];
-    //location.uuid = uuid;
     
 	Controller *controller = [Controller sharedInstance];
     NSArray *locations = [NSArray arrayWithObject:location];
@@ -821,8 +816,6 @@ typedef enum {
 - (void)likeButtonPressed
 {
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
-//    [placemark setStateType:LocAnnoStateTypeLiked];
-//    [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
     
     Event *detail = [Model sharedInstance].currentEvent;
     Location *loc = [detail getLocationWithUUID:placemark.uuid];
@@ -847,39 +840,24 @@ typedef enum {
 
 - (void)winnerButtonPressed
 {
+    Location *locationSelected;
+    
     if (self.selectedSearchLocationKey != nil)
     {
-        winningLocationSelected = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
+        locationSelected = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
     }
     else if (self.selectedLocationKey != nil)
     {
         LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
         Event *detail = [Model sharedInstance].currentEvent;
-        winningLocationSelected = [detail getLocationWithUUID:placemark.uuid];
+        locationSelected = [detail getLocationWithUUID:placemark.uuid];
     }
     else
     {
         NSLog(@"ERROR - No location found!");
+        return;
     }
-    
-    //BOOL hasPhoneCapability = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:123"]];
-    NSString *phoneButtonCopy = ([winningLocationSelected.formatted_phone_number length] > 0) ? [NSString stringWithFormat:@"Call %@", winningLocationSelected.formatted_phone_number] : nil;
-    
-    UIActionSheet *userOptions;
-    if (phoneButtonCopy != nil)
-    {
-        locationActionSheetState = LocationActionSheetStateWinnerWithPhone;
-        userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:phoneButtonCopy, @"Get Directions", nil];
-    }
-    else
-    {
-        locationActionSheetState = LocationActionSheetStateWinnerWithoutPhone;
-        userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Get Directions", nil];
-    }
-    
-    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
-    [userOptions release];
+    [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:locationSelected];
 }
 
 - (void)editNameButtonPressed
@@ -901,9 +879,7 @@ typedef enum {
     Location *loc = [detail getLocationWithUUID:placemark.uuid];
 //    NSLog(@"loc.uuid = %@ : loc.id = %@ : pm.uuid = %@", loc.uuid, loc.locationId, placemark.uuid);
     if (model.currentAppState == AppStateCreateEvent || loc == nil) // case 1 - create mode OR case 2 - location unsaved
-    {
-//        Location *aPlace = [savedSearchResults objectAtIndex:selectedSearchLocationIndex];
-        
+    {        
         Location *aPlace = [savedSearchResultsDict objectForKey:self.selectedSearchLocationKey];
         
         aPlace.name = name;
@@ -951,24 +927,14 @@ typedef enum {
 {
     [locWidget handleEditingNameSubmit];
 }
-/*
-- (void)handleMorePress:(id)sender
-{
-    NSLog(@"handleMorePress, TODO");
-}
-*/
+
 - (void)handleBackPress:(id)sender
 {
-//    tapInterceptor.touchesMovedCallback = nil;
-//    [mapView removeGestureRecognizer:tapInterceptor];
-//    [tapInterceptor release];
-    
     [[ViewController sharedInstance] goBack];
 }
 - (void)handleMorePress:(id)sender
 {
-    [[ActionSheetController sharedInstance:self] showActionSheetForMorePress];
-    //    [self showActionSheetForMorePress];
+    [[MoreButtonActionSheetController sharedInstance:self] showActionSheetForMorePress];
 }
 - (void)handleSearchPress:(id)sender
 {
@@ -1117,7 +1083,6 @@ typedef enum {
     [googleGeoFetchId release];
     [pendingSearchString release];
     [pendingSearchCategory release];
-//    [allContactsWithAddress release];
     [super dealloc];
 }
 
@@ -1173,8 +1138,6 @@ typedef enum {
     
     switch (fetchType) {
         case DataFetchTypeAddNewLocationToEvent:
-//            [locWidget updateInfoViewWithCorrectButtonState:ActionStateLike];
-            
             [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
             LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
             [placemark setStateType:LocAnnoStateTypeLiked];
@@ -1246,32 +1209,6 @@ typedef enum {
                 [searchBar showNetworkActivity:NO];
             }
             
-            break;
-        case DataFetchTypeGooglePlaceSearch:
-            /*
-            if ( [fetchId isEqualToString:googlePlacesFetchId] )
-            {
-                [savedSearchResults release];
-                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
-                savedSearchResults = [[NSMutableArray alloc] initWithArray:locations];
-                
-                // remove any existing locations from results
-                NSMutableArray *toRemove = [[[NSMutableArray alloc] init] autorelease];
-                for (Location *obj in savedSearchResults) {
-                    if ([[Model sharedInstance] locationExistsInCurrentEvent:obj]) [toRemove addObject:obj];
-                }
-                [savedSearchResults removeObjectsInArray:toRemove];
-            }
-            if ([savedSearchResults count] == 0 && !continueToSearchEnabled) 
-            {
-                [self doSecondaryAddressSearch];
-            }
-            else 
-            {
-                [self addSearchResultAnnotations];
-                currentState = AddLocationStateSearch;
-            }
-            */
             break;
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
@@ -1408,25 +1345,9 @@ typedef enum {
             {
                 [self presentMailModalViewController];
             }
-            else if (locationActionSheetState == LocationActionSheetStateWinnerWithPhone)
-            {
-                [self callLocation:winningLocationSelected];
-            }
-            else if (locationActionSheetState == LocationActionSheetStateWinnerWithoutPhone)
-            {
-                [self getDirectionsForLocation:winningLocationSelected];
-            }
             break;
         case 1:
             if (locationActionSheetState == LocationActionSheetStateEmailParticipant)
-            {
-                // cancel, do nothing
-            } 
-            else if (locationActionSheetState == LocationActionSheetStateWinnerWithPhone)
-            {
-                [self getDirectionsForLocation:winningLocationSelected];
-            }
-            else if (locationActionSheetState == LocationActionSheetStateWinnerWithoutPhone)
             {
                 // cancel, do nothing
             }
@@ -1437,27 +1358,6 @@ typedef enum {
         default:
             break;
     }
-}
-
-- (void)getDirectionsForLocation:(Location *)loc
-{
-    NSLog(@"directions %@", loc.formatted_address);
-    NSString* addr = [NSString stringWithFormat:@"http://maps.google.com/maps?daddr=%@&saddr=Current Location",loc.formatted_address];
-    addr = [addr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    NSURL* url = [[NSURL alloc] initWithString:addr];
-    
-    [[UIApplication sharedApplication] openURL:url];
-    
-    [url release];
-}
-
-- (void)callLocation:(Location *)loc
-{
-    NSLog(@"call %@", loc.formatted_phone_number);
-    NSString *phoneLinkString = [NSString stringWithFormat:@"tel:%@", loc.stripped_phone_number];
-    NSURL *phoneLinkURL = [NSURL URLWithString:phoneLinkString];
-    [[UIApplication sharedApplication] openURL:phoneLinkURL];
 }
 
 #pragma mark -
@@ -1496,7 +1396,7 @@ typedef enum {
 
 #pragma mark - UIActionSheet
 
--(void) userActionButtonPressedForParticipant:(Participant *)part
+- (void)userActionButtonPressedForParticipant:(Participant *)part
 {
     locationActionSheetState = LocationActionSheetStateEmailParticipant;
     if (participantSelectedOnMap) [participantSelectedOnMap release];
@@ -1599,12 +1499,6 @@ typedef enum {
     }
     
     [self.view setClipsToBounds:YES];
-    
-    
-//    [self setUpDataFetcherMessageListeners];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
-//    [self reportTimerTick];
 }
 
 - (void)reportTimerTick

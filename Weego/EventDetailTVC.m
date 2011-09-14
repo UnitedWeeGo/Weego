@@ -18,6 +18,7 @@
 #import "BBTableViewCell.h"
 #import "NSDate+Helper.h"
 #import "CellFriendsLocations.h"
+#import "GetDirectionsActionSheetController.h"
 
 enum eventDetailSections {
 	eventDetailSectionLocations = 0,
@@ -51,6 +52,7 @@ enum eventDetailSections {
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move;
 - (void)presentMailModalViewController;
 - (BOOL)eventWithinLocationReportingRange;
+- (void)reportTimerTick;
 
 @end
 
@@ -134,6 +136,8 @@ enum eventDetailSections {
     }
     
     [self.tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -142,6 +146,13 @@ enum eventDetailSections {
     [self removeDataFetcherMessageListeners];
     [_refreshHeaderView cancelAnimations];
     [_refreshHeaderView reset:self.tableView];
+}
+
+- (void)reportTimerTick
+{ 
+    if ( [self eventWithinLocationReportingRange] ) {
+        if (friendsLocationsCell != nil) [friendsLocationsCell refreshUserLocations];
+    }
 }
 
 - (void)showLoadingIndicatorForInitialLoad
@@ -189,8 +200,7 @@ enum eventDetailSections {
 
 - (void)removeDataFetcherMessageListeners
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DATA_FETCHER_SUCCESS object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DATA_FETCHER_ERROR object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self]; // just remove all of them in this view
 }
 
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification
@@ -439,7 +449,7 @@ enum eventDetailSections {
                     [self doGotoAddView];
                 } else {
                     Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row - 1];
-                    [[ActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
+                    [[MoreButtonActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
                     pendingMailParticipant = p;
                 }
             } else {
@@ -447,7 +457,7 @@ enum eventDetailSections {
                     [self doGotoAddView];
                 } else {
                     Participant *p = [[detail getParticipantsSortedByName] objectAtIndex:indexPath.row];
-                    [[ActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
+                    [[MoreButtonActionSheetController sharedInstance:self] showUserActionSheetForUser:p];
                     pendingMailParticipant = p;
                 }
             }
@@ -711,7 +721,9 @@ enum eventDetailSections {
 {
     if ( [self eventWithinLocationReportingRange] )
     {
-        NSLog(@"SHOW MODAL - DIRECTIONS AND SUCH");
+        //NSLog(@"SHOW MODAL - DIRECTIONS AND SUCH");
+        Location *loc = (Location *)[oldSortedLocations objectAtIndex:0]; // winning location
+        [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:loc];
         return;
     }
     
@@ -846,7 +858,7 @@ enum eventDetailSections {
 
 - (void)handleMorePress:(id)sender
 {
-    [[ActionSheetController sharedInstance:self] showActionSheetForMorePress];
+    [[MoreButtonActionSheetController sharedInstance:self] showActionSheetForMorePress];
 }
 
 

@@ -26,7 +26,7 @@
     
     UIImageViewAsyncLoader *locationImage;
     UIImageView *annotationImage;
-    UIImageView *locationPOIIcon;
+    UIButton *locationPOIIcon;
     UILabel *labelTitle;
     UILabel *labelSecondaryInfo;
     UILabel *labelTertiaryInfo;

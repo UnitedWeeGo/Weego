@@ -10,7 +10,7 @@
 #import "HeaderViewDetailsEvent.h"
 #import "EGORefreshTableHeaderView.h"
 #import "SubViewLocation.h"
-#import "ActionSheetController.h"
+#import "MoreButtonActionSheetController.h"
 #import "CellFriendsLocations.h"
 
 //typedef enum {
@@ -29,7 +29,7 @@
 @class Event;
 @class DataFetcher;
 
-@interface EventDetailTVC : UITableViewController <EGORefreshTableHeaderDelegate, SubViewLocationDelegate, HeaderViewDetailsEventDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate ,UIAlertViewDelegate, ActionSheetControllerDelegate> {
+@interface EventDetailTVC : UITableViewController <EGORefreshTableHeaderDelegate, SubViewLocationDelegate, HeaderViewDetailsEventDelegate, DataFetcherMessageHandler, UIActionSheetDelegate, MFMailComposeViewControllerDelegate ,UIAlertViewDelegate, MoreButtonActionSheetControllerDelegate> {
     Event *detail;
     HeaderViewDetailsEvent *tableHeaderView;
     EGORefreshTableHeaderView *_refreshHeaderView;
