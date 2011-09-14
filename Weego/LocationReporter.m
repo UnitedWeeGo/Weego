@@ -45,7 +45,7 @@ static LocationReporter *sharedInstance;
     self = [super init];
     if (self) {
         timerCount = 0;
-        locationServicesStarted = NO;
+//        locationServicesStarted = NO;
         locationChangedSignificantly = NO;
         locationSignLocMonitoringStarted = NO;
         locationServicesEnabled = [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied;
@@ -68,13 +68,13 @@ static LocationReporter *sharedInstance;
 
 - (void)startUpdatingLocation
 {
-    locationServicesStarted = YES;
+//    locationServicesStarted = YES;
     [locationManager startUpdatingLocation];
 }
 
 - (void)stopUpdatingLocation
 {
-    locationServicesStarted = NO;
+//    locationServicesStarted = NO;
     [locationManager stopUpdatingLocation];
 }
 
@@ -84,7 +84,8 @@ static LocationReporter *sharedInstance;
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
     if (!locationTrackingUserEnabled && !checkinUserEnabled)
     {
-        if (locationServicesStarted) [self stopUpdatingLocation];
+//        if (locationServicesStarted) [self stopUpdatingLocation];
+        [self stopUpdatingLocation];
         if (locationSignLocMonitoringStarted)
         {
             locationSignLocMonitoringStarted = NO;
@@ -149,17 +150,19 @@ static LocationReporter *sharedInstance;
     }
     
     // start and stop location services
-    if (locationServicesShouldStart && !locationServicesStarted)
+    if (locationServicesShouldStart) // && !locationServicesStarted)
     {
         NSLog(@"LocationReporter::startUpdatingLocation");
-        if (lastLocation != nil) [lastLocation release];
-        lastLocation = nil;
+//        if (lastLocation != nil) [lastLocation release];
+//        lastLocation = nil;
         [self startUpdatingLocation];
     }
-    else if (!locationServicesShouldStart && locationServicesStarted)
+    else if (!locationServicesShouldStart) // && locationServicesStarted)
     {
         NSLog(@"LocationReporter::stopUpdatingLocation");
         [self stopUpdatingLocation];
+        if (lastLocation != nil) [lastLocation release];
+        lastLocation = nil;
     }
     
     // check for stale data if in the background, fetch if needed
