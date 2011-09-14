@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "ActionSheetController.h"
+#import "MoreButtonActionSheetController.h"
 #import "Event.h"
 
-@interface ActionSheetController (Private)
+@interface MoreButtonActionSheetController (Private)
 
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
@@ -17,18 +17,18 @@
 
 @end
 
-@implementation ActionSheetController
+@implementation MoreButtonActionSheetController
 
 @synthesize delegate;
 
-static ActionSheetController *sharedInstance;
+static MoreButtonActionSheetController *sharedInstance;
 
 #pragma mark -
 #pragma mark Object Lifecycle
-+ (ActionSheetController *)sharedInstance:(id <ActionSheetControllerDelegate>)aDelegate {
++ (MoreButtonActionSheetController *)sharedInstance:(id <MoreButtonActionSheetControllerDelegate>)aDelegate {
     @synchronized(self) {
         if (!sharedInstance)
-            sharedInstance=[[ActionSheetController alloc] init];       
+            sharedInstance=[[MoreButtonActionSheetController alloc] init];       
     }
     sharedInstance.delegate = aDelegate;
     return sharedInstance;
@@ -36,7 +36,7 @@ static ActionSheetController *sharedInstance;
 
 + (id)alloc {
     @synchronized(self) {
-        NSAssert(sharedInstance == nil, @"Attempted to allocate a second instance of a singleton Model.");
+        NSAssert(sharedInstance == nil, @"Attempted to allocate a second instance of a singleton MoreButtonActionSheetController.");
         sharedInstance = [super alloc];
     }
     return sharedInstance;
