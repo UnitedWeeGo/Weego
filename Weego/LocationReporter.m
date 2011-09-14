@@ -114,6 +114,7 @@ static LocationReporter *sharedInstance;
     {
         BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
+        BOOL eventHasPendingCheckIn = e.hasPendingCheckin;
         
         Location *loc = [e getLocationByLocationId:e.topLocationId];
         BOOL hasADecidedLocation = (loc != nil);
@@ -134,7 +135,7 @@ static LocationReporter *sharedInstance;
         NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
          */
         
-        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
+        if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && !eventHasPendingCheckIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
         {
             locationServicesShouldStart = YES;
         }
@@ -200,13 +201,13 @@ static LocationReporter *sharedInstance;
         BOOL eventIsInRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateEnded;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
-        /*
+        
         NSLog(@"eventTitle: %@", e.eventTitle);
         NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
         NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
         NSLog(@"eventIsInRange: %i", eventIsInRange);
         NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
-        */
+        
          
         if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsInRange && userAcceptedEvent)
         {
@@ -223,7 +224,10 @@ static LocationReporter *sharedInstance;
 //            NSLog(@"checkEventsForCheckin - distance: %f, accuracy: %f", distance, accuracy);
             
 //            CLLocationAccuracy accuracy =  0; // not testing accuracy for now, as it's generally pretty bad
-            if (distance < CHECKIN_RADIUS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD) [self checkinUserForEvent:e];
+            if ((distance < CHECKIN_RADIUS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD) || e.hasPendingCheckin) {
+                e.hasPendingCheckin = YES;
+                [self checkinUserForEvent:e];
+            }
         }
     }
 }
@@ -289,13 +293,13 @@ static LocationReporter *sharedInstance;
         CLLocationAccuracy accuracy = newLocation.horizontalAccuracy;
         
         if (lastReportedLocation == nil) lastReportedLocation  = [newLocation copy];
-        /*
+        
         NSLog(@"accuracy: %f", accuracy);
         NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
         NSLog(@"lastReportedLocation distanceFromLocation:newLocation: %f", [lastReportedLocation distanceFromLocation:newLocation]);
         NSLog(@"REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD: %d", REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD);
         NSLog(@"CHECKIN_ACCURACY_THRESHOLD: %d", CHECKIN_ACCURACY_THRESHOLD);
-        */
+        
         if (!locationChangedSignificantly) locationChangedSignificantly = [lastReportedLocation distanceFromLocation:newLocation] > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD;
         if (locationChangedSignificantly) {
             [lastReportedLocation release];

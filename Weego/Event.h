@@ -43,6 +43,7 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, readonly) int minutesToGoUntilEventStarts;
 @property (nonatomic, copy) NSString *eventRead;
 @property (nonatomic) BOOL hasBeenCheckedIn;
+@property (nonatomic) BOOL hasPendingCheckin;
 @property (nonatomic, copy) NSString *currentLocationOrder;
 @property (nonatomic, retain) NSArray *iVotedFor;
 @property (nonatomic, retain) NSArray *updatedVotes;

@@ -23,7 +23,7 @@
 @synthesize eventId, eventTitle, eventDate, eventExpireDate, eventDescription, creatorId, acceptedParticipantList, declinedParticipantList, lastUpdatedTimestamp, lastReportedLocationsTimestamp;
 @synthesize isTemporary, currentEventState;
 @synthesize topLocationId;
-@synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn;
+@synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn, hasPendingCheckin;
 @synthesize currentLocationOrder, iVotedFor;
 @synthesize updatedVotes;
 @synthesize acceptanceStatus,hasBeenRemoved,hasBeenCancelled;
@@ -67,6 +67,8 @@
     if (uLastUpdatedTimestamp != nil) self.lastUpdatedTimestamp = uLastUpdatedTimestamp;
     if (uTopLocationId != nil) self.topLocationId = uTopLocationId;
     if (uCount != nil) self.participantCount = uCount;    
+    
+    if (self.hasBeenCheckedIn) self.hasPendingCheckin = NO;
 }
 
 - (AcceptanceType)acceptanceStatus
