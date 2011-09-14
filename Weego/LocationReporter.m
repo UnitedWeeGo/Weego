@@ -204,13 +204,13 @@ static LocationReporter *sharedInstance;
         BOOL eventIsInRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateEnded;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
-        
+        /*
         NSLog(@"eventTitle: %@", e.eventTitle);
         NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
         NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
         NSLog(@"eventIsInRange: %i", eventIsInRange);
         NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
-        
+        */
          
         if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsInRange && userAcceptedEvent)
         {
@@ -296,13 +296,13 @@ static LocationReporter *sharedInstance;
         CLLocationAccuracy accuracy = newLocation.horizontalAccuracy;
         
         if (lastReportedLocation == nil) lastReportedLocation  = [newLocation copy];
-        
+        /*
         NSLog(@"accuracy: %f", accuracy);
         NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
         NSLog(@"lastReportedLocation distanceFromLocation:newLocation: %f", [lastReportedLocation distanceFromLocation:newLocation]);
         NSLog(@"REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD: %d", REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD);
         NSLog(@"CHECKIN_ACCURACY_THRESHOLD: %d", CHECKIN_ACCURACY_THRESHOLD);
-        
+        */
         if (!locationChangedSignificantly) locationChangedSignificantly = [lastReportedLocation distanceFromLocation:newLocation] > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD;
         if (locationChangedSignificantly) {
             [lastReportedLocation release];
