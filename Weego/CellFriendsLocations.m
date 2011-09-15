@@ -53,6 +53,13 @@
     
     [self.contentView addSubview:mapView];
     
+    UIButton *mapPressButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    mapPressButton.backgroundColor = [UIColor clearColor];
+    mapPressButton.frame = mapFrame;
+    [mapPressButton addTarget:self action:@selector(handleMapClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.contentView addSubview:mapPressButton];
+    
     self.frame = CGRectMake(self.frame.origin.x, 
 							self.frame.origin.y, 
 							self.frame.size.width, 
@@ -60,6 +67,11 @@
     
     [self setUpDataFetcherMessageListeners];
     [self addWinningLocation];
+}
+
+- (void)handleMapClick
+{
+    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:[Model sharedInstance].currentEvent.topLocationId];
 }
 
 - (void)handleDataFetcherSuccessMessage:(NSNotification *)aNotification
