@@ -1543,7 +1543,9 @@ typedef enum {
                 }
             }
             [self removeAnnotations:mapView includingSaved:false];
+            [self doShowSearchAgainButton:NO];
             [self hideKeyboardResigner];
+            [self disableSearchCategoryTable];
         }
     } else {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
