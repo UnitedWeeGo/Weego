@@ -3117,6 +3117,7 @@
 		0136B55613F05D9100A368B5 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3203,6 +3204,7 @@
 		017610AD13BE6F3600324EF9 /* Debug Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3240,6 +3242,7 @@
 		017610AE13BE6F3600324EF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = Weego/Entitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3298,6 +3301,7 @@
 		0176156813BE803600324EF9 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = Weego/Entitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3362,6 +3366,7 @@
 		01E08D9013CF7D13009F90D2 /* Debug Local */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3426,6 +3431,7 @@
 		01E08FB813CFD665009F90D2 /* Debug Stable */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
