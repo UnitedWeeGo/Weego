@@ -169,7 +169,7 @@
 - (void)showContent:(NSString *)html
 {
     CGRect webFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
+    if (!webView) webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
     webView.delegate = self;
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
     NSString *url = [NSString stringWithFormat:@"http://unitedweego.com/"];

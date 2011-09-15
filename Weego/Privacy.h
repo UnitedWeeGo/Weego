@@ -13,6 +13,7 @@
 {
     UIView *shader;
     UIActivityIndicatorView *spinner;
+    UIWebView *webView;
 }
 
 @end
