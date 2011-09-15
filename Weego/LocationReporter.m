@@ -65,11 +65,15 @@ static LocationReporter *sharedInstance;
 - (void)startUpdatingLocation
 {
     [locationManager startUpdatingLocation];
+    WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate showDebugLocationServicesIcon:YES];
 }
 
 - (void)stopUpdatingLocation
 {
     [locationManager stopUpdatingLocation];
+    WeegoAppDelegate *appDelegate = (WeegoAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate showDebugLocationServicesIcon:NO];
 }
 
 - (void)reportTimerTick

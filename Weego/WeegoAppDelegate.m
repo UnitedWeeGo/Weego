@@ -180,6 +180,16 @@
     whiteView.alpha = 0;
     [window insertSubview:whiteView atIndex:6];
     [whiteView release];
+    
+    debugLocIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_locationPOI_on.png"]];
+    debugLocIcon.hidden = YES;
+    debugLocIcon.frame = CGRectMake(70, 32, 9, 15);
+    [window insertSubview:debugLocIcon atIndex:10];
+}
+
+- (void)showDebugLocationServicesIcon:(BOOL)toShow
+{
+    debugLocIcon.hidden = !toShow;
 }
 
 - (void)initSimpleGeoCategories

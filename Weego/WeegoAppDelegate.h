@@ -26,6 +26,9 @@
     UIView *dropShadowScroll;
     UIView *dropShadowScrollUp;
     UIView *whiteView;
+    
+    UIImageView *debugLocIcon;
+    
     LoginFacebookPopup *facebookPopup;
     
     LoadView *loadView;
@@ -70,5 +73,6 @@
 - (void)logoutFromFacebook;
 - (void)hideLoadView;
 - (void)checkForUpdateWithServerReportedVerion;
+- (void)showDebugLocationServicesIcon:(BOOL)toShow;
 
 @end
