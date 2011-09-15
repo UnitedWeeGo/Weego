@@ -150,16 +150,14 @@ static LocationReporter *sharedInstance;
     }
     
     // start and stop location services
-    if (locationServicesShouldStart) // && !locationServicesStarted)
+    if (locationServicesShouldStart)
     {
-        NSLog(@"LocationReporter::startUpdatingLocation");
-//        if (lastLocation != nil) [lastLocation release];
-//        lastLocation = nil;
+        //NSLog(@"LocationReporter::startUpdatingLocation");
         [self startUpdatingLocation];
     }
-    else if (!locationServicesShouldStart) // && locationServicesStarted)
+    else if (!locationServicesShouldStart)
     {
-        NSLog(@"LocationReporter::stopUpdatingLocation");
+        //NSLog(@"LocationReporter::stopUpdatingLocation");
         [self stopUpdatingLocation];
         if (lastLocation != nil) [lastLocation release];
         lastLocation = nil;
