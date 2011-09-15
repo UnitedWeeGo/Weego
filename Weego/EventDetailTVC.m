@@ -621,17 +621,18 @@ enum eventDetailSections {
     BOOL eventHasDecidedLocations = [currentSortedLocations count] > 0;
     int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
     BOOL eventIsWithinTimeRange = detail.minutesToGoUntilEventStarts < (FETCH_REPORTED_LOCATIONS_TIME_RANGE_MINUTES/2) && detail.minutesToGoUntilEventStarts >  timeFollowingEventStartToTrack;
-    BOOL eventIsDecided = detail.currentEventState >= EventStateDecided;
+    BOOL eventIsDecidedOrStarted = detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted;
     BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
     
-    if (eventIsWithinTimeRange && eventHasDecidedLocations && eventIsDecided && isRunningInForeground) return YES;
+    if (eventIsWithinTimeRange && eventHasDecidedLocations && eventIsDecidedOrStarted && isRunningInForeground) return YES;
     return NO;
 }
 // Determine if detail should show map --
 - (BOOL)eventShouldShowMap
 {
     BOOL eventHasDecidedLocations = [currentSortedLocations count] > 0;
-    return (detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted) && eventHasDecidedLocations;
+    BOOL eventIsDecidedOrStarted = detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted;
+    return eventIsDecidedOrStarted && eventHasDecidedLocations;
 }
 
 
