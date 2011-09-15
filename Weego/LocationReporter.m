@@ -45,15 +45,11 @@ static LocationReporter *sharedInstance;
     self = [super init];
     if (self) {
         timerCount = 0;
-//        locationServicesStarted = NO;
         locationChangedSignificantly = NO;
         locationSignLocMonitoringStarted = NO;
         locationServicesEnabled = [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied;
         if(locationServicesEnabled) 
         {
-//            client = [[SimpleGeo alloc] initWithDelegate:self consumerKey:@"bcRryckAyj5YT3ZrSGraENdxqdLJRz9Q" consumerSecret:@"q2AMUDLyHpcPuaKkETchSqxQaPrY2fD9"];
-//            client.delegate = self;
-            
             locationManager = [[CLLocationManager alloc] init];
             locationManager.purpose = @"Around the time of the event, we report your location and arrival only to the invited participants.";
             locationManager.delegate = self;
@@ -68,13 +64,11 @@ static LocationReporter *sharedInstance;
 
 - (void)startUpdatingLocation
 {
-//    locationServicesStarted = YES;
     [locationManager startUpdatingLocation];
 }
 
 - (void)stopUpdatingLocation
 {
-//    locationServicesStarted = NO;
     [locationManager stopUpdatingLocation];
 }
 
@@ -84,7 +78,6 @@ static LocationReporter *sharedInstance;
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
     if (!locationTrackingUserEnabled && !checkinUserEnabled)
     {
-//        if (locationServicesStarted) [self stopUpdatingLocation];
         [self stopUpdatingLocation];
         if (locationSignLocMonitoringStarted)
         {
@@ -142,7 +135,7 @@ static LocationReporter *sharedInstance;
         }
         
         BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled && !eventIsCancelled);
-        if (eventEligibleForLocationReporting) 
+        if (eventEligibleForLocationReporting && lastLocation != nil) 
         {
             [self reportUserLocation:lastLocation andEvent:e];
             locationChangedSignificantly = NO;
@@ -170,8 +163,8 @@ static LocationReporter *sharedInstance;
         if (numMinutesSinceLastFetchAttempt > STALE_DATA_FETCH_MINUTES_THRESHOLD) 
         {
             NSLog(@"numMinutesSinceLastFetchAttempt: %d, fetchEvents", numMinutesSinceLastFetchAttempt);
-            //[[Controller sharedInstance] fetchEventsSynchronous];
-            [[Controller sharedInstance] fetchEvents];
+            [[Controller sharedInstance] fetchEventsSynchronous];
+            //[[Controller sharedInstance] fetchEvents];
         }
     }
     
@@ -224,7 +217,6 @@ static LocationReporter *sharedInstance;
             CLLocationAccuracy accuracy = lastLocation.horizontalAccuracy;
 //            NSLog(@"checkEventsForCheckin - distance: %f, accuracy: %f", distance, accuracy);
             
-//            CLLocationAccuracy accuracy =  0; // not testing accuracy for now, as it's generally pretty bad
             if ((distance < CHECKIN_RADIUS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD) || e.hasPendingCheckin) {
                 e.hasPendingCheckin = YES;
                 [self checkinUserForEvent:e];
@@ -238,14 +230,13 @@ static LocationReporter *sharedInstance;
     Model *model = [Model sharedInstance];
     UIApplication *app = [UIApplication sharedApplication];
     NSLog(@"checking in user %@ for event %@ in background:%@", model.userEmail, event.eventTitle, app.applicationState == UIApplicationStateBackground ? @"YES" : @"NO");
-    /*
+    
     if (app.applicationState == UIApplicationStateBackground) {
         [[Controller sharedInstance] checkinUserForEventSynchronous:event];
     } else {
         [[Controller sharedInstance] checkinUserForEvent:event];
     }
-     */
-    [[Controller sharedInstance] checkinUserForEvent:event];
+    //[[Controller sharedInstance] checkinUserForEvent:event];
 }
 
 - (void)reportUserLocation:(CLLocation *)location andEvent:(Event *)event
@@ -258,8 +249,8 @@ static LocationReporter *sharedInstance;
     
     if (app.applicationState == UIApplicationStateBackground) {
         NSLog(@"Reporting location for event: %@ in background", event.eventTitle);
-        [[Controller sharedInstance] reportLocation:loc forEvent:event];
-        //[[Controller sharedInstance] reportLocationSynchronous:loc forEvent:event];
+        //[[Controller sharedInstance] reportLocation:loc forEvent:event];
+        [[Controller sharedInstance] reportLocationSynchronous:loc forEvent:event];
     } else {
         NSLog(@"Reporting location for event: %@", event.eventTitle);
         [[Controller sharedInstance] reportLocation:loc forEvent:event];
@@ -321,7 +312,6 @@ static LocationReporter *sharedInstance;
 - (void)dealloc
 {
     NSLog(@"LocationReporter dealloc"); 
-//    [client dealloc];
     [lastLocation release];
     [locationManager release];
     [super dealloc];

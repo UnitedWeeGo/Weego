@@ -37,7 +37,7 @@ const CGRect MessageEntryTextViewClosedFrame = { { 5.0f, 9.0f }, { 310.0f, 24.0f
 const CGRect MessageEntryTextViewOpenFrame = { { 5.0f, 9.0f }, { 310.0f, 57.0f } };
 
 const CGRect DefaultTextLabelFrame = { { 12.0f, 13.0f }, { 310.0f, 24.0f } };
-const CGRect MaxCharsTextLabelFrame = { { 230.0f, 85.0f }, { 0.0f, 0.0f } };
+const CGRect MaxCharsTextLabelFrame = { { 220.0f, 85.0f }, { 0.0f, 0.0f } };
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -65,17 +65,15 @@ const CGRect MaxCharsTextLabelFrame = { { 230.0f, 85.0f }, { 0.0f, 0.0f } };
 }
 - (void)setupSendButton
 {
-    UIImage *bg1;
-    UIImage *bg2;
-        
-    bg1 = [UIImage imageNamed:@"button_green_default.png"];
-    bg2 = [UIImage imageNamed:@"button_green_pressed.png"];
+    UIImage *g_bg1 = [[UIImage imageNamed:@"button_green_default.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:4];
+    UIImage *g_bg2 = [[UIImage imageNamed:@"button_green_pressed.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:4];
+
     sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sendButton.adjustsImageWhenHighlighted = NO;
     [sendButton addTarget:self action:@selector(handleSendPress:) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:bg1 forState:UIControlStateNormal];
-    [sendButton setBackgroundImage:bg2 forState:UIControlStateHighlighted];
-    [sendButton setBackgroundImage:bg2 forState:UIControlStateDisabled];
+    [sendButton setBackgroundImage:g_bg1 forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:g_bg2 forState:UIControlStateHighlighted];
+    [sendButton setBackgroundImage:g_bg2 forState:UIControlStateDisabled];
     [sendButton setTitle:@"Send" forState:UIControlStateNormal];
     UIColor *col = HEXCOLOR(0xFFFFFFFF);    
     [sendButton setTitleColor:col forState:UIControlStateNormal];
@@ -85,24 +83,24 @@ const CGRect MaxCharsTextLabelFrame = { { 230.0f, 85.0f }, { 0.0f, 0.0f } };
     sendButton.titleLabel.shadowColor = shadowColor;
     sendButton.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     sendButton.contentEdgeInsets = UIEdgeInsetsMake(4, 2, 0, 0);
-    sendButton.frame = CGRectMake(265, 76, bg1.size.width, bg1.size.height);
+    sendButton.frame = CGRectMake(255, 76, 60, g_bg1.size.height);
     sendButton.hidden = YES;
     [self addSubview:sendButton];
 }
 - (void)setupEmptySendButton
-{
-    UIImage *bg1;
-    bg1 = [UIImage imageNamed:@"button_green_pressed.png"];
+{    
+    UIImage *g_bg1 = [[UIImage imageNamed:@"button_green_default.png"] stretchableImageWithLeftCapWidth:4 topCapHeight:4];
+    
     emptySendButton.enabled = NO;
     emptySendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emptySendButton setBackgroundImage:bg1 forState:UIControlStateNormal];
-    [emptySendButton setBackgroundImage:bg1 forState:UIControlStateDisabled];
-    emptySendButton.frame = CGRectMake(265, 76, bg1.size.width, bg1.size.height);
+    [emptySendButton setBackgroundImage:g_bg1 forState:UIControlStateNormal];
+    [emptySendButton setBackgroundImage:g_bg1 forState:UIControlStateDisabled];
+    emptySendButton.frame = CGRectMake(255, 76, 60, g_bg1.size.height);
     emptySendButton.hidden = YES;
     [self addSubview:emptySendButton];
     
     UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    view.frame = CGRectMake(15, 5, 20.0f, 20.0f); //50x31
+    view.frame = CGRectMake(20, 5, 20.0f, 20.0f); //50x31
     [emptySendButton addSubview:view];
     _activityView = view;
     [view release];
