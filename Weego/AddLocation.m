@@ -190,14 +190,14 @@ typedef enum {
     [self.view addSubview:mapView];
     [mapView release];
     
-    tapInterceptor = [[WildcardGestureRecognizer alloc] init];
-    tapInterceptor.touchesMovedCallback = ^(NSSet * touches, UIEvent * event) {
-        if (!searchAgainButtonShowing && continueToSearchEnabled)
-        {
-            [self doShowSearchAgainButton:YES];
-        }
-    };
-    [mapView addGestureRecognizer:tapInterceptor];
+//    tapInterceptor = [[WildcardGestureRecognizer alloc] init];
+//    tapInterceptor.touchesMovedCallback = ^(NSSet * touches, UIEvent * event) {
+//        if (!searchAgainButtonShowing && continueToSearchEnabled)
+//        {
+//            [self doShowSearchAgainButton:YES];
+//        }
+//    };
+//    [mapView addGestureRecognizer:tapInterceptor];
 }
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton
 {
@@ -1558,6 +1558,15 @@ typedef enum {
     
     Model *model = [Model sharedInstance];
     if (feedShowing && model.currentEvent.currentEventState > EventStateNew) [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[model.currentEvent.unreadMessageCount intValue]];
+    
+    tapInterceptor = [[WildcardGestureRecognizer alloc] init];
+    tapInterceptor.touchesMovedCallback = ^(NSSet * touches, UIEvent * event) {
+        if (!searchAgainButtonShowing && continueToSearchEnabled)
+        {
+            [self doShowSearchAgainButton:YES];
+        }
+    };
+    if (mapView) [mapView addGestureRecognizer:tapInterceptor];
     
     [self setUpDataFetcherMessageListeners];
     
