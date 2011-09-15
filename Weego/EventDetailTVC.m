@@ -52,6 +52,7 @@ enum eventDetailSections {
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move;
 - (void)presentMailModalViewController;
 - (BOOL)eventWithinLocationReportingRange;
+- (BOOL)eventShouldShowMap;
 - (void)reportTimerTick;
 
 @end
@@ -434,7 +435,7 @@ enum eventDetailSections {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.section == eventDetailSectionLocations) {
         
-        if ( [self eventWithinLocationReportingRange] && indexPath.row == 1 ) {
+        if ( [self eventShouldShowMap] && indexPath.row == 1 ) {
             [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:[Model sharedInstance].currentEvent.topLocationId];
 		} else if (indexPath.row == rowsForLocations-1) {
 			if (detail.currentEventState < EventStateDecided) [self doGotoMapView];
@@ -502,7 +503,7 @@ enum eventDetailSections {
 {
     if (indexPath.section == eventDetailSectionLocations) {
         
-        if ( [self eventWithinLocationReportingRange] && indexPath.row == 1 )
+        if ( [self eventShouldShowMap] && indexPath.row == 1 )
         {
             return CellFriendsLocationsHeight;
         } else if (indexPath.row < rowsForLocations-1) {
@@ -529,7 +530,7 @@ enum eventDetailSections {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	int numRows = 0;
 	if (section == eventDetailSectionLocations) {
-        if ( [self eventWithinLocationReportingRange] ) {
+        if ( [self eventShouldShowMap] ) {
             numRows = 2;
         } else if (detail.currentEventState >= EventStateDecided && !otherLocationsShowing) {
             int numLocations = [oldSortedLocations count];
@@ -557,13 +558,13 @@ enum eventDetailSections {
 
 	if (indexPath.section == eventDetailSectionLocations) 
     {
-        if ( [self eventWithinLocationReportingRange] && indexPath.row == 0 ) {
+        if ( [self eventShouldShowMap] && indexPath.row == 0 ) {
             // show new decided location cell
             Location *loc = (Location *)[oldSortedLocations objectAtIndex:0]; // winning location
             cell = [self getCellForLocationWithLocation:loc andIndex:indexPath.row];			
             [cell isFirst:YES isLast:NO]; // never the last, alwats has user location map
             
-        } else if ( [self eventWithinLocationReportingRange] && indexPath.row == 1 ) {
+        } else if ( [self eventShouldShowMap] && indexPath.row == 1 ) {
             // show user locations map
             cell = [self getCellForUserReportedLocations];
             [cell isFirst:NO isLast:YES];
@@ -626,6 +627,12 @@ enum eventDetailSections {
     if (eventIsWithinTimeRange && eventHasDecidedLocations && eventIsDecided && isRunningInForeground) return YES;
     return NO;
 }
+// Determine if detail should show map --
+- (BOOL)eventShouldShowMap
+{
+    BOOL eventHasDecidedLocations = [currentSortedLocations count] > 0;
+    return (detail.currentEventState == EventStateDecided || detail.currentEventState == EventStateStarted) && eventHasDecidedLocations;
+}
 
 
 - (BBTableViewCell *)getCellForLocationWithLocation:(Location *)aLocation andIndex:(int)anIndex
@@ -636,7 +643,7 @@ enum eventDetailSections {
         cell.delegate = self;
 	}
     cell.index = anIndex;
-    cell.doShowReportingLocationIcon = [self eventWithinLocationReportingRange];
+    cell.doShowReportingLocationIcon = [self eventShouldShowMap];
     cell.eventState = detail.currentEventState;
     cell.location = aLocation;
     cell.cellHostView = CellHostViewEvent;
@@ -720,9 +727,11 @@ enum eventDetailSections {
 #pragma mark SubViewLocationDelegate
 - (void)mapButtonPressed:(id)sender
 {
-    if ( [self eventWithinLocationReportingRange] )
+    NSLog(@"currentEventState: %d", detail.currentEventState);
+    if ( [self eventShouldShowMap] )
     {
         //NSLog(@"SHOW MODAL - DIRECTIONS AND SUCH");
+        
         Location *loc = (Location *)[oldSortedLocations objectAtIndex:0]; // winning location
         [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:loc];
         return;
