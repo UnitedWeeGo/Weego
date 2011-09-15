@@ -510,6 +510,7 @@ static Model *sharedInstance;
 {
     Event *event = [self.allEvents objectForKey:eventId];
     event.hasBeenCheckedIn = YES;
+    event.hasPendingCheckin = NO;
 }
 
 - (void)addEvent:(Event *)anEvent

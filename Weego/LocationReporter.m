@@ -138,6 +138,10 @@ static LocationReporter *sharedInstance;
             locationServicesShouldStart = YES;
         }
         
+        if (eventHasPendingCheckIn && !eventHasBeenCheckedIn) {
+            [self checkinUserForEvent:e];
+        }
+        
         BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled && !eventIsCancelled);
         if (eventEligibleForLocationReporting && lastLocation != nil) 
         {
