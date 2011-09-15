@@ -68,9 +68,18 @@
     spinner.frame = CGRectMake(150, 185, 20, 20);
     [self addSubview:spinner];
     
-    [self showLoading];
+    NSString *htmlContent = [Model sharedInstance].infoResults;
     
-    if ([delegate respondsToSelector:@selector(infoDisplayWillBeginLoading)]) [delegate infoDisplayWillBeginLoading];
+    if (htmlContent && ![htmlContent isEqualToString:@""]) {
+        shader.alpha = 0;
+        shader.hidden = YES;
+        [self layoutInitialCard];
+        [self webViewDidFinishLoad:webView];
+    } else {
+        [self showLoading];
+        if ([delegate respondsToSelector:@selector(infoDisplayWillBeginLoading)]) [delegate infoDisplayWillBeginLoading];
+    }
+    
     [[Controller sharedInstance] getInfoHMTLData];
 
 }
@@ -162,7 +171,7 @@
     webView.delegate = self;
     webView.tag = index;
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
-    NSString *url = [NSString stringWithFormat:@"https://api.unitedweego.com/?%d", index];
+    NSString *url = [NSString stringWithFormat:@"http://unitedweego.com/?%d", index];
     [webView loadHTMLString:html baseURL:[NSURL URLWithString:url]];
     [view addSubview:webView];
     
@@ -247,6 +256,7 @@
     switch (code) {
         case NSURLErrorNotConnectedToInternet:
             message = NSLocalizedString(@"Not Connected To Internet. Content shown may be out of date.", @"Error Status");
+            return; // Breaking out of this because we don't want to show this message here.
             break;
         case NSURLErrorTimedOut:
             message = NSLocalizedString(@"Request Timed Out. Content shown may be out of date.", @"Error Status");

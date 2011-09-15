@@ -52,7 +52,15 @@
     spinner.frame = CGRectMake(150, 185, 20, 20);
     [self.view addSubview:spinner];
     
-    [self showLoading];
+    NSString *htmlContent = [Model sharedInstance].termsResults;
+    
+    if (htmlContent && ![htmlContent isEqualToString:@""]) {
+        shader.alpha = 0;
+        shader.hidden = YES;
+        [self showContent:htmlContent];
+    } else {
+        [self showLoading];
+    }
     
     [self setUpDataFetcherMessageListeners];
     [[Controller sharedInstance] getTermsHMTLData];
@@ -164,7 +172,7 @@
     UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
     webView.delegate = self;
     webView.backgroundColor = HEXCOLOR(0xF3F3F3FF);
-    NSString *url = [NSString stringWithFormat:@"https://api.unitedweego.com/"];
+    NSString *url = [NSString stringWithFormat:@"http://unitedweego.com/"];
     [webView loadHTMLString:html baseURL:[NSURL URLWithString:url]];
     [self.view insertSubview:webView atIndex:0];
     
