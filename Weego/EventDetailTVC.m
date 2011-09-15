@@ -80,7 +80,8 @@ enum eventDetailSections {
     
     [self populateCurrentSortedLocations];
     
-	UIView *bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
+	bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
+    bevelStripe.hidden = YES;
     bevelStripe.backgroundColor = HEXCOLOR(0xFFFFFFFF);
     [self.tableView addSubview:bevelStripe];
     [bevelStripe release];
@@ -143,10 +144,16 @@ enum eventDetailSections {
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    bevelStripe.hidden = YES;
     [super viewWillDisappear:animated];
     [self removeDataFetcherMessageListeners];
     [_refreshHeaderView cancelAnimations];
     [_refreshHeaderView reset:self.tableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    bevelStripe.hidden = NO;
 }
 
 - (void)reportTimerTick

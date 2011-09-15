@@ -49,6 +49,7 @@
 //    BOOL alertViewShowing;
     NSArray *originalIVotedFor;
     BOOL hasBeenCancelled;
+    UIView *bevelStripe;
     CellFriendsLocations *friendsLocationsCell;
 }
 
