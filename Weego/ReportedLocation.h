@@ -10,11 +10,7 @@
 #import "GDataXMLNode.h"
 
 @interface ReportedLocation : NSObject {
-    NSString *ownerEventId;
-    NSString *latitude;
-    NSString *longitude;
-    NSString *reportTime;
-    NSString *userId;
+
 }
 
 @property (nonatomic, copy) NSString *ownerEventId;
@@ -22,6 +18,7 @@
 @property (nonatomic, copy) NSString *longitude;
 @property (nonatomic, copy) NSString *reportTime;
 @property (nonatomic, copy) NSString *userId;
+@property (nonatomic, assign) BOOL disableLocationReporting;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;

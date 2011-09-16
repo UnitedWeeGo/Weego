@@ -253,10 +253,16 @@ typedef enum {
         
         if (addedAlready)
         {
-            //NSLog(@"%@ addedAlready", p.email);
-            [addedAlready setCoordinate:loc.coordinate];
+            if (loc.disableLocationReporting)
+            {
+                [mapView removeAnnotation:addedAlready];
+            }
+            else
+            {
+                [addedAlready setCoordinate:loc.coordinate];
+            }
         }
-        else
+        else if (!loc.disableLocationReporting)
         {
             ReportedLocationAnnotation *placemark = [[[ReportedLocationAnnotation alloc] initWithCoordinate:loc.coordinate andParticipant:p] autorelease];
             [mapView addAnnotation:placemark];

@@ -189,7 +189,7 @@
 
 - (void)showDebugLocationServicesIcon:(BOOL)toShow
 {
-    debugLocIcon.hidden = !toShow;
+    //debugLocIcon.hidden = !toShow;
 }
 
 - (void)initSimpleGeoCategories

@@ -11,7 +11,7 @@
 
 @implementation ReportedLocation
 
-@synthesize ownerEventId, latitude, longitude, reportTime, userId;
+@synthesize ownerEventId, latitude, longitude, reportTime, userId, disableLocationReporting;
 
 - (void)populateWithXml:(GDataXMLElement *)xml
 {
@@ -19,11 +19,13 @@
     NSString *uLongitude = [[xml attributeForName:@"longitude"] stringValue];
     NSString *uReportTimestamp = [[xml attributeForName:@"reportTime"] stringValue];
     NSString *uUserId = [[xml attributeForName:@"email"] stringValue];
+    NSString *uDisabledLocationReporting = [[xml attributeForName:@"disableLocationReporting"] stringValue];
     
     if (uLatitude) self.latitude = uLatitude;
 	if (uLongitude) self.longitude = uLongitude;
     if (uReportTimestamp) self.reportTime = uReportTimestamp;
 	if (uUserId) self.userId = uUserId;
+    if (uDisabledLocationReporting) self.disableLocationReporting = [uDisabledLocationReporting isEqualToString:@"true"];
 }
 
 -(CLLocationCoordinate2D)coordinate
