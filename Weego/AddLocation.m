@@ -189,15 +189,6 @@ typedef enum {
     mapView.showsUserLocation = true;
     [self.view addSubview:mapView];
     [mapView release];
-    
-//    tapInterceptor = [[WildcardGestureRecognizer alloc] init];
-//    tapInterceptor.touchesMovedCallback = ^(NSSet * touches, UIEvent * event) {
-//        if (!searchAgainButtonShowing && continueToSearchEnabled)
-//        {
-//            [self doShowSearchAgainButton:YES];
-//        }
-//    };
-//    [mapView addGestureRecognizer:tapInterceptor];
 }
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton
 {
@@ -236,6 +227,15 @@ typedef enum {
     [searchBar release];
 }
 
+- (void)setupSearchCatView
+{
+    CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
+    if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
+    categoryTable.delegate = self;
+    [self.view addSubview:categoryTable];
+}
+
+#pragma mark - User location annotation management
 - (void)addOrUpdateUserLocationAnnotations
 {
     Model *model = [Model sharedInstance];
@@ -469,16 +469,24 @@ typedef enum {
 #pragma mark - SearchCategoryTable
 - (void)enableSearchCategoryTable
 {
-    CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
-    if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
-    categoryTable.delegate = self;
-    [self.view addSubview:categoryTable];
+//    CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
+//    if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
+//    categoryTable.delegate = self;
+//    [self.view addSubview:categoryTable];
+    
+    categoryTable.hidden = NO;
+    [categoryTable updateSearchContentsWithSearchString:@""];
+    [self.view bringSubviewToFront:categoryTable];
+    
 }
 - (void)disableSearchCategoryTable
 {
-    if (categoryTable != nil) [categoryTable removeFromSuperview];
-    categoryTable = nil;
+//    if (categoryTable != nil) [categoryTable removeFromSuperview];
+//    categoryTable = nil;
+    
+    categoryTable.hidden = YES;
 }
+
 
 #pragma mark - SearchCategoryTableDelegate
 - (void)categorySelected:(SearchCategory *)category
@@ -1468,7 +1476,6 @@ typedef enum {
     [[ViewController sharedInstance] goBackToDashboardFromAddLocations];
 }
 
-
 #pragma mark - View lifecycle
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -1486,6 +1493,7 @@ typedef enum {
     [self setupMapView];
     [self setupInfoView];
     [self setupSearchBar];
+    [self setupSearchCatView];
     if (initState == AddLocationInitStateFromNewEvent)
     {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
@@ -1503,6 +1511,7 @@ typedef enum {
     {
         currentState = AddLocationStateView;
     }
+    
     
     [self.view setClipsToBounds:YES];
 }

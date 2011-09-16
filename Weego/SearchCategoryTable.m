@@ -13,6 +13,8 @@
 
 - (void)initTable;
 - (NSArray *)categoriesMatchingSearch:(NSString *)searchString;
+- (void)searchCategories;
+- (void)updateFilteredCategories:(NSArray *)matchingCategories;
 
 @end
 
@@ -56,8 +58,14 @@
 {
     if ([searchString length] > 0) {
         if (currentSearch) [currentSearch release];
+        currentSearch = nil;
         currentSearch = [searchString retain];
-        [NSThread detachNewThreadSelector:@selector(searchCategories) toTarget:self withObject:nil];
+        
+        // remove multi-threading because it performs well enough without it, and stops
+        // occasional crash due to thread modifying data while table is reloading
+        //[NSThread detachNewThreadSelector:@selector(searchCategories) toTarget:self withObject:nil];
+        
+        [self searchCategories];
     }
     else
     {
@@ -67,11 +75,18 @@
 
 - (void)searchCategories
 {
+    NSArray *categoriesMatchingSearchString = [self categoriesMatchingSearch:currentSearch];
+    [self updateFilteredCategories:categoriesMatchingSearchString];
+    
+    // remove multi-threading because it performs well enough without it, and stops
+    // occasional crash due to thread modifying data while table is reloading
+    /*
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     [NSThread setThreadPriority:0.0];
     NSArray *categoriesMatchingSearchString = [self categoriesMatchingSearch:currentSearch];
     [self performSelector:@selector(updateFilteredCategories:) onThread:[NSThread mainThread] withObject:categoriesMatchingSearchString waitUntilDone:NO];
     [pool drain];
+     */
 }
 
 - (NSArray *)categoriesMatchingSearch:(NSString *)searchString
@@ -84,10 +99,12 @@
 
 - (void)updateFilteredCategories:(NSArray *)matchingCategories
 {
+    NSLog(@"updateFilteredCategories start - attempting filter and reload of data");
     [filteredCategories removeAllObjects];
     [filteredCategories addObjectsFromArray:matchingCategories];
     self.hidden = [filteredCategories count] == 0;
-    if ([filteredCategories count] > 0) [tableView reloadData];
+    [tableView reloadData];
+    NSLog(@"updateFilteredCategories end - reload complete");
 }
 
 #pragma mark -
