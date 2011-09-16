@@ -71,7 +71,7 @@ enum eventDetailSections {
 {
     [super loadView];
     detail = [Model sharedInstance].currentEvent;
-    detail.eventRead = @"true";
+    detail.eventRead = YES;
     originalIVotedFor = detail.iVotedFor;
     [originalIVotedFor retain];
     

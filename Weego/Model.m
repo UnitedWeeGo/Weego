@@ -242,7 +242,7 @@ static Model *sharedInstance;
     
 	NSSortDescriptor *dateSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"eventDate" ascending:NO selector:@selector(compare:)] autorelease];
 	[self.sortedEvents sortUsingDescriptors:[NSArray arrayWithObjects:dateSortDescriptor, nil]];
-
+    
     NSMutableArray *tWeeksEvents = [[NSMutableArray alloc] init];
     self.weeksEvents = tWeeksEvents;
     [tWeeksEvents release];
@@ -261,6 +261,7 @@ static Model *sharedInstance;
     NSDate *todayMidnight = [gregorian dateFromComponents:todayMidnightComps];
     [gregorian release];
 	
+    NSMutableArray *weeksEventsNew = [[NSMutableArray alloc] init];
     NSMutableArray *weeksEventsPast = [[NSMutableArray alloc] init];
     NSMutableArray *weeksEventsFuture = [[NSMutableArray alloc] init];
     
@@ -271,9 +272,19 @@ static Model *sharedInstance;
             if ([ev.eventDate timeIntervalSinceNow] < -60*60*3) { // < 0) {
                 [self.pastEvents addObject:ev];
 //                [weeksEventsPast addObject:ev];
-            } else [weeksEventsFuture addObject:ev];
+            } else {
+                if (!ev.eventRead) {
+                    [weeksEventsNew addObject:ev];
+                } else {
+                    [weeksEventsFuture addObject:ev];
+                }
+            }
 		} else if (dayDiff > 1) { // > 7) {
-			[self.futureEvents addObject:ev];
+            if (!ev.eventRead) {
+                [weeksEventsNew addObject:ev];
+            } else {
+                [self.futureEvents addObject:ev];
+            }
 		} else {
 			[self.pastEvents addObject:ev];
 		}
@@ -284,10 +295,13 @@ static Model *sharedInstance;
     
     NSSortDescriptor *futureSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"eventDate" ascending:YES selector:@selector(compare:)] autorelease];
 	[self.futureEvents sortUsingDescriptors:[NSArray arrayWithObjects:futureSortDescriptor, nil]];
+    [weeksEventsNew sortUsingDescriptors:[NSArray arrayWithObjects:futureSortDescriptor, nil]];
     [weeksEventsFuture sortUsingDescriptors:[NSArray arrayWithObjects:futureSortDescriptor, nil]];
     
+    [self.weeksEvents addObjectsFromArray:weeksEventsNew];
     [self.weeksEvents addObjectsFromArray:weeksEventsFuture];
     [self.weeksEvents addObjectsFromArray:weeksEventsPast];
+    [weeksEventsNew release];
     [weeksEventsPast release];
     [weeksEventsFuture release];
     

@@ -47,7 +47,7 @@
     
     BOOL isDashboardMode = [Model sharedInstance].currentAppState == AppStateDashboard;
     BOOL toShowFeedInfo = [anEvent.unreadMessageCount intValue] > 0 && isDashboardMode;
-    BOOL eventHasBeenRead = [anEvent.eventRead isEqualToString:@"true"];
+    BOOL eventHasBeenRead = anEvent.eventRead;
     AcceptanceType acceptanceStatus = anEvent.acceptanceStatus;
     BOOL doPushDownFeedIcon = NO;
     BOOL eventCancelled = anEvent.hasBeenCancelled;

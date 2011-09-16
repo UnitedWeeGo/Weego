@@ -58,7 +58,7 @@
     if (uAcceptedParticipantList != nil) self.acceptedParticipantList = uAcceptedParticipantList;
     if (uDeclinedParticipantList != nil) self.declinedParticipantList = uDeclinedParticipantList;
 	if (uEventTitle != nil) self.eventTitle = uEventTitle;
-    if (uEventRead != nil) self.eventRead = uEventRead;
+    if (uEventRead != nil) self.eventRead = [uEventRead isEqualToString:@"true"];
     if (uEventCancelled != nil) self.hasBeenCancelled = [uEventCancelled isEqualToString:@"true"];
     if (uCheckedIn != nil) self.hasBeenCheckedIn = [uCheckedIn isEqualToString:@"true"];
 	if (uEventDate != nil) self.eventDate = [self getDateFromString:uEventDate];
@@ -395,7 +395,6 @@
 	[self.eventTitle release];
 	[self.eventDate release];
     [self.eventExpireDate release];
-    [self.eventRead release];
 	[self.eventDescription release];
     [self.creatorId release];
     [self.lastUpdatedTimestamp release];
