@@ -24,6 +24,7 @@
 @synthesize isTemporary, addedByMe, hasBeenAddedToMapPreviously;
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
+@synthesize disableLocationReporting;
 
 // SimpleGeo search
 - (id)initWithSimpleGeoFeatureResult:(SGPlace *)place

@@ -25,4 +25,6 @@
 
 + (LocationReporter *)sharedInstance;
 
+- (void)reportNow;
+
 @end

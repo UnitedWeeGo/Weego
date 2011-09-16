@@ -114,6 +114,9 @@ typedef enum {
 @property (nonatomic, retain) NSString *privacyResults;
 @property (nonatomic, retain) NSString *dealResults;
 
+@property (nonatomic, assign) BOOL locationReportingDisabledRequested;
+@property (nonatomic, assign) BOOL locationReportingEnabledRequested;
+
 
 + (Model *)sharedInstance;
 + (void)destroy;
@@ -201,6 +204,8 @@ typedef enum {
 - (void)removePendingVoteRequestWithRequestId:(NSString *)requestId;
 - (BOOL)locationWithIdHasPendingVoteRequest:(NSString *)locationId;
 - (NSString *)locationWithRequestId:(NSString *)requestId;
+- (void)setPendingRequestFlagsForUserPrefs;
+
 - (NSString *)getAddOrUpdateLocationXMLForLocations:(NSArray *)locations withEventId:(NSString *)anEventId;
 - (void)addSuggestedTimeWithXml:(GDataXMLElement *)suggestedTimeXML inEventWithId:(NSString *)eventId;
 - (SuggestedTime *)getSuggestedTimeWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;

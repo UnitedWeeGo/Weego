@@ -235,6 +235,8 @@ static DataParser *sharedInstance;
 - (void)parseResponseReportLocation:(GDataXMLDocument *)doc
 {
     [Model sharedInstance].lastReportLocationAttempt = [NSDate date];
+    [Model sharedInstance].locationReportingDisabledRequested = NO;
+    [Model sharedInstance].locationReportingEnabledRequested = NO;
 }
 
 #pragma mark -

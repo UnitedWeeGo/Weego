@@ -240,21 +240,21 @@ static Controller *sharedInstance;
     return nil;
 }
 
-- (NSString *)reportLocation:(Location *)aLocation forEvent:(Event *)anEvent
+- (NSString *)reportLocation:(Location *)aLocation
 {
 	Model *model = [Model sharedInstance];
 	if (model.currentAppState != AppStateCreateEvent) {        
-        DataFetcher *fetcher = [[[DataFetcher alloc] initAndReportNewLocationToEventWithUserId:model.userId overrideSynchronous:NO withEventId:anEvent.eventId withLocation:aLocation delegate:[DataParser sharedInstance]] autorelease];
+        DataFetcher *fetcher = [[[DataFetcher alloc] initAndReportNewLocationWithUserId:model.userId overrideSynchronous:NO withLocation:aLocation delegate:[DataParser sharedInstance]] autorelease];
         return fetcher.requestId;
     }
     return nil;
 }
 
-- (NSString *)reportLocationSynchronous:(Location *)aLocation forEvent:(Event *)anEvent
+- (NSString *)reportLocationSynchronous:(Location *)aLocation
 {
 	Model *model = [Model sharedInstance];
 	if (model.currentAppState != AppStateCreateEvent) {        
-        DataFetcher *fetcher = [[[DataFetcher alloc] initAndReportNewLocationToEventWithUserId:model.userId overrideSynchronous:NO withEventId:anEvent.eventId withLocation:aLocation delegate:[DataParser sharedInstance]] autorelease];
+        DataFetcher *fetcher = [[[DataFetcher alloc] initAndReportNewLocationWithUserId:model.userId overrideSynchronous:NO withLocation:aLocation delegate:[DataParser sharedInstance]] autorelease];
         return fetcher.requestId;
     }
     return nil;

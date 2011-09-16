@@ -40,6 +40,7 @@
 
 @property (nonatomic, readonly) BOOL hasDeal;
 @property (nonatomic, readonly) BOOL addedByMe;
+@property (nonatomic) BOOL disableLocationReporting;
 
 
 @property (nonatomic) BOOL isTemporary;

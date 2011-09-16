@@ -51,6 +51,7 @@
     NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
     [userPreferences setBool:uiSwitch.on forKey:prefsKey];
     [userPreferences synchronize];
+    [[Model sharedInstance] setPendingRequestFlagsForUserPrefs];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

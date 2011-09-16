@@ -16,6 +16,7 @@
 #import "FeedMessage.h"
 #import "ReportedLocation.h"
 #import "SuggestedTime.h"
+#import "LocationReporter.h"
 
 @interface Model (Private)
 
@@ -55,6 +56,7 @@
 @synthesize dealResults;
 @synthesize simpleGeoCategoryResults;
 @synthesize suggestedTimes;
+@synthesize locationReportingDisabledRequested, locationReportingEnabledRequested;
 
 static Model *sharedInstance;
 
@@ -1424,6 +1426,18 @@ static Model *sharedInstance;
 - (NSString *)locationWithRequestId:(NSString *)requestId
 {
     return [self.pendingVoteRequests objectForKey:requestId];
+}
+
+- (void)setPendingRequestFlagsForUserPrefs
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING]) {
+        self.locationReportingDisabledRequested = NO;
+        self.locationReportingEnabledRequested = YES;
+    } else {
+        self.locationReportingDisabledRequested = YES;
+        self.locationReportingEnabledRequested = NO;
+    }
+    [[LocationReporter sharedInstance] reportNow];
 }
 
 #pragma mark -

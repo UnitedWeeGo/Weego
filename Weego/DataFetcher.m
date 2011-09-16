@@ -518,20 +518,21 @@
 	return self;
 }
 
-- (id)initAndReportNewLocationToEventWithUserId:(NSString *)userId overrideSynchronous:(BOOL)useSync withEventId:(NSString *)eventId withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate
+- (id)initAndReportNewLocationWithUserId:(NSString *)userId overrideSynchronous:(BOOL)useSync withLocation:(Location *)aLocation delegate:(id <DataFetcherDelegate>)myDelegate
 {
 	self = [self init];
 	if (self != nil) {
         self.requestId = [self stringWithUUID];
         pendingRequestType = DataFetchTypeReportNewLocationToEvent;
 		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&latitude=%f&longitude=%f",
+        NSString *locationReportingStatus = (aLocation.disableLocationReporting) ? @"&disableLocationReporting=true" : @"&disableLocationReporting=false";
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&latitude=%f&longitude=%f%@",
                                 apiURL,
                                 @"report.location.php",
                                 userId,
-                                eventId,
                                 aLocation.coordinate.latitude,
-                                aLocation.coordinate.longitude] autorelease];
+                                aLocation.coordinate.longitude,
+                                locationReportingStatus] autorelease];
 		if (useSync)
         {
             [self makeSynchronousRequest:urlString];

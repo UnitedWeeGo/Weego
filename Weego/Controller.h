@@ -34,8 +34,8 @@
 - (NSString *)updateEvent:(Event *)anEvent;
 - (void)removeEvent;
 - (NSString *)addOrUpdateLocations:(NSArray *)locations isAnUpdate:(BOOL)update;
-- (NSString *)reportLocation:(Location *)aLocation forEvent:(Event *)anEvent;
-- (NSString *)reportLocationSynchronous:(Location *)aLocation forEvent:(Event *)anEvent;
+- (NSString *)reportLocation:(Location *)aLocation;
+- (NSString *)reportLocationSynchronous:(Location *)aLocation;
 - (NSString *)addParticipants:(NSArray *)participants;
 - (NSString *)toggleVoteForLocationsWithId:(NSString *)locationId;
 - (NSString *)updateUserDeviceRecord;

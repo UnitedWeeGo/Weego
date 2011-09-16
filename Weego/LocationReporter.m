@@ -14,10 +14,11 @@
 
 - (void)startUpdatingLocation;
 - (void)stopUpdatingLocation;
+- (void)reportTimerTick;
 - (void)checkEventsForCheckin;
 - (void)checkinUserForEvent:(Event *)event;
 - (int)minuteDistanceBetweenNowAndDate:(NSDate *)aDate;
-- (void)reportUserLocation:(CLLocation *)location andEvent:(Event *)event;
+- (void)reportUserLocation:(CLLocation *)location;
 
 @end
 
@@ -62,6 +63,12 @@ static LocationReporter *sharedInstance;
     return self;
 }
 
+- (void)reportNow
+{
+    lastLocation = nil;
+    [self reportTimerTick];
+}
+
 - (void)startUpdatingLocation
 {
     [locationManager startUpdatingLocation];
@@ -80,6 +87,23 @@ static LocationReporter *sharedInstance;
 {    
     locationTrackingUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
+    
+    if ([Model sharedInstance].locationReportingDisabledRequested) { // || [Model sharedInstance].locationReportingEnabledRequested) {
+        Location *loc = [[Location alloc] init];
+        loc.latitude = @"0";
+        loc.longitude = @"0";
+        loc.disableLocationReporting = YES; //([Model sharedInstance].locationReportingEnabledRequested) ? NO : YES;
+        UIApplication *app = [UIApplication sharedApplication];
+        if (app.applicationState == UIApplicationStateBackground) {
+            NSLog(@"Reporting location tracking status in background");
+            //[[Controller sharedInstance] reportLocation:loc forEvent:event];
+            [[Controller sharedInstance] reportLocationSynchronous:loc];
+        } else {
+            NSLog(@"Reporting location tracking status");
+            [[Controller sharedInstance] reportLocation:loc];
+        }
+    }
+    
     if (!locationTrackingUserEnabled && !checkinUserEnabled)
     {
         [self stopUpdatingLocation];
@@ -145,7 +169,7 @@ static LocationReporter *sharedInstance;
         BOOL eventEligibleForLocationReporting = (userAcceptedEvent && eventIsWithinTimeRange && !eventHasBeenCheckedIn && hasADecidedLocation && !eventIsBeingCreated && locationChangedSignificantly && locationTrackingUserEnabled && !eventIsCancelled);
         if (eventEligibleForLocationReporting && lastLocation != nil) 
         {
-            [self reportUserLocation:lastLocation andEvent:e];
+            [self reportUserLocation:lastLocation];
             locationChangedSignificantly = NO;
         }
     }
@@ -247,7 +271,7 @@ static LocationReporter *sharedInstance;
     //[[Controller sharedInstance] checkinUserForEvent:event];
 }
 
-- (void)reportUserLocation:(CLLocation *)location andEvent:(Event *)event
+- (void)reportUserLocation:(CLLocation *)location
 {
     NSLog(@"Reporting location: %@", [location description]);
     UIApplication *app = [UIApplication sharedApplication];
@@ -256,12 +280,12 @@ static LocationReporter *sharedInstance;
     [loc setLongitude:[NSString stringWithFormat:@"%f", location.coordinate.longitude]];
     
     if (app.applicationState == UIApplicationStateBackground) {
-        NSLog(@"Reporting location for event: %@ in background", event.eventTitle);
+        NSLog(@"Reporting location in background");
         //[[Controller sharedInstance] reportLocation:loc forEvent:event];
-        [[Controller sharedInstance] reportLocationSynchronous:loc forEvent:event];
+        [[Controller sharedInstance] reportLocationSynchronous:loc];
     } else {
-        NSLog(@"Reporting location for event: %@", event.eventTitle);
-        [[Controller sharedInstance] reportLocation:loc forEvent:event];
+        NSLog(@"Reporting location");
+        [[Controller sharedInstance] reportLocation:loc];
     }
 }
 
