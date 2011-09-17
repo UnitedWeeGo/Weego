@@ -18,6 +18,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 @interface BBDownloadCache ()
 + (NSString *)keyForURL:(NSURL *)url;
 - (NSString *)pathToFile:(NSString *)file;
+- (NSURL *)urlToUseForRequest:(SGASIHTTPRequest *)request;
 @end
 
 @implementation BBDownloadCache
@@ -49,6 +50,11 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	[storagePath release];
 	[accessLock release];
 	[super dealloc];
+}
+
+- (NSURL *)urlToUseForRequest:(SGASIHTTPRequest *)request
+{
+    return [request originalURL] != nil ? [request originalURL] : [request url];
 }
 
 - (NSString *)storagePath
@@ -261,11 +267,11 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == SGASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
     
 	// Grab the file extension, if there is one. We do this so we can save the cached response with the same file extension - this is important if you want to display locally cached data in a web view 
-	NSString *extension = [[[request url] path] pathExtension];
+	NSString *extension = [[[self urlToUseForRequest:request] path] pathExtension];
 	if (![extension length]) {
 		extension = @"html";
 	}
-	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[request url]] stringByAppendingPathExtension:extension]];
+	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[self urlToUseForRequest:request]] stringByAppendingPathExtension:extension]];
 	[[self accessLock] unlock];
 	return path;
 }
@@ -278,7 +284,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		return nil;
 	}
 	NSString *path = [[self storagePath] stringByAppendingPathComponent:([request cacheStoragePolicy] == SGASICacheForSessionDurationCacheStoragePolicy ? sessionCacheFolder : permanentCacheFolder)];
-	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[request url]] stringByAppendingPathExtension:@"cachedheaders"]];
+	path =  [path stringByAppendingPathComponent:[[[self class] keyForURL:[self urlToUseForRequest:request]] stringByAppendingPathExtension:@"cachedheaders"]];
 	[[self accessLock] unlock];
 	return path;
 }
@@ -306,7 +312,7 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 
 - (void)removeCachedDataForRequest:(SGASIHTTPRequest *)request
 {
-	[self removeCachedDataForURL:[request url]];
+	[self removeCachedDataForURL:[self urlToUseForRequest:request]];
 }
 
 - (BOOL)isCachedDataCurrentForRequest:(SGASIHTTPRequest *)request
@@ -316,12 +322,12 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		[[self accessLock] unlock];
 		return NO;
 	}
-	NSDictionary *cachedHeaders = [self cachedResponseHeadersForURL:[request url]];
+	NSDictionary *cachedHeaders = [self cachedResponseHeadersForURL:[self urlToUseForRequest:request]];
 	if (!cachedHeaders) {
 		[[self accessLock] unlock];
 		return NO;
 	}
-	NSString *dataPath = [self pathToCachedResponseDataForURL:[request url]];
+	NSString *dataPath = [self pathToCachedResponseDataForURL:[self urlToUseForRequest:request]];
 	if (!dataPath) {
 		[[self accessLock] unlock];
 		return NO;
@@ -468,11 +474,11 @@ static NSString *permanentCacheFolder = @"PermanentStore";
 		return YES;
 	}
     
-	NSDictionary *headers = [self cachedResponseHeadersForURL:[request url]];
+	NSDictionary *headers = [self cachedResponseHeadersForURL:[self urlToUseForRequest:request]];
 	if (!headers) {
 		return NO;
 	}
-	NSString *dataPath = [self pathToCachedResponseDataForURL:[request url]];
+	NSString *dataPath = [self pathToCachedResponseDataForURL:[self urlToUseForRequest:request]];
 	if (!dataPath) {
 		return NO;
 	}
