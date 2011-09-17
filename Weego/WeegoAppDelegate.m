@@ -13,6 +13,7 @@
 #import "DataParser.h"
 #import "KeychainManager.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "BBDownloadCache.h"
 
 @interface WeegoAppDelegate(Private)
 - (void)initCache;
@@ -41,7 +42,11 @@
 {
     //NSLog(@"initCache");
     // init the caching mechanism
+    /* this is the default, but we override to customize a bit
     [SGASIHTTPRequest setDefaultCache:[SGASIDownloadCache sharedCache]];
+    */
+    [SGASIHTTPRequest setDefaultCache:[BBDownloadCache sharedCache]];
+    
     // When you turn shouldRespectCacheControlHeaders off, the cache will store responses even if the server 
     // has explictly asked for them not be be cached (eg with a cache-control or pragma: no-cache header)
     [[SGASIDownloadCache sharedCache] setShouldRespectCacheControlHeaders:YES];

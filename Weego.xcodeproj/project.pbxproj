@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 010A6E5013CD74D800D8F191 /* Entitlements.plist */; };
+		011A5AC714250FF900939B2F /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011A5AC614250FF900939B2F /* SimpleGeo.framework */; };
 		01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */; };
 		012C7D0D1420344800F3885D /* button_decided_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0B1420344800F3885D /* button_decided_default.png */; };
 		012C7D0E1420344800F3885D /* button_decided_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0C1420344800F3885D /* button_decided_default@2x.png */; };
@@ -555,7 +556,6 @@
 		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
 		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
 		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
-		01B0A31D141613D700944537 /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B0A31C141613D700944537 /* SimpleGeo.framework */; };
 		01BB3F7413E89CE600E491FB /* icon_addfrom_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */; };
 		01BB3F7513E89CE600E491FB /* icon_addfrom_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */; };
 		01BB3F7613E89CE600E491FB /* icon_time_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7013E89CE600E491FB /* icon_time_01.png */; };
@@ -606,6 +606,7 @@
 
 /* Begin PBXFileReference section */
 		010A6E5013CD74D800D8F191 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		011A5AC614250FF900939B2F /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SimpleGeo.framework; sourceTree = "<group>"; };
 		01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGeoDataParser.h; sourceTree = "<group>"; };
 		01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleGeoDataParser.m; sourceTree = "<group>"; };
 		012C7D0B1420344800F3885D /* button_decided_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_decided_default.png; sourceTree = "<group>"; };
@@ -1277,7 +1278,6 @@
 		018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategoryTable.m; sourceTree = "<group>"; };
 		018212CD13D4D73900BF9EF4 /* CellCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellCategory.h; sourceTree = "<group>"; };
 		018212CE13D4D73900BF9EF4 /* CellCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellCategory.m; sourceTree = "<group>"; };
-		01B0A31C141613D700944537 /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SimpleGeo.framework; sourceTree = "<group>"; };
 		01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_addfrom_01.png; sourceTree = "<group>"; };
 		01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_addfrom_01@2x.png"; sourceTree = "<group>"; };
 		01BB3F7013E89CE600E491FB /* icon_time_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_time_01.png; sourceTree = "<group>"; };
@@ -1361,7 +1361,7 @@
 				0176109B13BE6F3600324EF9 /* Foundation.framework in Frameworks */,
 				0176109D13BE6F3600324EF9 /* CoreGraphics.framework in Frameworks */,
 				017610E013BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a in Frameworks */,
-				01B0A31D141613D700944537 /* SimpleGeo.framework in Frameworks */,
+				011A5AC714250FF900939B2F /* SimpleGeo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1559,7 +1559,7 @@
 		0176109713BE6F3600324EF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				01B0A31C141613D700944537 /* SimpleGeo.framework */,
+				011A5AC614250FF900939B2F /* SimpleGeo.framework */,
 				0131719713CABDF00068B383 /* libz.dylib */,
 				017610E513BE74AD00324EF9 /* libsqlite3.0.dylib */,
 				017610DF13BE743A00324EF9 /* libGoogleAnalytics_NoThumb.a */,
@@ -3092,6 +3092,74 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		01311AAD14241CE400F4F9F4 /* Debug Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "i386 armv6 armv7";
+			};
+			name = "Debug Production";
+		};
+		01311AAE14241CE400F4F9F4 /* Debug Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Resources\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Weego/Weego-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"API_TYPE=4",
+					"TOKEN_ENV_SANDBOX=0",
+				);
+				GCC_VERSION = "";
+				INFOPLIST_FILE = "Weego/Weego-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TOKEN_ENV_SANDBOX = 0;
+				VALIDATE_PRODUCT = NO;
+				VALID_ARCHS = "i386 armv6 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = "Debug Production";
+		};
 		0136B55513F05D9100A368B5 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3106,11 +3174,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "9A952413-AFF1-4BA5-BF1A-F92B4BBBCDA5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = Distribution;
 		};
@@ -3148,6 +3217,7 @@
 				PROVISIONING_PROFILE = "9A952413-AFF1-4BA5-BF1A-F92B4BBBCDA5";
 				TOKEN_ENV_SANDBOX = 0;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "i386 armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;
@@ -3173,33 +3243,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = "Debug Beta";
-		};
-		017610AB13BE6F3600324EF9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
-				COPY_PHASE_STRIP = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = "";
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "9A952413-AFF1-4BA5-BF1A-F92B4BBBCDA5";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
 		};
 		017610AD13BE6F3600324EF9 /* Debug Beta */ = {
 			isa = XCBuildConfiguration;
@@ -3235,46 +3284,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
+				VALID_ARCHS = "i386 armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Debug Beta";
-		};
-		017610AE13BE6F3600324EF9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Weego/Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Resources\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Weego/Weego-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"API_TYPE=4",
-					"TOKEN_ENV_SANDBOX=0",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
-				GCC_VERSION = "";
-				INFOPLIST_FILE = "Weego/Weego-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-ObjC",
-					"-all_load",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9A952413-AFF1-4BA5-BF1A-F92B4BBBCDA5";
-				TOKEN_ENV_SANDBOX = 0;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
 		};
 		0176156713BE803600324EF9 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
@@ -3282,6 +3295,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_ENTITLEMENTS = Weego/Entitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: UnitedWeGo LLC";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3290,11 +3304,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "ECF9E383-8670-4F8C-B735-1D0C5A31C0E3";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = "Ad Hoc";
 		};
@@ -3331,6 +3346,7 @@
 				PROVISIONING_PROFILE = "ECF9E383-8670-4F8C-B735-1D0C5A31C0E3";
 				TOKEN_ENV_SANDBOX = 0;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "i386 armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Ad Hoc";
@@ -3357,9 +3373,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = "Debug Local";
 		};
@@ -3397,6 +3414,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
+				VALID_ARCHS = "i386 armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Debug Local";
@@ -3422,9 +3440,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "i386 armv6 armv7";
 			};
 			name = "Debug Stable";
 		};
@@ -3462,6 +3481,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TOKEN_ENV_SANDBOX = 1;
+				VALID_ARCHS = "i386 armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = "Debug Stable";
@@ -3475,12 +3495,12 @@
 				017610AA13BE6F3600324EF9 /* Debug Beta */,
 				01E08FB713CFD665009F90D2 /* Debug Stable */,
 				01E08D8F13CF7D13009F90D2 /* Debug Local */,
-				017610AB13BE6F3600324EF9 /* Release */,
 				0136B55513F05D9100A368B5 /* Distribution */,
 				0176156713BE803600324EF9 /* Ad Hoc */,
+				01311AAD14241CE400F4F9F4 /* Debug Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Debug Beta";
 		};
 		017610AC13BE6F3600324EF9 /* Build configuration list for PBXNativeTarget "Weego" */ = {
 			isa = XCConfigurationList;
@@ -3488,12 +3508,12 @@
 				017610AD13BE6F3600324EF9 /* Debug Beta */,
 				01E08FB813CFD665009F90D2 /* Debug Stable */,
 				01E08D9013CF7D13009F90D2 /* Debug Local */,
-				017610AE13BE6F3600324EF9 /* Release */,
 				0136B55613F05D9100A368B5 /* Distribution */,
 				0176156813BE803600324EF9 /* Ad Hoc */,
+				01311AAE14241CE400F4F9F4 /* Debug Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = "Debug Beta";
 		};
 /* End XCConfigurationList section */
 	};
