@@ -137,8 +137,8 @@
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
             
-            double z_width = 3000;
-            double z_height = 1440;
+            double z_width = 1;
+            double z_height = 1;
             
             MKMapRect r = MKMapRectMake(annotationPoint.x - z_width, annotationPoint.y - z_height, z_width, z_height);
             
