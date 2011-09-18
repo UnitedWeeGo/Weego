@@ -128,7 +128,7 @@ typedef enum {
     
     [self.tableView reloadData];
     
-    [[Model sharedInstance] printModel];
+    //[[Model sharedInstance] printModel];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

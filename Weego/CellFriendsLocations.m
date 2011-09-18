@@ -155,7 +155,7 @@
     float paddedHeight = zoomRect.size.height *= 1.5;
         
     zoomRect.origin.x += (origWidth - paddedWidth) / 2;
-    zoomRect.origin.y += (origHeight - paddedHeight) / 2;
+    zoomRect.origin.y += (origHeight - paddedHeight);
     
     zoomRect.size.width = paddedWidth;
     zoomRect.size.height = paddedHeight;

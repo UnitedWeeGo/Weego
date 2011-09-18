@@ -224,18 +224,21 @@ static LocationReporter *sharedInstance;
     {
         BOOL eventHasBeenCheckedIn = e.hasBeenCheckedIn;
         BOOL eventIsBeingCreated = e.isTemporary;
-        BOOL eventIsInRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateEnded;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         
+        int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
+        BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
+        BOOL eventStateIsWithinRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateCancelled;
         /*
         NSLog(@"eventTitle: %@", e.eventTitle);
         NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
         NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
-        NSLog(@"eventIsInRange: %i", eventIsInRange);
+        NSLog(@"eventIsWithinTimeRange: %i", eventIsWithinTimeRange);
         NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
+        NSLog(@"eventIsCancelled: %i", eventIsCancelled);
         */
          
-        if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsInRange && userAcceptedEvent)
+        if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsWithinTimeRange && userAcceptedEvent && eventStateIsWithinRange)
         {
             /*
             NSLog(@"testing user location for %@", e.eventTitle);
