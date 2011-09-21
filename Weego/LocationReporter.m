@@ -319,7 +319,11 @@ static LocationReporter *sharedInstance;
     {
         CLLocationAccuracy accuracy = newLocation.horizontalAccuracy;
         
-        if (lastReportedLocation == nil) lastReportedLocation  = [newLocation copy];
+        if (lastReportedLocation == nil)
+        {
+            locationChangedSignificantly = YES;
+            lastReportedLocation  = [newLocation copy];
+        }
         /*
         NSLog(@"accuracy: %f", accuracy);
         NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
