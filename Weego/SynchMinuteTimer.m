@@ -40,6 +40,9 @@
     tenSecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(tenSecondTick) object:nil];
     [tenSecondThread start];
     
+    thirtySecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(thirtySecondTick) object:nil];
+    [thirtySecondThread start];
+    
     [self postNotification:[NSNotification notificationWithName:SYNCH_FIVE_SECOND_TIMER_TICK object:self]];
 }
 
@@ -48,9 +51,11 @@
     NSLog(@"stopTimer");
     [fiveSecondThread cancel];
     [tenSecondThread cancel];
+    [thirtySecondThread cancel];
     threadDone = YES;
     [fiveSecondThread release];
     [tenSecondThread release];
+    [thirtySecondThread release];
 }
 
 - (void)dealloc 
@@ -93,6 +98,23 @@
         
         [NSThread sleepUntilDate:nextTenSeconds];
         [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_TEN_SECOND_TIMER_TICK object:self] waitUntilDone:YES];
+    }
+    
+    [pool drain];
+}
+
+- (void)thirtySecondTick
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    
+    while (!threadDone) {
+        NSDate *now = [NSDate date];
+        
+        NSTimeInterval thirtySecondsInterval = ceil([now timeIntervalSinceReferenceDate] / 30) * 30;
+        NSDate *nextThirtySeconds = [NSDate dateWithTimeIntervalSinceReferenceDate:thirtySecondsInterval];
+        
+        [NSThread sleepUntilDate:nextThirtySeconds];
+        [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_THIRTY_SECOND_TIMER_TICK object:self] waitUntilDone:YES];
     }
     
     [pool drain];

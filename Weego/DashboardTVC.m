@@ -130,7 +130,7 @@
 
 - (void)createDataSources
 {
-    NSLog(@"createDataSources");
+    //NSLog(@"createDataSources");
     [dataSources release];
     dataSources = [[NSMutableArray alloc] init];
     Model *model = [Model sharedInstance];
@@ -188,7 +188,7 @@
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeGetDashboardEvents:
-            NSLog(@"DataFetchTypeGetDashboardEvents Success");
+            //NSLog(@"DataFetchTypeGetDashboardEvents Success");
             [NSObject cancelPreviousPerformRequestsWithTarget:self];
             initialLoadFinished = YES;
             [self createDataSources];

@@ -564,6 +564,7 @@
 		01BB3F7913E89CE600E491FB /* POIs_deal_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7313E89CE600E491FB /* POIs_deal_default@2x.png */; };
 		01BB3F7D13E8B1F100E491FB /* POIs_deal_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7B13E8B1F000E491FB /* POIs_deal_selected.png */; };
 		01BB3F7E13E8B1F100E491FB /* POIs_deal_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7C13E8B1F000E491FB /* POIs_deal_selected@2x.png */; };
+		01C2B3B1142A746F000FD442 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B3B0142A746F000FD442 /* LocationService.m */; };
 		01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E164BF13DE440800B0B8FD /* SuggestedTime.m */; };
 		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
 		01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5613D10D6400213CC4 /* button_redosearch_default.png */; };
@@ -1286,6 +1287,8 @@
 		01BB3F7313E89CE600E491FB /* POIs_deal_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "POIs_deal_default@2x.png"; sourceTree = "<group>"; };
 		01BB3F7B13E8B1F000E491FB /* POIs_deal_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = POIs_deal_selected.png; sourceTree = "<group>"; };
 		01BB3F7C13E8B1F000E491FB /* POIs_deal_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "POIs_deal_selected@2x.png"; sourceTree = "<group>"; };
+		01C2B3AF142A746F000FD442 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
+		01C2B3B0142A746F000FD442 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		01E164BE13DE440800B0B8FD /* SuggestedTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestedTime.h; sourceTree = "<group>"; };
 		01E164BF13DE440800B0B8FD /* SuggestedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestedTime.m; sourceTree = "<group>"; };
 		01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottombar_background_clear.png; sourceTree = "<group>"; };
@@ -1480,6 +1483,8 @@
 		0133D20A141E9BB100713AC9 /* Depricated */ = {
 			isa = PBXGroup;
 			children = (
+				0176139513BE75B500324EF9 /* LocationReporter.h */,
+				0176139613BE75B500324EF9 /* LocationReporter.m */,
 				017614F013BE793C00324EF9 /* Prefs.h */,
 				017614F113BE793C00324EF9 /* Prefs.m */,
 				0176150A13BE793C00324EF9 /* RegisterTVC.h */,
@@ -1488,6 +1493,7 @@
 				0176151513BE793C00324EF9 /* TempDealPopup.m */,
 			);
 			name = Depricated;
+			path = Weego;
 			sourceTree = "<group>";
 		};
 		0133D20B141E9CC900713AC9 /* Help, Terms, Privacy */ = {
@@ -1545,6 +1551,7 @@
 				0176109E13BE6F3600324EF9 /* Weego */,
 				0176109713BE6F3600324EF9 /* Frameworks */,
 				0176109513BE6F3600324EF9 /* Products */,
+				0133D20A141E9BB100713AC9 /* Depricated */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2059,8 +2066,8 @@
 		0176139413BE75A300324EF9 /* LocationManager */ = {
 			isa = PBXGroup;
 			children = (
-				0176139513BE75B500324EF9 /* LocationReporter.h */,
-				0176139613BE75B500324EF9 /* LocationReporter.m */,
+				01C2B3AF142A746F000FD442 /* LocationService.h */,
+				01C2B3B0142A746F000FD442 /* LocationService.m */,
 			);
 			name = LocationManager;
 			sourceTree = "<group>";
@@ -2243,7 +2250,6 @@
 				0176141513BE77E300324EF9 /* Feed */,
 				0176140813BE778000324EF9 /* Help/About Components */,
 				0133D21E141FD21100713AC9 /* Custom UI Elements */,
-				0133D20A141E9BB100713AC9 /* Depricated */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3075,6 +3081,7 @@
 				0133D20F141EA20000713AC9 /* CellFriendsLocations.m in Sources */,
 				A95B3EF5141EBAB4001D91E0 /* MoreButtonActionSheetController.m in Sources */,
 				012C7D1214213D7E00F3885D /* GetDirectionsActionSheetController.m in Sources */,
+				01C2B3B1142A746F000FD442 /* LocationService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

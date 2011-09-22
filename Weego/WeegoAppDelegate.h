@@ -10,7 +10,6 @@
 #import "LoadView.h"
 #import "SynchMinuteTimer.h"
 #import "FBConnect.h"
-#import "LocationReporter.h"
 #import "LoginFacebookPopup.h"
 
 @class DataFetcher;

@@ -344,7 +344,7 @@ static DataParser *sharedInstance;
     }
     if (![Model sharedInstance].currentAppState == AppStateCreateEvent) [[Model sharedInstance] flushTempItems];
         
-    NSLog(@"User %@ :: parseResponseAllEvents success", model.userEmail);
+    //NSLog(@"User %@ :: parseResponseAllEvents success", model.userEmail);
     model.lastFetchAttempt = [NSDate date];
 }
 

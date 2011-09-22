@@ -190,7 +190,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"CellFormEntry dealloc");
+    //NSLog(@"CellFormEntry dealloc");
     inputField.delegate = nil;
     [inputField resignFirstResponder];
     [localText release];

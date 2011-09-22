@@ -14,6 +14,7 @@
 #import "KeychainManager.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "BBDownloadCache.h"
+#import "LocationService.h"
 
 @interface WeegoAppDelegate(Private)
 - (void)initCache;
@@ -194,7 +195,7 @@
 
 - (void)showDebugLocationServicesIcon:(BOOL)toShow
 {
-    //debugLocIcon.hidden = !toShow;
+    debugLocIcon.hidden = !toShow;
 }
 
 - (void)initSimpleGeoCategories
@@ -600,7 +601,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
     [minuteTimer startTimer];
     
-    [LocationReporter sharedInstance]; // init singleton
+    [LocationService sharedInstance]; // init singleton
 }
 
 - (void)reportTimerTick

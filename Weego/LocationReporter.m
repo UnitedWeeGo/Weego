@@ -5,7 +5,7 @@
 //  Created by Nicholas Velloff on 5/25/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
-
+/*
 #import "LocationReporter.h"
 #import "Event.h"
 #import "Location.h"
@@ -144,18 +144,18 @@ static LocationReporter *sharedInstance;
         BOOL userAcceptedEvent = e.acceptanceStatus ==  AcceptanceTypeAccepted;
         BOOL eventIsCancelled = e.currentEventState == EventStateCancelled;
         
-        /*
-        NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
-        NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
-        NSLog(@"topLocationId: %@", e.topLocationId);
-        NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
-        NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
-        NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
-        NSLog(@"eventIsCancelled: %d", eventIsCancelled);
-        NSLog(@"locationTrackingUserEnabled: %d", locationTrackingUserEnabled);
-        NSLog(@"checkinUserEnabled: %d", checkinUserEnabled);
-        NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
-         */
+        
+//        NSLog(@"eventIsWithinTimeRange: %d", eventIsWithinTimeRange);
+//        NSLog(@"eventHasBeenCheckedIn: %d", eventHasBeenCheckedIn);
+//        NSLog(@"topLocationId: %@", e.topLocationId);
+//        NSLog(@"hasADecidedLocation: %d", hasADecidedLocation);
+//        NSLog(@"eventIsBeingCreated: %d", eventIsBeingCreated);
+//        NSLog(@"userAcceptedEvent: %d", userAcceptedEvent);
+//        NSLog(@"eventIsCancelled: %d", eventIsCancelled);
+//        NSLog(@"locationTrackingUserEnabled: %d", locationTrackingUserEnabled);
+//        NSLog(@"checkinUserEnabled: %d", checkinUserEnabled);
+//        NSLog(@" ");NSLog(@" ");NSLog(@" ");NSLog(@" ");
+         
         
         if (eventIsWithinTimeRange && !eventHasBeenCheckedIn && !eventHasPendingCheckIn && hasADecidedLocation && !eventIsBeingCreated && userAcceptedEvent && (locationTrackingUserEnabled || checkinUserEnabled) && !eventIsCancelled) 
         {
@@ -229,20 +229,19 @@ static LocationReporter *sharedInstance;
         int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);
         BOOL eventIsWithinTimeRange = e.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && e.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
         BOOL eventStateIsWithinRange = e.currentEventState >= EventStateDecided && e.currentEventState < EventStateCancelled;
-        /*
-        NSLog(@"eventTitle: %@", e.eventTitle);
-        NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
-        NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
-        NSLog(@"eventIsWithinTimeRange: %i", eventIsWithinTimeRange);
-        NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
-        NSLog(@"eventIsCancelled: %i", eventIsCancelled);
-        */
+        
+//        NSLog(@"eventTitle: %@", e.eventTitle);
+//        NSLog(@"eventHasBeenCheckedIn: %i", eventHasBeenCheckedIn);
+//        NSLog(@"eventIsBeingCreated: %i", eventIsBeingCreated);
+//        NSLog(@"eventIsWithinTimeRange: %i", eventIsWithinTimeRange);
+//        NSLog(@"userAcceptedEvent: %i", userAcceptedEvent);
+//        NSLog(@"eventIsCancelled: %i", eventIsCancelled);
+        
          
         if (!eventHasBeenCheckedIn && !eventIsBeingCreated && eventIsWithinTimeRange && userAcceptedEvent && eventStateIsWithinRange)
         {
-            /*
-            NSLog(@"testing user location for %@", e.eventTitle);
-             */
+            
+            //NSLog(@"testing user location for %@", e.eventTitle);
             
             Location *loc = [e getLocationByLocationId:e.topLocationId];
             if (loc == nil) continue;
@@ -324,13 +323,13 @@ static LocationReporter *sharedInstance;
             locationChangedSignificantly = YES;
             lastReportedLocation  = [newLocation copy];
         }
-        /*
-        NSLog(@"accuracy: %f", accuracy);
-        NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
-        NSLog(@"lastReportedLocation distanceFromLocation:newLocation: %f", [lastReportedLocation distanceFromLocation:newLocation]);
-        NSLog(@"REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD: %d", REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD);
-        NSLog(@"CHECKIN_ACCURACY_THRESHOLD: %d", CHECKIN_ACCURACY_THRESHOLD);
-        */
+        
+//        NSLog(@"accuracy: %f", accuracy);
+//        NSLog(@"locationChangedSignificantly: %d", locationChangedSignificantly);
+//        NSLog(@"lastReportedLocation distanceFromLocation:newLocation: %f", [lastReportedLocation distanceFromLocation:newLocation]);
+//        NSLog(@"REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD: %d", REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD);
+//        NSLog(@"CHECKIN_ACCURACY_THRESHOLD: %d", CHECKIN_ACCURACY_THRESHOLD);
+        
         if (!locationChangedSignificantly) locationChangedSignificantly = [lastReportedLocation distanceFromLocation:newLocation] > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD && accuracy < CHECKIN_ACCURACY_THRESHOLD;
         if (locationChangedSignificantly) {
             [lastReportedLocation release];
@@ -357,3 +356,10 @@ static LocationReporter *sharedInstance;
 }
 
 @end
+*/
+ 
+ 
+ 
+ 
+ 
+ 

@@ -16,7 +16,7 @@
 #import "FeedMessage.h"
 #import "ReportedLocation.h"
 #import "SuggestedTime.h"
-#import "LocationReporter.h"
+#import "LocationService.h"
 
 @interface Model (Private)
 
@@ -270,7 +270,7 @@ static Model *sharedInstance;
 	for (Event *ev in self.sortedEvents) {
 		float dayDiff = [ev.eventDate timeIntervalSinceDate:todayMidnight] / (60*60*24);
         if (dayDiff >= 0 && dayDiff <= 1) { //<= 7) {
-            NSLog(@"timeIntervalSinceNow %f", [ev.eventDate timeIntervalSinceNow]);
+            //NSLog(@"timeIntervalSinceNow %f", [ev.eventDate timeIntervalSinceNow]);
             if ([ev.eventDate timeIntervalSinceNow] < -60*60*3) { // < 0) {
                 [self.pastEvents addObject:ev];
 //                [weeksEventsPast addObject:ev];
@@ -1437,7 +1437,7 @@ static Model *sharedInstance;
         self.locationReportingDisabledRequested = YES;
         self.locationReportingEnabledRequested = NO;
     }
-    [[LocationReporter sharedInstance] reportNow];
+    [[LocationService sharedInstance] reportNow];
 }
 
 #pragma mark -

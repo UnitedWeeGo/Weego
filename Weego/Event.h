@@ -51,6 +51,8 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, assign) BOOL hasBeenRemoved;
 @property (nonatomic, assign) BOOL hasBeenCancelled;
 @property (nonatomic, readonly) BOOL iOwnEvent;
+@property (nonatomic, readonly) BOOL shouldReportUserLocation;
+@property (nonatomic, readonly) BOOL shouldAttemptCheckin;
 
 - (id)initWithId:(NSString *)anId;
 

@@ -739,7 +739,7 @@ typedef enum {
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
     switch (fetchType) {
         case DataFetchTypeCreateNewEvent:
-            NSLog(@"DataFetchTypeCreateNewEvent Success");
+            //NSLog(@"DataFetchTypeCreateNewEvent Success");
             _saving = NO;
             [[Model sharedInstance] flushTempItems];
             if (isInDuplicate) {
