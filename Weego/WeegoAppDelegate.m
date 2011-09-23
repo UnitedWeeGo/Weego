@@ -47,6 +47,7 @@
     [SGASIHTTPRequest setDefaultCache:[SGASIDownloadCache sharedCache]];
     */
     [SGASIHTTPRequest setDefaultCache:[BBDownloadCache sharedCache]];
+    [SGASIHTTPRequest setShouldUpdateNetworkActivityIndicator: NO];
     
     // When you turn shouldRespectCacheControlHeaders off, the cache will store responses even if the server 
     // has explictly asked for them not be be cached (eg with a cache-control or pragma: no-cache header)
