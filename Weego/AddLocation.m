@@ -569,6 +569,12 @@ typedef enum {
 
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    if (alreadyZoomedToShowUserLocation) return;
+    if (theMapView.userLocation.location == nil) return;
+    
+    [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
+    
+    /*
     if (userLocationFound) return;
     if (theMapView.userLocation.location == nil) return;
     
@@ -578,6 +584,7 @@ typedef enum {
     region.span.longitudeDelta = 0.101;
     [theMapView setRegion:region animated:NO];
     userLocationFound = true;
+     */
 }
 
 - (void)mapView:(MKMapView *)theMapView didSelectAnnotationView:(MKAnnotationView *)view
@@ -745,10 +752,6 @@ typedef enum {
         if (isUserLocation && !alreadyZoomedToShowUserLocation) 
         {
             alreadyZoomedToShowUserLocation = YES;
-        }
-        else if (isUserLocation && alreadyZoomedToShowUserLocation)
-        {
-            continue;
         }
         if (skipAdded && !isUserLocation)
         {

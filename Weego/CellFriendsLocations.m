@@ -60,6 +60,11 @@
     
     [self.contentView addSubview:mapPressButton];
     
+    // add lower separation art
+    UIImageView *bottomSeparator = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MiniMap_BottomBar.png"]] autorelease];
+    bottomSeparator.frame = CGRectMake(-1, 131, 302, 9);
+    [self.contentView addSubview:bottomSeparator];
+    
     self.frame = CGRectMake(self.frame.origin.x, 
 							self.frame.origin.y, 
 							self.frame.size.width, 
