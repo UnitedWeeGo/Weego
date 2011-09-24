@@ -82,7 +82,7 @@
         lastDisplayedVersionAlert = [serverVersion retain];
         lastDisplayedVersionAlertDate = [[NSDate date] retain];
         NSString *alertMessage = [NSString stringWithFormat:@"Version %@ is now available. Please update to get the most out of weego!", serverVersion];
-        UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"Update available" message:alertMessage delegate:self cancelButtonTitle:@"Now now" otherButtonTitles:@"Update!", nil];
+        UIAlertView *updateAlert = [[UIAlertView alloc] initWithTitle:@"Update available" message:alertMessage delegate:self cancelButtonTitle:@"Not now" otherButtonTitles:@"Update!", nil];
         [updateAlert show];
         [updateAlert release];
     }
