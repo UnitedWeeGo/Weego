@@ -767,11 +767,11 @@ typedef enum {
         MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
         MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
         if (MKMapRectIsNull(zoomRect)) {
-                        
-            double z_width = 3000;
-            double z_height = 5000;
             
-            MKMapRect r = MKMapRectMake(annotationPoint.x - z_width, annotationPoint.y - (z_height  * 0.5), z_width, z_height);
+            double z_width = 1;
+            double z_height = 1;
+            
+            MKMapRect r = MKMapRectMake(annotationPoint.x - z_width, annotationPoint.y - z_height, z_width, z_height);
             
             zoomRect = r;
             
@@ -784,12 +784,17 @@ typedef enum {
     float origHeight = zoomRect.size.height;
     float paddedHeight = zoomRect.size.height *= 1.5;
     
+    if (paddedWidth < 1000)
+    {
+        paddedWidth = 3000;
+    }
+    
     zoomRect.origin.x += (origWidth - paddedWidth) / 2;
     zoomRect.origin.y += (origHeight - paddedHeight);
     
     zoomRect.size.width = paddedWidth;
     zoomRect.size.height = paddedHeight;
-
+    
     [mapView setVisibleMapRect:zoomRect animated:YES];
 }
 
