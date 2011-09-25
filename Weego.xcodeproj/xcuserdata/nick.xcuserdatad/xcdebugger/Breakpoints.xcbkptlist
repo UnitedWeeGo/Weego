@@ -9,12 +9,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "338598303.685833"
+         timestampString = "338681850.976735"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "575"
-         endingLineNumber = "575"
-         landmarkName = "-mapView:didUpdateUserLocation:"
+         startingLineNumber = "1612"
+         endingLineNumber = "1612"
+         landmarkName = "-addressBookLocationsTVCDidSelectCurrentLocation"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -23,12 +23,54 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "338598216.645256"
+         timestampString = "338681368.146696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "747"
-         endingLineNumber = "747"
-         landmarkName = "-zoomToFitMapAnnotationsAndSkipPreviouslyAdded:"
+         startingLineNumber = "409"
+         endingLineNumber = "409"
+         landmarkName = "-beginCurrentLocationSearchWithCoordinate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "338678664.144738"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "761"
+         endingLineNumber = "761"
+         landmarkName = "-initAndSearchSimpleGeoForAddressWithCoordinate:delegate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/SimpleGeoDataParser.m"
+         timestampString = "338678770.170173"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "55"
+         endingLineNumber = "55"
+         landmarkName = "-processSimpleGeoContextResponse:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/Location.m"
+         timestampString = "338678986.553357"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "61"
+         endingLineNumber = "61"
+         landmarkName = "-initWithSimpleGeoAddressResult:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -37,12 +79,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "338598507.437173"
+         timestampString = "338681368.146696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "768"
-         endingLineNumber = "768"
-         landmarkName = "-zoomToFitMapAnnotationsAndSkipPreviouslyAdded:"
+         startingLineNumber = "1290"
+         endingLineNumber = "1290"
+         landmarkName = "-handleDataFetcherSuccessMessage:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -51,12 +93,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "338599550.47374"
+         timestampString = "338681368.146696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "798"
-         endingLineNumber = "798"
-         landmarkName = "-zoomToFitMapAnnotationsAndSkipPreviouslyAdded:"
+         startingLineNumber = "430"
+         endingLineNumber = "430"
+         landmarkName = "-beginCurrentLocationSearchNearbyPlacesWithCoordinate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

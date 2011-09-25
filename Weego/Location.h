@@ -53,6 +53,7 @@
 
 - (void)populateWithXml:(GDataXMLElement *)xml;
 - (id)initWithSimpleGeoFeatureResult:(SGFeature *)feature;
+- (id)initWithSimpleGeoAddressResult:(SGContext *)context;
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict;
 - (NSString*) stringWithUUID;
 

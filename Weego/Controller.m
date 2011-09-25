@@ -397,6 +397,20 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
+- (id)searchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoForAddressWithCoordinate:coord delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
+    return fetcher.requestId;
+}
+
+- (id)searchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoForNearbyPlacesWithCoordinate:coord delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
+    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
+    return fetcher.requestId;
+}
+
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
     NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];

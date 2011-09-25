@@ -48,6 +48,8 @@ typedef enum {
 - (void)hideKeyboardResigner;
 - (void)doSecondaryAddressSearch;
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
+- (void)beginCurrentLocationSearchWithCoordinate:(CLLocationCoordinate2D)coord;
+- (void)beginCurrentLocationSearchNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord;
 - (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
 - (void)doShowSearchAgainButton:(BOOL)doShow;
 - (void)enableSearchCategoryTable;
@@ -402,6 +404,48 @@ typedef enum {
     
     if (pendingSearchCategory) [pendingSearchCategory release];
     pendingSearchCategory = nil;
+}
+
+- (void)beginCurrentLocationSearchWithCoordinate:(CLLocationCoordinate2D)coord
+{
+    searchBar.text = @"";
+    [searchBar showNetworkActivity:YES];
+
+    [self resignKeyboardAndRemoveModalCover:self];
+    [self removeAnnotations:mapView includingSaved:false];
+    [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    
+    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForAddressWithCoordinate:coord] retain];
+    
+    if (pendingSearchString) [pendingSearchString release];
+    pendingSearchString = nil;
+    
+    if (pendingSearchCategory) [pendingSearchCategory release];
+    pendingSearchCategory = nil;
+    
+    continueToSearchEnabled = false;
+}
+
+- (void)beginCurrentLocationSearchNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord
+{
+    searchBar.text = @"";
+    [searchBar showNetworkActivity:YES];
+    
+    [self resignKeyboardAndRemoveModalCover:self];
+    [self removeAnnotations:mapView includingSaved:false];
+    [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
+    
+    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForNearbyPlacesWithCoordinate:coord] retain];
+    
+    if (pendingSearchString) [pendingSearchString release];
+    pendingSearchString = nil;
+    
+    if (pendingSearchCategory) [pendingSearchCategory release];
+    pendingSearchCategory = nil;
+    
+    continueToSearchEnabled = false;
 }
 
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
@@ -838,6 +882,8 @@ typedef enum {
 - (void)likeButtonPressed
 {
     LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
+    [placemark setStateType:LocAnnoStateTypeLiked];
+    [mapView viewForAnnotation:placemark].image = [placemark imageForCurrentState];
     
     Event *detail = [Model sharedInstance].currentEvent;
     Location *loc = [detail getLocationWithUUID:placemark.uuid];
@@ -1238,6 +1284,81 @@ typedef enum {
                 }
             }
             break;
+            
+        
+            
+        case DataFetchTypeSearchSimpleGeoCurrentLocation:
+            if ( [fetchId isEqualToString:simpleGeoFetchId] )
+            {
+                
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                // if this is a continue, simply add to the result collection
+                [savedSearchResultsDict removeAllObjects];
+                for (Location *loc in locations) 
+                {
+                    [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                }
+                
+                // remove any existing saved locations from results
+                NSMutableArray *toRemoveKeys = [[[NSMutableArray alloc] init] autorelease];
+                
+                NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
+                id key;
+                while ((key = [enumerator nextObject])) {
+                    Location *loc = [savedSearchResultsDict objectForKey:key];
+                    if ([[Model sharedInstance] locationExistsInCurrentEvent:loc]) [toRemoveKeys addObject:loc.g_id];
+                }
+                [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
+                
+                if ([savedSearchResultsDict count] == 0) 
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"We could not find your current location, or it was already added." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alert show];
+                    [alert release];
+                }
+                continueToSearchEnabled = false;
+                [self addSearchResultAnnotations];
+                currentState = AddLocationStateSearch;
+                [searchBar showNetworkActivity:NO];
+            }
+            break;
+        case DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces:
+            if ( [fetchId isEqualToString:simpleGeoFetchId] )
+            {
+                
+                NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
+                // if this is a continue, simply add to the result collection
+                [savedSearchResultsDict removeAllObjects];
+                for (Location *loc in locations) 
+                {
+                    [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                }
+                
+                // remove any existing saved locations from results
+                NSMutableArray *toRemoveKeys = [[[NSMutableArray alloc] init] autorelease];
+                
+                NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
+                id key;
+                while ((key = [enumerator nextObject])) {
+                    Location *loc = [savedSearchResultsDict objectForKey:key];
+                    if ([[Model sharedInstance] locationExistsInCurrentEvent:loc]) [toRemoveKeys addObject:loc.g_id];
+                }
+                [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
+                
+                if ([savedSearchResultsDict count] == 0) 
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"We could not find your current location, or all results have already been added." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alert show];
+                    [alert release];
+                }
+                continueToSearchEnabled = false;
+                [self addSearchResultAnnotations];
+                currentState = AddLocationStateSearch;
+                [searchBar showNetworkActivity:NO];
+            }
+            break;
+            
+            
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
             {
@@ -1306,6 +1427,16 @@ typedef enum {
             mapView.userInteractionEnabled = YES;
             break;
         case DataFetchTypeSearchSimpleGeo:
+            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
+            break;
+        case DataFetchTypeSearchSimpleGeoCurrentLocation:
+            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
+            break;
+        case DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces:
             NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
@@ -1476,6 +1607,42 @@ typedef enum {
     [self doShowSearchAgainButton:NO];
     [[ViewController sharedInstance] goBack];
     [self beginLocationSearchWithSearchString:anAddress andRemovePreviousResults:YES];
+}
+
+- (void)addressBookLocationsTVCDidSelectCurrentLocation
+{
+    continueToSearchEnabled = NO;
+    [self doShowSearchAgainButton:NO];
+    [[ViewController sharedInstance] goBack];
+    
+    MKUserLocation *myCLLoc = [mapView userLocation];
+    if (myCLLoc)
+    {
+        [self beginCurrentLocationSearchWithCoordinate:myCLLoc.coordinate];
+    }
+    else
+    {
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [noLocFoundAlert show];
+    }
+}
+
+- (void)addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces
+{
+    continueToSearchEnabled = NO;
+    [self doShowSearchAgainButton:NO];
+    [[ViewController sharedInstance] goBack];
+    
+    MKUserLocation *myCLLoc = [mapView userLocation];
+    if (myCLLoc)
+    {
+        [self beginCurrentLocationSearchNearbyPlacesWithCoordinate:myCLLoc.coordinate];
+    }
+    else
+    {
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [noLocFoundAlert show];
+    }
 }
 
 #pragma mark - ActionSheetControllerDelegate

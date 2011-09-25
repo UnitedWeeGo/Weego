@@ -18,6 +18,8 @@
 @protocol AddressBookLocationsTVCDelegate <NSObject>
 
 - (void)addressBookLocationsTVCDidSelectAddress:(NSString *)anAddress withFriendlyName:(NSString *)friendlyName;
+- (void)addressBookLocationsTVCDidSelectCurrentLocation;
+- (void)addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces;
 
 @end
 

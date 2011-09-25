@@ -15,6 +15,7 @@
 
 + (SimpleGeoDataParser *)sharedInstance;
 - (void)processSimpleGeoResponse:(NSArray *)places;
+- (void)processSimpleGeoContextResponse:(SGContext *)context;
 - (void)processSimpleGeoCategoryResponse:(NSArray *)categories;
 
 @end

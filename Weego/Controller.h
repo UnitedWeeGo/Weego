@@ -46,13 +46,17 @@
 - (NSString *)checkinUserForEventSynchronous:(Event *)anEvent;
 - (NSString *)fetchEventsSynchronous;
 
-
+// SimpleGeo lookups
 - (NSString *)fetchReportedLocations;
 - (id)searchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope;
 - (id)searchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name;
+- (id)searchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord;
+- (id)searchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord;
 
-
+// Google lookup
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
+
+
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;
 - (NSString *)getInfoHMTLData;
 - (NSString *)getHelpHMTLData;

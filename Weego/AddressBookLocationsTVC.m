@@ -51,6 +51,16 @@
     indexes = [[NSMutableArray alloc] init];
     indexedContacts = [[NSMutableArray alloc] initWithObjects:[NSMutableArray array], nil];
     
+    // Adding the "My Location" button AND "Places around me"
+    [indexes addObject:@"*"];
+    [indexedContacts addObject:[NSMutableArray array]];
+    Contact *myLoc = [[[Contact alloc] init] autorelease];
+    myLoc.contactName = @"Current Location";
+    [[indexedContacts objectAtIndex:0] addObject:myLoc];
+    Contact *aroundMe = [[[Contact alloc] init] autorelease];
+    aroundMe.contactName = @"Places around me";
+    [[indexedContacts objectAtIndex:0] addObject:aroundMe];
+    
     for(char c = 'A'; c <= 'Z'; c++) {
         [indexes addObject:[NSString stringWithFormat:@"%c",c]];
         [indexedContacts addObject:[NSMutableArray array]];
@@ -166,7 +176,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60.0;
+    
+    if (indexPath.section == 0) // User selected Current Location
+    {
+        return 42.0;
+    }
+    else
+    {
+        return 60.0;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -209,6 +227,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0 && indexPath.row == 0) // User selected Current Location
+    {
+        [delegate addressBookLocationsTVCDidSelectCurrentLocation];
+        return;
+    }
+    if (indexPath.section == 0 && indexPath.row == 1) // User selected Current Location
+    {
+        [delegate addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces];
+        return;
+    }
     Contact *c = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [delegate addressBookLocationsTVCDidSelectAddress:c.addressSingleLine withFriendlyName:c.contactName];
 }

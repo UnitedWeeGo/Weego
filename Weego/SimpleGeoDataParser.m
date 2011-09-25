@@ -49,6 +49,12 @@ static SimpleGeoDataParser *sharedInstance;
     [Model sharedInstance].geoSearchResults = results;
 }
 
+- (void)processSimpleGeoContextResponse:(SGContext *)context
+{
+    Location *loc = [[[Location alloc] initWithSimpleGeoAddressResult:context] autorelease];
+    [Model sharedInstance].geoSearchResults = [NSMutableArray arrayWithObject:loc];
+}
+
 - (void)processSimpleGeoCategoryResponse:(NSArray *)categories
 {
     NSMutableArray *catSet = [[[NSMutableArray alloc] init] autorelease];

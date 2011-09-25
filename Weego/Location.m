@@ -58,6 +58,32 @@
     return self;
 }
 
+- (id)initWithSimpleGeoAddressResult:(SGContext *)context
+{
+    self = [super init];
+	if (!self)
+		return nil;
+    
+    SGAddress *address = context.address;
+    
+    NSString *uStreet = address.street;
+    NSString *uCity = address.city;
+    NSString *uState = address.province;
+    NSString *uZip = address.postalCode;
+    NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    
+    self.name = @"Current Location";
+    self.formatted_address = uFormatted_address;
+    SGPoint *point = [[context address] point];
+    
+    self.latitude = [NSString stringWithFormat:@"%f", point.latitude]; 
+    self.longitude = [NSString stringWithFormat:@"%f", point.longitude];
+    self.g_id = uFormatted_address;
+    
+    self.location_type = @"address";
+    return self;
+}
+
 // Google Places or Geo search
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict
 {

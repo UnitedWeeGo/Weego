@@ -53,6 +53,8 @@ enum {
     DataFetchTypeRemoveLocation,
     DataFetchTypeRemoveEvent,
     DataFetchTypeSearchSimpleGeo,
+    DataFetchTypeSearchSimpleGeoCurrentLocation,
+    DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces,
     DataFetchTypeSearchSimpleGeoCategories
 };
 typedef NSInteger DataFetchType;
@@ -65,6 +67,7 @@ typedef NSInteger DataFetchType;
 @optional
 - (void)processServerResponse:(NSMutableData *)myData;
 - (void)processSimpleGeoResponse:(NSArray *)places;
+- (void)processSimpleGeoContextResponse:(SGContext *)context;
 - (void)processSimpleGeoCategoryResponse:(NSArray *)categories;
 @end
 
@@ -181,6 +184,8 @@ typedef NSInteger DataFetchType;
 - (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndSearchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndSearchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate;
 
 // Google geo
 - (id)initAndSearchGoogleGeoWithAddress:(NSString *)address andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;
