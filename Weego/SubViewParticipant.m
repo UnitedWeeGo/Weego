@@ -44,6 +44,8 @@
     BOOL isDetailsMode = [Model sharedInstance].currentAppState == AppStateEventDetails;
     AcceptanceType acceptanceStatus = [[Model sharedInstance].currentEvent acceptanceStatusForUserWithEmail:participant.email];
     
+    BOOL hasCheckedIn = [[Model sharedInstance].currentEvent userHasCheckedInWithEmail:participant.email];
+    
     labelStatus.text = @"";
     labelSuggestedTime.text = @"";
     
@@ -54,14 +56,13 @@
         formattedDate = [suggestedDate stringWithFormat:@"'Suggests 'MMMM d 'at' h:mm a" timeZone:[NSTimeZone localTimeZone]];
         labelSuggestedTime.text = formattedDate;
     }
-    
-    if (acceptanceStatus == AcceptanceTypePending && isDetailsMode)
+    if (hasCheckedIn)
+    {
+        labelStatus.text = @"Checked-in";
+    }
+    else if (acceptanceStatus == AcceptanceTypePending && isDetailsMode)
     {
         labelStatus.text = @"Pending";
-    }
-    else if (acceptanceStatus == AcceptanceTypeCheckedIn && isDetailsMode)
-    {
-        labelStatus.text = @"Checked in";
     }
     else if (acceptanceStatus == AcceptanceTypeAccepted && isDetailsMode)
     {

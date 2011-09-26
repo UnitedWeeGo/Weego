@@ -13,8 +13,7 @@
 enum {
     AcceptanceTypePending,
 	AcceptanceTypeAccepted,
-    AcceptanceTypeDeclined,
-    AcceptanceTypeCheckedIn
+    AcceptanceTypeDeclined
 };
 typedef NSInteger AcceptanceType;
 

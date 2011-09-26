@@ -87,12 +87,7 @@
 {
     BOOL hasAccepted = [acceptedParticipantList rangeOfString:email].location != NSNotFound;
     BOOL hasDeclined = [declinedParticipantList rangeOfString:email].location != NSNotFound;
-    BOOL hasCheckedIn = [checkedInParticipantList rangeOfString:email].location != NSNotFound;
-    if (hasCheckedIn)
-    {
-        return AcceptanceTypeCheckedIn;
-    }
-    else if (hasAccepted)
+    if (hasAccepted)
     {
         return AcceptanceTypeAccepted;
     } 
