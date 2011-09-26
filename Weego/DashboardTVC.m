@@ -522,9 +522,19 @@
     for (int i=0; i<[dataSources count]; i++) {
         if ([dataSources objectAtIndex:i] == [Model sharedInstance].pastEvents) mySection = i;
     }
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)toggleShowHidePastEvents: crash");
+        [self.tableView reloadData];
+    }
+    
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }
 
@@ -535,9 +545,19 @@
     for (int i=0; i<[dataSources count]; i++) {
         if ([dataSources objectAtIndex:i] == [Model sharedInstance].futureEvents) mySection = i;
     }
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)toggleShowHideFutureEvents: crash");
+        [self.tableView reloadData];
+    }
+    
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }
 
@@ -613,18 +633,35 @@
 
 - (void)eventReachedDecided:(int)index
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)eventReachedDecided: crash");
+        [self.tableView reloadData];
+    }
 }
                     
 - (void)refreshDecidedEvents
 {
     [refreshTimer release];
     refreshTimer = nil;
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:decidedSections withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:decidedSections withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)refreshDecidedEvents: crash");
+        [self.tableView reloadData];
+    }
     [decidedSections release];
     decidedSections = nil;
 }

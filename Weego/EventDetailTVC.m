@@ -562,7 +562,9 @@ enum eventDetailSections {
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	BBTableViewCell *cell = nil;
-
+    
+    NSLog(@"cellForRowAtIndexPath --- indexPath.row: %d, indexPath.section: %d", indexPath.row, indexPath.section);
+    
 	if (indexPath.section == eventDetailSectionLocations) 
     {
         if ( [self eventShouldShowMap] && indexPath.row == 0 ) {
@@ -711,9 +713,19 @@ enum eventDetailSections {
     otherLocationsShowing = !otherLocationsShowing;
     
     if ([currentSortedLocations count] > 1) {
-        [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        
+        @try
+        {
+            [self.tableView beginUpdates];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        }
+        @catch (NSException *crash) 
+        {
+            NSLog(@"- (void)toggleShowHideOtherLocations: crash");
+            [self.tableView reloadData];
+        }
+        
         [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
     }
 }
@@ -721,13 +733,19 @@ enum eventDetailSections {
 - (void)toggleShowHideOtherParticipants
 {
     otherParticipantsShowing = !otherParticipantsShowing;
-    
-    //    if ([[detail getLocationsSortedByVotes] count] > 1) {
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+        
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)toggleShowHideOtherParticipants: crash");
+        [self.tableView reloadData];
+    }
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
-    //    }
 }
 
 
@@ -788,23 +806,30 @@ enum eventDetailSections {
 #pragma mark - Cell Reordering
 
 - (void)reorderCells
-{    
-    [self.tableView beginUpdates];
-    for (int i=0; i<[currentSortedLocations count]; i++) {
-        int toIndex = i;
-        int fromIndex = i;
-        for (int j=0; j<[oldSortedLocations count]; j++) {
-            if ([oldSortedLocations objectAtIndex:j] == [currentSortedLocations objectAtIndex:i]) {
-                fromIndex = j;
-                break;
+{
+    @try
+    {
+        [self.tableView beginUpdates];
+        for (int i=0; i<[currentSortedLocations count]; i++) {
+            int toIndex = i;
+            int fromIndex = i;
+            for (int j=0; j<[oldSortedLocations count]; j++) {
+                if ([oldSortedLocations objectAtIndex:j] == [currentSortedLocations objectAtIndex:i]) {
+                    fromIndex = j;
+                    break;
+                }
             }
+            [self reorderCellFromIndex:fromIndex toIndex:toIndex withMovement:YES];
         }
-        [self reorderCellFromIndex:fromIndex toIndex:toIndex withMovement:YES];
+        [oldSortedLocations release];
+        oldSortedLocations = [currentSortedLocations copy];
+        [self.tableView endUpdates];
     }
-    [oldSortedLocations release];
-    oldSortedLocations = [currentSortedLocations copy];
-    [self.tableView endUpdates];
-    
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)reorderCells: crash");
+        [self.tableView reloadData];
+    }
 }
 
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move
@@ -842,10 +867,18 @@ enum eventDetailSections {
 {   
     otherLocationsShowing = NO;
     otherParticipantsShowing = NO;
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    @try
+    {
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *crash) 
+    {
+        NSLog(@"- (void)eventReachedDecided: crash");
+        [self.tableView reloadData];
+    }
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
 }
 

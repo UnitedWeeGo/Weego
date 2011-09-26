@@ -528,22 +528,27 @@ typedef enum {
 
 - (void)reorderCells
 {    
-    [self.tableView beginUpdates];
-    for (int i=0; i<[currentSortedLocations count]; i++) {
-        int toIndex = i;
-        int fromIndex = i;
-        for (int j=0; j<[oldSortedLocations count]; j++) {
-            if ([oldSortedLocations objectAtIndex:j] == [currentSortedLocations objectAtIndex:i]) {
-                fromIndex = j;
-                break;
+    @try {
+        [self.tableView beginUpdates];
+        for (int i=0; i<[currentSortedLocations count]; i++) {
+            int toIndex = i;
+            int fromIndex = i;
+            for (int j=0; j<[oldSortedLocations count]; j++) {
+                if ([oldSortedLocations objectAtIndex:j] == [currentSortedLocations objectAtIndex:i]) {
+                    fromIndex = j;
+                    break;
+                }
             }
+            [self reorderCellFromIndex:fromIndex toIndex:toIndex withMovement:YES];
         }
-        [self reorderCellFromIndex:fromIndex toIndex:toIndex withMovement:YES];
+        [oldSortedLocations release];
+        oldSortedLocations = [currentSortedLocations copy];
+        [self.tableView endUpdates];
     }
-    [oldSortedLocations release];
-    oldSortedLocations = [currentSortedLocations copy];
-    [self.tableView endUpdates];
-    
+    @catch (NSException *exception) {
+        NSLog(@"- (void)reorderCells: crash");
+        [self.tableView reloadData];
+    }
 }
 
 - (void)reorderCellFromIndex:(int)iFrom toIndex:(int)iTo withMovement:(BOOL)move
