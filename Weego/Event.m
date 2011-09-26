@@ -20,7 +20,7 @@
 
 @implementation Event
 
-@synthesize eventId, eventTitle, eventDate, eventExpireDate, eventDescription, creatorId, acceptedParticipantList, declinedParticipantList, lastUpdatedTimestamp, lastReportedLocationsTimestamp;
+@synthesize eventId, eventTitle, eventDate, eventExpireDate, eventDescription, creatorId, acceptedParticipantList, declinedParticipantList, checkedInParticipantList, lastUpdatedTimestamp, lastReportedLocationsTimestamp;
 @synthesize isTemporary, currentEventState;
 @synthesize topLocationId;
 @synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn, hasPendingCheckin;
@@ -43,6 +43,7 @@
     NSString *uCreatorId = ((GDataXMLElement *) [[xml elementsForName:@"creatorId"] objectAtIndex:0]).stringValue;
     NSString *uAcceptedParticipantList = ((GDataXMLElement *) [[xml elementsForName:@"acceptedParticipantList"] objectAtIndex:0]).stringValue;
     NSString *uDeclinedParticipantList = ((GDataXMLElement *) [[xml elementsForName:@"declinedParticipantList"] objectAtIndex:0]).stringValue;
+    NSString *uCheckedinParticipantList = ((GDataXMLElement *) [[xml elementsForName:@"checkedInParticipantList"] objectAtIndex:0]).stringValue;
     NSString *uEventTitle = ((GDataXMLElement *) [[xml elementsForName:@"eventTitle"] objectAtIndex:0]).stringValue;
     NSString *uEventDate = [[xml attributeForName:@"eventDate"] stringValue];
     NSString *uEventExpireDate = [[xml attributeForName:@"eventExpireDate"] stringValue];
@@ -57,6 +58,7 @@
     if (uCreatorId != nil) self.creatorId = uCreatorId;
     if (uAcceptedParticipantList != nil) self.acceptedParticipantList = uAcceptedParticipantList;
     if (uDeclinedParticipantList != nil) self.declinedParticipantList = uDeclinedParticipantList;
+    if (uCheckedinParticipantList != nil) self.checkedInParticipantList = uCheckedinParticipantList;
 	if (uEventTitle != nil) self.eventTitle = uEventTitle;
     if (uEventRead != nil) self.eventRead = [uEventRead isEqualToString:@"true"];
     if (uEventCancelled != nil) self.hasBeenCancelled = [uEventCancelled isEqualToString:@"true"];
@@ -71,6 +73,11 @@
     if (self.hasBeenCheckedIn) self.hasPendingCheckin = NO;
 }
 
+- (BOOL)userHasCheckedInWithEmail:(NSString *)email
+{
+    return [checkedInParticipantList rangeOfString:email].location != NSNotFound;
+}
+
 - (AcceptanceType)acceptanceStatus
 {
     return [self acceptanceStatusForUserWithEmail:[Model sharedInstance].userEmail];
@@ -80,7 +87,12 @@
 {
     BOOL hasAccepted = [acceptedParticipantList rangeOfString:email].location != NSNotFound;
     BOOL hasDeclined = [declinedParticipantList rangeOfString:email].location != NSNotFound;
-    if (hasAccepted)
+    BOOL hasCheckedIn = [checkedInParticipantList rangeOfString:email].location != NSNotFound;
+    if (hasCheckedIn)
+    {
+        return AcceptanceTypeCheckedIn;
+    }
+    else if (hasAccepted)
     {
         return AcceptanceTypeAccepted;
     } 

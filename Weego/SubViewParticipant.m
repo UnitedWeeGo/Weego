@@ -59,6 +59,10 @@
     {
         labelStatus.text = @"Pending";
     }
+    else if (acceptanceStatus == AcceptanceTypeCheckedIn && isDetailsMode)
+    {
+        labelStatus.text = @"Checked in";
+    }
     else if (acceptanceStatus == AcceptanceTypeAccepted && isDetailsMode)
     {
         // no messaging in labelStatus

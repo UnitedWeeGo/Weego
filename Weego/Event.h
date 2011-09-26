@@ -13,7 +13,8 @@
 enum {
     AcceptanceTypePending,
 	AcceptanceTypeAccepted,
-    AcceptanceTypeDeclined
+    AcceptanceTypeDeclined,
+    AcceptanceTypeCheckedIn
 };
 typedef NSInteger AcceptanceType;
 
@@ -32,6 +33,7 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, copy) NSString *creatorId;
 @property (nonatomic, copy) NSString *acceptedParticipantList;
 @property (nonatomic, copy) NSString *declinedParticipantList;
+@property (nonatomic, copy) NSString *checkedInParticipantList;
 @property (nonatomic, copy) NSString *lastUpdatedTimestamp;
 @property (nonatomic, copy) NSString *lastReportedLocationsTimestamp;
 @property (nonatomic) BOOL isTemporary;
@@ -69,6 +71,7 @@ typedef NSInteger AcceptanceType;
 - (NSArray *)getParticipantsSortedByName;
 
 - (AcceptanceType)acceptanceStatusForUserWithEmail:(NSString *)email;
+- (BOOL)userHasCheckedInWithEmail:(NSString *)email;
 
 - (BOOL)loginUserDidVoteForLocationWithId:(NSString *)locationId;
 //- (int)numberOfVotesForLocationWithId:(NSString *)locationId;

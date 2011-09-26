@@ -64,20 +64,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/Location.m"
-         timestampString = "338678986.553357"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "61"
-         endingLineNumber = "61"
-         landmarkName = "-initWithSimpleGeoAddressResult:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
          timestampString = "338681368.146696"
          startingColumnNumber = "9223372036854775807"
@@ -99,6 +85,20 @@
          startingLineNumber = "430"
          endingLineNumber = "430"
          landmarkName = "-beginCurrentLocationSearchNearbyPlacesWithCoordinate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/Event.m"
+         timestampString = "338699266.94839"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
+         landmarkName = "-populateWithXml:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

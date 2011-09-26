@@ -109,7 +109,7 @@ static LocationService *sharedInstance;
 #pragma mark CLLocationManager methods
 - (void)checkSignificantLocationServiceStatus
 {
-    if ([self userRequiresSomeLocationServices])
+    if (![self userRequiresSomeLocationServices])
     {
         if (significantLoctionMonitoringEnabled)
         {
