@@ -12,6 +12,7 @@
 @protocol SearchCategoryTableDelegate <NSObject>
 
 - (void)categorySelected:(SearchCategory *)category;
+- (void)searchCategoryTableDidSelectCurrentLocation;
 
 @end
 

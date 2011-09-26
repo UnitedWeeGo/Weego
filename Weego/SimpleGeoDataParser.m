@@ -66,5 +66,9 @@ static SimpleGeoDataParser *sharedInstance;
         [catSet addObject:cat];
     }
     [Model sharedInstance].simpleGeoCategoryResults = catSet;
+    SearchCategory *curLoc = [[[SearchCategory alloc] init] autorelease];
+    curLoc.category = @"Current Location";
+    curLoc.type = @"Current Location";
+    [catSet insertObject:curLoc atIndex:0];
 }
 @end

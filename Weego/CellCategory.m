@@ -59,6 +59,16 @@
 - (void)setCategory:(SearchCategory *)aCategory
 {
     labelCategoryName.text = aCategory.search_category;
+    UIColor *titleLabelColor;
+    if ([aCategory.type isEqualToString:@"Current Location"])
+    {
+        titleLabelColor = HEXCOLOR(0x2957FFFF);
+    }
+    else
+    {
+        titleLabelColor = HEXCOLOR(0x333333FF);
+    }
+    labelCategoryName.textColor = titleLabelColor;
 }
 
 - (void)dealloc

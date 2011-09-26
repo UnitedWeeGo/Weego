@@ -1627,6 +1627,23 @@ typedef enum {
     }
 }
 
+- (void)searchCategoryTableDidSelectCurrentLocation
+{
+    continueToSearchEnabled = NO;
+    [self doShowSearchAgainButton:NO];
+    
+    MKUserLocation *myCLLoc = [mapView userLocation];
+    if (myCLLoc)
+    {
+        [self beginCurrentLocationSearchWithCoordinate:myCLLoc.coordinate];
+    }
+    else
+    {
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [noLocFoundAlert show];
+    }
+}
+
 - (void)addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces
 {
     continueToSearchEnabled = NO;

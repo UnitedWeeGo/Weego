@@ -8,6 +8,7 @@
 
 #import "SearchCategoryTable.h"
 #import "CellCategory.h"
+#import "SearchCategory.h"
 
 @interface SearchCategoryTable (Private)
 
@@ -111,7 +112,17 @@
 #pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (delegate) [delegate categorySelected:[filteredCategories objectAtIndex:indexPath.row]];
+    
+    SearchCategory *cat = [filteredCategories objectAtIndex:indexPath.row];
+    if ([cat.type isEqualToString:@"Current Location"])
+    {
+        if (delegate) [delegate searchCategoryTableDidSelectCurrentLocation];
+    }
+    else
+    {
+        if (delegate) [delegate categorySelected:cat];
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

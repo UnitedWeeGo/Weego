@@ -57,9 +57,12 @@
     Contact *myLoc = [[[Contact alloc] init] autorelease];
     myLoc.contactName = @"Current Location";
     [[indexedContacts objectAtIndex:0] addObject:myLoc];
+    
+    /* - Code is fine, can turn back on if wanted... feature is weird
     Contact *aroundMe = [[[Contact alloc] init] autorelease];
     aroundMe.contactName = @"Places around me";
     [[indexedContacts objectAtIndex:0] addObject:aroundMe];
+     */
     
     for(char c = 'A'; c <= 'Z'; c++) {
         [indexes addObject:[NSString stringWithFormat:@"%c",c]];
