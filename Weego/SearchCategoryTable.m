@@ -100,12 +100,12 @@
 
 - (void)updateFilteredCategories:(NSArray *)matchingCategories
 {
-    NSLog(@"updateFilteredCategories start - attempting filter and reload of data");
+    //NSLog(@"updateFilteredCategories start - attempting filter and reload of data");
     [filteredCategories removeAllObjects];
     [filteredCategories addObjectsFromArray:matchingCategories];
     self.hidden = [filteredCategories count] == 0;
     [tableView reloadData];
-    NSLog(@"updateFilteredCategories end - reload complete");
+    //NSLog(@"updateFilteredCategories end - reload complete");
 }
 
 #pragma mark -

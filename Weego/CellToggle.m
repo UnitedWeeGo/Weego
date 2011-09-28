@@ -1,20 +1,20 @@
 //
-//  CellPrefsControls.m
-//  BigBaby
+//  CellToggle.m
+//  Weego
 //
-//  Created by Dave Prukop on 6/22/11.
+//  Created by Nicholas Velloff on 9/27/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CellPrefsControls.h"
+#import "CellToggle.h"
 
-@implementation CellPrefsControls
+@implementation CellToggle
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.height = CellPrefsControlsHeight;
+        self.height = CellToggleHeight;
         self.backgroundColor = [UIColor clearColor];
         
         UIColor *titleLabelColor = nil;
@@ -32,7 +32,7 @@
         [self addSubview:fieldTitle];
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.frame = CGRectMake(0, 0, 300, CellPrefsControlsHeight);
+        self.frame = CGRectMake(0, 0, 300, CellToggleHeight);
         
         uiSwitch = [[[UISwitch alloc] init] autorelease];
         [uiSwitch addTarget:self action:@selector(handleSwitchToggle) forControlEvents:UIControlEventValueChanged];
@@ -43,15 +43,7 @@
 
 - (void)handleSwitchToggle
 {
-    if (prefsKey == nil)
-    {
-        NSLog(@"PREFS KEY NOT SET, NO PREF REGISTERED");
-        return;
-    }
-    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
-    [userPreferences setBool:uiSwitch.on forKey:prefsKey];
-    [userPreferences synchronize];
-    [[Model sharedInstance] setPendingRequestFlagsForUserPrefs];
+    // uiSwitch.on
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -63,22 +55,14 @@
 
 - (void)dealloc
 {
-    if (prefsKey != nil) [prefsKey release];
+    
     [super dealloc];
 }
 
-- (void)setTitle:(NSString *)title
+- (void)setTitle:(NSString *)title andCurrentStatus:(BOOL)isOn
 {
     fieldTitle.text = title;
-}
-
-- (void)setPrefsKey:(NSString *)key
-{
-    if (prefsKey != nil) [prefsKey release];
-    prefsKey = [key copy];
-    
-    BOOL prefTrue = [[NSUserDefaults standardUserDefaults] boolForKey:prefsKey];
-    uiSwitch.on = prefTrue;
+    uiSwitch.on = isOn;
 }
 
 @end

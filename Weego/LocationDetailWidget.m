@@ -558,7 +558,7 @@
     NSString *titleCopy = [self urldecode:annotation.title];
     NSString *formatted_address = [self urldecode:annotation.subtitle];
     NSString *subTitleCopy;
-    if ([formatted_address rangeOfString:@","].location == NSNotFound)
+    if ([formatted_address rangeOfString:@","].length == 0)
     {
         subTitleCopy = [self urldecode:annotation.subtitle];
     }

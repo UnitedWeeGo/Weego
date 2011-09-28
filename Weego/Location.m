@@ -130,13 +130,13 @@
     NSString *uFormatted_address = ((GDataXMLElement *) [[xml elementsForName:@"formatted_address"] objectAtIndex:0]).stringValue;
     // strip ", United Stated" if it exists for better UI
     NSRange toStripRange = [uFormatted_address rangeOfString:@", United States"];
-    if (toStripRange.location != NSNotFound)
+    if (toStripRange.length > 0)
     {
         uFormatted_address = [uFormatted_address substringWithRange:NSMakeRange(0, toStripRange.location)];
     }
     // strip ", USA" if it exists for better UI
     NSRange toStripRange2 = [uFormatted_address rangeOfString:@", USA"];
-    if (toStripRange2.location != NSNotFound)
+    if (toStripRange2.length > 0)
     {
         uFormatted_address = [uFormatted_address substringWithRange:NSMakeRange(0, toStripRange2.location)];
     }

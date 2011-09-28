@@ -568,6 +568,7 @@
 		01BB3F7E13E8B1F100E491FB /* POIs_deal_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7C13E8B1F000E491FB /* POIs_deal_selected@2x.png */; };
 		01C2B3B1142A746F000FD442 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B3B0142A746F000FD442 /* LocationService.m */; };
 		01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E164BF13DE440800B0B8FD /* SuggestedTime.m */; };
+		01E3ABAA1432CA0300580CF7 /* CellToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E3ABA91432CA0300580CF7 /* CellToggle.m */; };
 		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
 		01F17E5D13D10D6400213CC4 /* button_redosearch_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5613D10D6400213CC4 /* button_redosearch_default.png */; };
 		01F17E5E13D10D6400213CC4 /* button_redosearch_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */; };
@@ -1295,6 +1296,8 @@
 		01C2B3B0142A746F000FD442 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
 		01E164BE13DE440800B0B8FD /* SuggestedTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestedTime.h; sourceTree = "<group>"; };
 		01E164BF13DE440800B0B8FD /* SuggestedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestedTime.m; sourceTree = "<group>"; };
+		01E3ABA81432CA0300580CF7 /* CellToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellToggle.h; sourceTree = "<group>"; };
+		01E3ABA91432CA0300580CF7 /* CellToggle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellToggle.m; sourceTree = "<group>"; };
 		01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottombar_background_clear.png; sourceTree = "<group>"; };
 		01F17E5613D10D6400213CC4 /* button_redosearch_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_redosearch_default.png; sourceTree = "<group>"; };
 		01F17E5713D10D6400213CC4 /* button_redosearch_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_redosearch_default@2x.png"; sourceTree = "<group>"; };
@@ -1409,6 +1412,8 @@
 				0176152D13BE793C00324EF9 /* CellPrefsLoginParticipant.m */,
 				0133D20D141EA1FF00713AC9 /* CellFriendsLocations.h */,
 				0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */,
+				01E3ABA81432CA0300580CF7 /* CellToggle.h */,
+				01E3ABA91432CA0300580CF7 /* CellToggle.m */,
 			);
 			name = "Custom Table Cells";
 			sourceTree = "<group>";
@@ -1605,6 +1610,7 @@
 				017613D813BE768400324EF9 /* XMLSupport */,
 				017613C413BE766700324EF9 /* Json */,
 				017613C013BE764C00324EF9 /* Security */,
+				01E3AB9E1432C73800580CF7 /* Categories */,
 				017613AD13BE762F00324EF9 /* Util */,
 				017613A613BE761200324EF9 /* KeyChainAccess */,
 				017613A213BE75EE00324EF9 /* Timer */,
@@ -2121,10 +2127,6 @@
 				017613B113BE763A00324EF9 /* LogUtil.m */,
 				017613B213BE763A00324EF9 /* ImageUtil.h */,
 				017613B313BE763A00324EF9 /* ImageUtil.m */,
-				017613B413BE763A00324EF9 /* UIImageView+AsyncLoad.h */,
-				017613B513BE763A00324EF9 /* UIImageView+AsyncLoad.m */,
-				017613B613BE763A00324EF9 /* UIImageViewAsyncLoader.h */,
-				017613B713BE763A00324EF9 /* UIImageViewAsyncLoader.m */,
 				017613B813BE763A00324EF9 /* UnderlineLabel.h */,
 				017613B913BE763A00324EF9 /* UnderlineLabel.m */,
 			);
@@ -2439,6 +2441,17 @@
 				017614C713BE78F100324EF9 /* whiteArrow@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		01E3AB9E1432C73800580CF7 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				017613B413BE763A00324EF9 /* UIImageView+AsyncLoad.h */,
+				017613B513BE763A00324EF9 /* UIImageView+AsyncLoad.m */,
+				017613B613BE763A00324EF9 /* UIImageViewAsyncLoader.h */,
+				017613B713BE763A00324EF9 /* UIImageViewAsyncLoader.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		A901BFE113E76211002D68CA /* Deals */ = {
@@ -3090,6 +3103,7 @@
 				A95B3EF5141EBAB4001D91E0 /* MoreButtonActionSheetController.m in Sources */,
 				012C7D1214213D7E00F3885D /* GetDirectionsActionSheetController.m in Sources */,
 				01C2B3B1142A746F000FD442 /* LocationService.m in Sources */,
+				01E3ABAA1432CA0300580CF7 /* CellToggle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
