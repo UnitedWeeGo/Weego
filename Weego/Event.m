@@ -75,7 +75,7 @@
 
 - (BOOL)userHasCheckedInWithEmail:(NSString *)email
 {
-    return [checkedInParticipantList rangeOfString:email].location != NSNotFound;
+    return [checkedInParticipantList rangeOfString:email].length > 0;
 }
 
 - (AcceptanceType)acceptanceStatus
@@ -85,8 +85,8 @@
 
 - (AcceptanceType)acceptanceStatusForUserWithEmail:(NSString *)email
 {
-    BOOL hasAccepted = [acceptedParticipantList rangeOfString:email].location != NSNotFound;
-    BOOL hasDeclined = [declinedParticipantList rangeOfString:email].location != NSNotFound;
+    BOOL hasAccepted = [acceptedParticipantList rangeOfString:email].length > 0;
+    BOOL hasDeclined = [declinedParticipantList rangeOfString:email].length > 0;
     if (hasAccepted)
     {
         return AcceptanceTypeAccepted;
@@ -100,7 +100,7 @@
 
 - (BOOL)participantHasAcceptedEventWithEmail:(NSString *)email
 {
-    return [acceptedParticipantList rangeOfString:email].location != NSNotFound;
+    return [acceptedParticipantList rangeOfString:email].length > 0;
 }
 
 - (NSArray *)getLocations
