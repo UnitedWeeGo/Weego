@@ -10,11 +10,18 @@
 #import "SubViewLocation.h"
 #import "CellFormEntry.h"
 #import "EGORefreshTableHeaderView.h"
+#import "CellToggle.h"
+
+enum {
+    AlertTypeForcedDecided,
+	AlertTypeDateAdjusted
+};
+typedef NSInteger AlertType;
 
 @class Event;
 @class DataFetcher;
 
-@interface CreateEventTVC : UITableViewController <SubViewLocationDelegate, CellFormEntryDelegate, UIActionSheetDelegate, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, UIAlertViewDelegate> {
+@interface CreateEventTVC : UITableViewController <SubViewLocationDelegate, CellFormEntryDelegate, UIActionSheetDelegate, DataFetcherMessageHandler, EGORefreshTableHeaderDelegate, UIAlertViewDelegate, CellToggleDelegate> {
 	
 	Event *detail;
     NSMutableString *placeholderText;
@@ -26,6 +33,8 @@
     NSArray *oldSortedLocations;
     NSArray *currentSortedLocations;
     BOOL eventDateAdjusted;
+    BOOL multiLocationDecidedAccepted;
+    AlertType alertType;
 }
 
 @property (nonatomic, assign) BOOL isInDuplicate;

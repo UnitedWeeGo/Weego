@@ -69,4 +69,7 @@
 - (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel;
 - (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime;
 
+// Toggle event decided status
+- (NSString *)toggleDecidedForEventWithId:(NSString *)eventId;
+
 @end

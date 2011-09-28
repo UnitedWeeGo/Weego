@@ -10,6 +10,8 @@
 
 @implementation CellToggle
 
+@synthesize delegate;
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -18,7 +20,7 @@
         self.backgroundColor = [UIColor clearColor];
         
         UIColor *titleLabelColor = nil;
-        titleLabelColor = HEXCOLOR(0x333333FF);
+        titleLabelColor = HEXCOLOR(0x666666FF);
         
         if (fieldTitle == nil) fieldTitle = [[[UILabel alloc] initWithFrame:CGRectMake(20, 
                                                                                        17, 
@@ -35,7 +37,7 @@
         self.frame = CGRectMake(0, 0, 300, CellToggleHeight);
         
         uiSwitch = [[[UISwitch alloc] init] autorelease];
-        [uiSwitch addTarget:self action:@selector(handleSwitchToggle) forControlEvents:UIControlEventValueChanged];
+        [uiSwitch addTarget:self action:@selector(handleSwitchToggle) forControlEvents:UIControlEventTouchUpInside];
         self.accessoryView = uiSwitch;
     }
     return self;
@@ -43,7 +45,7 @@
 
 - (void)handleSwitchToggle
 {
-    // uiSwitch.on
+    if (self.delegate) [self.delegate userToggledCellWithTitle:fieldTitle.text toValue:uiSwitch.on];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -55,7 +57,7 @@
 
 - (void)dealloc
 {
-    
+    delegate = nil;
     [super dealloc];
 }
 

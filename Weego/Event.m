@@ -26,7 +26,7 @@
 @synthesize participantCount, unreadMessageCount, eventRead, hasBeenCheckedIn, hasPendingCheckin;
 @synthesize currentLocationOrder, iVotedFor;
 @synthesize updatedVotes;
-@synthesize acceptanceStatus,hasBeenRemoved,hasBeenCancelled;
+@synthesize acceptanceStatus,hasBeenRemoved,hasBeenCancelled, forcedDecided;
 
 - (id)initWithId:(NSString *)anId
 {
@@ -53,7 +53,8 @@
     NSString *uEventDescription = ((GDataXMLElement *) [[xml elementsForName:@"eventDescription"] objectAtIndex:0]).stringValue;
     NSString *uLastUpdatedTimestamp = nil;
     NSString *uTopLocationId = [[xml attributeForName:@"topLocationId"] stringValue];
-    NSString *uCount = [[xml attributeForName:@"count"] stringValue];
+    NSString *uCount = [[xml attributeForName:@"count"] stringValue];    
+    NSString *uForcedDecided = ((GDataXMLElement *) [[xml elementsForName:@"forcedDecided"] objectAtIndex:0]).stringValue;
     
     if (uCreatorId != nil) self.creatorId = uCreatorId;
     if (uAcceptedParticipantList != nil) self.acceptedParticipantList = uAcceptedParticipantList;
@@ -68,7 +69,8 @@
 	if (uEventDescription != nil) self.eventDescription = uEventDescription;
     if (uLastUpdatedTimestamp != nil) self.lastUpdatedTimestamp = uLastUpdatedTimestamp;
     if (uTopLocationId != nil) self.topLocationId = uTopLocationId;
-    if (uCount != nil) self.participantCount = uCount;    
+    if (uCount != nil) self.participantCount = uCount;
+    if (uForcedDecided != nil) self.forcedDecided = [uForcedDecided isEqualToString:@"true"];
     
     if (self.hasBeenCheckedIn) self.hasPendingCheckin = NO;
 }
@@ -155,6 +157,11 @@
         if ([location.locationId isEqualToString:locationId]) return location;
     }
     return nil;
+}
+
+- (Location *)getTopLocation
+{
+    return [[self getLocationsByLocationOrder:self.currentLocationOrder] objectAtIndex:0];
 }
 
 - (NSArray *)getParticipants
@@ -289,9 +296,16 @@
 {
     EventState state = 0;
     
-    if (self.minutesToGoUntilVotingEnds > 90) state = EventStateVoting;
-    if (self.minutesToGoUntilVotingEnds <= 90) state = EventStateVotingWarning;
-    if (self.minutesToGoUntilVotingEnds <= 0) state = EventStateDecided;
+    if (self.forcedDecided)
+    {
+        state = EventStateDecided;
+    }
+    else
+    {
+        if (self.minutesToGoUntilVotingEnds > 90) state = EventStateVoting;
+        if (self.minutesToGoUntilVotingEnds <= 90) state = EventStateVotingWarning;
+        if (self.minutesToGoUntilVotingEnds <= 0) state = EventStateDecided;
+    }
     if (self.minutesToGoUntilEventStarts <= 0) state = EventStateStarted;
     if (self.minutesToGoUntilEventStarts < -120) state = EventStateEnded;
     if (self.isTemporary) state = EventStateNew;
@@ -436,6 +450,7 @@
     if (self.updatedVotes) [self.updatedVotes release];
     [self.acceptedParticipantList release];
     [self.declinedParticipantList release];
+    [self.checkedInParticipantList release];
     [super dealloc];
 }
 

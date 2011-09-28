@@ -22,9 +22,9 @@
 #import "BBTableViewCell.h"
 
 typedef enum {
-    eventDetailSectionEntryForm = 0,
-	numEventDetailSections
-} EventDetailSections;
+    EditEventSectionsSectionEntryForm = 0,
+	numEditEventSectionsSections
+} EditEventSections;
 
 typedef enum {
     createEventFormRowWhat = 0,
@@ -110,7 +110,7 @@ typedef enum {
 #pragma mark UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == eventDetailSectionEntryForm) {
+	if (indexPath.section == EditEventSectionsSectionEntryForm) {
         if (indexPath.row == createEventFormRowWhat) {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             CellFormEntry *targetCell = (CellFormEntry *)cell;
@@ -141,13 +141,13 @@ typedef enum {
 #pragma mark UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return numEventDetailSections;
+    return numEditEventSectionsSections;
 }
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	int numRows = 1;
-    if (section == eventDetailSectionEntryForm) numRows = numCreateEventFormRow;
+    if (section == EditEventSectionsSectionEntryForm) numRows = numCreateEventFormRow;
 	return numRows;
 }
 
@@ -155,7 +155,7 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	BBTableViewCell *cell = nil;
-    if (indexPath.section == eventDetailSectionEntryForm) {
+    if (indexPath.section == EditEventSectionsSectionEntryForm) {
         if (indexPath.row == createEventFormRowWhat) {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"What"];
             [targetCell isFirst:YES isLast:NO];
@@ -206,7 +206,7 @@ typedef enum {
     CellFormEntry *targetCell = (CellFormEntry *)sender;
     if (targetCell.index == createEventFormRowWhat)
     {
-        NSIndexPath *newPath = [NSIndexPath indexPathForRow:targetCell.index+1 inSection:eventDetailSectionEntryForm];
+        NSIndexPath *newPath = [NSIndexPath indexPathForRow:targetCell.index+1 inSection:EditEventSectionsSectionEntryForm];
         [targetCell resignFirstResponder];
         [self pickDateTime];
         [self.tableView scrollToRowAtIndexPath:newPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
@@ -217,7 +217,7 @@ typedef enum {
 {
 //    NSLog(@"handleDirectFieldTouch");
     CellFormEntry *targetCell = (CellFormEntry *)sender;
-    NSIndexPath *path = [NSIndexPath indexPathForRow:targetCell.index inSection:eventDetailSectionEntryForm];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:targetCell.index inSection:EditEventSectionsSectionEntryForm];
     [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
@@ -292,7 +292,7 @@ typedef enum {
 - (void)changeDateTimeInLabel:(id)sender
 {
     if (sender == datePicker) self.anotherDate = datePicker.date;
-    CellFormEntry *targetCell = (CellFormEntry *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhen inSection:eventDetailSectionEntryForm]];
+    CellFormEntry *targetCell = (CellFormEntry *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:createEventFormRowWhen inSection:EditEventSectionsSectionEntryForm]];
     targetCell.fieldText = [self.anotherDate getWeegoFormattedDateString];
 }
 

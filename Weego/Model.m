@@ -1210,10 +1210,13 @@ static Model *sharedInstance;
         }
         GDataXMLElement *eventTitle = [GDataXMLNode elementWithName:@"eventTitle" stringValue:anEvent.eventTitle];
         GDataXMLElement *eventDescription = [GDataXMLNode elementWithName:@"eventDescription" stringValue:anEvent.eventDescription];
+        GDataXMLElement *forcedDecided = [GDataXMLNode elementWithName:@"forcedDecided" stringValue:anEvent.forcedDecided ? @"1" : @"0"];
+        
         [eventInfo addChild:eventDate];
         [eventInfo addChild:eventTimeZone];
         [eventInfo addChild:eventTitle];
         [eventInfo addChild:eventDescription];
+        [eventInfo addChild:forcedDecided];
         
         [eventNode addChild:eventInfo];
         
@@ -1299,6 +1302,7 @@ static Model *sharedInstance;
 	GDataXMLElement *eventDate = [GDataXMLNode attributeWithName:@"eventDate" stringValue:[anEvent getTimestampDateString]];
 	GDataXMLElement *eventTitle = [GDataXMLNode elementWithName:@"eventTitle" stringValue:anEvent.eventTitle];
 	GDataXMLElement *eventDescription = [GDataXMLNode elementWithName:@"eventDescription" stringValue:anEvent.eventDescription];
+    
 	[eventInfo addChild:eventDate];
 	[eventInfo addChild:eventTitle];
 	[eventInfo addChild:eventDescription];

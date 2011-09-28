@@ -24,6 +24,7 @@ typedef enum {
     eventDetailSectionEntryForm = 0,
 	eventDetailSectionLocations,
 	eventDetailSectionParticipants,
+    eventDetailSectionDecidedToggle,
 	numEventDetailSections
 } EventDetailSections;
 
@@ -45,6 +46,7 @@ typedef enum {
 - (BBTableViewCell *)getCellForLocationWithLocation:(Location *)aLocation andIndex:(int)anIndex;
 - (BBTableViewCell *)getCellForParticipantWithParticipant:(Participant *)aParticipant;
 - (BBTableViewCell *)getCellForCallToAction:(NSString *)label;
+- (BBTableViewCell *)getCellForEventDecidedToggle:(NSString *)label andCurrentToggleStatus:(BOOL)cStat;
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
 - (void)changeDateTimeInLabel:(id)sender;
@@ -153,12 +155,35 @@ typedef enum {
 
 - (void)handleRightActionPress:(id)sender
 {
+    if (detail.forcedDecided) 
+    {
+        if ([[detail getLocations] count] == 0)
+        {
+            NSString *message = @"You have selected to not have voting allowed. You must add a location.";
+            UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Add a location!" message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [warning show];
+            [warning release];
+            return;
+        }
+        else if ([[detail getLocations] count] > 1 && !multiLocationDecidedAccepted)
+        {
+            alertType = AlertTypeForcedDecided;
+            Location *topLoc = [detail getTopLocation];
+            NSString *message = [NSString stringWithFormat:@"The decided location will be %@. Is this ok?", topLoc.name];
+            UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Just checking" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes!", nil];
+            [warning show];
+            [warning release];
+            return;
+        }
+    }
+    
     if (!eventDateAdjusted)
     {
+        alertType = AlertTypeDateAdjusted;
         NSString *message = [NSString stringWithFormat:@"You selected %@ for the event time. Is this ok?", [detail getFormattedDateString]];
-        UIAlertView *noTimeChangeWarning = [[UIAlertView alloc] initWithTitle:@"Just checking" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes!", nil];
-        [noTimeChangeWarning show];
-        [noTimeChangeWarning release];
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Just checking" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes!", nil];
+        [warning show];
+        [warning release];
         return;
     }
     
@@ -182,11 +207,18 @@ typedef enum {
     }
 }
 
+#pragma mark -
+#pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1)
+    if (buttonIndex == 1 && alertType == AlertTypeDateAdjusted)
     {
         eventDateAdjusted = YES;
+        [self handleRightActionPress:self];
+    }
+    else if (buttonIndex == 1 && alertType == AlertTypeForcedDecided)
+    {
+        multiLocationDecidedAccepted = YES;
         [self handleRightActionPress:self];
     }
 }
@@ -227,6 +259,8 @@ typedef enum {
         if ([detail.getParticipants count] > 0 && indexPath.row != [detail.getParticipants count] && indexPath.row != 0) {
             return YES;
         }
+    } else if (indexPath.section == eventDetailSectionDecidedToggle) {
+        return NO;
     }
     return NO;
 }
@@ -360,6 +394,7 @@ typedef enum {
 	if (section == eventDetailSectionParticipants && ![Model sharedInstance].isInTrial) {
         numRows += [[detail getParticipants] count];
     }
+    if (section == eventDetailSectionDecidedToggle) numRows = 1;
 	return numRows;
 }
 
@@ -387,6 +422,11 @@ typedef enum {
             cell = targetCell;
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
+        
+        
+        
+        
+        
 		if (indexPath.row < rowsForLocations-1) {
             Location *loc = (Location *)[oldSortedLocations objectAtIndex:indexPath.row];
 			cell = [self getCellForLocationWithLocation:loc andIndex:indexPath.row];			
@@ -397,6 +437,10 @@ typedef enum {
             if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
             else [cell isFirst:NO isLast:YES];
 		}
+        
+        
+        
+        
 	} else if (indexPath.section == eventDetailSectionParticipants) {
 		if (indexPath.row < [[detail getParticipants] count] && ![Model sharedInstance].isInTrial) {
 			Participant *p = (Participant *)[[detail getParticipantsSortedByName] objectAtIndex:indexPath.row];
@@ -408,16 +452,15 @@ typedef enum {
             if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
             else [cell isFirst:NO isLast:YES];
 		}
-	}
+	} else if (indexPath.section == eventDetailSectionDecidedToggle) {
+        cell = [self getCellForEventDecidedToggle:@"Voting allowed" andCurrentToggleStatus:!detail.forcedDecided];
+        [cell isFirst:YES isLast:YES];
+    }
     return cell;
 }
 
 - (BBTableViewCell *)getCellForFormWithLabel:(NSString *)label
 {
-//    CellFormEntry *cell = (CellFormEntry *) [self.tableView dequeueReusableCellWithIdentifier:@"FormTableCellId"];
-//    if (cell == nil) {
-//        cell = [[[CellFormEntry alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FormTableCellId"] autorelease];
-//    }
     CellFormEntry *cell = [[[CellFormEntry alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FormTableCellId"] autorelease];
     [cell setTitle:label];
     cell.cellHostView = CellHostViewEvent;
@@ -460,32 +503,17 @@ typedef enum {
     return cell;
 }
 
-//#pragma mark -
-//#pragma mark SubViewLocationDelegate
-//- (void)mapButtonPressed:(id)sender
-//{
-//    SubViewLocation *svl = (SubViewLocation *)sender;
-//    Location *loc = svl.location;
-//    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];    
-//}
-//
-//- (void)likeButtonPressed:(id)sender
-//{
-//    SubViewLocation *svl = (SubViewLocation *)sender;
-//    Location *loc = svl.location;
-//    Controller *controller = [Controller sharedInstance];
-//    [controller voteForLocationWithId:loc.locationId];
-//    [self.tableView reloadData];
-//}
-//
-//- (void)unlikeButtonPressed:(id)sender
-//{
-//    SubViewLocation *svl = (SubViewLocation *)sender;
-//    Location *loc = svl.location;
-//    Controller *controller = [Controller sharedInstance];
-//    [controller removeVoteForLocationWithId:loc.locationId];
-//    [self.tableView reloadData];
-//}
+- (BBTableViewCell *)getCellForEventDecidedToggle:(NSString *)label andCurrentToggleStatus:(BOOL)cStat
+{
+    CellToggle *cell = (CellToggle *) [self.tableView dequeueReusableCellWithIdentifier:@"CellToggleId"];
+	if (cell == nil) {
+		cell = [[[CellToggle alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellToggleId"] autorelease];
+	}
+    [cell setTitle:label andCurrentStatus:cStat];
+    cell.delegate = self;
+    cell.cellHostView = CellHostViewEvent;
+    return cell;
+}
 
 #pragma mark -
 #pragma mark SubViewLocationDelegate
@@ -586,6 +614,14 @@ typedef enum {
     int a = scrollView.contentOffset.y;
     if (a < 0 && !_saving) a = 0;
     [[ViewController sharedInstance] showDropShadow:a];
+}
+
+#pragma mark -
+#pragma mark CellToggleDelegate Methods
+- (void)userToggledCellWithTitle:(NSString *)title toValue:(BOOL)isOn
+{
+    //NSLog(@"userToggledCellWithTitle: %@ : isOn:%d", title, isOn);
+    [[Controller sharedInstance] toggleDecidedForEventWithId:detail.eventId];
 }
 
 #pragma mark -

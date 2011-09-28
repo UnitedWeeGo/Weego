@@ -54,6 +54,7 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, readonly) BOOL iOwnEvent;
 @property (nonatomic, readonly) BOOL shouldReportUserLocation;
 @property (nonatomic, readonly) BOOL shouldAttemptCheckin;
+@property (nonatomic) BOOL forcedDecided;
 
 - (id)initWithId:(NSString *)anId;
 
@@ -65,6 +66,7 @@ typedef NSInteger AcceptanceType;
 //- (NSArray *)getLocationsSortedByVotes;
 - (Location *)getLocationWithUUID:(NSString *)uuid;
 - (Location *)getLocationByLocationId:(NSString *)locationId;
+- (Location *)getTopLocation;
 
 - (NSArray *)getParticipants;
 - (NSArray *)getParticipantsSortedByName;

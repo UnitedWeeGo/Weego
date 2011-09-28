@@ -11,10 +11,18 @@
 
 #define CellToggleHeight 44.0
 
+@protocol CellToggleDelegate <NSObject>
+
+- (void)userToggledCellWithTitle:(NSString *)title toValue:(BOOL)isOn;
+
+@end
+
 @interface CellToggle : BBTableViewCell {
     UILabel *fieldTitle;
     UISwitch *uiSwitch;
 }
+
+@property (nonatomic, assign) id <CellToggleDelegate> delegate;
 
 - (void)setTitle:(NSString *)title andCurrentStatus:(BOOL)isOn;
 
