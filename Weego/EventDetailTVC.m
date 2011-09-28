@@ -550,7 +550,7 @@ enum eventDetailSections {
     }
 	if (section == eventDetailSectionParticipants) {
         if (otherParticipantsShowing && ![Model sharedInstance].isInTrial) {
-            if (detail.currentEventState >= EventStateDecided) numRows = [[detail getParticipants] count] + (detail.currentEventState > EventStateDecided ? 1 : 2); 
+            if (detail.currentEventState >= EventStateDecided) numRows = [[detail getParticipants] count] + (detail.currentEventState >= EventStateEnded ? 1 : 2); 
             else numRows = [[detail getParticipants] count] + (detail.currentEventState > EventStateDecided ? 0 : 1);
         } else {
             numRows = 1;
@@ -563,7 +563,7 @@ enum eventDetailSections {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	BBTableViewCell *cell = nil;
     
-    NSLog(@"cellForRowAtIndexPath --- indexPath.row: %d, indexPath.section: %d", indexPath.row, indexPath.section);
+    //NSLog(@"cellForRowAtIndexPath --- indexPath.row: %d, indexPath.section: %d", indexPath.row, indexPath.section);
     
 	if (indexPath.section == eventDetailSectionLocations) 
     {
@@ -607,7 +607,7 @@ enum eventDetailSections {
                 Participant *p = (Participant *)[[detail getParticipantsSortedByName] objectAtIndex:index];
                 cell = [self getCellForParticipantWithParticipant:p];
                 if (indexPath.row == 0) [cell isFirst:YES isLast:NO];
-                else [cell isFirst:NO isLast:detail.hasBeenCancelled || detail.currentEventState > EventStateDecided ? (indexPath.row == [[detail getParticipants] count] ? YES : NO) : NO];
+                else [cell isFirst:NO isLast:detail.hasBeenCancelled || detail.currentEventState >= EventStateEnded ? (indexPath.row == [[detail getParticipants] count] ? YES : NO) : NO];
             } else {
                 cell = [self getCellForCallToAction:@"Add friend(s)"];
                 if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
