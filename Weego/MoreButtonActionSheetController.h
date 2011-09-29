@@ -26,9 +26,10 @@ typedef enum {
 
 - (void)showModalDuplicateEventRequest;
 - (void)removeEventRequest;
+- (void)toggleEventDecidedStatus;
 
 @optional
-- (void)setPendingCountMeInFetchRequestId:(NSString *)requestId;
+- (void)setPendingCountMeIn:(BOOL)countIn;
 - (void)presentMailModalViewControllerRequested;
 
 @end
@@ -40,6 +41,7 @@ typedef enum {
     UIDatePicker *datePicker;
     NSDate *suggestedDate;
     BOOL alertViewShowing;
+    BOOL shouldAddEventDecidedToggle;
 }
 
 @property (nonatomic, assign) id <MoreButtonActionSheetControllerDelegate> delegate;

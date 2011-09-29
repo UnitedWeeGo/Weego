@@ -8,13 +8,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/Event.m"
-         timestampString = "338930438.972049"
+         filePath = "Weego/CreateEventTVC.m"
+         timestampString = "338941421.551859"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
-         landmarkName = "-userHasCheckedInWithEmail:"
+         startingLineNumber = "380"
+         endingLineNumber = "380"
+         landmarkName = "-numberOfSectionsInTableView:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -23,12 +23,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/CreateEventTVC.m"
-         timestampString = "338936384.446986"
+         timestampString = "338941421.551859"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "497"
-         endingLineNumber = "497"
-         landmarkName = "-getCellForEventDecidedToggle:andCurrentToggleStatus:"
+         startingLineNumber = "399"
+         endingLineNumber = "399"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -37,12 +37,54 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/CreateEventTVC.m"
-         timestampString = "338936384.446986"
+         timestampString = "338941421.551859"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "612"
-         endingLineNumber = "612"
-         landmarkName = "-userToggledCellWithTitle:toValue:"
+         startingLineNumber = "359"
+         endingLineNumber = "359"
+         landmarkName = "-tableView:heightForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/CreateEventTVC.m"
+         timestampString = "338941280.414662"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/CreateEventTVC.m"
+         timestampString = "338938997.340233"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "251"
+         endingLineNumber = "251"
+         landmarkName = "@implementation CreateEventTVC"
+         landmarkType = "3">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Weego/CreateEventTVC.m"
+         timestampString = "338941421.551859"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "385"
+         endingLineNumber = "385"
+         landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -51,12 +93,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/Controller.m"
-         timestampString = "338931716.055522"
+         timestampString = "338952639.577485"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "307"
-         endingLineNumber = "307"
-         landmarkName = "-toggleDecidedForEventWithId:"
+         startingLineNumber = "304"
+         endingLineNumber = "304"
+         landmarkName = "-toggleDecidedForCurrentEvent"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -64,13 +106,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Weego/CreateEventTVC.m"
-         timestampString = "338934577.266647"
+         filePath = "Weego/DataFetcher.m"
+         timestampString = "338952706.647744"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
-         landmarkName = "-handleRightActionPress:"
+         startingLineNumber = "951"
+         endingLineNumber = "951"
+         landmarkName = "-initAndToggleDecidedStatusForEventWithUserId:andEventId:withTimestamp:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

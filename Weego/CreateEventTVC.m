@@ -24,13 +24,13 @@ typedef enum {
     eventDetailSectionEntryForm = 0,
 	eventDetailSectionLocations,
 	eventDetailSectionParticipants,
-    eventDetailSectionDecidedToggle,
 	numEventDetailSections
 } EventDetailSections;
 
 typedef enum {
     createEventFormRowWhat = 0,
     createEventFormRowWhen,
+    createEventFormRowToggle,
     numCreateEventFormRow
 } CreateEventFormRow;
 
@@ -259,8 +259,6 @@ typedef enum {
         if ([detail.getParticipants count] > 0 && indexPath.row != [detail.getParticipants count] && indexPath.row != 0) {
             return YES;
         }
-    } else if (indexPath.section == eventDetailSectionDecidedToggle) {
-        return NO;
     }
     return NO;
 }
@@ -394,7 +392,6 @@ typedef enum {
 	if (section == eventDetailSectionParticipants && ![Model sharedInstance].isInTrial) {
         numRows += [[detail getParticipants] count];
     }
-    if (section == eventDetailSectionDecidedToggle) numRows = 1;
 	return numRows;
 }
 
@@ -414,18 +411,17 @@ typedef enum {
             cell = targetCell;
         } else if (indexPath.row == createEventFormRowWhen) {
             CellFormEntry *targetCell = (CellFormEntry *)[self getCellForFormWithLabel:@"When"];
-            [targetCell isFirst:NO isLast:YES];
+            [targetCell isFirst:NO isLast:NO];
             targetCell.index = createEventFormRowWhen;
             targetCell.fieldText = [detail getFormattedDateString];
             [targetCell setEntryType:CellFormEntryTypePrevent];
 //            [targetCell setReturnKeyType:UIReturnKeyNext];
             cell = targetCell;
+        } else if (indexPath.row == createEventFormRowToggle) {
+            cell = [self getCellForEventDecidedToggle:@"Voting allowed" andCurrentToggleStatus:!detail.forcedDecided];
+            [cell isFirst:NO isLast:YES];
         }
     } else if (indexPath.section == eventDetailSectionLocations) {
-        
-        
-        
-        
         
 		if (indexPath.row < rowsForLocations-1) {
             Location *loc = (Location *)[oldSortedLocations objectAtIndex:indexPath.row];
@@ -438,9 +434,6 @@ typedef enum {
             else [cell isFirst:NO isLast:YES];
 		}
         
-        
-        
-        
 	} else if (indexPath.section == eventDetailSectionParticipants) {
 		if (indexPath.row < [[detail getParticipants] count] && ![Model sharedInstance].isInTrial) {
 			Participant *p = (Participant *)[[detail getParticipantsSortedByName] objectAtIndex:indexPath.row];
@@ -452,10 +445,7 @@ typedef enum {
             if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
             else [cell isFirst:NO isLast:YES];
 		}
-	} else if (indexPath.section == eventDetailSectionDecidedToggle) {
-        cell = [self getCellForEventDecidedToggle:@"Voting allowed" andCurrentToggleStatus:!detail.forcedDecided];
-        [cell isFirst:YES isLast:YES];
-    }
+	}
     return cell;
 }
 
@@ -621,7 +611,7 @@ typedef enum {
 - (void)userToggledCellWithTitle:(NSString *)title toValue:(BOOL)isOn
 {
     //NSLog(@"userToggledCellWithTitle: %@ : isOn:%d", title, isOn);
-    [[Controller sharedInstance] toggleDecidedForEventWithId:detail.eventId];
+    [[Controller sharedInstance] toggleDecidedForCurrentEvent];
 }
 
 #pragma mark -

@@ -70,6 +70,6 @@
 - (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime;
 
 // Toggle event decided status
-- (NSString *)toggleDecidedForEventWithId:(NSString *)eventId;
+- (NSString *)toggleDecidedForCurrentEvent;
 
 @end

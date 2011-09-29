@@ -344,6 +344,9 @@ enum eventDetailSections {
         case DataFetchTypeRemoveEvent:
             [self showAlertWithCode:errorType];
             break;
+        case DataFetchTypeToggleEventDecidedStatus:
+            [self showAlertWithCode:errorType];
+            break;
         default:
             break;
     }
@@ -351,7 +354,7 @@ enum eventDetailSections {
 
 - (void)showAlertWithCode:(int)code
 {
-    NSString *title = @"Error";
+    NSString *title = @"Connection Error";
     NSString *message = @"";
     
     switch (code) {
@@ -1007,10 +1010,16 @@ enum eventDetailSections {
     [self handleHomePress:self];
 }
 
-- (void)setPendingCountMeInFetchRequestId:(NSString *)requestId
+- (void)setPendingCountMeIn:(BOOL)countIn
 {
-    pendingCountMeInFetchRequestId = requestId;
+    pendingCountMeInFetchRequestId = [[Controller sharedInstance] setEventAcceptanceForEvent:detail didAccept:countIn];
     [pendingCountMeInFetchRequestId retain];
+}
+
+- (void)toggleEventDecidedStatus
+{
+    NSLog(@"EventDetailTVC toggleEventDecidedStatus");
+    [[Controller sharedInstance] toggleDecidedForCurrentEvent];
 }
 
 - (void)presentMailModalViewControllerRequested

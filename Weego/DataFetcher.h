@@ -52,6 +52,7 @@ enum {
     DataFetchTypeDeal,
     DataFetchTypeRemoveLocation,
     DataFetchTypeRemoveEvent,
+    DataFetchTypeToggleEventDecidedStatus,
     DataFetchTypeSearchSimpleGeo,
     DataFetchTypeSearchSimpleGeoCurrentLocation,
     DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces,
@@ -194,6 +195,9 @@ typedef NSInteger DataFetchType;
 // suggest and remove
 - (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut doCancel:(BOOL)cancel withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSuggestTimeWithUserId:(NSString *)userId toEventId:(NSString *)eventId withSuggestedTime:(NSString *)suggestedDate withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
+
+// Toggle decided status of event
+- (id)initAndToggleDecidedStatusForEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;
 
 - (id)initAndGetRecentParticipantsWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate;
 

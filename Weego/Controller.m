@@ -275,7 +275,7 @@ static Controller *sharedInstance;
     [model.currentEvent addVoteWithLocationId:locationId];
 //    Delay the following to account for many button presses
     if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) {
-        [self performSelector:@selector(doRequestToggleVoteForLocationsWithId) withObject:nil afterDelay:0.5];
+        [self performSelector:@selector(doRequestToggleVoteForLocations) withObject:nil afterDelay:0.5];
     } else {        
         [model.currentEvent clearNewVotes];
         [model determineLocationOrderForCreateOrTrial];
@@ -283,7 +283,7 @@ static Controller *sharedInstance;
     return nil;
 }
 
-- (NSString *)doRequestToggleVoteForLocationsWithId
+- (NSString *)doRequestToggleVoteForLocations
 {
     Model *model = [Model sharedInstance];
     if ([model.currentEvent.updatedVotes count] > 0) {
@@ -295,24 +295,21 @@ static Controller *sharedInstance;
 }
 
 
-- (NSString *)toggleDecidedForEventWithId:(NSString *)eventId
+- (NSString *)toggleDecidedForCurrentEvent
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 	Model *model = [Model sharedInstance];
     //    Delay the following to account for many button presses
     if (model.currentAppState != AppStateCreateEvent && !model.isInTrial) {
-        [self performSelector:@selector(doRequestToggleEventDecidedWithId) withObject:nil afterDelay:0.5];
+        
+        DataFetcher *fetcher = [[[DataFetcher alloc] initAndToggleDecidedStatusForEventWithUserId:[model userId] andEventId:model.currentEvent.eventId  withTimestamp:(NSString *)model.currentEvent.lastUpdatedTimestamp delegate:[DataParser sharedInstance]] autorelease];
+        return fetcher.requestId;
+        
     } else {        
         // toggle disabled voting in event
         model.currentEvent.forcedDecided = !model.currentEvent.forcedDecided;
     }
     return nil;
 }
-- (NSString *)doRequestToggleEventDecidedWithId
-{
-    return @"";
-}
-
 
 /*
 - (NSString *)voteForLocationWithId:(NSString *)locationId

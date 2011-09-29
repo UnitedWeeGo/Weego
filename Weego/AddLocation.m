@@ -1459,6 +1459,9 @@ typedef enum {
             [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
+        case DataFetchTypeToggleEventDecidedStatus:
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
+            break;
         default:
             break;
     }
@@ -1466,7 +1469,7 @@ typedef enum {
 
 - (void)showAlertWithCode:(int)code
 {
-    NSString *title = @"Error";
+    NSString *title = @"Connection Error";
     NSString *message = @"";
     
     switch (code) {
@@ -1672,6 +1675,12 @@ typedef enum {
 - (void)removeEventRequest
 {
     [[ViewController sharedInstance] goBackToDashboardFromAddLocations];
+}
+
+- (void)toggleEventDecidedStatus
+{
+    NSLog(@"AddLocation toggleEventDecidedStatus");
+    [[Controller sharedInstance] toggleDecidedForCurrentEvent];
 }
 
 #pragma mark - View lifecycle

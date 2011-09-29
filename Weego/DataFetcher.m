@@ -935,6 +935,24 @@
 	return self;
 }
 
+- (id)initAndToggleDecidedStatusForEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        self.requestId = [self stringWithUUID];
+        pendingRequestType = DataFetchTypeToggleEventDecidedStatus;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@%@",
+                                apiURL,
+                                @"toggle.decided.php",
+                                userId,
+                                eventId,
+                                (!timestamp) ? @"" : [[[NSString alloc] initWithFormat:@"&timestamp=%@", [self urlencode:timestamp]] autorelease] ] autorelease];
+		[self makeRequest:urlString];
+	}
+	return self;
+}
+
 - (id)initAndGetRecentParticipantsWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
