@@ -269,6 +269,16 @@ enum eventDetailSections {
         case DataFetchTypeGetReportedLocations:
             return;
             break;
+        case DataFetchTypeToggleEventDecidedStatus:
+            otherLocationsShowing = detail.currentEventState < EventStateDecided;
+            otherParticipantsShowing = detail.currentEventState < EventStateDecided;
+            tableHeaderView = [[HeaderViewDetailsEvent alloc] initWithFrame:CGRectMake(10, 0, self.tableView.frame.size.width - 20, 44)];
+            tableHeaderView.event = detail;
+            tableHeaderView.delegate = self;
+            self.tableView.tableHeaderView = tableHeaderView;
+            [tableHeaderView release];
+
+            break;
     }
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];

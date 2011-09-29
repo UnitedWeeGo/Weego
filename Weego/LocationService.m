@@ -157,8 +157,8 @@ static LocationService *sharedInstance;
         if (numMinutesSinceLastFetchAttempt > STALE_DATA_FETCH_MINUTES_THRESHOLD) 
         {
             NSLog(@"checkForStaleDataInBackground : numMinutesSinceLastFetchAttempt: %d, fetchEvents", numMinutesSinceLastFetchAttempt);
-            [[Controller sharedInstance] fetchEventsSynchronous];
-            //[[Controller sharedInstance] fetchEvents];
+            //[[Controller sharedInstance] fetchEventsSynchronous];
+            [[Controller sharedInstance] fetchEvents];
         }
     }
 }
@@ -237,7 +237,8 @@ static LocationService *sharedInstance;
         UIApplication *app = [UIApplication sharedApplication];
         if (app.applicationState == UIApplicationStateBackground) {
             NSLog(@"Reporting user location disabled in background");
-            [[Controller sharedInstance] reportLocationSynchronous:loc];
+            //[[Controller sharedInstance] reportLocationSynchronous:loc];
+            [[Controller sharedInstance] reportLocation:loc];
         } else {
             NSLog(@"Reporting user location disabled");
             [[Controller sharedInstance] reportLocation:loc];
@@ -251,7 +252,8 @@ static LocationService *sharedInstance;
     NSLog(@"checking in user %@ for event %@ in background:%@", model.userEmail, event.eventTitle, app.applicationState == UIApplicationStateBackground ? @"YES" : @"NO");
     
     if (app.applicationState == UIApplicationStateBackground) {
-        [[Controller sharedInstance] checkinUserForEventSynchronous:event];
+        //[[Controller sharedInstance] checkinUserForEventSynchronous:event];
+        [[Controller sharedInstance] checkinUserForEvent:event];
     } else {
         [[Controller sharedInstance] checkinUserForEvent:event];
     }
@@ -266,8 +268,8 @@ static LocationService *sharedInstance;
     
     if (app.applicationState == UIApplicationStateBackground) {
         NSLog(@"Reporting location in background");
-        //[[Controller sharedInstance] reportLocation:loc forEvent:event];
-        [[Controller sharedInstance] reportLocationSynchronous:loc];
+        //[[Controller sharedInstance] reportLocationSynchronous:loc];
+        [[Controller sharedInstance] reportLocation:loc];
     } else {
         NSLog(@"Reporting location");
         [[Controller sharedInstance] reportLocation:loc];
