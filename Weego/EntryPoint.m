@@ -79,7 +79,7 @@
     */
     
     loginFacebook = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginFacebook.frame = CGRectMake(8, 360, bg1.size.width, bg1.size.height);
+    loginFacebook.frame = CGRectMake(8, 380, bg1.size.width, bg1.size.height);
     [loginFacebook setBackgroundImage:bg1 forState:UIControlStateNormal];
     [loginFacebook setBackgroundImage:bg2 forState:UIControlStateHighlighted];
     [loginFacebook addTarget:self action:@selector(handleFacebookPressed:) forControlEvents:UIControlEventTouchUpInside];
