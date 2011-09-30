@@ -28,11 +28,37 @@
 @synthesize updatedVotes;
 @synthesize acceptanceStatus,hasBeenRemoved,hasBeenCancelled, forcedDecided;
 
+
+/*
+ @property (nonatomic, copy) NSString *eventId;
+ @property (nonatomic, copy) NSString *eventTitle;
+ @property (nonatomic, copy) NSString *eventDescription;
+ @property (nonatomic, copy) NSString *creatorId;
+ @property (nonatomic, copy) NSString *acceptedParticipantList;
+ @property (nonatomic, copy) NSString *declinedParticipantList;
+ @property (nonatomic, copy) NSString *checkedInParticipantList;
+ @property (nonatomic, copy) NSString *lastUpdatedTimestamp;
+ @property (nonatomic, copy) NSString *lastReportedLocationsTimestamp;
+ @property (nonatomic, copy) NSString *currentLocationOrder;
+ @property (nonatomic, copy) NSString *participantCount;
+ @property (nonatomic, copy) NSString *unreadMessageCount;
+ @property (nonatomic, copy) NSString *topLocationId;
+ */
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.eventTitle = @"";
+        self.acceptedParticipantList = @"";
+        self.declinedParticipantList = @"";
+        self.checkedInParticipantList = @"";
+    }
+    return self;
+}
+
 - (id)initWithId:(NSString *)anId
 {
 	self = [self init];
 	if (self != nil) {
-        self.eventTitle = @"";
 		self.eventId = anId;
 	}
 	return self;
@@ -77,7 +103,7 @@
 
 - (BOOL)userHasCheckedInWithEmail:(NSString *)email
 {
-    return [checkedInParticipantList rangeOfString:email].length > 0;
+    return [self.checkedInParticipantList rangeOfString:email].length > 0;
 }
 
 - (AcceptanceType)acceptanceStatus
@@ -87,8 +113,8 @@
 
 - (AcceptanceType)acceptanceStatusForUserWithEmail:(NSString *)email
 {
-    BOOL hasAccepted = [acceptedParticipantList rangeOfString:email].length > 0;
-    BOOL hasDeclined = [declinedParticipantList rangeOfString:email].length > 0;
+    BOOL hasAccepted = [self.acceptedParticipantList rangeOfString:email].length > 0;
+    BOOL hasDeclined = [self.declinedParticipantList rangeOfString:email].length > 0;
     if (hasAccepted)
     {
         return AcceptanceTypeAccepted;
@@ -102,7 +128,7 @@
 
 - (BOOL)participantHasAcceptedEventWithEmail:(NSString *)email
 {
-    return [acceptedParticipantList rangeOfString:email].length > 0;
+    return [self.acceptedParticipantList rangeOfString:email].length > 0;
 }
 
 - (NSArray *)getLocations
@@ -192,10 +218,10 @@
 
 - (BOOL)loginUserDidVoteForLocationWithId:(NSString *)locationId;
 {
-    if (iVotedFor != nil) {
+    if (self.iVotedFor != nil) {
 //        NSArray *locationIds = [iVotedFor componentsSeparatedByString:@","];
-        for (int i=0; i<[iVotedFor count]; i++) {
-            if ([locationId isEqualToString:[iVotedFor objectAtIndex:i]]) {
+        for (int i=0; i<[self.iVotedFor count]; i++) {
+            if ([locationId isEqualToString:[self.iVotedFor objectAtIndex:i]]) {
                 return YES;
             }
         }
@@ -334,11 +360,11 @@
 {
     if (!self.updatedVotes) self.updatedVotes = [[NSArray alloc] init];
     BOOL isFound = NO;
-    for (int i=0; i<[updatedVotes count]; i++) {
-        if ([locationId isEqualToString:[updatedVotes objectAtIndex:i]]) {
+    for (int i=0; i<[self.updatedVotes count]; i++) {
+        if ([locationId isEqualToString:[self.updatedVotes objectAtIndex:i]]) {
             isFound = YES;
             NSMutableArray *mNewVotes = [[NSMutableArray alloc] initWithArray:self.updatedVotes];
-            [mNewVotes removeObject:[updatedVotes objectAtIndex:i]];
+            [mNewVotes removeObject:[self.updatedVotes objectAtIndex:i]];
             self.updatedVotes = mNewVotes;
             [mNewVotes release];
         }
@@ -420,14 +446,6 @@
 - (BOOL)shouldAttemptCheckin
 {
     return self.currentEventState >= EventStateDecided && self.shouldReportUserLocation;
-}
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        //
-    }
-    return self;
 }
 
 - (void)dealloc {

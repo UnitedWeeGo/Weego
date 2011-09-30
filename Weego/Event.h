@@ -26,8 +26,6 @@ typedef NSInteger AcceptanceType;
 
 @property (nonatomic, copy) NSString *eventId;
 @property (nonatomic, copy) NSString *eventTitle;
-@property (nonatomic, retain) NSDate *eventDate;
-@property (nonatomic, retain) NSDate *eventExpireDate;
 @property (nonatomic, copy) NSString *eventDescription;
 @property (nonatomic, copy) NSString *creatorId;
 @property (nonatomic, copy) NSString *acceptedParticipantList;
@@ -35,17 +33,22 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, copy) NSString *checkedInParticipantList;
 @property (nonatomic, copy) NSString *lastUpdatedTimestamp;
 @property (nonatomic, copy) NSString *lastReportedLocationsTimestamp;
-@property (nonatomic) BOOL isTemporary;
-@property (nonatomic) EventState currentEventState;
-@property (nonatomic, copy) NSString *topLocationId;
+@property (nonatomic, copy) NSString *currentLocationOrder;
 @property (nonatomic, copy) NSString *participantCount;
 @property (nonatomic, copy) NSString *unreadMessageCount;
+@property (nonatomic, copy) NSString *topLocationId;
+
+@property (nonatomic, retain) NSDate *eventDate;
+@property (nonatomic, retain) NSDate *eventExpireDate;
+
+@property (nonatomic) BOOL isTemporary;
+@property (nonatomic) EventState currentEventState;
 @property (nonatomic, readonly) int minutesToGoUntilVotingEnds;
 @property (nonatomic, readonly) int minutesToGoUntilEventStarts;
 @property (nonatomic) BOOL eventRead;
 @property (nonatomic) BOOL hasBeenCheckedIn;
 @property (nonatomic) BOOL hasPendingCheckin;
-@property (nonatomic, copy) NSString *currentLocationOrder;
+
 @property (nonatomic, retain) NSArray *iVotedFor;
 @property (nonatomic, retain) NSArray *updatedVotes;
 @property (nonatomic, readonly) AcceptanceType acceptanceStatus;
