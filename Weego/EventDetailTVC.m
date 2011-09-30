@@ -78,6 +78,8 @@ enum eventDetailSections {
     otherLocationsShowing = detail.currentEventState < EventStateDecided;
     otherParticipantsShowing = detail.currentEventState < EventStateDecided;
     
+    inDecidedState = detail.currentEventState >= EventStateDecided;
+    
     [self populateCurrentSortedLocations];
     
 	bevelStripe = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
@@ -270,16 +272,24 @@ enum eventDetailSections {
             return;
             break;
         case DataFetchTypeToggleEventDecidedStatus:
-            otherLocationsShowing = detail.currentEventState < EventStateDecided;
-            otherParticipantsShowing = detail.currentEventState < EventStateDecided;
-            tableHeaderView = [[HeaderViewDetailsEvent alloc] initWithFrame:CGRectMake(10, 0, self.tableView.frame.size.width - 20, 44)];
-            tableHeaderView.event = detail;
-            tableHeaderView.delegate = self;
-            self.tableView.tableHeaderView = tableHeaderView;
-            [tableHeaderView release];
-
+            
             break;
     }
+    
+    // if the current visual state of the view toggles from decided to undecided or back we need to refresh the table header and set flags
+    if ( (inDecidedState && detail.currentEventState < EventStateDecided) || (!inDecidedState && detail.currentEventState >= EventStateDecided) )
+    {
+        otherLocationsShowing = detail.currentEventState < EventStateDecided;
+        otherParticipantsShowing = detail.currentEventState < EventStateDecided;
+        tableHeaderView = [[HeaderViewDetailsEvent alloc] initWithFrame:CGRectMake(10, 0, self.tableView.frame.size.width - 20, 44)];
+        tableHeaderView.event = detail;
+        tableHeaderView.delegate = self;
+        self.tableView.tableHeaderView = tableHeaderView;
+        [tableHeaderView release];
+        
+        inDecidedState = detail.currentEventState >= EventStateDecided;
+    }
+    
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self populateCurrentSortedLocations];
@@ -878,6 +888,7 @@ enum eventDetailSections {
 
 - (void)eventReachedDecided
 {   
+    inDecidedState = YES;
     otherLocationsShowing = NO;
     otherParticipantsShowing = NO;
     @try

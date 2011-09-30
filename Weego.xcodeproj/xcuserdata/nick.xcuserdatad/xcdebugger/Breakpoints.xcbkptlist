@@ -121,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "339013298.869608"
+         timestampString = "339037023.991202"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "550"
-         endingLineNumber = "550"
+         startingLineNumber = "560"
+         endingLineNumber = "560"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,25 +135,25 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "339013298.869608"
+         timestampString = "339037023.991202"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "565"
-         endingLineNumber = "565"
+         startingLineNumber = "575"
+         endingLineNumber = "575"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "339013283.682759"
+         timestampString = "339037075.625306"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "273"
-         endingLineNumber = "273"
+         startingLineNumber = "282"
+         endingLineNumber = "282"
          landmarkName = "-handleDataFetcherSuccessMessage:"
          landmarkType = "5">
       </FileBreakpoint>

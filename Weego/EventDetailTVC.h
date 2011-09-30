@@ -51,6 +51,8 @@
     BOOL hasBeenCancelled;
     UIView *bevelStripe;
     CellFriendsLocations *friendsLocationsCell;
+    
+    BOOL inDecidedState;
 }
 
 @end
