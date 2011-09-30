@@ -46,8 +46,8 @@
     UIColor *shadowColor = HEXCOLOR(0x000000FF);
 
     // sign up btn
-    UIImage *bg1 = [UIImage imageNamed:@"button_clear_lrg_default.png"];
-    UIImage *bg2 = [UIImage imageNamed:@"button_clear_lrg_pressed.png"];
+    UIImage *bg1 = [UIImage imageNamed:@"button_clear_lrg2x_default.png"];
+    UIImage *bg2 = [UIImage imageNamed:@"button_clear_lrg2x_pressed.png"];
     
     /*
     CGRect buttonTargetSize = CGRectMake(8, 328, bg1.size.width, bg1.size.height);
@@ -79,7 +79,7 @@
     */
     
     loginFacebook = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginFacebook.frame = CGRectMake(8, 385, bg1.size.width, bg1.size.height);
+    loginFacebook.frame = CGRectMake(8, 360, bg1.size.width, bg1.size.height);
     [loginFacebook setBackgroundImage:bg1 forState:UIControlStateNormal];
     [loginFacebook setBackgroundImage:bg2 forState:UIControlStateHighlighted];
     [loginFacebook addTarget:self action:@selector(handleFacebookPressed:) forControlEvents:UIControlEventTouchUpInside];
