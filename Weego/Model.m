@@ -56,7 +56,7 @@
 @synthesize dealResults;
 @synthesize simpleGeoCategoryResults;
 @synthesize suggestedTimes;
-@synthesize locationReportingDisabledRequested, locationReportingEnabledRequested;
+@synthesize locationReportingDisabledRequested, locationReportingEnabledRequested, recentFriends;
 
 static Model *sharedInstance;
 
@@ -118,6 +118,10 @@ static Model *sharedInstance;
         NSMutableDictionary *tPendingVoteRequests = [[NSMutableDictionary alloc] init];
         self.pendingVoteRequests = tPendingVoteRequests;
         [tPendingVoteRequests release];
+        
+        NSMutableArray *tRecentFriends = [[NSMutableArray alloc] init];
+		self.recentFriends = tRecentFriends;
+        [tRecentFriends release];
     }
     return self;
 }
@@ -144,6 +148,9 @@ static Model *sharedInstance;
     
     [self.messages removeAllObjects];
 	[self.messages release];
+    
+    [self.recentFriends removeAllObjects];
+	[self.recentFriends release];
     
     [self.reportedLocations removeAllObjects];
 	[self.reportedLocations release];
@@ -904,10 +911,10 @@ static Model *sharedInstance;
         if (!isFound) [facebookFriends addObject:newp];
     } else {
         BOOL isFound = NO;
-        for (Participant *p in self.participants) {
+        for (Participant *p in self.recentFriends) {
             if ([p.email isEqualToString:newp.email] && p.hasBeenPaired) isFound = YES;
         }
-        if (!isFound) [self.participants addObject:newp];
+        if (!isFound) [self.recentFriends addObject:newp];
     }
     [newp release];
 }
@@ -915,7 +922,7 @@ static Model *sharedInstance;
 - (NSArray *)getRecentParticipants
 {
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
-    for (Participant *p in self.participants) {
+    for (Participant *p in self.recentFriends) {
         BOOL isFound = NO;
         if ([p.email isEqualToString:userEmail]) continue;
         for (Participant *p2 in returnParticipants) {

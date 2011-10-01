@@ -81,6 +81,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableArray *suggestedTimes;
 @property (nonatomic, retain) NSMutableArray *reportedLocations;
 
+@property (nonatomic, retain) NSMutableArray *recentFriends;
 @property (nonatomic, retain) NSMutableArray *facebookFriends;
 
 @property (nonatomic, assign) BOOL isInTrial;
