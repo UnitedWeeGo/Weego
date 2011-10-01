@@ -894,12 +894,23 @@ static Model *sharedInstance;
     return [returnParticipants autorelease];
 }
 
+- (void)clearRecentParticipants
+{
+    [self.recentFriends removeAllObjects];
+    [self.facebookFriends removeAllObjects];
+}
+
 - (void)addOrUpdateParticipantWithXml:(GDataXMLElement *)participantXML
 {
     Participant *newp = [[Participant alloc] init];
     [newp populateWithXml:participantXML];
+    
     BOOL isFacebook = [[[participantXML attributeForName:@"type"] stringValue] isEqualToString:@"facebook"];
     if (isFacebook) {
+        
+        [facebookFriends addObject:newp];
+        
+        /*
         BOOL isFound = NO;
         NSArray *recents = [self getRecentParticipants];
         for (Participant *p in recents) {
@@ -909,18 +920,25 @@ static Model *sharedInstance;
             if ([newp.email isEqualToString:p.email]) isFound = YES;
         }
         if (!isFound) [facebookFriends addObject:newp];
+         */
     } else {
+        
+        [self.recentFriends addObject:newp];
+        /*
         BOOL isFound = NO;
         for (Participant *p in self.recentFriends) {
             if ([p.email isEqualToString:newp.email] && p.hasBeenPaired) isFound = YES;
         }
         if (!isFound) [self.recentFriends addObject:newp];
+         */
     }
     [newp release];
 }
 
 - (NSArray *)getRecentParticipants
 {
+    return self.recentFriends;
+    /*
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
     for (Participant *p in self.recentFriends) {
         BOOL isFound = NO;
@@ -931,10 +949,13 @@ static Model *sharedInstance;
         if (!isFound && !p.hasBeenRemoved && p.hasBeenPaired) [returnParticipants addObject:p];
     }
     return [returnParticipants autorelease];
+     */
 }
 
 - (NSArray *)getFacebookFriends
 {
+    return self.facebookFriends;
+    /*
     NSMutableArray *returnParticipants = [[NSMutableArray alloc] init];
     for (Participant *p in self.facebookFriends) {
         BOOL isFound = NO;
@@ -945,6 +966,7 @@ static Model *sharedInstance;
         if (!isFound && !p.hasBeenRemoved && p.hasBeenPaired) [returnParticipants addObject:p];
     }
     return [returnParticipants autorelease];
+     */
 }
 
 - (void)removeParticipantWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId

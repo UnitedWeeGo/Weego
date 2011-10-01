@@ -441,6 +441,7 @@ static DataParser *sharedInstance;
 
 - (void)parseResponseRecentParticipants:(GDataXMLDocument *)doc
 {
+    [[Model sharedInstance] clearRecentParticipants];
     NSArray *participants = [doc.rootElement elementsForName:@"participant"];
     for (GDataXMLElement *participant in participants) {
         [[Model sharedInstance] addOrUpdateParticipantWithXml:participant];

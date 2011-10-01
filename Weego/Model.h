@@ -212,4 +212,6 @@ typedef enum {
 - (SuggestedTime *)getSuggestedTimeWithEmail:(NSString *)email fromEventWithId:(NSString *)eventId;
 - (void)printModel;
 
+- (void)clearRecentParticipants;
+
 @end

@@ -196,7 +196,9 @@
 
 - (void)showDebugLocationServicesIcon:(BOOL)toShow
 {
+#if API_TYPE != 4
     debugLocIcon.hidden = !toShow;
+#endif
 }
 
 - (void)initSimpleGeoCategories
