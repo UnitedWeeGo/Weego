@@ -613,6 +613,7 @@ typedef enum {
 
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    NSLog(@"didUpdateUserLocation :: alreadyZoomedToShowUserLocation: %d", alreadyZoomedToShowUserLocation);
     if (alreadyZoomedToShowUserLocation) return;
     if (theMapView.userLocation.location == nil) return;
     
@@ -797,7 +798,7 @@ typedef enum {
         {
             alreadyZoomedToShowUserLocation = YES;
         }
-        if (skipAdded && !isUserLocation)
+        if (skipAdded)
         {
             if (![annotation isKindOfClass:[LocAnnotation class]]) continue;
             LocAnnotation *loc = (LocAnnotation *)annotation;
