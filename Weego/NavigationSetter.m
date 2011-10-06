@@ -7,7 +7,9 @@
 //
 
 #import "NavigationSetter.h"
-#import "UINavigationBar+CustomBackground.h"
+
+#import "UINavigationBar+CustomBackground.h" // this will get ignored by iOS5
+
 #import "ImageUtil.h"
 
 @interface NavigationSetter (Private)
@@ -31,6 +33,8 @@
 - (void)addHeaderFeedTitleWithTarget:(id)target;
 - (void)addHeaderCountMeInTitleWithTarget:(id)target;
 - (void)addSelectTimeButton:(id)target;
+
+- (void)setNavBarBackgroundForViewController:(UIViewController *)vc;
 
 @end
 
@@ -78,9 +82,29 @@ static NavigationSetter *sharedInstance;
     [super dealloc];
 }
 
+/* iOS5 ONLY */
+- (void)setNavBarBackgroundForViewController:(UIViewController *)vc
+{
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version < 5) return;
+    
+    NSString *imagePath = @"topbar_home_default.png";
+    if ([Model sharedInstance].currentAppState == AppStateCreateEvent) {
+        imagePath = @"topbar_event_default.png";
+    }
+    if ([Model sharedInstance].currentViewState == ViewStateFeed) {
+        imagePath = @"topbar_feed_default.png";
+    }
+    UIImage *image = [UIImage imageNamed: imagePath];    
+    [vc.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+}
+
 - (void)setToolbarState:(ToolbarState)state withTarget:(id)target withFeedCount:(int)feedCount
 {
     UIViewController *vc = target;
+    
+    [self setNavBarBackgroundForViewController:vc];
+    
     switch (state) {
          case ToolbarStateOff:
             [vc.navigationController setToolbarHidden:YES animated:YES];
@@ -99,6 +123,9 @@ static NavigationSetter *sharedInstance;
 - (void)setToolbarState:(ToolbarState)state withTarget:(id)target
 {
     UIViewController *vc = target;
+    
+    [self setNavBarBackgroundForViewController:vc];
+    
     switch (state) {
         case ToolbarStateOff:
             [vc.navigationController setToolbarHidden:YES animated:YES];
@@ -251,6 +278,9 @@ static NavigationSetter *sharedInstance;
 - (void)resetNavViews:(id)target
 {
     UIViewController *vc = target;
+    
+    [self setNavBarBackgroundForViewController:vc];
+    
     vc.navigationItem.leftBarButtonItem = nil;
     vc.navigationItem.rightBarButtonItem = nil;
     vc.navigationItem.title = nil;

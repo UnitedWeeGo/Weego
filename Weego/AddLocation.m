@@ -613,23 +613,7 @@ typedef enum {
 
 - (void)mapView:(MKMapView *)theMapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    NSLog(@"didUpdateUserLocation :: alreadyZoomedToShowUserLocation: %d", alreadyZoomedToShowUserLocation);
-    if (alreadyZoomedToShowUserLocation) return;
-    if (theMapView.userLocation.location == nil) return;
-    
-    [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
-    
-    /*
-    if (userLocationFound) return;
-    if (theMapView.userLocation.location == nil) return;
-    
-    MKCoordinateRegion region;
-    region.center = theMapView.userLocation.coordinate;
-    region.span.latitudeDelta = 0.101;
-    region.span.longitudeDelta = 0.101;
-    [theMapView setRegion:region animated:NO];
-    userLocationFound = true;
-     */
+    // zooming moved for iOS5
 }
 
 - (void)mapView:(MKMapView *)theMapView didSelectAnnotationView:(MKAnnotationView *)view
@@ -749,26 +733,15 @@ typedef enum {
 
 - (void) mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views {
     if ([searchBar respondsToSelector:@selector(showNetworkActivity:)]) [searchBar showNetworkActivity:NO];
-   /*
-    int delayIndex = 0;
-    CGRect visibleRect = [mapView annotationVisibleRect];
+    
     for (MKAnnotationView *view in views) {
-        CGRect endFrame = view.frame;
-        CGRect startFrame = endFrame; startFrame.origin.y = visibleRect.origin.y - startFrame.size.height;
-        view.frame = startFrame;
-        view.alpha = 0;
-//        [view.superview bringSubviewToFront:view];
-        [UIView animateWithDuration:0.20f 
-                              delay:delayIndex * 0.03f 
-                            options:(UIViewAnimationOptionTransitionNone|UIViewAnimationOptionCurveEaseOut) 
-                         animations:^(void){
-                             view.frame = endFrame;
-                             view.alpha = 1;
-                         }
-                         completion:NULL];
-        delayIndex++;
+        if(view.annotation == theMapView.userLocation) {
+            if (alreadyZoomedToShowUserLocation) return;
+            if (theMapView.userLocation.location == nil) return;
+            
+            [self zoomToFitMapAnnotationsAndSkipPreviouslyAdded:NO];
+        }
     }
-     */
 }
 
 - (void)removeAnnotations:(MKMapView *)theMapView includingSaved:(Boolean)includeSaved

@@ -11,7 +11,9 @@
 #import "DashboardTVC.h"
 #import "EventDetailTVC.h"
 #import "CreateEventTVC.h"
-#import "UINavigationBar+CustomBackground.h"
+
+#import "UINavigationBar+CustomBackground.h" // this will get ignored by iOS5
+
 #import "Feed.h"
 #import "KeychainManager.h"
 #import "RegisterTVC.h"
