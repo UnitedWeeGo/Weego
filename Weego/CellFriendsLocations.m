@@ -202,6 +202,12 @@
 {
     [self zoomToFitMapAnnotations];
 }
+
+- (void) mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views 
+{
+    [self zoomToFitMapAnnotations];
+}
+
 - (MKAnnotationView *) mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>) annotation {
 	
 	if ([annotation isKindOfClass:[MKUserLocation class]]) 
@@ -262,6 +268,7 @@
 {
     NSLog(@"CellFriendsLocations dealloc");
     [self removeDataFetcherMessageListeners];
+    mapView.delegate = nil;
     mapView = nil;
     [super dealloc];
 }
