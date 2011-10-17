@@ -107,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/DataFetcher.m"
-         timestampString = "338952706.647744"
+         timestampString = "340316986.726345"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "951"
-         endingLineNumber = "951"
+         startingLineNumber = "915"
+         endingLineNumber = "915"
          landmarkName = "-initAndToggleDecidedStatusForEventWithUserId:andEventId:withTimestamp:delegate:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -121,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "339037023.991202"
+         timestampString = "340316986.726345"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "560"
-         endingLineNumber = "560"
+         startingLineNumber = "550"
+         endingLineNumber = "550"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,16 +135,16 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/EventDetailTVC.m"
-         timestampString = "339037023.991202"
+         timestampString = "340316986.726345"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "575"
-         endingLineNumber = "575"
+         startingLineNumber = "565"
+         endingLineNumber = "565"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
@@ -163,11 +163,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/Model.m"
-         timestampString = "339127661.799287"
+         timestampString = "340580405.402517"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "903"
-         endingLineNumber = "903"
+         startingLineNumber = "909"
+         endingLineNumber = "909"
          landmarkName = "-addOrUpdateParticipantWithXml:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/Model.m"
-         timestampString = "339127796.708704"
+         timestampString = "340580405.402517"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "938"
-         endingLineNumber = "938"
+         startingLineNumber = "944"
+         endingLineNumber = "944"
          landmarkName = "-getRecentParticipants"
          landmarkType = "5">
       </FileBreakpoint>

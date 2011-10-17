@@ -324,7 +324,7 @@ enum eventDetailSections {
 {
     NSDictionary *dict = [aNotification userInfo];
     DataFetchType fetchType = [[dict objectForKey:DataFetcherDidCompleteRequestKey] intValue];
-    NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
+//    NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
     int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeGetEvent:
@@ -334,16 +334,6 @@ enum eventDetailSections {
             } else {
                 [_refreshHeaderView egoRefreshScrollViewOpenAndShowError:self.tableView withCode:errorType];
             }
-            break;
-        case DataFetchTypeAddVoteToLocation:
-            [[self getCellForRequestId:fetchId] showError];
-            [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
-            [self.tableView reloadData];
-            break;
-        case DataFetchTypeRemoveVoteFromLocation:
-            [[self getCellForRequestId:fetchId] showError];
-            [[Model sharedInstance] removePendingVoteRequestWithRequestId:fetchId];
-            [self.tableView reloadData];
             break;
         case DataFetchTypeToggleVotesForEvent:
             detail.iVotedFor = originalIVotedFor;

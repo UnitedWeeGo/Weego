@@ -36,7 +36,6 @@ enum {
     DataFetchTypeUpdateLocationToEvent,
     DataFetchTypeReportNewLocationToEvent,
     DataFetchTypeToggleVotesForEvent,
-    DataFetchTypeAddVoteToLocation,
     DataFetchTypeRemoveVoteFromLocation,
     DataFetchTypeAddParticipant,
     DataFetchTypeSuggestTime,
@@ -150,8 +149,6 @@ typedef NSInteger DataFetchType;
 - (id)initAndUpdateParticipantsWithUserId:(NSString *)userId withParticipants:(NSArray *)participants withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndAddOrUpdateLocationsWithUserId:(NSString *)userId withLocations:(NSArray *)locations isAnUpdate:(BOOL)update withEvent:(Event *)event delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndToggleVotesWithUserId:(NSString *)userId withEvent:(Event *)event withLocations:(NSArray *)locationIds delegate:(id <DataFetcherDelegate>)myDelegate;
-- (id)initAndAddVoteToLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate;
-- (id)initAndRemoveVoteFromLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndAddParticipantWithUserId:(NSString *)userId toEventId:(NSString *)eventId withEmailAddress:(NSString *)emailAddress delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndUpdateDeviceRecordWithUserId:(NSString *)userId
                            andDeviceToken:(NSString *)deviceToken 

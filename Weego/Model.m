@@ -237,13 +237,12 @@ static Model *sharedInstance;
     self.facebookFriends = tFacebookFriends;
     [tFacebookFriends release];
 }
-
+#warning Correct this to include tomorrows events
 - (void)sortEvents
 {
     NSMutableArray *tSortedEvents = [[NSMutableArray alloc] init];
     self.sortedEvents = tSortedEvents;
     [tSortedEvents release];
-//	[self.sortedEvents addObjectsFromArray:[self.allEvents allValues]];
     
     for (Event *ev in [self.allEvents allValues]) {
         if (!ev.hasBeenRemoved) [self.sortedEvents addObject:ev];
@@ -276,11 +275,10 @@ static Model *sharedInstance;
     
 	for (Event *ev in self.sortedEvents) {
 		float dayDiff = [ev.eventDate timeIntervalSinceDate:todayMidnight] / (60*60*24);
-        if (dayDiff >= 0 && dayDiff <= 1) { //<= 7) {
+        if (dayDiff >= 0 && dayDiff <= 1) {
             //NSLog(@"timeIntervalSinceNow %f", [ev.eventDate timeIntervalSinceNow]);
             if ([ev.eventDate timeIntervalSinceNow] < -60*60*3) { // < 0) {
                 [self.pastEvents addObject:ev];
-//                [weeksEventsPast addObject:ev];
             } else {
                 if (!ev.eventRead) {
                     [weeksEventsNew addObject:ev];
@@ -314,7 +312,13 @@ static Model *sharedInstance;
     [weeksEventsPast release];
     [weeksEventsFuture release];
     
-    if ([self.weeksEvents count] == 0 && [self.futureEvents count] > 0) {
+    if ([self.weeksEvents count] < 2 && [self.futureEvents count] > 0) {
+        Event *firstFuture = [self.futureEvents objectAtIndex:0];
+        [self.weeksEvents addObject:firstFuture];
+        [self.futureEvents removeObject:firstFuture];
+    }
+    
+    if ([self.weeksEvents count] < 2 && [self.futureEvents count] > 0) {
         Event *firstFuture = [self.futureEvents objectAtIndex:0];
         [self.weeksEvents addObject:firstFuture];
         [self.futureEvents removeObject:firstFuture];

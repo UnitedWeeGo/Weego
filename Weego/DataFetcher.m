@@ -419,42 +419,6 @@
 	return self;
 }
 
-- (id)initAndAddVoteToLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate
-{
-	self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        pendingRequestType = DataFetchTypeAddVoteToLocation;
-		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@",
-							   apiURL,
-							   @"mod.vote.php",
-							   userId,
-							   eventId,
-							   locationId ] autorelease];
-		[self makeRequest:urlString];
-	}
-	return self;
-}
-
-- (id)initAndRemoveVoteFromLocationWithUserId:(NSString *)userId toEventId:(NSString *)eventId withLocationId:(NSString *)locationId delegate:(id <DataFetcherDelegate>)myDelegate
-{
-	self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        pendingRequestType = DataFetchTypeRemoveVoteFromLocation;
-		self.delegate = myDelegate;
-		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@&eventId=%@&locationId=%@&removeVote=true",
-                                apiURL,
-                                @"mod.vote.php",
-                                userId,
-                                eventId,
-                                locationId ] autorelease];
-		[self makeRequest:urlString];
-	}
-	return self;
-}
-
 - (id)initAndAddParticipantWithUserId:(NSString *)userId toEventId:(NSString *)eventId withEmailAddress:(NSString *)emailAddress delegate:(id <DataFetcherDelegate>)myDelegate
 {
 	self = [self init];

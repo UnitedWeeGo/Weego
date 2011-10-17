@@ -71,7 +71,7 @@ static MoreButtonActionSheetController *sharedInstance;
     
     userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     
-    if (shouldAddEventDecidedToggle) [userOptions addButtonWithTitle: detail.forcedDecided || detail.currentEventState >= EventStateDecided ? @"Open Voting" : @"Close Voting"];
+    if (shouldAddEventDecidedToggle) [userOptions addButtonWithTitle: detail.forcedDecided || detail.currentEventState >= EventStateDecided ? @"Edit Event" : @"Close Voting"];
     
     if (detail.currentEventState == EventStateNew)
     {

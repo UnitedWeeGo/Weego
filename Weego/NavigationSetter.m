@@ -418,7 +418,7 @@ static NavigationSetter *sharedInstance;
     UIImage *feedImageDefault = [UIImage imageNamed:feedCount>0 ? @"topbar_feed_green.png" : @"topbar_feed_default.png"];
 //    UIImage *feedImagePressed = [UIImage imageNamed:feedCount>0 ? @"topbar_feed_green.png" : @"topbar_feed_default.png"];
     
-    UIView *feedBtnView = [[[UIView alloc] initWithFrame:CGRectMake(0, 1, feedImageDefault.size.width, feedImageDefault.size.height)] autorelease];
+    UIView *feedBtnView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, feedImageDefault.size.width, feedImageDefault.size.height)] autorelease];
     
     UIButton *feedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    feedBtn.adjustsImageWhenHighlighted = NO;
