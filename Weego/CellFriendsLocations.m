@@ -62,7 +62,7 @@
     
     // add lower separation art
     UIImageView *bottomSeparator = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MiniMap_BottomBar.png"]] autorelease];
-    bottomSeparator.frame = CGRectMake(-1, 131, 302, 9);
+    bottomSeparator.frame = CGRectMake(-.8, 132, 302, 9);
     [self.contentView addSubview:bottomSeparator];
     
     self.frame = CGRectMake(self.frame.origin.x, 
@@ -71,7 +71,6 @@
 							CellFriendsLocationsHeight);
     
     [self setUpDataFetcherMessageListeners];
-    [self addWinningLocation];
 }
 
 - (void)handleMapClick
@@ -170,7 +169,7 @@
 
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part
 {
-    for (id <MKAnnotation> annotation in mapView.annotations) 
+    for (id <MKAnnotation> annotation in self.mapView.annotations) 
     {
         if ([annotation isKindOfClass:[ReportedLocationAnnotation class]]) {
             ReportedLocationAnnotation *anno = annotation;
@@ -185,14 +184,35 @@
     [[Controller sharedInstance] fetchReportedLocations];
 }
 
+- (void)checkWinningLocationAddition
+{ 
+    [self addWinningLocation];
+}
+
 - (void)addWinningLocation
 {
     Event *detail = [Model sharedInstance].currentEvent;
-    Location *loc = (Location *)[[detail getLocations] objectAtIndex:0];
-    LocAnnoSelectedState state = LocAnnoSelectedStateDefault;
-    LocAnnoStateType type = LocAnnoStateTypeDecided;
-    LocAnnotation *mark = [[[LocAnnotation alloc] initWithLocation:loc withStateType:type andSelectedState:state] autorelease];
-    [mapView addAnnotation:mark];
+    Location *topLoc = [detail getLocationByLocationId:detail.topLocationId];
+    
+    // if a previous winning location has been added and has changed, it must be removed and re-added
+    BOOL addedAlready = NO;
+    for (id <MKAnnotation> annotation in self.mapView.annotations) 
+    {
+        if ([annotation isKindOfClass:[LocAnnotation class]]) {
+            LocAnnotation *anno = annotation;
+            [anno setCoordinate:topLoc.coordinate];
+            addedAlready = YES;
+        }
+    }
+    
+    if (!addedAlready)
+    {
+        LocAnnoSelectedState state = LocAnnoSelectedStateDefault;
+        LocAnnoStateType type = LocAnnoStateTypeDecided;
+        LocAnnotation *mark = [[[LocAnnotation alloc] initWithLocation:topLoc withStateType:type andSelectedState:state] autorelease];
+        [mapView addAnnotation:mark];
+    }
+    
     [self zoomToFitMapAnnotations];
 }
 

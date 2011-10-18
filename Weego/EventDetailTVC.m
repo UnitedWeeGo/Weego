@@ -681,6 +681,7 @@ enum eventDetailSections {
 	}
     friendsLocationsCell = cell;
     cell.cellHostView = CellHostViewEvent;
+    [cell checkWinningLocationAddition];
     return cell;
 }
 

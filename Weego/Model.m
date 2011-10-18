@@ -237,7 +237,7 @@ static Model *sharedInstance;
     self.facebookFriends = tFacebookFriends;
     [tFacebookFriends release];
 }
-#warning Correct this to include tomorrows events
+
 - (void)sortEvents
 {
     NSMutableArray *tSortedEvents = [[NSMutableArray alloc] init];

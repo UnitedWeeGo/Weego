@@ -18,5 +18,6 @@
 @property (nonatomic, retain) MKMapView *mapView;
 
 - (void)refreshUserLocations;
+- (void)checkWinningLocationAddition;
 
 @end
