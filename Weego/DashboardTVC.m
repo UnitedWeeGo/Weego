@@ -526,8 +526,9 @@
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
+
     }
     @catch (NSException *crash) 
     {
@@ -549,7 +550,7 @@
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:mySection] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
     }
     @catch (NSException *crash) 
@@ -636,7 +637,7 @@
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
     }
     @catch (NSException *crash) 
@@ -654,7 +655,7 @@
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:decidedSections withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:decidedSections withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
     }
     @catch (NSException *crash) 

@@ -141,7 +141,7 @@ enum eventDetailSections {
     
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -731,7 +731,7 @@ enum eventDetailSections {
         @try
         {
             [self.tableView beginUpdates];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationNone];
             [self.tableView endUpdates];
         }
         @catch (NSException *crash) 
@@ -751,7 +751,7 @@ enum eventDetailSections {
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
     }
     @catch (NSException *crash) 
@@ -856,7 +856,7 @@ enum eventDetailSections {
     NSUInteger toPath[2] = {0, iTo};
     NSIndexPath *toIndexPath = [[NSIndexPath alloc] initWithIndexes:toPath length:2];
     
-    if (!move) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if (!move) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     else {
         int animType = UITableViewRowAnimationNone;
         int delta = iFrom - iTo;
@@ -885,8 +885,8 @@ enum eventDetailSections {
     @try
     {
         [self.tableView beginUpdates];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionLocations] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:eventDetailSectionParticipants] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView endUpdates];
     }
     @catch (NSException *crash) 

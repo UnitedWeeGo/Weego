@@ -57,6 +57,7 @@ typedef enum {
 - (void)showAlertWithCode:(int)code;
 - (ReportedLocationAnnotation *)getReportedLocationAnnotationForUser:(Participant *)part;
 - (void)reportTimerTick;
+- (void)checkReportedLocations;
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton;
 @end
 
@@ -1109,7 +1110,8 @@ typedef enum {
 - (void)dealloc
 {
     NSLog(@"AddLocation dealloc");
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
     [self removeDataFetcherMessageListeners];
     [selectedLocationId release];
     [self removeAnnotations:mapView includingSaved:true];
@@ -1673,7 +1675,7 @@ typedef enum {
     [self.view setClipsToBounds:YES];
 }
 
-- (void)reportTimerTick
+- (void)checkReportedLocations
 { 
     Event *detail = [Model sharedInstance].currentEvent;
     if (detail) {
@@ -1682,8 +1684,15 @@ typedef enum {
         BOOL isRunningInForeground = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
         // grab any users reported locations if in the window
         if (eventIsWithinTimeRange && !eventIsBeingCreated && isRunningInForeground) [[Controller sharedInstance] fetchReportedLocations];
-        
-        
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
+    }
+}
+
+- (void)reportTimerTick
+{ 
+    Event *detail = [Model sharedInstance].currentEvent;
+    if (detail) {
         if (!decidedShowing && detail.currentEventState >= EventStateDecided) {
             Event *detail = [Model sharedInstance].currentEvent;
             SearchAndDetailState state = (self.selectedLocationKey) ? SearchAndDetailStateDetail : SearchAndDetailStateNone; 
@@ -1714,7 +1723,7 @@ typedef enum {
             [self disableSearchCategoryTable];
         }
     } else {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
     }
 }
 
@@ -1738,8 +1747,10 @@ typedef enum {
     
     [self setUpDataFetcherMessageListeners];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
-    [self reportTimerTick];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkReportedLocations) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
+
+    [self checkReportedLocations];
 }
 
 - (void)viewDidUnload
@@ -1754,7 +1765,8 @@ typedef enum {
     
     [self removeDataFetcherMessageListeners];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
     
     tapInterceptor.touchesMovedCallback = nil;
     [mapView removeGestureRecognizer:tapInterceptor];

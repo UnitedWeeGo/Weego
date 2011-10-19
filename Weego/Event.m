@@ -445,7 +445,7 @@
 
 - (BOOL)shouldAttemptCheckin
 {
-    return self.currentEventState >= EventStateDecided && self.shouldReportUserLocation;
+    return self.currentEventState >= EventStateStarted && self.shouldReportUserLocation;
 }
 
 - (void)dealloc {

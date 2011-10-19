@@ -579,7 +579,7 @@ typedef enum {
     NSUInteger toPath[2] = {1, iTo};
     NSIndexPath *toIndexPath = [[NSIndexPath alloc] initWithIndexes:toPath length:2];
     
-    if (!move) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if (!move) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     else {
         int animType = UITableViewRowAnimationNone;
         int delta = iFrom - iTo;
