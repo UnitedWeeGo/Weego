@@ -8,16 +8,18 @@
 
 #import "LocationService.h"
 #import "Event.h"
+#import "ReportedLocation.h"
 
 @interface LocationService(Private)
 
 - (void)startUpdatingLocation;
 - (void)stopUpdatingLocation;
-- (void)reportFiveSecondTimerTick;
+- (void)reportTenSecondTimerTick;
 - (void)checkLocationReportingDisableRequest;
 - (void)checkLocationManagerRunStatus;
 - (void)checkSignificantLocationServiceStatus;
 - (BOOL)userRequiresSomeLocationServices;
+- (BOOL)anyEventRequiresLocationManagement;
 - (int)minuteDistanceBetweenNowAndDate:(NSDate *)aDate;
 - (void)checkForStaleDataInBackground;
 - (void)checkForPendingCheckins;
@@ -56,8 +58,9 @@ static LocationService *sharedInstance;
         locationManager.purpose = @"Around the time of the event, we report your location and arrival only to the invited participants.";
         locationManager.delegate = self;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = kCLDistanceFilterNone;           
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportFiveSecondTimerTick) name:SYNCH_FIVE_SECOND_TIMER_TICK object:nil];
+        locationManager.distanceFilter = kCLDistanceFilterNone;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportOneSecondTimerTick) name:SYNCH_ONE_SECOND_TIMER_TICK object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTenSecondTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportThirtySecondTimerTick) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
     }
     return self;
@@ -65,18 +68,22 @@ static LocationService *sharedInstance;
 
 - (void)reportNow
 {
-    [self reportFiveSecondTimerTick];
+    [self reportTenSecondTimerTick];
 }
 
 #pragma mark timer methods
-- (void)reportFiveSecondTimerTick
+- (void)reportOneSecondTimerTick
+{
+    [self checkLocationManagerRunStatus];               // check if location manager should be currently running
+    [self checkSignificantLocationServiceStatus];       // check if significant location changes should be monitored
+}
+
+- (void)reportTenSecondTimerTick
 {
     locationServicesEnabled = [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied;
     locationTrackingUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
     [self checkLocationReportingDisableRequest];        // check if user has requested a location disable
-    [self checkLocationManagerRunStatus];               // check if location manager should be currently running
-    [self checkSignificantLocationServiceStatus];       // check if significant location changes should be monitored
     [self checkForStaleDataInBackground];               // check if data is stale, and should be updated (only in background)
     [self checkForPendingCheckins];                     // check events for pending checkin and attempt
     [self updateCheckinStatusForEvents];                // checks events if they are eligable for checkin, and if user is within range
@@ -187,9 +194,35 @@ static LocationService *sharedInstance;
 
 - (void)updateUserLocationForEvents
 {
-    if (!locationTrackingUserEnabled) return;           // do report any location data, user has disabled
+    if (!locationTrackingUserEnabled) return;           // do not report any location data, user has disabled
     if (![self hasAValidLocation]) return;              // no current location detected to check
+    
     Model *model = [Model sharedInstance];
+    //REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD
+    //REPORTING_LOCATION_MINUTES_UNTIL_STALE_THRESHOLD
+    BOOL locationChangedSignificantly = true;
+    BOOL lastReportedLocationStale = true;
+    
+    ReportedLocation *repLocation = model.lastReportedLocation;
+    
+    if (repLocation != nil)
+    {
+        CLLocationDistance dist = [repLocation distanceFromCLLocation:latestValidLocation];
+        int time = [repLocation minutesSinceLocationReported];
+        
+        locationChangedSignificantly = dist > REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD;
+        lastReportedLocationStale = time > REPORTING_LOCATION_MINUTES_UNTIL_STALE_THRESHOLD;
+        
+        NSLog(@"Distance from last reported location: %f", dist);
+        NSLog(@"Minutes from last reported location: %i", time);
+    }
+    /*  Do not report user location if:
+     1. user has not travelled a distance of REPORTING_LOCATION_DISTANCE_TRAVELLED_METERS_THRESHOLD
+        -OR-
+     2. users last location reported is stale
+     */
+    if (!locationChangedSignificantly && !lastReportedLocationStale) return;
+    
     NSArray *allEvents = [model.allEvents allValues];
     for ( Event *e in allEvents )
     {
@@ -276,11 +309,23 @@ static LocationService *sharedInstance;
     }
 }
 
+//[repLoc distanceFromReportedLocation:[Model sharedInstance].lastReportedLocation]
 
 #pragma helper methods
 - (BOOL)userRequiresSomeLocationServices
 {
-    return (locationTrackingUserEnabled || checkinUserEnabled) && locationServicesEnabled;
+    return (locationTrackingUserEnabled || checkinUserEnabled) && locationServicesEnabled && [self anyEventRequiresLocationManagement];
+}
+- (BOOL)anyEventRequiresLocationManagement
+{
+    BOOL needed = NO;
+    Model *model = [Model sharedInstance];
+    NSArray *allEvents = [model.allEvents allValues];
+    for ( Event *e in allEvents )
+    {
+        if (e.requiresLocationManagement) needed = YES;
+    }
+    return needed;
 }
 - (int)minuteDistanceBetweenNowAndDate:(NSDate *)aDate
 {

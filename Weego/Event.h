@@ -57,6 +57,7 @@ typedef NSInteger AcceptanceType;
 @property (nonatomic, readonly) BOOL iOwnEvent;
 @property (nonatomic, readonly) BOOL shouldReportUserLocation;
 @property (nonatomic, readonly) BOOL shouldAttemptCheckin;
+@property (nonatomic, readonly) BOOL requiresLocationManagement;
 @property (nonatomic) BOOL forcedDecided;
 
 - (id)initWithId:(NSString *)anId;

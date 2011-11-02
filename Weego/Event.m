@@ -426,6 +426,17 @@
     return [self.creatorId isEqualToString:model.userEmail];
 }
 
+- (BOOL)requiresLocationManagement
+{    
+    BOOL eventNotCheckedIn = !self.hasBeenCheckedIn;
+    BOOL eventNotPendingCheckIn = !self.hasPendingCheckin;
+    BOOL notBeingCreated = !self.isTemporary;
+    BOOL eventAccepted = self.acceptanceStatus ==  AcceptanceTypeAccepted;
+    BOOL eventNotEnded = self.currentEventState < EventStateEnded;
+    
+    return eventNotCheckedIn && eventNotPendingCheckIn && notBeingCreated && eventAccepted && eventNotEnded;
+}
+
 - (BOOL)shouldReportUserLocation
 {
     int timeFollowingEventStartToTrack = [UIApplication sharedApplication].applicationState == UIApplicationStateActive ? -(LOCATION_REPORTING_ADDITIONAL_TIME_WHILE_RUNNING_MINUTES) : -(LOCATION_REPORTING_TIME_RANGE_MINUTES/2);

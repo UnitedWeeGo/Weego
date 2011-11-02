@@ -34,6 +34,9 @@
     NSLog(@"startTimer");
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) 
         NSLog(@"startTimer in background...");
+    oneSecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(oneSecondTick) object:nil];
+    [oneSecondThread start];
+    
     fiveSecondThread = [[NSThread alloc] initWithTarget:self selector:@selector(fiveSecondTick) object:nil];
     [fiveSecondThread start];
     
@@ -49,13 +52,19 @@
 - (void)stopTimer
 {
     NSLog(@"stopTimer");
+    
+    threadDone = YES;
+
+    [oneSecondThread cancel];
     [fiveSecondThread cancel];
     [tenSecondThread cancel];
     [thirtySecondThread cancel];
-    threadDone = YES;
+    
+    [oneSecondThread release];
     [fiveSecondThread release];
     [tenSecondThread release];
     [thirtySecondThread release];
+    
 }
 
 - (void)dealloc 
@@ -67,6 +76,23 @@
 - (void)postNotification:(NSNotification *)aNotification
 {
     [[NSNotificationCenter defaultCenter] postNotification:aNotification];
+}
+
+- (void)oneSecondTick
+{
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    
+    while (!threadDone) {
+        NSDate *now = [NSDate date];
+        
+        NSTimeInterval oneSecondInterval = ceil([now timeIntervalSinceReferenceDate] / 1);
+        NSDate *nextOneSecond = [NSDate dateWithTimeIntervalSinceReferenceDate:oneSecondInterval];
+        
+        [NSThread sleepUntilDate:nextOneSecond];
+        [self performSelectorOnMainThread:@selector(postNotification:) withObject:[NSNotification notificationWithName:SYNCH_ONE_SECOND_TIMER_TICK object:self] waitUntilDone:YES];
+    }
+    
+    [pool drain];
 }
 
 - (void)fiveSecondTick

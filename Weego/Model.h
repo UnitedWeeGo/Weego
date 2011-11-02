@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ReportedLocation.h"
 
 @class Event;
 @class Location;
@@ -103,7 +104,6 @@ typedef enum {
 
 @property (nonatomic, retain) NSString *deviceToken;
 @property (nonatomic, retain) NSDate *lastFetchAttempt;
-@property (nonatomic, retain) NSDate *lastReportLocationAttempt;
 
 @property (nonatomic, retain) NSMutableArray *geoSearchResults;
 @property (nonatomic, retain) NSMutableArray *simpleGeoCategoryResults;
@@ -117,6 +117,7 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL locationReportingDisabledRequested;
 @property (nonatomic, assign) BOOL locationReportingEnabledRequested;
+@property (nonatomic, retain) ReportedLocation *lastReportedLocation;
 
 
 + (Model *)sharedInstance;

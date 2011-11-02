@@ -14,7 +14,6 @@
 #import "DataParser.h"
 #import "GDataXMLNode.h"
 #import "FeedMessage.h"
-#import "ReportedLocation.h"
 #import "SuggestedTime.h"
 #import "LocationService.h"
 
@@ -47,7 +46,7 @@
 @synthesize loginParticipant;
 @synthesize currentEvent;
 @synthesize deviceToken;
-@synthesize lastFetchAttempt, lastReportLocationAttempt;
+@synthesize lastFetchAttempt, lastReportedLocation;
 @synthesize geoSearchResults;
 @synthesize pendingVoteRequests;
 @synthesize infoResults;
@@ -176,7 +175,7 @@ static Model *sharedInstance;
     
     [self.deviceToken release];
     [self.lastFetchAttempt release];
-    [self.lastReportLocationAttempt release];
+    [self.lastReportedLocation release];
     
     [self.geoSearchResults release];
     

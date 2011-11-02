@@ -11,6 +11,8 @@
 #import "GDataXMLNode.h"
 #import "KeychainManager.h"
 #import "Event.h"
+#import "ReportedLocation.h"
+#import "Location.h"
 
 #define RESPONSE_REGISTER 200
 #define RESPONSE_LOGIN 201
@@ -231,17 +233,20 @@ static DataParser *sharedInstance;
 
 #pragma mark -
 #pragma mark RESPONSE_REPORT_LOCATION
-
 - (void)parseResponseReportLocation:(GDataXMLDocument *)doc
 {
-    [Model sharedInstance].lastReportLocationAttempt = [NSDate date];
+    GDataXMLElement *reportLocationXML = (GDataXMLElement *) [[doc.rootElement elementsForName:@"reportLocation"] objectAtIndex:0];
+    ReportedLocation *repLoc = [[[ReportedLocation alloc] init] autorelease];
+    [repLoc populateWithXml:reportLocationXML];
+    
+    [Model sharedInstance].lastReportedLocation = repLoc;
+    
     [Model sharedInstance].locationReportingDisabledRequested = NO;
     [Model sharedInstance].locationReportingEnabledRequested = NO;
 }
 
 #pragma mark -
 #pragma mark RESPONSE_CHECKIN
-
 - (void)parseResponseCheckin:(GDataXMLDocument *)doc
 {
 //    NSLog(@"parseResponseCheckin");

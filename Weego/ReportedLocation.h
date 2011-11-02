@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GDataXMLNode.h"
+#import "ReportedLocation.h"
+
+@class GDataXMLElement;
 
 @interface ReportedLocation : NSObject {
 
@@ -22,5 +24,8 @@
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;
+- (CLLocationDistance)distanceFromCLLocation:(CLLocation *)loc;
+- (CLLocationDistance)distanceFromReportedLocation:(ReportedLocation *)loc;
+- (int)minutesSinceLocationReported;
 
 @end

@@ -14,9 +14,6 @@
     CLLocationManager *locationManager;
     CLLocation *latestValidLocation;
     
-    CLLocation *pendingReportedLocation;
-    CLLocation *lastSuccessfulReportedLocation;
-    
     // in app user preferences
     BOOL locationTrackingUserEnabled;
     BOOL checkinUserEnabled;
