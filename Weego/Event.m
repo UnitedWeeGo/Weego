@@ -429,12 +429,11 @@
 - (BOOL)requiresLocationManagement
 {    
     BOOL eventNotCheckedIn = !self.hasBeenCheckedIn;
-    BOOL eventNotPendingCheckIn = !self.hasPendingCheckin;
     BOOL notBeingCreated = !self.isTemporary;
     BOOL eventAccepted = self.acceptanceStatus ==  AcceptanceTypeAccepted;
     BOOL eventNotEnded = self.currentEventState < EventStateEnded;
     
-    return eventNotCheckedIn && eventNotPendingCheckIn && notBeingCreated && eventAccepted && eventNotEnded;
+    return eventNotCheckedIn && notBeingCreated && eventAccepted && eventNotEnded;
 }
 
 - (BOOL)shouldReportUserLocation
@@ -443,7 +442,6 @@
     
     BOOL eventIsWithinTimeRange = self.minutesToGoUntilEventStarts < (LOCATION_REPORTING_TIME_RANGE_MINUTES/2) && self.minutesToGoUntilEventStarts > timeFollowingEventStartToTrack;
     BOOL eventNotCheckedIn = !self.hasBeenCheckedIn;
-    BOOL eventNotPendingCheckIn = !self.hasPendingCheckin;
     
     Location *loc = [self getLocationByLocationId:self.topLocationId];
     BOOL hasADecidedLocation = (loc != nil);
@@ -451,7 +449,7 @@
     BOOL eventAccepted = self.acceptanceStatus ==  AcceptanceTypeAccepted;
     BOOL eventNotCancelled = self.currentEventState < EventStateCancelled;
     
-    return eventIsWithinTimeRange && eventNotCheckedIn && eventNotPendingCheckIn && hasADecidedLocation && notBeingCreated && eventAccepted && eventNotCancelled;
+    return eventIsWithinTimeRange && eventNotCheckedIn && hasADecidedLocation && notBeingCreated && eventAccepted && eventNotCancelled;
 }
 
 - (BOOL)shouldAttemptCheckin
