@@ -53,9 +53,12 @@
 @synthesize helpResults;
 @synthesize termsResults, privacyResults;
 @synthesize dealResults;
-@synthesize simpleGeoCategoryResults;
+@synthesize categoryResults;
 @synthesize suggestedTimes;
 @synthesize locationReportingDisabledRequested, locationReportingEnabledRequested, recentFriends;
+@synthesize searchAPIType;
+@synthesize currentReviewURL;
+
 
 static Model *sharedInstance;
 
@@ -86,6 +89,8 @@ static Model *sharedInstance;
 - (id)init {
     self = [super init];
     if (self) {
+        searchAPIType = SearchAPITypeYelp;
+        
         NSMutableDictionary *tAllEvents = [[NSMutableDictionary alloc] init];
 		self.allEvents = tAllEvents;
         [tAllEvents release];
@@ -132,6 +137,7 @@ static Model *sharedInstance;
 	[self.userEmail release];
 	[self.userPassword release];
 	[self.lastUpdateTimeStamp release];
+    [self.currentReviewURL release];
     
     [self.locations removeAllObjects];
 	[self.locations release];
@@ -588,6 +594,11 @@ static Model *sharedInstance;
 {
     if (anId) self.currentEvent = [self getEventById:anId];
     else self.currentEvent = nil;
+}
+
+- (void)setCurrentLocationReviewURL:(NSString *)aURL
+{
+    if (aURL) self.currentReviewURL = aURL;
 }
 
 - (void)removeCurrentEvent
@@ -1267,6 +1278,10 @@ static Model *sharedInstance;
                 GDataXMLElement *location_type = [GDataXMLNode elementWithName:@"location_type" stringValue:loc.location_type];
                 GDataXMLElement *formatted_address = [GDataXMLNode elementWithName:@"formatted_address" stringValue:loc.formatted_address];
                 GDataXMLElement *formatted_phone_number = [GDataXMLNode elementWithName:@"formatted_phone_number" stringValue:loc.formatted_phone_number];
+                GDataXMLElement *rating = [GDataXMLNode elementWithName:@"rating" stringValue:loc.rating];
+                GDataXMLElement *review_count = [GDataXMLNode elementWithName:@"review_count" stringValue:loc.reviewCount];
+                GDataXMLElement *mobile_yelp_url = [GDataXMLNode elementWithName:@"mobile_yelp_url" stringValue:loc.mobileYelpUrl];
+                
                 [location addChild:latitude];
                 [location addChild:longitude];
                 [location addChild:name];
@@ -1276,6 +1291,10 @@ static Model *sharedInstance;
                 [location addChild:location_type];
                 [location addChild:formatted_address];
                 [location addChild:formatted_phone_number];
+                [location addChild:rating];
+                [location addChild:review_count];
+                [location addChild:mobile_yelp_url];
+                
                 [locationsNode addChild:location];
             }
             [eventNode addChild:locationsNode];
@@ -1422,6 +1441,10 @@ static Model *sharedInstance;
             GDataXMLElement *location_type = [GDataXMLNode elementWithName:@"location_type" stringValue:loc.location_type];
             GDataXMLElement *formatted_address = [GDataXMLNode elementWithName:@"formatted_address" stringValue:loc.formatted_address];
             GDataXMLElement *formatted_phone_number = [GDataXMLNode elementWithName:@"formatted_phone_number" stringValue:loc.formatted_phone_number];
+            GDataXMLElement *rating = [GDataXMLNode elementWithName:@"rating" stringValue:loc.rating];
+            GDataXMLElement *review_count = [GDataXMLNode elementWithName:@"review_count" stringValue:loc.reviewCount];
+            GDataXMLElement *mobile_yelp_url = [GDataXMLNode elementWithName:@"mobile_yelp_url" stringValue:loc.mobileYelpUrl];
+            
 			[location addChild:latitude];
 			[location addChild:longitude];
 			[location addChild:name];
@@ -1431,7 +1454,11 @@ static Model *sharedInstance;
             [location addChild:location_type];
             [location addChild:formatted_address];
             [location addChild:formatted_phone_number];
+            [location addChild:rating];
+            [location addChild:review_count];
+            [location addChild:mobile_yelp_url];
 			[locationsNode addChild:location];
+            
 		}
 		[eventNode addChild:locationsNode];
 	}

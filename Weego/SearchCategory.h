@@ -21,5 +21,6 @@
 @property (nonatomic, copy) NSString *subcategory;
 
 - (void)populateWithDict:(NSDictionary *)dict;
+- (void)populateWithWeegoCategory:(NSString *)cat;
 
 @end

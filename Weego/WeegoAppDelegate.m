@@ -25,7 +25,7 @@
 - (void)initAnalytics;
 - (void)registerDeviceForRemoteNotifications:(UIApplication *)application;
 - (void)initDefaultPrefs;
-- (void)initSimpleGeoCategories;
+- (void)initSearchCategories;
 - (void)showLoginError;
 - (void)checkForNeededDataFetch;
 @end
@@ -201,9 +201,17 @@
 #endif
 }
 
-- (void)initSimpleGeoCategories
+- (void)initSearchCategories
 {
-    [[Controller sharedInstance] getSimpleGeoCategories];
+    if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
+    {
+        [[Controller sharedInstance] getSimpleGeoCategories];
+    }
+    else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
+    {
+        [[Controller sharedInstance] getYelpCategories];
+    }
+    
 }
 
 - (void)initAnalytics
@@ -437,7 +445,7 @@
     [self initViews];
     [self initStartView];
     [self registerDeviceForRemoteNotifications:application];
-    [self initSimpleGeoCategories];
+    [self initSearchCategories];
     [self setUpDataFetcherMessageListeners];
     
     loadView = [[LoadView alloc] initWithFrame:self.window.frame];

@@ -36,7 +36,8 @@
 @property (nonatomic, readonly) NSString *stripped_phone_number;
 @property (nonatomic, copy) NSString *formatted_address;
 @property (nonatomic, copy) NSString *rating;
-
+@property (nonatomic, copy) NSString *reviewCount;
+@property (nonatomic, copy) NSString *mobileYelpUrl;
 
 @property (nonatomic, readonly) BOOL hasDeal;
 @property (nonatomic, readonly) BOOL addedByMe;
@@ -55,6 +56,7 @@
 - (id)initWithSimpleGeoFeatureResult:(SGFeature *)feature;
 - (id)initWithSimpleGeoAddressResult:(SGContext *)context;
 - (id)initWithPlacesJsonResultDict:(NSDictionary *)jsonResultDict;
+- (id)initWithYelpJsonResultDict:(NSDictionary *)jsonResultDict;
 - (NSString*) stringWithUUID;
 
 @end

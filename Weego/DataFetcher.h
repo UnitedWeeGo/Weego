@@ -55,7 +55,9 @@ enum {
     DataFetchTypeSearchSimpleGeo,
     DataFetchTypeSearchSimpleGeoCurrentLocation,
     DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces,
-    DataFetchTypeSearchSimpleGeoCategories
+    DataFetchTypeSearchSimpleGeoCategories,
+    DataFetchTypeSearchYelp,
+    DataFetchTypeGetWeegoCategories
 };
 typedef NSInteger DataFetchType;
 
@@ -182,12 +184,16 @@ typedef NSInteger DataFetchType;
 - (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name delegate:(id <DataFetcherDelegate>)myDelegate;
-- (id)initAndSearchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndSearchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate;
+
+// Yelp
+- (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;
 
 // Google geo
 - (id)initAndSearchGoogleGeoWithAddress:(NSString *)address andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;
 
+// Weego Categories
+- (id)initAndGetWeegoCategoriesWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate;
 
 // suggest and remove
 - (id)initAndRemoveEventWithUserId:(NSString *)userId andEventId:(NSString *)eventId doCountOut:(BOOL)countMeOut doCancel:(BOOL)cancel withTimestamp:(NSString *)timestamp delegate:(id <DataFetcherDelegate>)myDelegate;

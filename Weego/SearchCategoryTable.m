@@ -44,14 +44,21 @@
     tableView.dataSource = self;
     [self addSubview:tableView];
     
-    NSMutableArray *catSet = [Model sharedInstance].simpleGeoCategoryResults;
+    NSMutableArray *catSet = [Model sharedInstance].categoryResults;
     NSLog(@"catSet count: %d", [catSet count]);
     
     // if the cat loading somehow failed, attempt to reload it
     if ([catSet count] == 0)
     {
         NSLog(@"no categories, attempting to reload");
-        [[Controller sharedInstance] getSimpleGeoCategories];
+        if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
+        {
+            [[Controller sharedInstance] getSimpleGeoCategories];
+        }
+        else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
+        {
+            [[Controller sharedInstance] getYelpCategories];
+        }
     }
 }
 
@@ -93,7 +100,7 @@
 - (NSArray *)categoriesMatchingSearch:(NSString *)searchString
 {
 	NSPredicate *pred;
-	NSMutableArray *catSet = [Model sharedInstance].simpleGeoCategoryResults;
+	NSMutableArray *catSet = [Model sharedInstance].categoryResults;
 	pred = [NSPredicate predicateWithFormat:@"search_string contains[cd] %@", searchString];
 	return [catSet filteredArrayUsingPredicate:pred];
 }

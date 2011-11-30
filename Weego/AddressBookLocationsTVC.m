@@ -235,11 +235,6 @@
         [delegate addressBookLocationsTVCDidSelectCurrentLocation];
         return;
     }
-    if (indexPath.section == 0 && indexPath.row == 1) // User selected Current Location
-    {
-        [delegate addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces];
-        return;
-    }
     Contact *c = [[indexedContacts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     [delegate addressBookLocationsTVCDidSelectAddress:c.addressSingleLine withFriendlyName:c.contactName];
 }

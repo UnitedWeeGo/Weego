@@ -63,7 +63,7 @@ typedef enum {
     
     NSString *googlePlacesFetchId;
     NSString *googleGeoFetchId;
-    NSString *simpleGeoFetchId;
+    NSString *genericSearchFetchId;
     
     NSString *pendingSearchString;
     Participant *participantSelectedOnMap;

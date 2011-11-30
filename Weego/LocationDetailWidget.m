@@ -123,6 +123,7 @@
     
     UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:18];
     UIFont *secondaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
+    UIFont *tertiaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
     UIFont *distanceFont = [UIFont fontWithName:@"MyriadPro-Semibold" size:12];
     
     // Labels
@@ -150,9 +151,22 @@
     distanceLabel.textAlignment = UITextAlignmentRight;
     distanceLabel.numberOfLines = 0;
     
+    reviewCountLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+    reviewCountLabel.backgroundColor = [UIColor clearColor];
+    reviewCountLabel.textColor = [UIColor colorWithWhite:0.8 alpha:1];
+    [reviewCountLabel setFont:tertiaryFont];
+    reviewCountLabel.lineBreakMode = UILineBreakModeWordWrap;
+    reviewCountLabel.numberOfLines = 0;
+    
+    UIImage *yl = [UIImage imageNamed:@"yelp_logo_small_white.png"];
+    yelpLogo = [[[UIImageView alloc] initWithImage:yl] autorelease];
+    yelpLogo.hidden = YES;
+    
     [self addSubview:primaryInfoLabel];
     [self addSubview:secondaryInfoLabel];
     [self addSubview:distanceLabel];
+    [self addSubview:reviewCountLabel];
+    [self addSubview:yelpLogo];
     
     CGRect infoViewBGRect = CGRectMake(0, -50, self.bounds.size.width, 50);
     [self setFrame:infoViewBGRect];
@@ -166,7 +180,10 @@
     distanceIconView.frame = CGRectMake(300, 11, distanceIcon.size.width, distanceIcon.size.height);
     distanceIconView.hidden = YES;
     [self addSubview:distanceIconView];
-
+    
+    ratingImage = [[[UIImageView alloc] initWithFrame:labelStart] autorelease];
+    ratingImage.hidden = YES;
+    [self addSubview:ratingImage];
 }
 
 - (void)createUserActionButton
@@ -526,12 +543,6 @@
 
 - (void)updateInfoViewWithLocationAnnotation:(LocAnnotation *)annotation
 {
-    // Use these if we enable delete in the map view
-    //Model *model = [Model sharedInstance];
-    //EventState cState = model.currentEvent.currentEventState;
-    //BOOL locationAdded = [annotation getStateType] == LocAnnoStateTypePlace || [annotation getStateType] == LocAnnoStateTypeLiked;
-    //BOOL locationEligibleForDeletion = cState < EventStateDecided && annotation.iAddedLocation && locationAdded;
-    
     self.hasDeal = annotation.hasDeal;
     self.featureId = annotation.featureId;
     if (avatarImage) [avatarImage removeFromSuperview];
@@ -558,6 +569,10 @@
     NSString *titleCopy = [self urldecode:annotation.title];
     NSString *formatted_address = [self urldecode:annotation.subtitle];
     NSString *subTitleCopy;
+    
+    
+    
+    
     if ([formatted_address rangeOfString:@","].length == 0)
     {
         subTitleCopy = [self urldecode:annotation.subtitle];
@@ -567,32 +582,61 @@
         int commaLoc = [formatted_address rangeOfString:@","].location;
         NSString *labelSecondaryInfoS = [formatted_address substringWithRange:NSMakeRange(0, commaLoc)];
         NSString *labelTertiaryInfoS = [formatted_address substringWithRange:NSMakeRange(commaLoc+2, [formatted_address length]-commaLoc-2)];
-        subTitleCopy = [NSString stringWithFormat:@"%@\n%@", labelSecondaryInfoS, labelTertiaryInfoS];
+        
+        
+        if (annotation.isYelp)
+        {
+            subTitleCopy = [NSString stringWithFormat:@"%@", labelSecondaryInfoS];
+        }
+        else
+        {
+            subTitleCopy = [NSString stringWithFormat:@"%@\n%@", labelSecondaryInfoS, labelTertiaryInfoS];
+        }
+        
+        
     }
-    
     
     CGSize		primaryCopySize = [titleCopy sizeWithFont:primaryFont constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
     CGSize		secondaryCopySize = [subTitleCopy sizeWithFont:secondaryFont constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
     
-    int targetHeight = MAX(22+primaryCopySize.height+secondaryCopySize.height, 70);
+    int targetHeight = MAX(22+primaryCopySize.height+secondaryCopySize.height + ((annotation.isYelp)?(8):(0)), 70);
     CGRect infoViewBGRect = CGRectMake(0, (iAmShowing)?(0):( -(targetHeight) ), bounds.size.width, targetHeight); // 35 is padding
     currentBaseInfoSize = infoViewBGRect.size;
     
-    CGRect primaryInfoLabelRect = CGRectMake(labelLeftPos, 16, width, primaryCopySize.height);
+    CGRect primaryInfoLabelRect = CGRectMake(labelLeftPos, 12, width, primaryCopySize.height);
     [primaryInfoLabel setText:titleCopy];
     [primaryInfoLabel setFont:primaryFont];
     
-    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+14, width, secondaryCopySize.height);
+    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+10, width, secondaryCopySize.height);
     [secondaryInfoLabel setText:subTitleCopy];
     [secondaryInfoLabel setFont:secondaryFont];
-    
-    int getDirectionsButtonHeight = (secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height) - primaryInfoLabelRect.origin.y;
-    CGRect getDirectionsButtonRect = CGRectMake(primaryInfoLabelRect.origin.x, primaryInfoLabelRect.origin.y, secondaryInfoLabelRect.size.width, getDirectionsButtonHeight);
-    getDirectionsButton.frame = getDirectionsButtonRect;
     
     CGRect leftButtonRect = CGRectMake(addButton.frame.origin.x, ceilf((infoViewBGRect.size.height - addButton.frame.size.height)/2), addButton.frame.size.width, addButton.frame.size.height);
     CGRect dealRect = CGRectMake(286, ceilf(infoViewBGRect.size.height - 38), 28, 28);
     CGRect editNameRect = CGRectMake(286, 10, 28, 28);
+    
+    ratingImage.hidden = !annotation.isYelp;
+    reviewCountLabel.hidden = !annotation.isYelp;
+    yelpLogo.hidden = !annotation.isYelp;
+    NSString *reviewImg = [NSString stringWithFormat:@"yelp_reviews_%@.png", annotation.rating];
+    UIImage *rImage = [UIImage imageNamed:reviewImg];
+    CGRect rFrame = CGRectMake(labelLeftPos+2, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height + 3, rImage.size.width, rImage.size.height);
+    CGRect rclFrame = CGRectMake(labelLeftPos+48, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height, 250, 18);
+    
+    UIFont *tertiaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
+    CGSize yelpTextSize = { 250, FLT_MAX };		// width and height of text area
+    CGSize reviewCopySize = [[NSString stringWithFormat:@"%@ reviews on", annotation.reviewCount] sizeWithFont:tertiaryFont constrainedToSize:yelpTextSize lineBreakMode:UILineBreakModeWordWrap];
+    CGRect yelpRect = CGRectMake(rclFrame.origin.x + reviewCopySize.width + 2, rclFrame.origin.y - 4, yelpLogo.frame.size.width, yelpLogo.frame.size.height);
+    
+    int getDirectionsButtonHeight = (yelpRect.origin.y + yelpRect.size.height) - primaryInfoLabelRect.origin.y;
+    CGRect getDirectionsButtonRect = CGRectMake(primaryInfoLabelRect.origin.x, primaryInfoLabelRect.origin.y, secondaryInfoLabelRect.size.width, getDirectionsButtonHeight);
+    getDirectionsButton.frame = getDirectionsButtonRect;
+    
+    if (annotation.isYelp)
+    {
+        [ratingImage setImage:rImage];
+        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews on", annotation.reviewCount]];
+    }
     
     [UIView animateWithDuration:0.20f 
                           delay:0 
@@ -607,6 +651,9 @@
                          winnerButton.frame = leftButtonRect;
                          dealButton.frame = dealRect;
                          editNameButton.frame = editNameRect;
+                         ratingImage.frame = rFrame;
+                         reviewCountLabel.frame = rclFrame;
+                         yelpLogo.frame = yelpRect;
                      }
                      completion:NULL];
     

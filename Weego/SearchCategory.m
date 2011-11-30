@@ -20,6 +20,11 @@
     self.category_id = [record objectForKey:@"category_id"];
 }
 
+- (void)populateWithWeegoCategory:(NSString *)cat
+{
+    self.category = cat;
+}
+
 - (NSString *)search_string
 {
     return [NSString stringWithFormat:@"%@ %@", self.category, self.subcategory];

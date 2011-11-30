@@ -24,7 +24,7 @@
 @synthesize isTemporary, addedByMe, hasBeenAddedToMapPreviously;
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
-@synthesize disableLocationReporting;
+@synthesize disableLocationReporting, reviewCount, mobileYelpUrl;
 
 // SimpleGeo search
 - (id)initWithSimpleGeoFeatureResult:(SGPlace *)place
@@ -81,6 +81,66 @@
     self.g_id = uFormatted_address;
     
     self.location_type = @"address";
+    return self;
+}
+
+// Yelp search
+- (id)initWithYelpJsonResultDict:(NSDictionary *)jsonResultDict
+{
+    self = [super init];
+	if (!self)
+		return nil;
+        
+    NSString *uId = [jsonResultDict objectForKey:@"id"];
+    NSString *uName = [jsonResultDict objectForKey:@"name"];
+    
+    NSDictionary *location = [jsonResultDict objectForKey:@"location"];
+    NSArray *address = [location objectForKey:@"address"];
+    
+    NSString *uFormatted_address;
+    NSString *uCity = [location objectForKey:@"city"];
+    NSString *uState = [location objectForKey:@"state_code"];
+    NSString *uZip = [location objectForKey:@"postal_code"];
+    if ([address count] > 0)
+    {
+        NSString *uStreet = [address objectAtIndex:0];
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    }
+    else
+    {
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@ %@", uCity, uState, uZip];
+    }
+    
+    NSDictionary *coord = [location objectForKey:@"coordinate"];
+    NSDecimalNumber *uLat = [coord objectForKey:@"latitude"];
+    NSDecimalNumber *uLng = [coord objectForKey:@"longitude"];
+    NSDecimalNumber *uRating = [jsonResultDict objectForKey:@"rating"];
+    NSDecimalNumber *uReviewCount = [jsonResultDict objectForKey:@"review_count"];
+    NSString *uFormatted_phone_number = [jsonResultDict objectForKey:@"display_phone"];
+    
+    // Strip the +1- from the phone number
+    if (uFormatted_phone_number != nil)
+    {
+        NSRange toStripRange = [uFormatted_phone_number rangeOfString:@"+1-"];
+        if (toStripRange.length > 0)
+        {
+            uFormatted_phone_number = [uFormatted_phone_number substringWithRange:NSMakeRange(toStripRange.length, [uFormatted_phone_number length]-toStripRange.length)];
+        }
+    }
+    
+    NSString *uMobileYelpUrl = [jsonResultDict objectForKey:@"mobile_url"];
+    
+    self.g_id = uId;
+    self.name = uName;
+    self.formatted_address = uFormatted_address;
+    self.latitude = [uLat stringValue];
+    self.longitude = [uLng stringValue];
+    self.location_type = @"yelp";
+    if (uRating != nil) self.rating = [uRating stringValue];
+    if (uReviewCount != nil) self.reviewCount = [uReviewCount stringValue];
+    if (uFormatted_phone_number != nil) self.formatted_phone_number = uFormatted_phone_number;
+    if (uMobileYelpUrl != nil) self.mobileYelpUrl = uMobileYelpUrl;
+    
     return self;
 }
 
@@ -142,8 +202,9 @@
     }
     NSString *uFormatted_phone_number = ((GDataXMLElement *) [[xml elementsForName:@"formatted_phone_number"] objectAtIndex:0]).stringValue;
     NSString *uRating = ((GDataXMLElement *) [[xml elementsForName:@"rating"] objectAtIndex:0]).stringValue;
+    NSString *uReviewCount = ((GDataXMLElement *) [[xml elementsForName:@"review_count"] objectAtIndex:0]).stringValue;
+    NSString *uMobileYelpUrl = ((GDataXMLElement *) [[xml elementsForName:@"mobile_yelp_url"] objectAtIndex:0]).stringValue;
     NSString *uLocationType = ((GDataXMLElement *) [[xml elementsForName:@"location_type"] objectAtIndex:0]).stringValue;
-    
     NSString *uHasBeenRemoved = [[xml attributeForName:@"hasBeenRemoved"] stringValue];
     //    BOOL removeLocation = [[removeLocStr lowercaseString] isEqualToString:@"true"];
     
@@ -157,6 +218,8 @@
     if (uFormatted_address != nil) self.formatted_address = uFormatted_address;
     if (uFormatted_phone_number != nil) self.formatted_phone_number = uFormatted_phone_number;
     if (uRating != nil) self.rating = uRating;
+    if (uReviewCount != nil) self.reviewCount = uReviewCount;
+    if (uMobileYelpUrl != nil) self.mobileYelpUrl = uMobileYelpUrl;
     if (uLocationType != nil) self.location_type = uLocationType;
     if (uHasBeenRemoved != nil) self.hasBeenRemoved = [[uHasBeenRemoved lowercaseString] isEqualToString:@"true"];
     if (uHasDeal != nil) hasDeal = [[uHasDeal lowercaseString] isEqualToString:@"true"];

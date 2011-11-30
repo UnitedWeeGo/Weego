@@ -52,7 +52,8 @@ typedef enum {
     ViewStateHelp,
     ViewStateTerms,
     ViewStatePrivacy,
-    ViewStateDeal
+    ViewStateDeal,
+    ViewStateReviews
 } ViewState;
 
 typedef enum {
@@ -65,6 +66,11 @@ typedef enum {
     EventStateCancelled
 } EventState;
 
+typedef enum {
+	SearchAPITypeSimpleGeo = 0,
+	SearchAPITypeYelp
+} SearchAPIType;
+
 #define MODEL_EVENT_GENERIC_ERROR @"genericError"
 
 @interface Model : NSObject {
@@ -74,6 +80,7 @@ typedef enum {
 @property (nonatomic, assign) AppState currentAppState;
 @property (nonatomic, assign) BGState currentBGState;
 @property (nonatomic, assign) ViewState currentViewState;
+@property (nonatomic, assign) SearchAPIType searchAPIType;
 
 @property (nonatomic, retain) NSMutableDictionary *allEvents;
 @property (nonatomic, retain) NSMutableArray *locations;
@@ -92,6 +99,7 @@ typedef enum {
 @property (nonatomic, copy) NSString *userEmail;
 @property (nonatomic, copy) NSString *userPassword;
 @property (nonatomic, copy) NSString *lastUpdateTimeStamp;
+@property (nonatomic, copy) NSString *currentReviewURL;
 
 @property (nonatomic, retain) NSMutableArray *sortedEvents;
 @property (nonatomic, retain) NSMutableArray *weeksEvents;
@@ -106,7 +114,7 @@ typedef enum {
 @property (nonatomic, retain) NSDate *lastFetchAttempt;
 
 @property (nonatomic, retain) NSMutableArray *geoSearchResults;
-@property (nonatomic, retain) NSMutableArray *simpleGeoCategoryResults;
+@property (nonatomic, retain) NSMutableArray *categoryResults;
 
 @property (nonatomic, retain) NSMutableDictionary *pendingVoteRequests;
 @property (nonatomic, retain) NSString *infoResults;
@@ -214,5 +222,7 @@ typedef enum {
 - (void)printModel;
 
 - (void)clearRecentParticipants;
+
+- (void)setCurrentLocationReviewURL:(NSString *)aURL;
 
 @end

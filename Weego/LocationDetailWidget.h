@@ -64,6 +64,9 @@ typedef enum {
 
     CGSize currentBaseInfoSize;
     UIImageView *dealImage;
+    UIImageView *ratingImage;
+    UILabel *reviewCountLabel;
+    UIImageView *yelpLogo;
     
     UIImageViewAsyncLoader *avatarImage;
     UIImageView *distanceIconView;

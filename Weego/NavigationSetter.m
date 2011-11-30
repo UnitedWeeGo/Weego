@@ -269,6 +269,9 @@ static NavigationSetter *sharedInstance;
             [self addBackButton:target onLightBackground:true];
             [self addSelectTimeButton:target];
             break;
+        case NavStateReviews:
+            [self addBackButton:target onLightBackground:true];
+            break;
         default:
             break;
     }

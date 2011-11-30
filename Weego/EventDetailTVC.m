@@ -456,7 +456,15 @@ enum eventDetailSections {
 	if (indexPath.section == eventDetailSectionLocations) {
         
         if ( [self eventShouldShowMap] && indexPath.row == 1 ) {
-            [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:[Model sharedInstance].currentEvent.topLocationId];
+            Location *loc = (Location *)[oldSortedLocations objectAtIndex:0];
+            if ([loc.location_type isEqualToString:@"yelp"])
+            {
+                [[ViewController sharedInstance] navigateToYelpReviewsWithURL:loc.mobileYelpUrl];
+            }
+            else
+            {
+                [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+            }
 		} else if (indexPath.row == rowsForLocations-1) {
 			if (detail.currentEventState < EventStateDecided) [self doGotoMapView];
             else [self toggleShowHideOtherLocations];
@@ -773,13 +781,32 @@ enum eventDetailSections {
         //NSLog(@"SHOW MODAL - DIRECTIONS AND SUCH");
         
         Location *loc = (Location *)[oldSortedLocations objectAtIndex:0]; // winning location
-        [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:loc];
+        //[[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:loc];
+        
+        
+        if ([loc.location_type isEqualToString:@"yelp"])
+        {
+            [[ViewController sharedInstance] navigateToYelpReviewsWithURL:loc.mobileYelpUrl];
+        }
+        else
+        {
+            [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+        }
+
         return;
     }
     
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
-    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+    
+    if ([loc.location_type isEqualToString:@"yelp"])
+    {
+        [[ViewController sharedInstance] navigateToYelpReviewsWithURL:loc.mobileYelpUrl];
+    }
+    else
+    {
+        [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+    }
 }
 
 - (void)likeButtonPressed:(id)sender

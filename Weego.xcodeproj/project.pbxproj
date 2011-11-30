@@ -10,11 +10,37 @@
 		010A6E5113CD74D800D8F191 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 010A6E5013CD74D800D8F191 /* Entitlements.plist */; };
 		011A5AC714250FF900939B2F /* SimpleGeo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011A5AC614250FF900939B2F /* SimpleGeo.framework */; };
 		01232A0E13CA856C00435DBD /* SimpleGeoDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */; };
+		0127D7531478DDA700C953D1 /* YelpDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0127D7521478DDA700C953D1 /* YelpDataParser.m */; };
 		012C7D0D1420344800F3885D /* button_decided_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0B1420344800F3885D /* button_decided_default.png */; };
 		012C7D0E1420344800F3885D /* button_decided_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0C1420344800F3885D /* button_decided_default@2x.png */; };
 		012C7D1214213D7E00F3885D /* GetDirectionsActionSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012C7D1114213D7E00F3885D /* GetDirectionsActionSheetController.m */; };
 		0131719813CABDF00068B383 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719713CABDF00068B383 /* libz.dylib */; };
 		0133D20F141EA20000713AC9 /* CellFriendsLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */; };
+		01377C621482E6CF0046A48E /* yelp_reviews_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */; };
+		01377C631482E6CF0046A48E /* yelp_reviews_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */; };
+		01377C641482E6CF0046A48E /* yelp_reviews_1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */; };
+		01377C651482E6CF0046A48E /* yelp_reviews_1.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */; };
+		01377C661482E6CF0046A48E /* yelp_reviews_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C521482E6CF0046A48E /* yelp_reviews_1.png */; };
+		01377C671482E6CF0046A48E /* yelp_reviews_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */; };
+		01377C681482E6CF0046A48E /* yelp_reviews_2.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */; };
+		01377C691482E6CF0046A48E /* yelp_reviews_2.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */; };
+		01377C6A1482E6CF0046A48E /* yelp_reviews_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C561482E6CF0046A48E /* yelp_reviews_2.png */; };
+		01377C6B1482E6CF0046A48E /* yelp_reviews_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */; };
+		01377C6C1482E6CF0046A48E /* yelp_reviews_3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */; };
+		01377C6D1482E6CF0046A48E /* yelp_reviews_3.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */; };
+		01377C6E1482E6CF0046A48E /* yelp_reviews_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */; };
+		01377C6F1482E6CF0046A48E /* yelp_reviews_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */; };
+		01377C701482E6CF0046A48E /* yelp_reviews_4.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */; };
+		01377C711482E6CF0046A48E /* yelp_reviews_4.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */; };
+		01377C721482E6CF0046A48E /* yelp_reviews_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */; };
+		01377C731482E6CF0046A48E /* yelp_reviews_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */; };
+		01377C741482E6CF0046A48E /* yelp_reviews_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C601482E6CF0046A48E /* yelp_reviews_5.png */; };
+		01377C751482E6CF0046A48E /* yelp_reviews_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */; };
+		01377C7914842FE30046A48E /* yelp_logo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7714842FE30046A48E /* yelp_logo_white.png */; };
+		01377C7A14842FE30046A48E /* yelp_logo_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7814842FE30046A48E /* yelp_logo_white@2x.png */; };
+		01377C7D1485B6210046A48E /* yelp_logo_small_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */; };
+		01377C7E1485B6210046A48E /* yelp_logo_small_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7C1485B6210046A48E /* yelp_logo_small_white.png */; };
+		01377C811485D0DF0046A48E /* YelpReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 01377C801485D0DF0046A48E /* YelpReview.m */; };
 		013C08161435400200464453 /* button_clear_lrg2x_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 013C08121435400200464453 /* button_clear_lrg2x_default.png */; };
 		013C08171435400200464453 /* button_clear_lrg2x_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 013C08131435400200464453 /* button_clear_lrg2x_default@2x.png */; };
 		013C08181435400200464453 /* button_clear_lrg2x_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 013C08141435400200464453 /* button_clear_lrg2x_pressed.png */; };
@@ -571,6 +597,23 @@
 		01BB3F7D13E8B1F100E491FB /* POIs_deal_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7B13E8B1F000E491FB /* POIs_deal_selected.png */; };
 		01BB3F7E13E8B1F100E491FB /* POIs_deal_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7C13E8B1F000E491FB /* POIs_deal_selected@2x.png */; };
 		01C2B3B1142A746F000FD442 /* LocationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2B3B0142A746F000FD442 /* LocationService.m */; };
+		01D14F7C1479DD4D0072F83E /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F581479DD4D0072F83E /* NSMutableURLRequest+Parameters.m */; };
+		01D14F7D1479DD4D0072F83E /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F5A1479DD4D0072F83E /* NSString+URLEncoding.m */; };
+		01D14F7E1479DD4D0072F83E /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F5C1479DD4D0072F83E /* NSURL+Base.m */; };
+		01D14F7F1479DD4D0072F83E /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F5E1479DD4D0072F83E /* Base64Transcoder.c */; };
+		01D14F801479DD4D0072F83E /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F601479DD4D0072F83E /* hmac.c */; };
+		01D14F811479DD4D0072F83E /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F621479DD4D0072F83E /* sha1.c */; };
+		01D14F821479DD4D0072F83E /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F651479DD4D0072F83E /* OACall.m */; };
+		01D14F831479DD4D0072F83E /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F671479DD4D0072F83E /* OAConsumer.m */; };
+		01D14F841479DD4D0072F83E /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F691479DD4D0072F83E /* OADataFetcher.m */; };
+		01D14F851479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F6B1479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.m */; };
+		01D14F861479DD4D0072F83E /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F6D1479DD4D0072F83E /* OAMutableURLRequest.m */; };
+		01D14F871479DD4D0072F83E /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F6F1479DD4D0072F83E /* OAPlaintextSignatureProvider.m */; };
+		01D14F881479DD4D0072F83E /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F711479DD4D0072F83E /* OAProblem.m */; };
+		01D14F891479DD4D0072F83E /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F731479DD4D0072F83E /* OARequestParameter.m */; };
+		01D14F8A1479DD4D0072F83E /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F751479DD4D0072F83E /* OAServiceTicket.m */; };
+		01D14F8B1479DD4D0072F83E /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F781479DD4D0072F83E /* OAToken.m */; };
+		01D14F8C1479DD4D0072F83E /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D14F7A1479DD4D0072F83E /* OATokenManager.m */; };
 		01E164C013DE440800B0B8FD /* SuggestedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E164BF13DE440800B0B8FD /* SuggestedTime.m */; };
 		01E3ABAA1432CA0300580CF7 /* CellToggle.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E3ABA91432CA0300580CF7 /* CellToggle.m */; };
 		01F17E5C13D10D6400213CC4 /* bottombar_background_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F17E5513D10D6400213CC4 /* bottombar_background_clear.png */; };
@@ -617,6 +660,8 @@
 		011A5AC614250FF900939B2F /* SimpleGeo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SimpleGeo.framework; sourceTree = "<group>"; };
 		01232A0C13CA856C00435DBD /* SimpleGeoDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGeoDataParser.h; sourceTree = "<group>"; };
 		01232A0D13CA856C00435DBD /* SimpleGeoDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleGeoDataParser.m; sourceTree = "<group>"; };
+		0127D7511478DDA700C953D1 /* YelpDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpDataParser.h; sourceTree = "<group>"; };
+		0127D7521478DDA700C953D1 /* YelpDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpDataParser.m; sourceTree = "<group>"; };
 		012C7D0B1420344800F3885D /* button_decided_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_decided_default.png; sourceTree = "<group>"; };
 		012C7D0C1420344800F3885D /* button_decided_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_decided_default@2x.png"; sourceTree = "<group>"; };
 		012C7D1014213D7D00F3885D /* GetDirectionsActionSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDirectionsActionSheetController.h; sourceTree = "<group>"; };
@@ -624,6 +669,32 @@
 		0131719713CABDF00068B383 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0133D20D141EA1FF00713AC9 /* CellFriendsLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellFriendsLocations.h; sourceTree = "<group>"; };
 		0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellFriendsLocations.m; sourceTree = "<group>"; };
+		01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_0.png; sourceTree = "<group>"; };
+		01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_0@2x.png"; sourceTree = "<group>"; };
+		01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_1.5.png; sourceTree = "<group>"; };
+		01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_1.5@2x.png"; sourceTree = "<group>"; };
+		01377C521482E6CF0046A48E /* yelp_reviews_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_1.png; sourceTree = "<group>"; };
+		01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_1@2x.png"; sourceTree = "<group>"; };
+		01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_2.5.png; sourceTree = "<group>"; };
+		01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_2.5@2x.png"; sourceTree = "<group>"; };
+		01377C561482E6CF0046A48E /* yelp_reviews_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_2.png; sourceTree = "<group>"; };
+		01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_2@2x.png"; sourceTree = "<group>"; };
+		01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_3.5.png; sourceTree = "<group>"; };
+		01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_3.5@2x.png"; sourceTree = "<group>"; };
+		01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_3.png; sourceTree = "<group>"; };
+		01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_3@2x.png"; sourceTree = "<group>"; };
+		01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_4.5.png; sourceTree = "<group>"; };
+		01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_4.5@2x.png"; sourceTree = "<group>"; };
+		01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_4.png; sourceTree = "<group>"; };
+		01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_4@2x.png"; sourceTree = "<group>"; };
+		01377C601482E6CF0046A48E /* yelp_reviews_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_5.png; sourceTree = "<group>"; };
+		01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_5@2x.png"; sourceTree = "<group>"; };
+		01377C7714842FE30046A48E /* yelp_logo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_logo_white.png; sourceTree = "<group>"; };
+		01377C7814842FE30046A48E /* yelp_logo_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_logo_white@2x.png"; sourceTree = "<group>"; };
+		01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_logo_small_white@2x.png"; sourceTree = "<group>"; };
+		01377C7C1485B6210046A48E /* yelp_logo_small_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_logo_small_white.png; sourceTree = "<group>"; };
+		01377C7F1485D0DE0046A48E /* YelpReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpReview.h; sourceTree = "<group>"; };
+		01377C801485D0DF0046A48E /* YelpReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpReview.m; sourceTree = "<group>"; };
 		013C08121435400200464453 /* button_clear_lrg2x_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_clear_lrg2x_default.png; sourceTree = "<group>"; };
 		013C08131435400200464453 /* button_clear_lrg2x_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_clear_lrg2x_default@2x.png"; sourceTree = "<group>"; };
 		013C08141435400200464453 /* button_clear_lrg2x_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_clear_lrg2x_pressed.png; sourceTree = "<group>"; };
@@ -1302,6 +1373,42 @@
 		01BB3F7C13E8B1F000E491FB /* POIs_deal_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "POIs_deal_selected@2x.png"; sourceTree = "<group>"; };
 		01C2B3AF142A746F000FD442 /* LocationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationService.h; sourceTree = "<group>"; };
 		01C2B3B0142A746F000FD442 /* LocationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationService.m; sourceTree = "<group>"; };
+		01D14F571479DD4D0072F83E /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
+		01D14F581479DD4D0072F83E /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
+		01D14F591479DD4D0072F83E /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
+		01D14F5A1479DD4D0072F83E /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
+		01D14F5B1479DD4D0072F83E /* NSURL+Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Base.h"; sourceTree = "<group>"; };
+		01D14F5C1479DD4D0072F83E /* NSURL+Base.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Base.m"; sourceTree = "<group>"; };
+		01D14F5E1479DD4D0072F83E /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
+		01D14F5F1479DD4D0072F83E /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
+		01D14F601479DD4D0072F83E /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
+		01D14F611479DD4D0072F83E /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		01D14F621479DD4D0072F83E /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
+		01D14F631479DD4D0072F83E /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		01D14F641479DD4D0072F83E /* OACall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OACall.h; sourceTree = "<group>"; };
+		01D14F651479DD4D0072F83E /* OACall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OACall.m; sourceTree = "<group>"; };
+		01D14F661479DD4D0072F83E /* OAConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAConsumer.h; sourceTree = "<group>"; };
+		01D14F671479DD4D0072F83E /* OAConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAConsumer.m; sourceTree = "<group>"; };
+		01D14F681479DD4D0072F83E /* OADataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OADataFetcher.h; sourceTree = "<group>"; };
+		01D14F691479DD4D0072F83E /* OADataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OADataFetcher.m; sourceTree = "<group>"; };
+		01D14F6A1479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHMAC_SHA1SignatureProvider.h; sourceTree = "<group>"; };
+		01D14F6B1479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHMAC_SHA1SignatureProvider.m; sourceTree = "<group>"; };
+		01D14F6C1479DD4D0072F83E /* OAMutableURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMutableURLRequest.h; sourceTree = "<group>"; };
+		01D14F6D1479DD4D0072F83E /* OAMutableURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMutableURLRequest.m; sourceTree = "<group>"; };
+		01D14F6E1479DD4D0072F83E /* OAPlaintextSignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPlaintextSignatureProvider.h; sourceTree = "<group>"; };
+		01D14F6F1479DD4D0072F83E /* OAPlaintextSignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPlaintextSignatureProvider.m; sourceTree = "<group>"; };
+		01D14F701479DD4D0072F83E /* OAProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAProblem.h; sourceTree = "<group>"; };
+		01D14F711479DD4D0072F83E /* OAProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAProblem.m; sourceTree = "<group>"; };
+		01D14F721479DD4D0072F83E /* OARequestParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OARequestParameter.h; sourceTree = "<group>"; };
+		01D14F731479DD4D0072F83E /* OARequestParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OARequestParameter.m; sourceTree = "<group>"; };
+		01D14F741479DD4D0072F83E /* OAServiceTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAServiceTicket.h; sourceTree = "<group>"; };
+		01D14F751479DD4D0072F83E /* OAServiceTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAServiceTicket.m; sourceTree = "<group>"; };
+		01D14F761479DD4D0072F83E /* OASignatureProviding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OASignatureProviding.h; sourceTree = "<group>"; };
+		01D14F771479DD4D0072F83E /* OAToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAToken.h; sourceTree = "<group>"; };
+		01D14F781479DD4D0072F83E /* OAToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAToken.m; sourceTree = "<group>"; };
+		01D14F791479DD4D0072F83E /* OATokenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATokenManager.h; sourceTree = "<group>"; };
+		01D14F7A1479DD4D0072F83E /* OATokenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATokenManager.m; sourceTree = "<group>"; };
+		01D14F7B1479DD4D0072F83E /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
 		01E164BE13DE440800B0B8FD /* SuggestedTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestedTime.h; sourceTree = "<group>"; };
 		01E164BF13DE440800B0B8FD /* SuggestedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuggestedTime.m; sourceTree = "<group>"; };
 		01E3ABA81432CA0300580CF7 /* CellToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellToggle.h; sourceTree = "<group>"; };
@@ -1616,6 +1723,7 @@
 				017613E013BE76BC00324EF9 /* Controller */,
 				017613DC13BE76A400324EF9 /* Business */,
 				017613D813BE768400324EF9 /* XMLSupport */,
+				01D14F551479DD4D0072F83E /* OAuthConsumer */,
 				017613C413BE766700324EF9 /* Json */,
 				017613C013BE764C00324EF9 /* Security */,
 				01E3AB9E1432C73800580CF7 /* Categories */,
@@ -1698,6 +1806,30 @@
 		017610ED13BE753D00324EF9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */,
+				01377C7C1485B6210046A48E /* yelp_logo_small_white.png */,
+				01377C7714842FE30046A48E /* yelp_logo_white.png */,
+				01377C7814842FE30046A48E /* yelp_logo_white@2x.png */,
+				01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */,
+				01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */,
+				01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */,
+				01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */,
+				01377C521482E6CF0046A48E /* yelp_reviews_1.png */,
+				01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */,
+				01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */,
+				01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */,
+				01377C561482E6CF0046A48E /* yelp_reviews_2.png */,
+				01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */,
+				01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */,
+				01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */,
+				01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */,
+				01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */,
+				01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */,
+				01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */,
+				01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */,
+				01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */,
+				01377C601482E6CF0046A48E /* yelp_reviews_5.png */,
+				01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */,
 				013C08121435400200464453 /* button_clear_lrg2x_default.png */,
 				013C08131435400200464453 /* button_clear_lrg2x_default@2x.png */,
 				013C08141435400200464453 /* button_clear_lrg2x_pressed.png */,
@@ -2224,6 +2356,8 @@
 				017610E913BE750E00324EF9 /* GoogleDataParser.m */,
 				0176153013BE793C00324EF9 /* HelpDataParser.h */,
 				0176153113BE793C00324EF9 /* HelpDataParser.m */,
+				0127D7511478DDA700C953D1 /* YelpDataParser.h */,
+				0127D7521478DDA700C953D1 /* YelpDataParser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2337,6 +2471,8 @@
 				018212CE13D4D73900BF9EF4 /* CellCategory.m */,
 				017EE6AB13D6369F00CB7904 /* WildcardGestureRecognizer.h */,
 				017EE6AC13D6369F00CB7904 /* WildcardGestureRecognizer.m */,
+				01377C7F1485D0DE0046A48E /* YelpReview.h */,
+				01377C801485D0DF0046A48E /* YelpReview.m */,
 			);
 			name = "Location Mgmt";
 			sourceTree = "<group>";
@@ -2453,6 +2589,65 @@
 				017614C713BE78F100324EF9 /* whiteArrow@2x.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		01D14F551479DD4D0072F83E /* OAuthConsumer */ = {
+			isa = PBXGroup;
+			children = (
+				01D14F561479DD4D0072F83E /* Categories */,
+				01D14F5D1479DD4D0072F83E /* Crytpo */,
+				01D14F641479DD4D0072F83E /* OACall.h */,
+				01D14F651479DD4D0072F83E /* OACall.m */,
+				01D14F661479DD4D0072F83E /* OAConsumer.h */,
+				01D14F671479DD4D0072F83E /* OAConsumer.m */,
+				01D14F681479DD4D0072F83E /* OADataFetcher.h */,
+				01D14F691479DD4D0072F83E /* OADataFetcher.m */,
+				01D14F6A1479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.h */,
+				01D14F6B1479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.m */,
+				01D14F6C1479DD4D0072F83E /* OAMutableURLRequest.h */,
+				01D14F6D1479DD4D0072F83E /* OAMutableURLRequest.m */,
+				01D14F6E1479DD4D0072F83E /* OAPlaintextSignatureProvider.h */,
+				01D14F6F1479DD4D0072F83E /* OAPlaintextSignatureProvider.m */,
+				01D14F701479DD4D0072F83E /* OAProblem.h */,
+				01D14F711479DD4D0072F83E /* OAProblem.m */,
+				01D14F721479DD4D0072F83E /* OARequestParameter.h */,
+				01D14F731479DD4D0072F83E /* OARequestParameter.m */,
+				01D14F741479DD4D0072F83E /* OAServiceTicket.h */,
+				01D14F751479DD4D0072F83E /* OAServiceTicket.m */,
+				01D14F761479DD4D0072F83E /* OASignatureProviding.h */,
+				01D14F771479DD4D0072F83E /* OAToken.h */,
+				01D14F781479DD4D0072F83E /* OAToken.m */,
+				01D14F791479DD4D0072F83E /* OATokenManager.h */,
+				01D14F7A1479DD4D0072F83E /* OATokenManager.m */,
+				01D14F7B1479DD4D0072F83E /* OAuthConsumer.h */,
+			);
+			path = OAuthConsumer;
+			sourceTree = "<group>";
+		};
+		01D14F561479DD4D0072F83E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				01D14F571479DD4D0072F83E /* NSMutableURLRequest+Parameters.h */,
+				01D14F581479DD4D0072F83E /* NSMutableURLRequest+Parameters.m */,
+				01D14F591479DD4D0072F83E /* NSString+URLEncoding.h */,
+				01D14F5A1479DD4D0072F83E /* NSString+URLEncoding.m */,
+				01D14F5B1479DD4D0072F83E /* NSURL+Base.h */,
+				01D14F5C1479DD4D0072F83E /* NSURL+Base.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		01D14F5D1479DD4D0072F83E /* Crytpo */ = {
+			isa = PBXGroup;
+			children = (
+				01D14F5E1479DD4D0072F83E /* Base64Transcoder.c */,
+				01D14F5F1479DD4D0072F83E /* Base64Transcoder.h */,
+				01D14F601479DD4D0072F83E /* hmac.c */,
+				01D14F611479DD4D0072F83E /* hmac.h */,
+				01D14F621479DD4D0072F83E /* sha1.c */,
+				01D14F631479DD4D0072F83E /* sha1.h */,
+			);
+			path = Crytpo;
 			sourceTree = "<group>";
 		};
 		01E3AB9E1432C73800580CF7 /* Categories */ = {
@@ -2983,6 +3178,30 @@
 				013C08171435400200464453 /* button_clear_lrg2x_default@2x.png in Resources */,
 				013C08181435400200464453 /* button_clear_lrg2x_pressed.png in Resources */,
 				013C08191435400200464453 /* button_clear_lrg2x_pressed@2x.png in Resources */,
+				01377C621482E6CF0046A48E /* yelp_reviews_0.png in Resources */,
+				01377C631482E6CF0046A48E /* yelp_reviews_0@2x.png in Resources */,
+				01377C641482E6CF0046A48E /* yelp_reviews_1.5.png in Resources */,
+				01377C651482E6CF0046A48E /* yelp_reviews_1.5@2x.png in Resources */,
+				01377C661482E6CF0046A48E /* yelp_reviews_1.png in Resources */,
+				01377C671482E6CF0046A48E /* yelp_reviews_1@2x.png in Resources */,
+				01377C681482E6CF0046A48E /* yelp_reviews_2.5.png in Resources */,
+				01377C691482E6CF0046A48E /* yelp_reviews_2.5@2x.png in Resources */,
+				01377C6A1482E6CF0046A48E /* yelp_reviews_2.png in Resources */,
+				01377C6B1482E6CF0046A48E /* yelp_reviews_2@2x.png in Resources */,
+				01377C6C1482E6CF0046A48E /* yelp_reviews_3.5.png in Resources */,
+				01377C6D1482E6CF0046A48E /* yelp_reviews_3.5@2x.png in Resources */,
+				01377C6E1482E6CF0046A48E /* yelp_reviews_3.png in Resources */,
+				01377C6F1482E6CF0046A48E /* yelp_reviews_3@2x.png in Resources */,
+				01377C701482E6CF0046A48E /* yelp_reviews_4.5.png in Resources */,
+				01377C711482E6CF0046A48E /* yelp_reviews_4.5@2x.png in Resources */,
+				01377C721482E6CF0046A48E /* yelp_reviews_4.png in Resources */,
+				01377C731482E6CF0046A48E /* yelp_reviews_4@2x.png in Resources */,
+				01377C741482E6CF0046A48E /* yelp_reviews_5.png in Resources */,
+				01377C751482E6CF0046A48E /* yelp_reviews_5@2x.png in Resources */,
+				01377C7914842FE30046A48E /* yelp_logo_white.png in Resources */,
+				01377C7A14842FE30046A48E /* yelp_logo_white@2x.png in Resources */,
+				01377C7D1485B6210046A48E /* yelp_logo_small_white@2x.png in Resources */,
+				01377C7E1485B6210046A48E /* yelp_logo_small_white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3120,6 +3339,25 @@
 				012C7D1214213D7E00F3885D /* GetDirectionsActionSheetController.m in Sources */,
 				01C2B3B1142A746F000FD442 /* LocationService.m in Sources */,
 				01E3ABAA1432CA0300580CF7 /* CellToggle.m in Sources */,
+				0127D7531478DDA700C953D1 /* YelpDataParser.m in Sources */,
+				01D14F7C1479DD4D0072F83E /* NSMutableURLRequest+Parameters.m in Sources */,
+				01D14F7D1479DD4D0072F83E /* NSString+URLEncoding.m in Sources */,
+				01D14F7E1479DD4D0072F83E /* NSURL+Base.m in Sources */,
+				01D14F7F1479DD4D0072F83E /* Base64Transcoder.c in Sources */,
+				01D14F801479DD4D0072F83E /* hmac.c in Sources */,
+				01D14F811479DD4D0072F83E /* sha1.c in Sources */,
+				01D14F821479DD4D0072F83E /* OACall.m in Sources */,
+				01D14F831479DD4D0072F83E /* OAConsumer.m in Sources */,
+				01D14F841479DD4D0072F83E /* OADataFetcher.m in Sources */,
+				01D14F851479DD4D0072F83E /* OAHMAC_SHA1SignatureProvider.m in Sources */,
+				01D14F861479DD4D0072F83E /* OAMutableURLRequest.m in Sources */,
+				01D14F871479DD4D0072F83E /* OAPlaintextSignatureProvider.m in Sources */,
+				01D14F881479DD4D0072F83E /* OAProblem.m in Sources */,
+				01D14F891479DD4D0072F83E /* OARequestParameter.m in Sources */,
+				01D14F8A1479DD4D0072F83E /* OAServiceTicket.m in Sources */,
+				01D14F8B1479DD4D0072F83E /* OAToken.m in Sources */,
+				01D14F8C1479DD4D0072F83E /* OATokenManager.m in Sources */,
+				01377C811485D0DF0046A48E /* YelpReview.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

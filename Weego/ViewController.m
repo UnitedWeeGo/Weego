@@ -28,6 +28,7 @@
 #import "Privacy.h"
 #import "DealsView.h"
 #import "MoreButtonActionSheetController.h"
+#import "YelpReview.h"
 
 @interface ViewController(Private)
 - (void)clearLoginKeyChainData;
@@ -236,6 +237,16 @@ static ViewController *sharedInstance;
     nController = appDelegate.navigationController;
     [nController pushViewController:detailViewController animated:YES];
     [detailViewController release];
+}
+
+- (void)navigateToYelpReviewsWithURL:(NSString *)url
+{
+    [[Model sharedInstance] setCurrentLocationReviewURL:url];
+    [Model sharedInstance].currentViewState = ViewStateReviews;
+    [self addAndReportViewWithName:@"/yelp_review"];
+    YelpReview *yr = [[YelpReview alloc] init];
+    [nController pushViewController:yr animated:YES];
+    [yr release];
 }
 
 - (void)showMailModalViewControllerInView:(UIViewController<MFMailComposeViewControllerDelegate> *)inView withTitle:(NSString *)title andSubject:(NSString *)subject andMessageBody:(NSString *)body andToRecipients:(NSArray *)receipients

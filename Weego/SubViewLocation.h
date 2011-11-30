@@ -46,9 +46,14 @@
     CGRect actionBtnRect;
     CGRect dealBtnRect;
     
+    UIImageView *ratingImage;
+    UILabel *reviewCountLabel;
+    
 //    BOOL isLiked;
     int index;
     BOOL isDashboardMode;
+    
+    UIImageView *yelpLogo;
 }
 
 @property (nonatomic, assign) id <SubViewLocationDelegate> delegate;

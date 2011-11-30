@@ -49,7 +49,6 @@ typedef enum {
 - (void)doSecondaryAddressSearch;
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults;
 - (void)beginCurrentLocationSearchWithCoordinate:(CLLocationCoordinate2D)coord;
-- (void)beginCurrentLocationSearchNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord;
 - (BOOL)locationCollection:(NSMutableArray *)collection containsLocation:(Location *)location;
 - (void)doShowSearchAgainButton:(BOOL)doShow;
 - (void)enableSearchCategoryTable;
@@ -389,16 +388,26 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
 
-    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    if (genericSearchFetchId) [genericSearchFetchId release];
     
-    MKMapRect mRect = mapView.visibleMapRect;
-    MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
-    MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
-    CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
-    CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
-    
-    SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoWithEnvelope:envelope andName:searchString] retain];
+    if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
+    {
+        MKMapRect mRect = mapView.visibleMapRect;
+        MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
+        MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
+        CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
+        CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
+        
+        SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
+        genericSearchFetchId = [[[Controller sharedInstance] searchSimpleGeoWithEnvelope:envelope andName:searchString] retain];
+    }
+    else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
+    {
+        CLLocationCoordinate2D northEast, southWest;
+        northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+        southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
+        genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
+    }
     
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = [searchBar.text retain];
@@ -416,29 +425,8 @@ typedef enum {
     [self removeAnnotations:mapView includingSaved:false];
     [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     
-    if (simpleGeoFetchId) [simpleGeoFetchId release];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForAddressWithCoordinate:coord] retain];
-    
-    if (pendingSearchString) [pendingSearchString release];
-    pendingSearchString = nil;
-    
-    if (pendingSearchCategory) [pendingSearchCategory release];
-    pendingSearchCategory = nil;
-    
-    continueToSearchEnabled = false;
-}
-
-- (void)beginCurrentLocationSearchNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord
-{
-    searchBar.text = @"";
-    [searchBar showNetworkActivity:YES];
-    
-    [self resignKeyboardAndRemoveModalCover:self];
-    [self removeAnnotations:mapView includingSaved:false];
-    [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
-    
-    if (simpleGeoFetchId) [simpleGeoFetchId release];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoForNearbyPlacesWithCoordinate:coord] retain];
+    if (genericSearchFetchId) [genericSearchFetchId release];
+    genericSearchFetchId = [[[Controller sharedInstance] searchSimpleGeoForAddressWithCoordinate:coord] retain];
     
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = nil;
@@ -460,16 +448,26 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
     
-    if (simpleGeoFetchId) [simpleGeoFetchId release];
+    if (genericSearchFetchId) [genericSearchFetchId release];
     
-    MKMapRect mRect = mapView.visibleMapRect;
-    MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
-    MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
-    CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
-    CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
-    
-    SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
-    simpleGeoFetchId = [[[Controller sharedInstance] searchSimpleGeoWithCategory:searchCategory andEnvelope:envelope] retain];
+    if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
+    {
+        MKMapRect mRect = mapView.visibleMapRect;
+        MKMapPoint neMapPoint = MKMapPointMake(mRect.origin.x + mRect.size.width, mRect.origin.y);
+        MKMapPoint swMapPoint = MKMapPointMake(mRect.origin.x, mRect.origin.y + mRect.size.height);
+        CLLocationCoordinate2D neCoord = MKCoordinateForMapPoint(neMapPoint);
+        CLLocationCoordinate2D swCoord = MKCoordinateForMapPoint(swMapPoint);
+        
+        SGEnvelope *envelope = [SGEnvelope envelopeWithNorth:neCoord.latitude west:swCoord.longitude south:swCoord.latitude east:neCoord.longitude];
+        genericSearchFetchId = [[[Controller sharedInstance] searchSimpleGeoWithCategory:searchCategory andEnvelope:envelope] retain];
+    }
+    else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
+    {
+        CLLocationCoordinate2D northEast, southWest;
+        northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+        southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
+        genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
+    }
     
     if (pendingSearchString) [pendingSearchString release];
     pendingSearchString = nil;
@@ -900,7 +898,16 @@ typedef enum {
         NSLog(@"ERROR - No location found!");
         return;
     }
-    [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:locationSelected];
+    
+    if ([locationSelected.location_type isEqualToString:@"yelp"])
+    {
+        [[ViewController sharedInstance] navigateToYelpReviewsWithURL:locationSelected.mobileYelpUrl];
+    }
+    else
+    {
+        [[GetDirectionsActionSheetController sharedInstance] presentDirectionsActionSheetForLocation:locationSelected];
+    }
+    
 }
 
 - (void)editNameButtonPressed
@@ -1122,7 +1129,7 @@ typedef enum {
     mapView.delegate = nil;
     searchBar.delegate = nil;
     if (participantSelectedOnMap) [participantSelectedOnMap release];
-    [simpleGeoFetchId release];
+    [genericSearchFetchId release];
     [googlePlacesFetchId release];
     [googleGeoFetchId release];
     [pendingSearchString release];
@@ -1195,8 +1202,9 @@ typedef enum {
         case DataFetchTypeGetReportedLocations:
             [self addOrUpdateUserLocationAnnotations];
             break;
-        case DataFetchTypeSearchSimpleGeo:
-            if ( [fetchId isEqualToString:simpleGeoFetchId] )
+        case DataFetchTypeSearchYelp:       // same code to execute
+        case DataFetchTypeSearchSimpleGeo:  // same code to execute
+            if ( [fetchId isEqualToString:genericSearchFetchId] )
             {
                 
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
@@ -1259,10 +1267,8 @@ typedef enum {
             }
             break;
             
-        
-            
         case DataFetchTypeSearchSimpleGeoCurrentLocation:
-            if ( [fetchId isEqualToString:simpleGeoFetchId] )
+            if ( [fetchId isEqualToString:genericSearchFetchId] )
             {
                 
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
@@ -1297,7 +1303,7 @@ typedef enum {
             }
             break;
         case DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces:
-            if ( [fetchId isEqualToString:simpleGeoFetchId] )
+            if ( [fetchId isEqualToString:genericSearchFetchId] )
             {
                 
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
@@ -1406,6 +1412,11 @@ typedef enum {
             break;
         case DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces:
             NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            [searchBar showNetworkActivity:NO];
+            if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
+            break;
+        case DataFetchTypeSearchYelp:
+            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchYelp);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
@@ -1591,24 +1602,6 @@ typedef enum {
     if (myCLLoc)
     {
         [self beginCurrentLocationSearchWithCoordinate:myCLLoc.coordinate];
-    }
-    else
-    {
-        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
-        [noLocFoundAlert show];
-    }
-}
-
-- (void)addressBookLocationsTVCDidSelectCurrentLocationNearbyPlaces
-{
-    continueToSearchEnabled = NO;
-    [self doShowSearchAgainButton:NO];
-    [[ViewController sharedInstance] goBack];
-    
-    MKUserLocation *myCLLoc = [mapView userLocation];
-    if (myCLLoc)
-    {
-        [self beginCurrentLocationSearchNearbyPlacesWithCoordinate:myCLLoc.coordinate];
     }
     else
     {

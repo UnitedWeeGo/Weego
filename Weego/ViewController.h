@@ -65,5 +65,6 @@
 
 - (void)addAndReportViewWithName:(NSString *)name;
 - (void)removeCurrentAndReportPreviousView;
+- (void)navigateToYelpReviewsWithURL:(NSString *)url;
 
 @end

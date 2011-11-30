@@ -511,7 +511,15 @@ typedef enum {
 {
     SubViewLocation *svl = (SubViewLocation *)sender;
     Location *loc = svl.location;
-    [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+        
+    if ([loc.location_type isEqualToString:@"yelp"])
+    {
+        [[ViewController sharedInstance] navigateToYelpReviewsWithURL:loc.mobileYelpUrl];
+    }
+    else
+    {
+        [[ViewController sharedInstance] navigateToAddLocationsWithLocationOpen:loc.locationId];
+    }
 }
 
 - (void)likeButtonPressed:(id)sender

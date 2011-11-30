@@ -15,6 +15,7 @@
 #import "DataParser.h"
 #import "GoogleDataParser.h"
 #import "SimpleGeoDataParser.h"
+#import "YelpDataParser.h"
 #import "InfoDataParser.h"
 #import "HelpDataParser.h"
 #import "TermsDataParser.h"
@@ -413,17 +414,24 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
+- (id)getYelpCategories
+{
+    Model *model = [Model sharedInstance];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetWeegoCategoriesWithUserId:model.userId delegate:[YelpDataParser sharedInstance]] autorelease];
+    return fetcher.requestId;
+}
+
 - (id)searchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord
 {
     DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoForAddressWithCoordinate:coord delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
     [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
     return fetcher.requestId;
 }
-
-- (id)searchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord
+- (id)searchYelpForName:(NSString *)name northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
-    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchSimpleGeoForNearbyPlacesWithCoordinate:coord delegate:[SimpleGeoDataParser sharedInstance]] autorelease];
-    [geoRequestHolder setValue:fetcher forKey:fetcher.requestId];
+    NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchYelpWithName:name andBoundsString:bounds delegate:[YelpDataParser sharedInstance]] autorelease];
+    
     return fetcher.requestId;
 }
 

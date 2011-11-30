@@ -74,7 +74,13 @@
 - (void)setFormattedAddress
 {
     NSString *formatted_address = [self urldecode:location.formatted_address];
-    if (formatted_address.length > 0) {
+    
+    if ([formatted_address rangeOfString:@","].length == 0)
+    {
+        labelSecondaryInfo.text = formatted_address;
+    }
+    else
+    {
         int commaLoc = [formatted_address rangeOfString:@","].location;
         
         NSString *labelSecondaryInfoS = [formatted_address substringWithRange:NSMakeRange(0, commaLoc)];
@@ -82,10 +88,6 @@
         
         labelSecondaryInfo.text = labelSecondaryInfoS;
         labelTertiaryInfo.text = labelTertiaryInfoS;
-    }
-    else
-    {
-        labelSecondaryInfo.text = [self urldecode:location.vicinity];
     }
 }
 
@@ -116,7 +118,16 @@
         [self showSeeLocButton];
         [self showDealButton];
     }
-    
+    if ([location.location_type isEqualToString:@"yelp"])
+    {
+        NSString *reviewImg = [NSString stringWithFormat:@"yelp_reviews_%@.png", location.rating];
+        UIImage *rImage = [UIImage imageNamed:reviewImg];
+        [ratingImage setImage:rImage];
+        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews on", location.reviewCount]];
+        [reviewCountLabel sizeToFit];
+        CGRect yelpRect = CGRectMake(reviewCountLabel.frame.origin.x + reviewCountLabel.frame.size.width + 2, reviewCountLabel.frame.origin.y - 7, yelpLogo.frame.size.width, yelpLogo.frame.size.height);
+        yelpLogo.frame = yelpRect;
+    }
 }
 
 - (void)resetUIState
@@ -132,6 +143,11 @@
     loading.hidden = YES;
     [activityView stopAnimating];
     errorView.hidden = YES;
+    
+    ratingImage.hidden = ![location.location_type isEqualToString:@"yelp"];
+    reviewCountLabel.hidden = ![location.location_type isEqualToString:@"yelp"];
+    labelTertiaryInfo.hidden = [location.location_type isEqualToString:@"yelp"];
+    yelpLogo.hidden = ![location.location_type isEqualToString:@"yelp"];
 }
 
 - (void)addMap
@@ -267,6 +283,34 @@
 	labelTertiaryInfo.lineBreakMode = UILineBreakModeWordWrap;
 	labelTertiaryInfo.numberOfLines = 0;
 	[self addSubview:labelTertiaryInfo];
+    
+    
+    
+    ratingImage = [[[UIImageView alloc] initWithFrame:CGRectMake(textLeftPos, 
+                                                                 nextY+5, 
+                                                                 50, 
+                                                                 10)] autorelease];
+    ratingImage.hidden = YES;
+    [self addSubview:ratingImage];
+    
+    
+    UIFont *tertiaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
+    reviewCountLabel = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos+54, 
+                                                                  nextY+7, 
+                                                                  250, 
+                                                                  12)] autorelease];
+    reviewCountLabel.backgroundColor = [UIColor clearColor];
+    reviewCountLabel.textColor = [UIColor colorWithWhite:0.6 alpha:1];
+    [reviewCountLabel setFont:tertiaryFont];
+    reviewCountLabel.lineBreakMode = UILineBreakModeWordWrap;
+    reviewCountLabel.numberOfLines = 1;
+    [self addSubview:reviewCountLabel];
+    
+    
+    UIImage *yl = [UIImage imageNamed:@"yelp_logo_small_white.png"];
+    yelpLogo = [[[UIImageView alloc] initWithImage:yl] autorelease];
+    [self addSubview:yelpLogo];
+    
     
 	nextY = labelTertiaryInfo.frame.origin.y + labelTertiaryInfo.frame.size.height;
     

@@ -40,8 +40,13 @@ typedef enum {
 @property (nonatomic, assign) BOOL iAddedLocation;
 @property (nonatomic, readonly) BOOL isAddress;
 @property (nonatomic, readwrite) BOOL scheduledForZoom;
-
 @property (nonatomic, copy) NSString *featureId;
+
+// yelp
+@property (nonatomic, readonly) BOOL isYelp;
+@property (nonatomic, copy) NSString *rating;
+@property (nonatomic, copy) NSString *reviewCount;
+@property (nonatomic, copy) NSString *mobileYelpUrl;
 
 - (LocAnnotation *)initWithLocation:(Location *)loc withStateType:(LocAnnoStateType)theStateType andSelectedState:(LocAnnoSelectedState)theSelectedState;
 

@@ -23,7 +23,7 @@
 @synthesize hasDeal;
 @synthesize isAddress;
 @synthesize featureId;
-
+@synthesize rating, mobileYelpUrl, reviewCount, isYelp;
 
 #pragma mark -
 #pragma mark NSObject
@@ -34,6 +34,9 @@
 	[self.subtitle release];
     [self.uuid release];
     [self.featureId release];
+    [self.rating release];
+    [self.reviewCount release];
+    [self.mobileYelpUrl release];
 	[super dealloc];
 }
 
@@ -55,6 +58,14 @@
         selectedState = theSelectedState;
         isSavedLocation = stateType != LocAnnoStateTypeSearch;
         isEnabled = selectedState != LocAnnoSelectedStateDisabled;
+        if ([loc.location_type isEqualToString:@"yelp"])
+        {
+            isYelp = YES;
+            self.rating = loc.rating;
+            self.reviewCount = loc.reviewCount;
+            self.mobileYelpUrl = loc.mobileYelpUrl;
+        }
+        
     }
     return self;
 }

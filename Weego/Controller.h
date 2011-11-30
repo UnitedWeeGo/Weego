@@ -34,8 +34,6 @@
 - (NSString *)updateEvent:(Event *)anEvent;
 - (void)removeEvent;
 - (NSString *)addOrUpdateLocations:(NSArray *)locations isAnUpdate:(BOOL)update;
-- (NSString *)reportLocation:(Location *)aLocation;
-- (NSString *)reportLocationSynchronous:(Location *)aLocation;
 - (NSString *)addParticipants:(NSArray *)participants;
 - (NSString *)toggleVoteForLocationsWithId:(NSString *)locationId;
 - (NSString *)updateUserDeviceRecord;
@@ -46,16 +44,23 @@
 - (NSString *)checkinUserForEventSynchronous:(Event *)anEvent;
 - (NSString *)fetchEventsSynchronous;
 
-// SimpleGeo lookups
+// Location reporting
 - (NSString *)fetchReportedLocations;
+- (NSString *)reportLocation:(Location *)aLocation;
+- (NSString *)reportLocationSynchronous:(Location *)aLocation;
+
+// SimpleGeo lookups
+- (NSString *)getSimpleGeoCategories;
 - (id)searchSimpleGeoWithCategory:(SearchCategory *)category andEnvelope:(SGEnvelope *)envelope;
 - (id)searchSimpleGeoWithEnvelope:(SGEnvelope *)envelope andName:(NSString *)name;
 - (id)searchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord;
-- (id)searchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord;
 
 // Google lookup
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
 
+// Yelp lookup
+- (id)searchYelpForName:(NSString *)name northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
+- (id)getYelpCategories;
 
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;
 - (NSString *)getInfoHMTLData;
@@ -65,7 +70,6 @@
 - (NSString *)getDealsHTMLDataWithSGID:(NSString *)sg_id;
 - (NSString *)getRecentParticipants;
 - (NSString *)removeLocationWithId:(NSString *)locationId;
-- (NSString *)getSimpleGeoCategories;
 - (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel;
 - (NSString *)suggestTimeForEvent:(Event *)anEvent withSuggestedTime:(NSString *)suggestedTime;
 

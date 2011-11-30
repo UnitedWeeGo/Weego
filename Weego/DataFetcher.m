@@ -11,9 +11,11 @@
 #import "Model.h"
 #import "Event.h"
 #import "Location.h"
+#import "OAuthConsumer.h"
 
 #define GOOGLE_PLACE_URL @"https://maps.googleapis.com/maps/api/place/search/json"
 #define GOOGLE_MAPS_API_V3 @"http://maps.google.com/maps/api/geocode/json"
+#define YELP_API_V2 @"http://api.yelp.com/v2/search"
 #define PUBLIC_HTTP_URL @"http://unitedweego.com/"
 
 /* depricated
@@ -33,6 +35,7 @@
 - (NSString *)stringFromDate:(NSDate *)aDate;
 - (void)makeRequest:(NSString *)urlString;
 - (void)makeRequestRespectingCache:(NSString *)urlString;
+- (void)makeYelpRequest:(NSString *)urlString;
 - (void)handleError:(NSError *)error;
 - (void)makeSynchronousRequest:(NSString *)urlString;
 - (NSString*) stringWithUUID;
@@ -527,6 +530,22 @@
 	return self;
 }
 
+- (id)initAndGetWeegoCategoriesWithUserId:(NSString *)userId delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        self.requestId = [self stringWithUUID];
+        pendingRequestType = DataFetchTypeGetWeegoCategories;
+		self.delegate = myDelegate;
+		NSString *urlString = [[[NSString alloc] initWithFormat:@"%@%@?registeredId=%@",
+                                apiURL,
+                                @"categories.php",
+                                userId] autorelease];
+		[self makeRequest:urlString];
+	}
+	return self;
+}
+
 - (id)initAndGetSimpleGeoCategoriesWithDelegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -651,53 +670,6 @@
     return self;
 }
 
-- (id)initAndSearchSimpleGeoForNearbyPlacesWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate
-{
-    self = [self init];
-	if (self != nil) {
-        self.requestId = [self stringWithUUID];
-        pendingRequestType = DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces;
-        
-        // default to using this as the delegate for potentially helpful error logging
-        self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
-        self.delegate = myDelegate;
-        
-        SGPoint *point = [SGPoint pointWithLat:coord.latitude lon:coord.longitude];
-        
-        SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithPoint:point] autorelease];
-        [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
-        
-        [client getPlacesForQuery:query callback:[SGCallback callbackWithSuccessBlock:
-                                                  ^(id response) {
-                                                      // you've got Places!
-                                                      // to create an array of SGPlace objects...
-                                                      NSArray *places = [NSArray arrayWithSGCollection:response
-                                                                                                  type:SGCollectionTypePlaces];
-                                                      
-                                                      
-                                                      NSLog(@"SimpleGeo didLoadPlaces");
-                                                      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                                      dataFetcherFinished = YES;
-                                                      
-                                                      if (delegate) [delegate processSimpleGeoResponse:places];
-                                                      self.delegate = nil;
-                                                      
-                                                      NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
-                                                      NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
-                                                      NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
-                                                      
-                                                      [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-                                                      
-                                                      
-                                                  } failureBlock: ^(NSError *error) {
-                                                      [self handleError:error];
-                                                  }]];
-        
-    }
-    return self;
-}
-
 - (id)initAndSearchSimpleGeoForAddressWithCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -740,6 +712,26 @@
                                                       [self handleError:error];
                                                   }]];
         
+    }
+    return self;
+}
+
+# warning DF initAndSearchYelpWithEnvelope
+- (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        self.requestId = [self stringWithUUID];
+        pendingRequestType = DataFetchTypeSearchYelp;
+        self.delegate = myDelegate;
+        
+        NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?term=%@&bounds=%@&sort=0",
+                                YELP_API_V2,
+                                name,
+                                bounds] autorelease];
+        NSString* escapedUrlString = [urlString stringByAddingPercentEscapesUsingEncoding:
+                                      NSASCIIStringEncoding];
+        [self makeYelpRequest:escapedUrlString];
     }
     return self;
 }
@@ -998,6 +990,30 @@
     //	NSLog(@"%@", myConnection);
 }
 
+// Yelp requires OAuth request signing
+- (void)makeYelpRequest:(NSString *)urlString
+{
+    NSURL *URL = [NSURL URLWithString:urlString];
+    OAConsumer *consumer = [[[OAConsumer alloc] initWithKey:@"MRgCPmRplDC1JJEmPnTykg" secret:@"1zZPJCuqmCqBOdCboPEGwLMMICQ="] autorelease];
+    OAToken *token = [[[OAToken alloc] initWithKey:@"DRVA5JDqUagRLV8wmnV7vpIm5qMjwz0q" secret:@"wueZ5gAPHSCUjOqdYy-6AdC9U-g"] autorelease];  
+    
+    id<OASignatureProviding, NSObject> provider = [[[OAHMAC_SHA1SignatureProvider alloc] init] autorelease];
+    NSString *realm = nil;  
+    
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:URL
+                                                                   consumer:consumer
+                                                                      token:token
+                                                                      realm:realm
+                                                          signatureProvider:provider];
+    [request setTimeoutInterval:DATA_FETCH_TIMEOUT_SECONDS_INTERVAL];
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [request prepare];
+    
+    myConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+	NSLog(@"http request: %@", urlString);
+}
+
 #pragma mark -
 #pragma mark NSURLConnection delegate methods
 
@@ -1077,70 +1093,6 @@
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
 }
-
-#pragma mark -
-#pragma mark SimpleGeoDelegate methods
-/*
-- (void)requestDidFail:(SGASIHTTPRequest *)request
-{
-    NSLog(@"Request failed: %@: %i", [request responseStatusMessage], [request responseStatusCode]);
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    dataFetcherFinished = YES;
-    self.delegate = nil;
-    
-    NSString *errorMessage = [request.error localizedDescription];
-    int errorCode = request.error.code;
-    if (request.error.code == 1) errorCode = NSURLErrorNotConnectedToInternet;
-    else if (request.error.code == 2) errorCode = NSURLErrorTimedOut;
-    
-    NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, [NSNumber numberWithInteger:errorCode], nil];
-    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
-    
-    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-}
-
-- (void)requestDidFinish:(SGASIHTTPRequest *)request
-{
-    //NSLog(@"Request finished: %@", [request responseString]);
-    
-}
-
-- (void)didLoadCategories:(NSArray *)categories
-{
-    NSLog(@"SimpleGeo didLoadCategories");
-    dataFetcherFinished = YES;
-    if (delegate) [delegate processSimpleGeoCategoryResponse:categories];
-	self.delegate = nil;
-    
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
-    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
-    
-    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-}
-
-- (void)didLoadPlaces:(SGFeatureCollection *)places
-             forQuery:(NSDictionary *)query
-{
-    NSLog(@"SimpleGeo didLoadPlaces");
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    dataFetcherFinished = YES;
-    
-    if (delegate) [delegate processSimpleGeoResponse:places];
-	self.delegate = nil;
-    
-    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
-    NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
-    NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-    [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
-    
-    [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-}
-*/
 
 #pragma mark -
 #pragma mark Unique ID Generator
