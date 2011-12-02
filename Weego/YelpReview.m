@@ -111,7 +111,7 @@
             break;
     }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Try Again", nil];
     [alert show];
     [alert release];
 }
@@ -136,7 +136,6 @@
     [self.view addSubview:spinner];
     
     [self showLoading];
-    
     [[Controller sharedInstance] getYelpHMTLDataWithURLString:[Model sharedInstance].currentReviewURL];
 }
 
@@ -198,6 +197,24 @@
 {
     
 }
+
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            [[ViewController sharedInstance] goBack];
+            break;
+        case 1:
+            [self showLoading];
+            [[Controller sharedInstance] getYelpHMTLDataWithURLString:[Model sharedInstance].currentReviewURL];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 #pragma mark - Etc
 
 - (BOOL)isYelpInstalled 
