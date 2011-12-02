@@ -32,7 +32,11 @@
         fieldTitle.numberOfLines = 0;
         [self addSubview:fieldTitle];
 
-        
+        UIImage *yLogoImg = [UIImage imageNamed:@"logo_yelp.png"];
+        yelpLogo = [[UIImageView alloc] initWithImage:yLogoImg];
+        yelpLogo.frame = CGRectMake(182, 6, yLogoImg.size.width, yLogoImg.size.height);
+        yelpLogo.hidden = YES;
+        [self addSubview:yelpLogo];
         
 //        self.textLabel.font = [UIFont fontWithName:@"MyriadPro-Semibold" size:16];
 //        self.textLabel.textColor = HEXCOLOR(0x666666FF);
@@ -56,7 +60,13 @@
 
 - (void)setTitle:(NSString *)title
 {
+    yelpLogo.hidden = YES;
     fieldTitle.text = title;
+}
+
+- (void)showYelpLogo
+{
+    yelpLogo.hidden = NO;
 }
 
 @end

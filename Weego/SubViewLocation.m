@@ -120,13 +120,11 @@
     }
     if ([location.location_type isEqualToString:@"yelp"])
     {
-        NSString *reviewImg = [NSString stringWithFormat:@"yelp_reviews_%@.png", location.rating];
+        NSString *reviewImg = [NSString stringWithFormat:@"stars_%@.png", location.rating];
         UIImage *rImage = [UIImage imageNamed:reviewImg];
         [ratingImage setImage:rImage];
-        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews on", location.reviewCount]];
+        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews", location.reviewCount]];
         [reviewCountLabel sizeToFit];
-        CGRect yelpRect = CGRectMake(reviewCountLabel.frame.origin.x + reviewCountLabel.frame.size.width + 2, reviewCountLabel.frame.origin.y - 7, yelpLogo.frame.size.width, yelpLogo.frame.size.height);
-        yelpLogo.frame = yelpRect;
     }
 }
 
@@ -147,7 +145,6 @@
     ratingImage.hidden = ![location.location_type isEqualToString:@"yelp"];
     reviewCountLabel.hidden = ![location.location_type isEqualToString:@"yelp"];
     labelTertiaryInfo.hidden = [location.location_type isEqualToString:@"yelp"];
-    yelpLogo.hidden = ![location.location_type isEqualToString:@"yelp"];
 }
 
 - (void)addMap
@@ -245,7 +242,8 @@
     float textLeftPos = leftMargin + 60 + 8;
     fieldWidth = 320 - textLeftPos - 50;
     fieldEditingWidth = 320 - textLeftPos - 90;
-    nextY = 14;
+    
+    nextY = 12;
     
     if (labelTitle == nil) labelTitle = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
                                                                                    nextY, 
@@ -260,7 +258,7 @@
 	labelTitle.numberOfLines = 0;
 	[self addSubview:labelTitle];
     
-	nextY = labelTitle.frame.origin.y + labelTitle.frame.size.height - 2;
+	nextY = labelTitle.frame.origin.y + labelTitle.frame.size.height - 3;
 	
 	if (labelSecondaryInfo == nil) labelSecondaryInfo = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
                                                                                                    nextY, 
@@ -271,7 +269,7 @@
 	labelSecondaryInfo.backgroundColor = [ UIColor clearColor ];
 	[self addSubview:labelSecondaryInfo];
     
-	nextY = labelSecondaryInfo.frame.origin.y + labelSecondaryInfo.frame.size.height - 4;
+	nextY = labelSecondaryInfo.frame.origin.y + labelSecondaryInfo.frame.size.height - 3;
     
     if (labelTertiaryInfo == nil) labelTertiaryInfo = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos, 
                                                                                        nextY, 
@@ -287,16 +285,16 @@
     
     
     ratingImage = [[[UIImageView alloc] initWithFrame:CGRectMake(textLeftPos, 
-                                                                 nextY+5, 
-                                                                 50, 
-                                                                 10)] autorelease];
+                                                                 nextY+3, 
+                                                                 66, 
+                                                                 12)] autorelease];
     ratingImage.hidden = YES;
     [self addSubview:ratingImage];
     
     
     UIFont *tertiaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
-    reviewCountLabel = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos+54, 
-                                                                  nextY+7, 
+    reviewCountLabel = [[[UILabel alloc] initWithFrame:CGRectMake(textLeftPos+69, 
+                                                                  nextY+5, 
                                                                   250, 
                                                                   12)] autorelease];
     reviewCountLabel.backgroundColor = [UIColor clearColor];
@@ -305,12 +303,6 @@
     reviewCountLabel.lineBreakMode = UILineBreakModeWordWrap;
     reviewCountLabel.numberOfLines = 1;
     [self addSubview:reviewCountLabel];
-    
-    
-    UIImage *yl = [UIImage imageNamed:@"yelp_logo_small_white.png"];
-    yelpLogo = [[[UIImageView alloc] initWithImage:yl] autorelease];
-    [self addSubview:yelpLogo];
-    
     
 	nextY = labelTertiaryInfo.frame.origin.y + labelTertiaryInfo.frame.size.height;
     

@@ -120,6 +120,7 @@ typedef enum {
 @property (nonatomic, retain) NSString *infoResults;
 @property (nonatomic, retain) NSString *helpResults;
 @property (nonatomic, retain) NSString *termsResults;
+@property (nonatomic, retain) NSString *reviewResults;
 @property (nonatomic, retain) NSString *privacyResults;
 @property (nonatomic, retain) NSString *dealResults;
 

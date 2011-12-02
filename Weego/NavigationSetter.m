@@ -18,7 +18,7 @@
 - (void)addCenterSegmentedControlWithDecidedIcon:(id)target;
 - (void)removeRightAndLeftButtons:(id)target;
 - (void)addPrefsButton:(id)target;
-- (void)addMoreButton:(id)target;
+- (void)addMoreButton:(id)target onLightBackground:(BOOL)onLightBackground;
 - (void)resetNavViews:(id)target;
 - (void)setNav:(id)target withTitle:(NSString *)title withColor:(int)color andShadowColor:(int)shadowColorHex;
 - (void)addPlusButton:(id)target withGreenBackground:(BOOL)greenBg;
@@ -33,7 +33,7 @@
 - (void)addHeaderFeedTitleWithTarget:(id)target;
 - (void)addHeaderCountMeInTitleWithTarget:(id)target;
 - (void)addSelectTimeButton:(id)target;
-
+- (void)addYelpHeaderLogo:(id)target withAnimation:(BOOL)animated;
 - (void)setNavBarBackgroundForViewController:(UIViewController *)vc;
 
 @end
@@ -95,6 +95,9 @@ static NavigationSetter *sharedInstance;
     if ([Model sharedInstance].currentViewState == ViewStateFeed) {
         imagePath = @"topbar_feed_default.png";
     }
+    if ([Model sharedInstance].currentViewState == ViewStateReviews) {
+        imagePath = @"topbar_yelp_default.png";
+    }
     UIImage *image = [UIImage imageNamed: imagePath];    
     [vc.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 }
@@ -143,25 +146,27 @@ static NavigationSetter *sharedInstance;
     [self resetNavViews:target];
     switch (state) {
         case NavStateLocationAddSearchOn:
-            [self addCenterSegmentedControlWithSearch:target searchOn:true];
+//            [self addCenterSegmentedControlWithSearch:target searchOn:true];
             [self addBackButton:target onLightBackground:true];
+            [self addYelpHeaderLogo:target withAnimation:NO];
             break;
         case NavStateLocationAddSearchOff:
-            [self addCenterSegmentedControlWithSearch:target searchOn:false];
+//            [self addCenterSegmentedControlWithSearch:target searchOn:false];
             [self addBackButton:target onLightBackground:true];
+            [self addYelpHeaderLogo:target withAnimation:NO];
             break;
-        case NavStateLocationAddSearchOnTab:
-            [self addCenterSegmentedControlWithSearch:target searchOn:true];
-            [self addBackButton:target onLightBackground:true];
-            break;
-        case NavStateLocationAddSearchOffTab:
-            [self addCenterSegmentedControlWithSearch:target searchOn:false];
-            [self addBackButton:target onLightBackground:true];
-            break;
+//        case NavStateLocationAddSearchOnTab:
+//            [self addCenterSegmentedControlWithSearch:target searchOn:true];
+//            [self addBackButton:target onLightBackground:true];
+//            break;
+//        case NavStateLocationAddSearchOffTab:
+//            [self addCenterSegmentedControlWithSearch:target searchOn:false];
+//            [self addBackButton:target onLightBackground:true];
+//            break;
         case NavStateLocationDecided:
             [self addCenterSegmentedControlWithDecidedIcon:target];
             [self addBackButton:target onLightBackground:true];
-            [self addMoreButton:target];
+            [self addMoreButton:target onLightBackground:true];
             break;
         case NavStateLocationView:
             [self addCenterSegmentedControlWithSearch:target searchOn:false];
@@ -175,17 +180,17 @@ static NavigationSetter *sharedInstance;
         case NavStateEventDetails:
             [self setNav:target withTitle:@"Event Details" withColor:0x777777FF andShadowColor:0x00000000];
             [self addHomeButton:target useWhiteIcon:NO];
-            [self addMoreButton:target];
+            [self addMoreButton:target onLightBackground:true];
             break;
         case NavStateEventDetailsPending:
             [self addHeaderCountMeInTitleWithTarget:target];
             [self addHomeButton:target useWhiteIcon:NO];
-            [self addMoreButton:target];
+            [self addMoreButton:target onLightBackground:true];
             break;
         case NavStateEventDetailsEnded:
             [self setNav:target withTitle:@"Event Details" withColor:0x777777FF andShadowColor:0x00000000];
             [self addHomeButton:target useWhiteIcon:NO];
-            [self addMoreButton:target];
+            [self addMoreButton:target onLightBackground:true];
             break;
         case NavStateEventCreateEvent:
             [self setNav:target withTitle:@"Create Event" withColor:0x777777FF andShadowColor:0x00000000];
@@ -270,7 +275,9 @@ static NavigationSetter *sharedInstance;
             [self addSelectTimeButton:target];
             break;
         case NavStateReviews:
-            [self addBackButton:target onLightBackground:true];
+            [self addBackButton:target onLightBackground:false];
+            [self addMoreButton:target onLightBackground:false];
+            //[self addYelpHeaderLogo:target withAnimation:NO];
             break;
         default:
             break;
@@ -522,6 +529,18 @@ static NavigationSetter *sharedInstance;
     }
 }
 
+- (void)addYelpHeaderLogo:(id)target withAnimation:(BOOL)animated
+{
+    UIViewController *vc = target;
+    UIImage *logo = [UIImage imageNamed:@"logo_yelp.png"];
+    UIImageView *logoView = [[[UIImageView alloc] initWithImage:logo] autorelease];
+    vc.navigationItem.titleView = logoView;
+    if (animated) {
+        logoView.alpha = 0;
+        [self animateInView:logoView];
+    }
+}
+
 - (void)addPlusButton:(id)target withGreenBackground:(BOOL)greenBg
 {
     UIViewController *vc = target;
@@ -625,12 +644,20 @@ static NavigationSetter *sharedInstance;
     vc.navigationItem.leftBarButtonItem = btn;
 }
 
-- (void)addMoreButton:(id)target
+- (void)addMoreButton:(id)target onLightBackground:(BOOL)onLightBackground
 {
     UIViewController *vc = target;
     
-    UIImage *bg1 = [UIImage imageNamed:@"button_light_sm_default.png"];
-    UIImage *bg2 = [UIImage imageNamed:@"button_light_sm_pressed.png"];
+    UIImage *bg1;
+    UIImage *bg2;
+    
+    if (onLightBackground) {
+        bg1 = [UIImage imageNamed:@"button_light_sm_default.png"];
+        bg2 = [UIImage imageNamed:@"button_light_sm_pressed.png"];
+    } else {
+        bg1 = [UIImage imageNamed:@"button_clear_sm_default.png"];
+        bg2 = [UIImage imageNamed:@"button_clear_sm_pressed.png"];
+    }
     
     CGRect buttonTargetSize = CGRectMake(0, -1, bg1.size.width, bg1.size.height); // set the desired width here, if it is different than the default button size
     
@@ -641,7 +668,7 @@ static NavigationSetter *sharedInstance;
     
     [cView setBackgroundImage:bg1 forState:UIControlStateNormal];
     [cView setBackgroundImage:bg2 forState:UIControlStateHighlighted];
-    [cView setImage:[UIImage imageNamed:@"icon_more_01.png"] forState:UIControlStateNormal];
+    [cView setImage:[UIImage imageNamed:(onLightBackground ? @"icon_more_01.png" : @"icon_more_white.png")] forState:UIControlStateNormal];
     
     UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithCustomView:cView] autorelease];
     vc.navigationItem.rightBarButtonItem = btn;

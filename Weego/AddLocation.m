@@ -1188,6 +1188,9 @@ typedef enum {
     NSString *fetchId = [dict objectForKey:DataFetcherRequestUUIDKey];
     
     switch (fetchType) {
+        case DataFetchTypeToggleEventAcceptance:
+            NSLog(@"AddLocation DataFetchTypeToggleEventAcceptance Success");
+            break;
         case DataFetchTypeAddNewLocationToEvent:
             [locWidget updateInfoViewWithCorrectButtonState:ActionStateUnlike];
             LocAnnotation *placemark = [[mapView selectedAnnotations] objectAtIndex:0];
@@ -1247,23 +1250,46 @@ typedef enum {
                 }
                 [savedSearchResultsDict removeObjectsForKeys:toRemoveKeys];
             
-                if ([locations count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
+                BOOL possibleAddress = NO;
+                if (pendingSearchString)
                 {
+                    possibleAddress = [pendingSearchString length] && isnumber([pendingSearchString characterAtIndex:0]);
+                }
+                
+                if (possibleAddress && !continueToSearchEnabled && pendingSearchString != nil) 
+                {
+                    NSLog(@"possible address for search, continuing to google search");
                     [self doSecondaryAddressSearch];
-                }
-                else
+                } 
+                else if ([locations count] == 0) 
                 {
-                    if ([locations count] == 0) 
-                    {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                        [alert show];
-                        [alert release];
-                    }
-                    continueToSearchEnabled = true;
-                    [self addSearchResultAnnotations];
-                    currentState = AddLocationStateSearch;
-                    [searchBar showNetworkActivity:NO];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alert show];
+                    [alert release];
                 }
+
+                continueToSearchEnabled = true;
+                [self addSearchResultAnnotations];
+                currentState = AddLocationStateSearch;
+                [searchBar showNetworkActivity:NO];
+                
+//                if ([locations count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
+//                {
+//                    [self doSecondaryAddressSearch];
+//                }
+//                else
+//                {
+//                    if ([locations count] == 0) 
+//                    {
+//                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//                        [alert show];
+//                        [alert release];
+//                    }
+//                    continueToSearchEnabled = true;
+//                    [self addSearchResultAnnotations];
+//                    currentState = AddLocationStateSearch;
+//                    [searchBar showNetworkActivity:NO];
+//                }
             }
             break;
             
@@ -1537,6 +1563,11 @@ typedef enum {
     [userOptions release];
 }
 
+- (void)setPendingCountMeIn:(BOOL)countIn
+{
+    [[Controller sharedInstance] setEventAcceptanceForEvent:[Model sharedInstance].currentEvent didAccept:countIn];
+}
+
 #pragma mark - AddressBookTVCDataSource
 
 - (NSArray *)dataForAddressBookLocationsTVC
@@ -1744,6 +1775,8 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkReportedLocations) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
 
     [self checkReportedLocations];
+    
+    [[NavigationSetter sharedInstance] setNavState:NavStateLocationAddSearchOn withTarget:self];
 }
 
 - (void)viewDidUnload

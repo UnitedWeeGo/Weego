@@ -13,8 +13,10 @@
 
 @interface CellEventCallToAction : BBTableViewCell {
     UILabel *fieldTitle;
+    UIImageView *yelpLogo;
 }
 
 - (void)setTitle:(NSString *)title;
+- (void)showYelpLogo;
 
 @end

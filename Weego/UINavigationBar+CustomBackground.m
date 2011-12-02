@@ -19,6 +19,9 @@
     if ([Model sharedInstance].currentViewState == ViewStateFeed) {
         imagePath = @"topbar_feed_default.png";
     }
+    if ([Model sharedInstance].currentViewState == ViewStateReviews) {
+        imagePath = @"topbar_yelp_default.png";
+    }
     UIImage *image = [UIImage imageNamed: imagePath];
     [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 }

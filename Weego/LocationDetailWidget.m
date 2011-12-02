@@ -158,15 +158,10 @@
     reviewCountLabel.lineBreakMode = UILineBreakModeWordWrap;
     reviewCountLabel.numberOfLines = 0;
     
-    UIImage *yl = [UIImage imageNamed:@"yelp_logo_small_white.png"];
-    yelpLogo = [[[UIImageView alloc] initWithImage:yl] autorelease];
-    yelpLogo.hidden = YES;
-    
     [self addSubview:primaryInfoLabel];
     [self addSubview:secondaryInfoLabel];
     [self addSubview:distanceLabel];
     [self addSubview:reviewCountLabel];
-    [self addSubview:yelpLogo];
     
     CGRect infoViewBGRect = CGRectMake(0, -50, self.bounds.size.width, 50);
     [self setFrame:infoViewBGRect];
@@ -607,7 +602,7 @@
     [primaryInfoLabel setText:titleCopy];
     [primaryInfoLabel setFont:primaryFont];
     
-    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+10, width, secondaryCopySize.height);
+    CGRect secondaryInfoLabelRect = CGRectMake(labelLeftPos, primaryInfoLabelRect.size.height+8, width, secondaryCopySize.height);
     [secondaryInfoLabel setText:subTitleCopy];
     [secondaryInfoLabel setFont:secondaryFont];
     
@@ -617,25 +612,20 @@
     
     ratingImage.hidden = !annotation.isYelp;
     reviewCountLabel.hidden = !annotation.isYelp;
-    yelpLogo.hidden = !annotation.isYelp;
-    NSString *reviewImg = [NSString stringWithFormat:@"yelp_reviews_%@.png", annotation.rating];
+    
+    NSString *reviewImg = [NSString stringWithFormat:@"stars_%@.png", annotation.rating];
     UIImage *rImage = [UIImage imageNamed:reviewImg];
-    CGRect rFrame = CGRectMake(labelLeftPos+2, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height + 3, rImage.size.width, rImage.size.height);
-    CGRect rclFrame = CGRectMake(labelLeftPos+48, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height, 250, 18);
+    CGRect rFrame = CGRectMake(labelLeftPos, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height, rImage.size.width, rImage.size.height);
+    CGRect rclFrame = CGRectMake(labelLeftPos+70, secondaryInfoLabelRect.origin.y + secondaryInfoLabelRect.size.height -1, 250, 18);
     
-    UIFont *tertiaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:10];
-    CGSize yelpTextSize = { 250, FLT_MAX };		// width and height of text area
-    CGSize reviewCopySize = [[NSString stringWithFormat:@"%@ reviews on", annotation.reviewCount] sizeWithFont:tertiaryFont constrainedToSize:yelpTextSize lineBreakMode:UILineBreakModeWordWrap];
-    CGRect yelpRect = CGRectMake(rclFrame.origin.x + reviewCopySize.width + 2, rclFrame.origin.y - 4, yelpLogo.frame.size.width, yelpLogo.frame.size.height);
-    
-    int getDirectionsButtonHeight = (yelpRect.origin.y + yelpRect.size.height) - primaryInfoLabelRect.origin.y;
+    int getDirectionsButtonHeight = (rclFrame.origin.y + rclFrame.size.height) - primaryInfoLabelRect.origin.y;
     CGRect getDirectionsButtonRect = CGRectMake(primaryInfoLabelRect.origin.x, primaryInfoLabelRect.origin.y, secondaryInfoLabelRect.size.width, getDirectionsButtonHeight);
     getDirectionsButton.frame = getDirectionsButtonRect;
     
     if (annotation.isYelp)
     {
         [ratingImage setImage:rImage];
-        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews on", annotation.reviewCount]];
+        [reviewCountLabel setText:[NSString stringWithFormat:@"%@ reviews", annotation.reviewCount]];
     }
     
     [UIView animateWithDuration:0.20f 
@@ -653,7 +643,6 @@
                          editNameButton.frame = editNameRect;
                          ratingImage.frame = rFrame;
                          reviewCountLabel.frame = rclFrame;
-                         yelpLogo.frame = yelpRect;
                      }
                      completion:NULL];
     

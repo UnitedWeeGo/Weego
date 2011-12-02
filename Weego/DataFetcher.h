@@ -57,7 +57,8 @@ enum {
     DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces,
     DataFetchTypeSearchSimpleGeoCategories,
     DataFetchTypeSearchYelp,
-    DataFetchTypeGetWeegoCategories
+    DataFetchTypeGetWeegoCategories,
+    DataFetchTypeReviewHTML
 };
 typedef NSInteger DataFetchType;
 
@@ -188,6 +189,7 @@ typedef NSInteger DataFetchType;
 
 // Yelp
 - (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;
+- (id)initAndGetReviewHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate andURLString:(NSString *)urlString;
 
 // Google geo
 - (id)initAndSearchGoogleGeoWithAddress:(NSString *)address andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;

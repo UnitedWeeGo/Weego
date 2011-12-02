@@ -14,32 +14,10 @@
 		012C7D0D1420344800F3885D /* button_decided_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0B1420344800F3885D /* button_decided_default.png */; };
 		012C7D0E1420344800F3885D /* button_decided_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012C7D0C1420344800F3885D /* button_decided_default@2x.png */; };
 		012C7D1214213D7E00F3885D /* GetDirectionsActionSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 012C7D1114213D7E00F3885D /* GetDirectionsActionSheetController.m */; };
+		012CC49214895859002BCA26 /* icon_more_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 012CC49014895859002BCA26 /* icon_more_white.png */; };
+		012CC49314895859002BCA26 /* icon_more_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 012CC49114895859002BCA26 /* icon_more_white@2x.png */; };
 		0131719813CABDF00068B383 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0131719713CABDF00068B383 /* libz.dylib */; };
 		0133D20F141EA20000713AC9 /* CellFriendsLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */; };
-		01377C621482E6CF0046A48E /* yelp_reviews_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */; };
-		01377C631482E6CF0046A48E /* yelp_reviews_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */; };
-		01377C641482E6CF0046A48E /* yelp_reviews_1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */; };
-		01377C651482E6CF0046A48E /* yelp_reviews_1.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */; };
-		01377C661482E6CF0046A48E /* yelp_reviews_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C521482E6CF0046A48E /* yelp_reviews_1.png */; };
-		01377C671482E6CF0046A48E /* yelp_reviews_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */; };
-		01377C681482E6CF0046A48E /* yelp_reviews_2.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */; };
-		01377C691482E6CF0046A48E /* yelp_reviews_2.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */; };
-		01377C6A1482E6CF0046A48E /* yelp_reviews_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C561482E6CF0046A48E /* yelp_reviews_2.png */; };
-		01377C6B1482E6CF0046A48E /* yelp_reviews_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */; };
-		01377C6C1482E6CF0046A48E /* yelp_reviews_3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */; };
-		01377C6D1482E6CF0046A48E /* yelp_reviews_3.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */; };
-		01377C6E1482E6CF0046A48E /* yelp_reviews_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */; };
-		01377C6F1482E6CF0046A48E /* yelp_reviews_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */; };
-		01377C701482E6CF0046A48E /* yelp_reviews_4.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */; };
-		01377C711482E6CF0046A48E /* yelp_reviews_4.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */; };
-		01377C721482E6CF0046A48E /* yelp_reviews_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */; };
-		01377C731482E6CF0046A48E /* yelp_reviews_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */; };
-		01377C741482E6CF0046A48E /* yelp_reviews_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C601482E6CF0046A48E /* yelp_reviews_5.png */; };
-		01377C751482E6CF0046A48E /* yelp_reviews_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */; };
-		01377C7914842FE30046A48E /* yelp_logo_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7714842FE30046A48E /* yelp_logo_white.png */; };
-		01377C7A14842FE30046A48E /* yelp_logo_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7814842FE30046A48E /* yelp_logo_white@2x.png */; };
-		01377C7D1485B6210046A48E /* yelp_logo_small_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */; };
-		01377C7E1485B6210046A48E /* yelp_logo_small_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 01377C7C1485B6210046A48E /* yelp_logo_small_white.png */; };
 		01377C811485D0DF0046A48E /* YelpReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 01377C801485D0DF0046A48E /* YelpReview.m */; };
 		013C08161435400200464453 /* button_clear_lrg2x_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 013C08121435400200464453 /* button_clear_lrg2x_default.png */; };
 		013C08171435400200464453 /* button_clear_lrg2x_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 013C08131435400200464453 /* button_clear_lrg2x_default@2x.png */; };
@@ -588,6 +566,31 @@
 		018212C513D4B20C00BF9EF4 /* SearchCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212C413D4B20C00BF9EF4 /* SearchCategory.m */; };
 		018212CC13D4C7EF00BF9EF4 /* SearchCategoryTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */; };
 		018212CF13D4D73900BF9EF4 /* CellCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 018212CE13D4D73900BF9EF4 /* CellCategory.m */; };
+		01A3E5571486EE6F000B7DC3 /* stars_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5431486EE6E000B7DC3 /* stars_0.png */; };
+		01A3E5581486EE6F000B7DC3 /* stars_0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5441486EE6E000B7DC3 /* stars_0@2x.png */; };
+		01A3E5591486EE6F000B7DC3 /* stars_1.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5451486EE6E000B7DC3 /* stars_1.5.png */; };
+		01A3E55A1486EE6F000B7DC3 /* stars_1.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5461486EE6E000B7DC3 /* stars_1.5@2x.png */; };
+		01A3E55B1486EE6F000B7DC3 /* stars_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5471486EE6E000B7DC3 /* stars_1.png */; };
+		01A3E55C1486EE6F000B7DC3 /* stars_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5481486EE6E000B7DC3 /* stars_1@2x.png */; };
+		01A3E55D1486EE6F000B7DC3 /* stars_2.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5491486EE6E000B7DC3 /* stars_2.5.png */; };
+		01A3E55E1486EE6F000B7DC3 /* stars_2.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54A1486EE6E000B7DC3 /* stars_2.5@2x.png */; };
+		01A3E55F1486EE6F000B7DC3 /* stars_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54B1486EE6E000B7DC3 /* stars_2.png */; };
+		01A3E5601486EE6F000B7DC3 /* stars_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54C1486EE6E000B7DC3 /* stars_2@2x.png */; };
+		01A3E5611486EE6F000B7DC3 /* stars_3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54D1486EE6E000B7DC3 /* stars_3.5.png */; };
+		01A3E5621486EE6F000B7DC3 /* stars_3.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54E1486EE6E000B7DC3 /* stars_3.5@2x.png */; };
+		01A3E5631486EE6F000B7DC3 /* stars_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E54F1486EE6E000B7DC3 /* stars_3.png */; };
+		01A3E5641486EE6F000B7DC3 /* stars_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5501486EE6E000B7DC3 /* stars_3@2x.png */; };
+		01A3E5651486EE6F000B7DC3 /* stars_4.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5511486EE6E000B7DC3 /* stars_4.5.png */; };
+		01A3E5661486EE6F000B7DC3 /* stars_4.5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5521486EE6E000B7DC3 /* stars_4.5@2x.png */; };
+		01A3E5671486EE6F000B7DC3 /* stars_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5531486EE6E000B7DC3 /* stars_4.png */; };
+		01A3E5681486EE6F000B7DC3 /* stars_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5541486EE6F000B7DC3 /* stars_4@2x.png */; };
+		01A3E5691486EE6F000B7DC3 /* stars_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5551486EE6F000B7DC3 /* stars_5.png */; };
+		01A3E56A1486EE6F000B7DC3 /* stars_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E5561486EE6F000B7DC3 /* stars_5@2x.png */; };
+		01A3E56E1486EEBB000B7DC3 /* logo_yelp.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E56C1486EEBA000B7DC3 /* logo_yelp.png */; };
+		01A3E56F1486EEBB000B7DC3 /* logo_yelp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E56D1486EEBA000B7DC3 /* logo_yelp@2x.png */; };
+		01A3E57214880B98000B7DC3 /* topbar_yelp_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E57014880B98000B7DC3 /* topbar_yelp_default.png */; };
+		01A3E57314880B98000B7DC3 /* topbar_yelp_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E57114880B98000B7DC3 /* topbar_yelp_default@2x.png */; };
+		01A3E576148834C2000B7DC3 /* YelpReviewDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A3E575148834C2000B7DC3 /* YelpReviewDataParser.m */; };
 		01BB3F7413E89CE600E491FB /* icon_addfrom_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */; };
 		01BB3F7513E89CE600E491FB /* icon_addfrom_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */; };
 		01BB3F7613E89CE600E491FB /* icon_time_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7013E89CE600E491FB /* icon_time_01.png */; };
@@ -666,33 +669,11 @@
 		012C7D0C1420344800F3885D /* button_decided_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_decided_default@2x.png"; sourceTree = "<group>"; };
 		012C7D1014213D7D00F3885D /* GetDirectionsActionSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDirectionsActionSheetController.h; sourceTree = "<group>"; };
 		012C7D1114213D7E00F3885D /* GetDirectionsActionSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetDirectionsActionSheetController.m; sourceTree = "<group>"; };
+		012CC49014895859002BCA26 /* icon_more_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_more_white.png; sourceTree = "<group>"; };
+		012CC49114895859002BCA26 /* icon_more_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_more_white@2x.png"; sourceTree = "<group>"; };
 		0131719713CABDF00068B383 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0133D20D141EA1FF00713AC9 /* CellFriendsLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellFriendsLocations.h; sourceTree = "<group>"; };
 		0133D20E141EA1FF00713AC9 /* CellFriendsLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellFriendsLocations.m; sourceTree = "<group>"; };
-		01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_0.png; sourceTree = "<group>"; };
-		01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_0@2x.png"; sourceTree = "<group>"; };
-		01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_1.5.png; sourceTree = "<group>"; };
-		01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_1.5@2x.png"; sourceTree = "<group>"; };
-		01377C521482E6CF0046A48E /* yelp_reviews_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_1.png; sourceTree = "<group>"; };
-		01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_1@2x.png"; sourceTree = "<group>"; };
-		01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_2.5.png; sourceTree = "<group>"; };
-		01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_2.5@2x.png"; sourceTree = "<group>"; };
-		01377C561482E6CF0046A48E /* yelp_reviews_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_2.png; sourceTree = "<group>"; };
-		01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_2@2x.png"; sourceTree = "<group>"; };
-		01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_3.5.png; sourceTree = "<group>"; };
-		01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_3.5@2x.png"; sourceTree = "<group>"; };
-		01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_3.png; sourceTree = "<group>"; };
-		01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_3@2x.png"; sourceTree = "<group>"; };
-		01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_4.5.png; sourceTree = "<group>"; };
-		01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_4.5@2x.png"; sourceTree = "<group>"; };
-		01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_4.png; sourceTree = "<group>"; };
-		01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_4@2x.png"; sourceTree = "<group>"; };
-		01377C601482E6CF0046A48E /* yelp_reviews_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_reviews_5.png; sourceTree = "<group>"; };
-		01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_reviews_5@2x.png"; sourceTree = "<group>"; };
-		01377C7714842FE30046A48E /* yelp_logo_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_logo_white.png; sourceTree = "<group>"; };
-		01377C7814842FE30046A48E /* yelp_logo_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_logo_white@2x.png"; sourceTree = "<group>"; };
-		01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yelp_logo_small_white@2x.png"; sourceTree = "<group>"; };
-		01377C7C1485B6210046A48E /* yelp_logo_small_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yelp_logo_small_white.png; sourceTree = "<group>"; };
 		01377C7F1485D0DE0046A48E /* YelpReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpReview.h; sourceTree = "<group>"; };
 		01377C801485D0DF0046A48E /* YelpReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpReview.m; sourceTree = "<group>"; };
 		013C08121435400200464453 /* button_clear_lrg2x_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_clear_lrg2x_default.png; sourceTree = "<group>"; };
@@ -1363,6 +1344,32 @@
 		018212CB13D4C7EF00BF9EF4 /* SearchCategoryTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCategoryTable.m; sourceTree = "<group>"; };
 		018212CD13D4D73900BF9EF4 /* CellCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellCategory.h; sourceTree = "<group>"; };
 		018212CE13D4D73900BF9EF4 /* CellCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellCategory.m; sourceTree = "<group>"; };
+		01A3E5431486EE6E000B7DC3 /* stars_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_0.png; sourceTree = "<group>"; };
+		01A3E5441486EE6E000B7DC3 /* stars_0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_0@2x.png"; sourceTree = "<group>"; };
+		01A3E5451486EE6E000B7DC3 /* stars_1.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_1.5.png; sourceTree = "<group>"; };
+		01A3E5461486EE6E000B7DC3 /* stars_1.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_1.5@2x.png"; sourceTree = "<group>"; };
+		01A3E5471486EE6E000B7DC3 /* stars_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_1.png; sourceTree = "<group>"; };
+		01A3E5481486EE6E000B7DC3 /* stars_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_1@2x.png"; sourceTree = "<group>"; };
+		01A3E5491486EE6E000B7DC3 /* stars_2.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_2.5.png; sourceTree = "<group>"; };
+		01A3E54A1486EE6E000B7DC3 /* stars_2.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_2.5@2x.png"; sourceTree = "<group>"; };
+		01A3E54B1486EE6E000B7DC3 /* stars_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_2.png; sourceTree = "<group>"; };
+		01A3E54C1486EE6E000B7DC3 /* stars_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_2@2x.png"; sourceTree = "<group>"; };
+		01A3E54D1486EE6E000B7DC3 /* stars_3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_3.5.png; sourceTree = "<group>"; };
+		01A3E54E1486EE6E000B7DC3 /* stars_3.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_3.5@2x.png"; sourceTree = "<group>"; };
+		01A3E54F1486EE6E000B7DC3 /* stars_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_3.png; sourceTree = "<group>"; };
+		01A3E5501486EE6E000B7DC3 /* stars_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_3@2x.png"; sourceTree = "<group>"; };
+		01A3E5511486EE6E000B7DC3 /* stars_4.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_4.5.png; sourceTree = "<group>"; };
+		01A3E5521486EE6E000B7DC3 /* stars_4.5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_4.5@2x.png"; sourceTree = "<group>"; };
+		01A3E5531486EE6E000B7DC3 /* stars_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_4.png; sourceTree = "<group>"; };
+		01A3E5541486EE6F000B7DC3 /* stars_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_4@2x.png"; sourceTree = "<group>"; };
+		01A3E5551486EE6F000B7DC3 /* stars_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stars_5.png; sourceTree = "<group>"; };
+		01A3E5561486EE6F000B7DC3 /* stars_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stars_5@2x.png"; sourceTree = "<group>"; };
+		01A3E56C1486EEBA000B7DC3 /* logo_yelp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_yelp.png; sourceTree = "<group>"; };
+		01A3E56D1486EEBA000B7DC3 /* logo_yelp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_yelp@2x.png"; sourceTree = "<group>"; };
+		01A3E57014880B98000B7DC3 /* topbar_yelp_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topbar_yelp_default.png; sourceTree = "<group>"; };
+		01A3E57114880B98000B7DC3 /* topbar_yelp_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topbar_yelp_default@2x.png"; sourceTree = "<group>"; };
+		01A3E574148834C2000B7DC3 /* YelpReviewDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpReviewDataParser.h; sourceTree = "<group>"; };
+		01A3E575148834C2000B7DC3 /* YelpReviewDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpReviewDataParser.m; sourceTree = "<group>"; };
 		01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_addfrom_01.png; sourceTree = "<group>"; };
 		01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_addfrom_01@2x.png"; sourceTree = "<group>"; };
 		01BB3F7013E89CE600E491FB /* icon_time_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_time_01.png; sourceTree = "<group>"; };
@@ -1806,30 +1813,32 @@
 		017610ED13BE753D00324EF9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				01377C7B1485B6200046A48E /* yelp_logo_small_white@2x.png */,
-				01377C7C1485B6210046A48E /* yelp_logo_small_white.png */,
-				01377C7714842FE30046A48E /* yelp_logo_white.png */,
-				01377C7814842FE30046A48E /* yelp_logo_white@2x.png */,
-				01377C4E1482E6CF0046A48E /* yelp_reviews_0.png */,
-				01377C4F1482E6CF0046A48E /* yelp_reviews_0@2x.png */,
-				01377C501482E6CF0046A48E /* yelp_reviews_1.5.png */,
-				01377C511482E6CF0046A48E /* yelp_reviews_1.5@2x.png */,
-				01377C521482E6CF0046A48E /* yelp_reviews_1.png */,
-				01377C531482E6CF0046A48E /* yelp_reviews_1@2x.png */,
-				01377C541482E6CF0046A48E /* yelp_reviews_2.5.png */,
-				01377C551482E6CF0046A48E /* yelp_reviews_2.5@2x.png */,
-				01377C561482E6CF0046A48E /* yelp_reviews_2.png */,
-				01377C571482E6CF0046A48E /* yelp_reviews_2@2x.png */,
-				01377C581482E6CF0046A48E /* yelp_reviews_3.5.png */,
-				01377C591482E6CF0046A48E /* yelp_reviews_3.5@2x.png */,
-				01377C5A1482E6CF0046A48E /* yelp_reviews_3.png */,
-				01377C5B1482E6CF0046A48E /* yelp_reviews_3@2x.png */,
-				01377C5C1482E6CF0046A48E /* yelp_reviews_4.5.png */,
-				01377C5D1482E6CF0046A48E /* yelp_reviews_4.5@2x.png */,
-				01377C5E1482E6CF0046A48E /* yelp_reviews_4.png */,
-				01377C5F1482E6CF0046A48E /* yelp_reviews_4@2x.png */,
-				01377C601482E6CF0046A48E /* yelp_reviews_5.png */,
-				01377C611482E6CF0046A48E /* yelp_reviews_5@2x.png */,
+				012CC49014895859002BCA26 /* icon_more_white.png */,
+				012CC49114895859002BCA26 /* icon_more_white@2x.png */,
+				01A3E57014880B98000B7DC3 /* topbar_yelp_default.png */,
+				01A3E57114880B98000B7DC3 /* topbar_yelp_default@2x.png */,
+				01A3E56C1486EEBA000B7DC3 /* logo_yelp.png */,
+				01A3E56D1486EEBA000B7DC3 /* logo_yelp@2x.png */,
+				01A3E5431486EE6E000B7DC3 /* stars_0.png */,
+				01A3E5441486EE6E000B7DC3 /* stars_0@2x.png */,
+				01A3E5451486EE6E000B7DC3 /* stars_1.5.png */,
+				01A3E5461486EE6E000B7DC3 /* stars_1.5@2x.png */,
+				01A3E5471486EE6E000B7DC3 /* stars_1.png */,
+				01A3E5481486EE6E000B7DC3 /* stars_1@2x.png */,
+				01A3E5491486EE6E000B7DC3 /* stars_2.5.png */,
+				01A3E54A1486EE6E000B7DC3 /* stars_2.5@2x.png */,
+				01A3E54B1486EE6E000B7DC3 /* stars_2.png */,
+				01A3E54C1486EE6E000B7DC3 /* stars_2@2x.png */,
+				01A3E54D1486EE6E000B7DC3 /* stars_3.5.png */,
+				01A3E54E1486EE6E000B7DC3 /* stars_3.5@2x.png */,
+				01A3E54F1486EE6E000B7DC3 /* stars_3.png */,
+				01A3E5501486EE6E000B7DC3 /* stars_3@2x.png */,
+				01A3E5511486EE6E000B7DC3 /* stars_4.5.png */,
+				01A3E5521486EE6E000B7DC3 /* stars_4.5@2x.png */,
+				01A3E5531486EE6E000B7DC3 /* stars_4.png */,
+				01A3E5541486EE6F000B7DC3 /* stars_4@2x.png */,
+				01A3E5551486EE6F000B7DC3 /* stars_5.png */,
+				01A3E5561486EE6F000B7DC3 /* stars_5@2x.png */,
 				013C08121435400200464453 /* button_clear_lrg2x_default.png */,
 				013C08131435400200464453 /* button_clear_lrg2x_default@2x.png */,
 				013C08141435400200464453 /* button_clear_lrg2x_pressed.png */,
@@ -2346,6 +2355,8 @@
 				017613E913BE772700324EF9 /* Model.m */,
 				017613EA13BE772700324EF9 /* DataParser.h */,
 				017613EB13BE772700324EF9 /* DataParser.m */,
+				0176140D13BE77D700324EF9 /* InfoDataParser.h */,
+				0176140E13BE77D700324EF9 /* InfoDataParser.m */,
 				A9FBA28C13E8C6A400FAC5CA /* TermsDataParser.h */,
 				A9FBA28D13E8C6A400FAC5CA /* TermsDataParser.m */,
 				A9FBA29013E8C6BE00FAC5CA /* PrivacyDataParser.h */,
@@ -2358,6 +2369,10 @@
 				0176153113BE793C00324EF9 /* HelpDataParser.m */,
 				0127D7511478DDA700C953D1 /* YelpDataParser.h */,
 				0127D7521478DDA700C953D1 /* YelpDataParser.m */,
+				A901BFE613E76B5A002D68CA /* DealsDataParser.h */,
+				A901BFE713E76B5A002D68CA /* DealsDataParser.m */,
+				01A3E574148834C2000B7DC3 /* YelpReviewDataParser.h */,
+				01A3E575148834C2000B7DC3 /* YelpReviewDataParser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2415,8 +2430,6 @@
 				0176140A13BE77D700324EF9 /* Info.m */,
 				0176140B13BE77D700324EF9 /* InfoDisplay.h */,
 				0176140C13BE77D700324EF9 /* InfoDisplay.m */,
-				0176140D13BE77D700324EF9 /* InfoDataParser.h */,
-				0176140E13BE77D700324EF9 /* InfoDataParser.m */,
 				0176140F13BE77D700324EF9 /* PageControl.h */,
 				0176141013BE77D700324EF9 /* PageControl.m */,
 			);
@@ -2666,8 +2679,6 @@
 			children = (
 				A901BFE313E762D3002D68CA /* DealsView.h */,
 				A901BFE413E762D3002D68CA /* DealsView.m */,
-				A901BFE613E76B5A002D68CA /* DealsDataParser.h */,
-				A901BFE713E76B5A002D68CA /* DealsDataParser.m */,
 			);
 			name = Deals;
 			sourceTree = "<group>";
@@ -3178,30 +3189,32 @@
 				013C08171435400200464453 /* button_clear_lrg2x_default@2x.png in Resources */,
 				013C08181435400200464453 /* button_clear_lrg2x_pressed.png in Resources */,
 				013C08191435400200464453 /* button_clear_lrg2x_pressed@2x.png in Resources */,
-				01377C621482E6CF0046A48E /* yelp_reviews_0.png in Resources */,
-				01377C631482E6CF0046A48E /* yelp_reviews_0@2x.png in Resources */,
-				01377C641482E6CF0046A48E /* yelp_reviews_1.5.png in Resources */,
-				01377C651482E6CF0046A48E /* yelp_reviews_1.5@2x.png in Resources */,
-				01377C661482E6CF0046A48E /* yelp_reviews_1.png in Resources */,
-				01377C671482E6CF0046A48E /* yelp_reviews_1@2x.png in Resources */,
-				01377C681482E6CF0046A48E /* yelp_reviews_2.5.png in Resources */,
-				01377C691482E6CF0046A48E /* yelp_reviews_2.5@2x.png in Resources */,
-				01377C6A1482E6CF0046A48E /* yelp_reviews_2.png in Resources */,
-				01377C6B1482E6CF0046A48E /* yelp_reviews_2@2x.png in Resources */,
-				01377C6C1482E6CF0046A48E /* yelp_reviews_3.5.png in Resources */,
-				01377C6D1482E6CF0046A48E /* yelp_reviews_3.5@2x.png in Resources */,
-				01377C6E1482E6CF0046A48E /* yelp_reviews_3.png in Resources */,
-				01377C6F1482E6CF0046A48E /* yelp_reviews_3@2x.png in Resources */,
-				01377C701482E6CF0046A48E /* yelp_reviews_4.5.png in Resources */,
-				01377C711482E6CF0046A48E /* yelp_reviews_4.5@2x.png in Resources */,
-				01377C721482E6CF0046A48E /* yelp_reviews_4.png in Resources */,
-				01377C731482E6CF0046A48E /* yelp_reviews_4@2x.png in Resources */,
-				01377C741482E6CF0046A48E /* yelp_reviews_5.png in Resources */,
-				01377C751482E6CF0046A48E /* yelp_reviews_5@2x.png in Resources */,
-				01377C7914842FE30046A48E /* yelp_logo_white.png in Resources */,
-				01377C7A14842FE30046A48E /* yelp_logo_white@2x.png in Resources */,
-				01377C7D1485B6210046A48E /* yelp_logo_small_white@2x.png in Resources */,
-				01377C7E1485B6210046A48E /* yelp_logo_small_white.png in Resources */,
+				01A3E5571486EE6F000B7DC3 /* stars_0.png in Resources */,
+				01A3E5581486EE6F000B7DC3 /* stars_0@2x.png in Resources */,
+				01A3E5591486EE6F000B7DC3 /* stars_1.5.png in Resources */,
+				01A3E55A1486EE6F000B7DC3 /* stars_1.5@2x.png in Resources */,
+				01A3E55B1486EE6F000B7DC3 /* stars_1.png in Resources */,
+				01A3E55C1486EE6F000B7DC3 /* stars_1@2x.png in Resources */,
+				01A3E55D1486EE6F000B7DC3 /* stars_2.5.png in Resources */,
+				01A3E55E1486EE6F000B7DC3 /* stars_2.5@2x.png in Resources */,
+				01A3E55F1486EE6F000B7DC3 /* stars_2.png in Resources */,
+				01A3E5601486EE6F000B7DC3 /* stars_2@2x.png in Resources */,
+				01A3E5611486EE6F000B7DC3 /* stars_3.5.png in Resources */,
+				01A3E5621486EE6F000B7DC3 /* stars_3.5@2x.png in Resources */,
+				01A3E5631486EE6F000B7DC3 /* stars_3.png in Resources */,
+				01A3E5641486EE6F000B7DC3 /* stars_3@2x.png in Resources */,
+				01A3E5651486EE6F000B7DC3 /* stars_4.5.png in Resources */,
+				01A3E5661486EE6F000B7DC3 /* stars_4.5@2x.png in Resources */,
+				01A3E5671486EE6F000B7DC3 /* stars_4.png in Resources */,
+				01A3E5681486EE6F000B7DC3 /* stars_4@2x.png in Resources */,
+				01A3E5691486EE6F000B7DC3 /* stars_5.png in Resources */,
+				01A3E56A1486EE6F000B7DC3 /* stars_5@2x.png in Resources */,
+				01A3E56E1486EEBB000B7DC3 /* logo_yelp.png in Resources */,
+				01A3E56F1486EEBB000B7DC3 /* logo_yelp@2x.png in Resources */,
+				01A3E57214880B98000B7DC3 /* topbar_yelp_default.png in Resources */,
+				01A3E57314880B98000B7DC3 /* topbar_yelp_default@2x.png in Resources */,
+				012CC49214895859002BCA26 /* icon_more_white.png in Resources */,
+				012CC49314895859002BCA26 /* icon_more_white@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3358,6 +3371,7 @@
 				01D14F8B1479DD4D0072F83E /* OAToken.m in Sources */,
 				01D14F8C1479DD4D0072F83E /* OATokenManager.m in Sources */,
 				01377C811485D0DF0046A48E /* YelpReview.m in Sources */,
+				01A3E576148834C2000B7DC3 /* YelpReviewDataParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

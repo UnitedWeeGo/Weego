@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YelpReview : UIViewController <UIWebViewDelegate> {
+@interface YelpReview : UIViewController <UIWebViewDelegate, MoreButtonActionSheetControllerDelegate> {
     UIWebView *wView;
+    UIActivityIndicatorView *spinner;
 }
 
 @end

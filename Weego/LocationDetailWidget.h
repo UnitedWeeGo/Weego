@@ -66,7 +66,6 @@ typedef enum {
     UIImageView *dealImage;
     UIImageView *ratingImage;
     UILabel *reviewCountLabel;
-    UIImageView *yelpLogo;
     
     UIImageViewAsyncLoader *avatarImage;
     UIImageView *distanceIconView;

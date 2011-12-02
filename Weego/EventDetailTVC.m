@@ -44,6 +44,7 @@ enum eventDetailSections {
 - (BBTableViewCell *)getCellForParticipantWithParticipant:(Participant *)aParticipant;
 - (BBTableViewCell *)getCellForParticipantsSummary;
 - (BBTableViewCell *)getCellForCallToAction:(NSString *)label;
+- (BBTableViewCell *)getCellForCallToActionWithYelpLogo:(NSString *)label;
 - (BBTableViewCell *)getCellForUserReportedLocations;
 - (void)toggleShowHideOtherLocations;
 - (void)toggleShowHideOtherParticipants;
@@ -88,19 +89,6 @@ enum eventDetailSections {
     [self.tableView addSubview:bevelStripe];
     [bevelStripe release];
     
-    if (detail.acceptanceStatus == AcceptanceTypeAccepted)
-    {
-        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetails withTarget:self];
-    }
-    else if (detail.currentEventState != EventStateEnded && detail.currentEventState != EventStateCancelled)
-    {
-        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsPending withTarget:self];
-    }
-    else
-    {
-        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsEnded withTarget:self];
-    }
-    
     self.tableView.backgroundColor = [UIColor clearColor];
     
     if (![Model sharedInstance].isInTrial) {
@@ -142,6 +130,19 @@ enum eventDetailSections {
     [self.tableView reloadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTimerTick) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
+    
+    if (detail.acceptanceStatus == AcceptanceTypeAccepted)
+    {
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetails withTarget:self];
+    }
+    else if (detail.currentEventState != EventStateEnded && detail.currentEventState != EventStateCancelled)
+    {
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsPending withTarget:self];
+    }
+    else
+    {
+        [[NavigationSetter sharedInstance] setNavState:NavStateEventDetailsEnded withTarget:self];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -610,7 +611,7 @@ enum eventDetailSections {
             [cell isFirst:YES isLast:YES];
         } else {
             NSString *cellLabel = (detail.currentEventState < EventStateDecided) ? @"Add location(s)" : ([[detail getLocations] count] == 0) ? @"No locations added" : (otherLocationsShowing) ? @"Hide other locations" : @"See other locations";
-            cell = [self getCellForCallToAction:cellLabel];
+            cell = [self getCellForCallToActionWithYelpLogo:cellLabel];
             if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
             else [cell isFirst:NO isLast:YES];
 		}
@@ -726,6 +727,18 @@ enum eventDetailSections {
 		cell = [[[CellEventCallToAction alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ShowHideTableCellId"] autorelease];
 	}
     [cell setTitle:label];
+    cell.cellHostView = CellHostViewEvent;
+    return cell;
+}
+
+- (BBTableViewCell *)getCellForCallToActionWithYelpLogo:(NSString *)label
+{
+    CellEventCallToAction *cell = (CellEventCallToAction *) [self.tableView dequeueReusableCellWithIdentifier:@"ShowHideTableCellId"];
+	if (cell == nil) {
+		cell = [[[CellEventCallToAction alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ShowHideTableCellId"] autorelease];
+	}
+    [cell setTitle:label];
+    [cell showYelpLogo];
     cell.cellHostView = CellHostViewEvent;
     return cell;
 }

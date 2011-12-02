@@ -770,6 +770,18 @@
 	return self;
 }
 
+- (id)initAndGetReviewHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate andURLString:(NSString *)urlString
+{
+    self = [self init];
+	if (self != nil) {
+        self.requestId = [self stringWithUUID];
+        pendingRequestType = DataFetchTypeReviewHTML;
+		self.delegate = myDelegate;
+        [self makeRequest:urlString];
+	}
+	return self;
+}
+
 - (id)initAndGetInfoHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];

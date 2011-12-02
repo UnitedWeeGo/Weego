@@ -53,7 +53,6 @@
     int index;
     BOOL isDashboardMode;
     
-    UIImageView *yelpLogo;
 }
 
 @property (nonatomic, assign) id <SubViewLocationDelegate> delegate;

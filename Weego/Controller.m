@@ -21,6 +21,7 @@
 #import "TermsDataParser.h"
 #import "PrivacyDataParser.h"
 #import "DealsDataParser.h"
+#import "YelpReviewDataParser.h"
 
 @interface Controller (Private)
 
@@ -469,6 +470,12 @@ static Controller *sharedInstance;
         [model removeLocationWithId:locationId fromEventWithId:model.currentEvent.eventId];
     }
     return nil;
+}
+
+- (NSString *)getYelpHMTLDataWithURLString:(NSString *)urlString
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndGetReviewHMTLDataWithDelegate:[YelpReviewDataParser sharedInstance] andURLString:urlString] autorelease];
+    return fetcher.requestId;
 }
 
 - (NSString *)getInfoHMTLData

@@ -51,6 +51,7 @@
 @synthesize pendingVoteRequests;
 @synthesize infoResults;
 @synthesize helpResults;
+@synthesize reviewResults;
 @synthesize termsResults, privacyResults;
 @synthesize dealResults;
 @synthesize categoryResults;
@@ -735,6 +736,8 @@ static Model *sharedInstance;
     location.formatted_address = origLocation.formatted_address;
     location.formatted_phone_number = origLocation.formatted_phone_number;
     location.rating = origLocation.rating;
+    location.reviewCount =  origLocation.reviewCount;
+    location.mobileYelpUrl = origLocation.mobileYelpUrl;
     location.location_type = origLocation.location_type;
     location.hasBeenRemoved = false;
     

@@ -46,6 +46,7 @@ typedef enum {
 - (BBTableViewCell *)getCellForLocationWithLocation:(Location *)aLocation andIndex:(int)anIndex;
 - (BBTableViewCell *)getCellForParticipantWithParticipant:(Participant *)aParticipant;
 - (BBTableViewCell *)getCellForCallToAction:(NSString *)label;
+- (BBTableViewCell *)getCellForCallToActionWithYelpLogo:(NSString *)label;
 - (BBTableViewCell *)getCellForEventDecidedToggle:(NSString *)label andCurrentToggleStatus:(BOOL)cStat;
 - (void)pickDateTime;
 - (void)datePickerDoneClick:(id)sender;
@@ -429,7 +430,7 @@ typedef enum {
             if (indexPath.row == 0 && rowsForLocations > 1) [cell isFirst:YES isLast:NO];
             else [cell isFirst:NO isLast:NO];
 		} else {
-            cell = [self getCellForCallToAction:@"Add location(s)"];
+            cell = [self getCellForCallToActionWithYelpLogo:@"Add location(s)"];
             if (indexPath.row == 0) [cell isFirst:YES isLast:YES];
             else [cell isFirst:NO isLast:YES];
 		}
@@ -489,6 +490,18 @@ typedef enum {
 		cell = [[[CellEventCallToAction alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ShowHideTableCellId"] autorelease];
 	}
     [cell setTitle:label];
+    cell.cellHostView = CellHostViewEvent;
+    return cell;
+}
+
+- (BBTableViewCell *)getCellForCallToActionWithYelpLogo:(NSString *)label
+{
+    CellEventCallToAction *cell = (CellEventCallToAction *) [self.tableView dequeueReusableCellWithIdentifier:@"ShowHideTableCellId"];
+	if (cell == nil) {
+		cell = [[[CellEventCallToAction alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ShowHideTableCellId"] autorelease];
+	}
+    [cell setTitle:label];
+    [cell showYelpLogo];
     cell.cellHostView = CellHostViewEvent;
     return cell;
 }

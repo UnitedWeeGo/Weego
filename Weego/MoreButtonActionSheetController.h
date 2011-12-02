@@ -19,19 +19,19 @@ typedef enum {
     ActionSheetStateMorePressEventTrial,
     ActionSheetStateMorePressEventEnded,
     ActionSheetStateMorePressEventCancelled,
-	ActionSheetStateEmailParticipant
+	ActionSheetStateEmailParticipant,
+    ActionSheetStateReview
 } ActionSheetState;
 
 @protocol MoreButtonActionSheetControllerDelegate <NSObject>
 
+@optional
 - (void)showModalDuplicateEventRequest;
 - (void)removeEventRequest;
 - (void)toggleEventDecidedStatus;
-
-@optional
 - (void)setPendingCountMeIn:(BOOL)countIn;
 - (void)presentMailModalViewControllerRequested;
-
+- (void)goToYelpReviewPage;
 @end
 
 @interface MoreButtonActionSheetController : NSObject <UIActionSheetDelegate> {
@@ -51,5 +51,6 @@ typedef enum {
 
 - (void)showActionSheetForMorePress;
 - (void)showUserActionSheetForUser:(Participant *)part;
+- (void)showUserActionSheetForReview;
 
 @end

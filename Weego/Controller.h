@@ -68,6 +68,7 @@
 - (NSString *)getTermsHMTLData;
 - (NSString *)getPrivacyHMTLData;
 - (NSString *)getDealsHTMLDataWithSGID:(NSString *)sg_id;
+- (NSString *)getYelpHMTLDataWithURLString:(NSString *)urlString;
 - (NSString *)getRecentParticipants;
 - (NSString *)removeLocationWithId:(NSString *)locationId;
 - (NSString *)setRemovedForEvent:(Event *)anEvent doCountOut:(BOOL)countOut doCancel:(BOOL)cancel;

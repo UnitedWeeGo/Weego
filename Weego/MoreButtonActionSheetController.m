@@ -211,10 +211,34 @@ static MoreButtonActionSheetController *sharedInstance;
     [userOptions release];
 }
 
+- (void)showUserActionSheetForReview
+{
+    currentActionSheetState = ActionSheetStateReview;
+    UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View on Yelp", nil];
+    userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    [userOptions showInView:[UIApplication sharedApplication].keyWindow];
+    [userOptions release];
+}
+
 #pragma mark - UIActionSheetDelegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (currentActionSheetState == ActionSheetStateReview)
+    {
+        switch (buttonIndex) {
+            case 0:
+                [delegate goToYelpReviewPage];
+                break;
+            case 1:
+                //
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
     switch ( buttonIndex - (shouldAddEventDecidedToggle ? 1 : 0) ) {
         case -1:
             [delegate toggleEventDecidedStatus];
