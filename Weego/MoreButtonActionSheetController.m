@@ -214,7 +214,7 @@ static MoreButtonActionSheetController *sharedInstance;
 - (void)showUserActionSheetForReview
 {
     currentActionSheetState = ActionSheetStateReview;
-    UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View on Yelp", nil];
+    UIActionSheet *userOptions = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"View on yelp.com", nil];
     userOptions.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     [userOptions showInView:[UIApplication sharedApplication].keyWindow];
     [userOptions release];
@@ -237,6 +237,7 @@ static MoreButtonActionSheetController *sharedInstance;
             default:
                 break;
         }
+        return;
     }
     
     switch ( buttonIndex - (shouldAddEventDecidedToggle ? 1 : 0) ) {

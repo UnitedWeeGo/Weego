@@ -79,6 +79,8 @@
     
 	[super viewWillAppear:animated];
     
+    [Model sharedInstance].currentEvent = nil;
+    
     [[ViewController sharedInstance] showHomeBackground];
     [[ViewController sharedInstance] showDropShadow:self.tableView.contentOffset.y];
     [Model sharedInstance].currentAppState = AppStateDashboard;

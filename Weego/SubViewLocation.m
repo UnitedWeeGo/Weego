@@ -142,9 +142,18 @@
     [activityView stopAnimating];
     errorView.hidden = YES;
     
-    ratingImage.hidden = ![location.location_type isEqualToString:@"yelp"];
-    reviewCountLabel.hidden = ![location.location_type isEqualToString:@"yelp"];
-    labelTertiaryInfo.hidden = [location.location_type isEqualToString:@"yelp"];
+    BOOL isYelp = [location.location_type isEqualToString:@"yelp"];
+    BOOL isPast = NO;
+    Event *cEv = [Model sharedInstance].currentEvent;
+    
+    if (cEv != nil)
+    {
+        isPast = cEv.currentEventState >= EventStateEnded;
+    }
+    
+    ratingImage.hidden = !isYelp || isPast;
+    reviewCountLabel.hidden = !isYelp || isPast;
+    labelTertiaryInfo.hidden = isYelp && !isPast;
 }
 
 - (void)addMap
