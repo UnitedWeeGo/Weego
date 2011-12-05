@@ -467,6 +467,8 @@
     winnerButton.hidden = YES;
     distanceIconView.hidden = NO;
     getDirectionsButton.hidden = YES;
+    ratingImage.hidden = YES;
+    reviewCountLabel.hidden = YES;
     
     currentReportedLocationAnnotation = nil;
     currentReportedLocationAnnotation = annotation;
