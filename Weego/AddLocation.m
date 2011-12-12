@@ -578,6 +578,7 @@ typedef enum {
 
 - (void)addSearchResultAnnotations
 {
+    BOOL isFirstResult = YES;
     BOOL newLocationDetected = NO;
     NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
     id key;
@@ -596,6 +597,13 @@ typedef enum {
             mark.iAddedLocation = YES;
             mark.scheduledForZoom = YES;
             [mapView addAnnotation:mark];
+            
+            
+            if (isFirstResult)
+            {
+                isFirstResult = NO;
+                [mapView selectAnnotation:mark animated:NO];
+            }
             
             [mark release];
         }
