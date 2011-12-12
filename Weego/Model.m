@@ -1273,7 +1273,7 @@ static Model *sharedInstance;
                 Location *loc = (Location *)[locationsArray objectAtIndex:i];
                 GDataXMLElement *location = [GDataXMLNode elementWithName:@"location"];
                 GDataXMLElement *latitude = [GDataXMLNode attributeWithName:@"latitude" stringValue:[NSString stringWithFormat:@"%f", loc.coordinate.latitude]];
-                GDataXMLElement *longitude = [GDataXMLNode attributeWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f", loc.coordinate.longitude]];
+                GDataXMLElement *longitude = [GDataXMLNode attributeWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f", loc.coordinate.longitude]]; 
                 GDataXMLElement *name = [GDataXMLNode elementWithName:@"name" stringValue:loc.name];
                 GDataXMLElement *vicinity = [GDataXMLNode elementWithName:@"vicinity" stringValue:loc.vicinity];
                 GDataXMLElement *g_id = [GDataXMLNode elementWithName:@"g_id" stringValue:loc.g_id];
@@ -1437,7 +1437,7 @@ static Model *sharedInstance;
             }
 			GDataXMLElement *latitude = [GDataXMLNode attributeWithName:@"latitude" stringValue:[NSString stringWithFormat:@"%f", loc.coordinate.latitude]];
 			GDataXMLElement *longitude = [GDataXMLNode attributeWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f", loc.coordinate.longitude]];
-			GDataXMLElement *name = [GDataXMLNode elementWithName:@"name" stringValue:loc.name];
+            GDataXMLElement *name = [GDataXMLNode elementWithName:@"name" stringValue:loc.name]; 
 			GDataXMLElement *vicinity = [GDataXMLNode elementWithName:@"vicinity" stringValue:loc.vicinity];
             GDataXMLElement *g_id = [GDataXMLNode elementWithName:@"g_id" stringValue:loc.g_id];
             GDataXMLElement *g_reference = [GDataXMLNode elementWithName:@"g_reference" stringValue:loc.g_reference];

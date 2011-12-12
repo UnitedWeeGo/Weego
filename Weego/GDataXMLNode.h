@@ -42,8 +42,8 @@
 #import <libxml/xpathInternals.h>
 
 
-#if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) || defined(GDATA_TARGET_NAMESPACE)
-  // we need NSInteger for the 10.4 SDK, or we're using target namespace macros
+#ifdef GDATA_TARGET_NAMESPACE
+  // we're using target namespace macros
   #import "GDataDefines.h"
 #endif
 
@@ -53,7 +53,11 @@
 #define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
+#if defined(__cplusplus)
+#define _EXTERN extern "C"
+#else
 #define _EXTERN extern
+#endif
 #define _INITIALIZE_AS(x)
 #endif
 
@@ -115,7 +119,6 @@ typedef NSUInteger GDataXMLNodeKind;
 
 + (GDataXMLElement *)elementWithName:(NSString *)name;
 + (GDataXMLElement *)elementWithName:(NSString *)name stringValue:(NSString *)value;
-+ (GDataXMLElement *)elementWithName:(NSString *)name CDATAValue:(NSString *)value;
 + (GDataXMLElement *)elementWithName:(NSString *)name URI:(NSString *)value;
 
 + (id)attributeWithName:(NSString *)name stringValue:(NSString *)value;

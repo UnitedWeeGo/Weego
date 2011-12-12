@@ -191,28 +191,6 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   return nil;
 }
 
-+ (GDataXMLElement *)elementWithName:(NSString *)name CDATAValue:(NSString *)value {
-	
-	xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace
-									   GDataGetXMLString(name));
-	if (theNewNode) {
-		
-		xmlNodePtr textNode = xmlNewText(GDataGetXMLString(value)); //(xmlChar *)[NSString stringWithFormat:@"<![CDATA[%@]]>", value]); //xmlNewText(GDataGetXMLString(value));
-		if (textNode) {
-			
-			xmlNodePtr temp = xmlAddChild(theNewNode, textNode);
-			if (temp) {
-				// succeeded
-				return [self nodeConsumingXMLNode:theNewNode];
-			}
-		}
-		
-		// failed; free the node and any children
-		xmlFreeNode(theNewNode);
-	}
-	return nil;
-}
-
 + (GDataXMLElement *)elementWithName:(NSString *)name URI:(NSString *)theURI {
 
   // since we don't know a prefix yet, shove in the whole URI; we'll look for
@@ -400,6 +378,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
   if (xmlNode_ && shouldFreeXMLNode_) {
     xmlFreeNode(xmlNode_);
+    xmlNode_ = NULL;
   }
 
   [self releaseCachedValues];
@@ -940,6 +919,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       xmlNodePtr root = xmlDocGetRootElement(doc);
       if (root) {
         xmlNode_ = xmlCopyNode(root, 1); // 1: recursive
+        shouldFreeXMLNode_ = YES;
       }
       xmlFreeDoc(doc);
     }
@@ -999,10 +979,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
     // add a namespace for each object in the array
     NSEnumerator *enumerator = [namespaces objectEnumerator];
-    GDataXMLNode *namespace;
-    while ((namespace = [enumerator nextObject]) != nil) {
+    GDataXMLNode *namespaceNode;
+    while ((namespaceNode = [enumerator nextObject]) != nil) {
 
-      xmlNsPtr ns = (xmlNsPtr) [namespace XMLNode];
+      xmlNsPtr ns = (xmlNsPtr) [namespaceNode XMLNode];
       if (ns) {
         (void)xmlNewNs(xmlNode_, ns->href, ns->prefix);
       }
@@ -1539,7 +1519,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
     NSValue *replacementNS = [nsMap objectForKey:currNS];
 
     if (replacementNS != nil) {
-      xmlNsPtr replaceNSPtr = [replacementNS pointerValue];
+      xmlNsPtr replaceNSPtr = (xmlNsPtr)[replacementNS pointerValue];
 
       xmlSetNs(nodeToFix, replaceNSPtr);
     }
@@ -1638,7 +1618,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
     const char *encoding = NULL;
 
     // NOTE: We are assuming [data length] fits into an int.
-    xmlDoc_ = xmlReadMemory([data bytes], (int)[data length], baseURL, encoding,
+    xmlDoc_ = xmlReadMemory((const char*)[data bytes], (int)[data length], baseURL, encoding,
                             kGDataXMLParseOptions); // TODO(grobbins) map option values
     if (xmlDoc_ == NULL) {
       if (error) {

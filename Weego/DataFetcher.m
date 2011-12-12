@@ -634,7 +634,7 @@
         // default to using this as the delegate for potentially helpful error logging
         self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
-                
+#warning may need to escape name data as such: [name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
         SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithEnvelope:envelope] autorelease];
         [query setSearchString:name];
         [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
@@ -716,7 +716,6 @@
     return self;
 }
 
-# warning DF initAndSearchYelpWithEnvelope
 - (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
@@ -727,11 +726,10 @@
         
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?term=%@&bounds=%@&sort=0",
                                 YELP_API_V2,
-                                name,
-                                bounds] autorelease];
-        NSString* escapedUrlString = [urlString stringByAddingPercentEscapesUsingEncoding:
-                                      NSASCIIStringEncoding];
-        [self makeYelpRequest:escapedUrlString];
+                                [self urlencode:name],
+                                [self urlencode:bounds]] autorelease];
+        
+        [self makeYelpRequest:urlString];
     }
     return self;
 }
@@ -744,10 +742,10 @@
         pendingRequestType = DataFetchTypeGoogleAddressSearch;
         self.delegate = myDelegate;
         NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?address=%@&bounds=%@&sensor=true",
-                               GOOGLE_MAPS_API_V3,
-                               address,
-                               bounds] autorelease];
-        [self makeRequest:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                                GOOGLE_MAPS_API_V3,
+                                [self urlencode:address],
+                                [self urlencode:bounds]] autorelease];
+        [self makeRequest:urlString];
     }
     return self;
 }
@@ -942,9 +940,13 @@
 
 - (NSString *)urlencode:(NSString *)aString
 {
-	aString = [aString stringByReplacingOccurrencesOfString:@"&amp;" withString:@"%26"];
-    aString = [aString stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-	return [aString stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+    NSString * encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                   NULL,
+                                                                                   (CFStringRef)aString,
+                                                                                   NULL,
+                                                                                   (CFStringRef)@"!*'();:@&=+$,/?%#[]", //The characters you want to replace go here
+                                                                                   kCFStringEncodingUTF8 );
+    return encodedString;
 }
 
 - (NSString *)stringFromDate:(NSDate *)aDate

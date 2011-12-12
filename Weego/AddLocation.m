@@ -108,8 +108,8 @@ typedef enum {
     feedShowing = false;
     BOOL isTemp = [Model sharedInstance].currentEvent.isTemporary;
     Event *detail = [Model sharedInstance].currentEvent;
-    int searchOffState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOffTab):(NavStateLocationAddSearchOff);
-    int searchOnState = (initState == AddLocationInitStateFromExistingEventSelectedLocation)?(NavStateLocationAddSearchOnTab):(NavStateLocationAddSearchOn);
+    int searchOffState = NavStateLocationAddSearchOff;
+    int searchOnState = NavStateLocationAddSearchOn;
     
     if ( [Model sharedInstance].currentEvent.currentEventState >= EventStateDecided && initState != AddLocationInitStateFromNewEvent ) {
         searchOffState = NavStateLocationDecided;
