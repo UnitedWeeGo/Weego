@@ -50,6 +50,8 @@
 
 @property (nonatomic, readonly) BOOL hasPendingVoteRequest;
 
+@property (nonatomic) BOOL topRankingResult;
+
 @property (nonatomic) BOOL hasBeenRemoved;
 
 - (void)populateWithXml:(GDataXMLElement *)xml;

@@ -24,7 +24,7 @@
 @synthesize isTemporary, addedByMe, hasBeenAddedToMapPreviously;
 @synthesize hasDeal;
 @synthesize hasBeenRemoved;
-@synthesize disableLocationReporting, reviewCount, mobileYelpUrl;
+@synthesize disableLocationReporting, reviewCount, mobileYelpUrl, topRankingResult;
 
 // SimpleGeo search
 - (id)initWithSimpleGeoFeatureResult:(SGPlace *)place

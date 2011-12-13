@@ -578,7 +578,6 @@ typedef enum {
 
 - (void)addSearchResultAnnotations
 {
-    BOOL isFirstResult = YES;
     BOOL newLocationDetected = NO;
     NSEnumerator *enumerator = [savedSearchResultsDict keyEnumerator];
     id key;
@@ -598,12 +597,7 @@ typedef enum {
             mark.scheduledForZoom = YES;
             [mapView addAnnotation:mark];
             
-            
-            if (isFirstResult)
-            {
-                isFirstResult = NO;
-                [mapView selectAnnotation:mark animated:NO];
-            }
+            if (place.topRankingResult) [mapView selectAnnotation:mark animated:NO];
             
             [mark release];
         }
@@ -1235,14 +1229,37 @@ typedef enum {
                     }
                     [locations removeObjectsInArray:toRemoveDupes];
                     //NSLog(@"Location count after removing dupes: %d", [locations count]);
-                    for (Location *loc in locations) [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                    
+                    for (int i=0; i<[locations count]; i++)
+                    {
+                        Location *loc = [locations objectAtIndex:i];
+                        if (i == 0)
+                        {
+                            loc.topRankingResult = YES;
+                        }
+                        else
+                        {
+                            loc.topRankingResult = NO;
+                        }
+                        [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                    }
                     
                 }
                 else
                 {                    
                     [savedSearchResultsDict removeAllObjects];
-                    for (Location *loc in locations) 
+                    
+                    for (int i=0; i<[locations count]; i++)
                     {
+                        Location *loc = [locations objectAtIndex:i];
+                        if (i == 0)
+                        {
+                            loc.topRankingResult = YES;
+                        }
+                        else
+                        {
+                            loc.topRankingResult = NO;
+                        }
                         [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                     }
                 }
@@ -1280,24 +1297,6 @@ typedef enum {
                 [self addSearchResultAnnotations];
                 currentState = AddLocationStateSearch;
                 [searchBar showNetworkActivity:NO];
-                
-//                if ([locations count] == 0 && !continueToSearchEnabled && pendingSearchString != nil) 
-//                {
-//                    [self doSecondaryAddressSearch];
-//                }
-//                else
-//                {
-//                    if ([locations count] == 0) 
-//                    {
-//                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"This search returned no results" message:@"Try another place name or address (or move the map and try again)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                        [alert show];
-//                        [alert release];
-//                    }
-//                    continueToSearchEnabled = true;
-//                    [self addSearchResultAnnotations];
-//                    currentState = AddLocationStateSearch;
-//                    [searchBar showNetworkActivity:NO];
-//                }
             }
             break;
             
@@ -1308,8 +1307,18 @@ typedef enum {
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
                 // if this is a continue, simply add to the result collection
                 [savedSearchResultsDict removeAllObjects];
-                for (Location *loc in locations) 
+                
+                for (int i=0; i<[locations count]; i++)
                 {
+                    Location *loc = [locations objectAtIndex:i];
+                    if (i == 0)
+                    {
+                        loc.topRankingResult = YES;
+                    }
+                    else
+                    {
+                        loc.topRankingResult = NO;
+                    }
                     [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                 }
                 
@@ -1343,8 +1352,18 @@ typedef enum {
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
                 // if this is a continue, simply add to the result collection
                 [savedSearchResultsDict removeAllObjects];
-                for (Location *loc in locations) 
+                
+                for (int i=0; i<[locations count]; i++)
                 {
+                    Location *loc = [locations objectAtIndex:i];
+                    if (i == 0)
+                    {
+                        loc.topRankingResult = YES;
+                    }
+                    else
+                    {
+                        loc.topRankingResult = NO;
+                    }
                     [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                 }
                 
@@ -1378,9 +1397,22 @@ typedef enum {
             {
                 [savedSearchResultsDict removeAllObjects];
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
-                
-                for (Location *loc in locations) [savedSearchResultsDict setObject:loc forKey:loc.g_id];
                                 
+                for (int i=0; i<[locations count]; i++)
+                {
+                    Location *loc = [locations objectAtIndex:i];
+                    if (i == 0)
+                    {
+                        loc.topRankingResult = YES;
+                    }
+                    else
+                    {
+                        loc.topRankingResult = NO;
+                    }
+                    [savedSearchResultsDict setObject:loc forKey:loc.g_id];
+                }
+                
+                
                 // remove any existing locations from results
                 NSMutableArray *toRemoveKeys = [[[NSMutableArray alloc] init] autorelease];
 
