@@ -1454,7 +1454,7 @@ typedef enum {
     int errorType = [[dict objectForKey:DataFetcherErrorKey] intValue];
     switch (fetchType) {
         case DataFetchTypeAddNewLocationToEvent:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeAddNewLocationToEvent);
+            NSLog(@"DataFetchTypeAddNewLocationToEvent Error: %d", DataFetchTypeAddNewLocationToEvent);
             [locWidget updateInfoViewWithCorrectButtonState:ActionStateAdd];
             Model *model = [Model sharedInstance];
             [model flushTempLocationsForEventWithId:model.currentEvent.eventId];
@@ -1463,31 +1463,31 @@ typedef enum {
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeGetReportedLocations:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeGetReportedLocations);
+            NSLog(@"DataFetchTypeGetReportedLocations Error: %d", DataFetchTypeGetReportedLocations);
             mapView.userInteractionEnabled = YES;
             break;
         case DataFetchTypeSearchSimpleGeo:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            NSLog(@"DataFetchTypeSearchSimpleGeo Error: %d", DataFetchTypeSearchSimpleGeo);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeSearchSimpleGeoCurrentLocation:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            NSLog(@"DataFetchTypeSearchSimpleGeoCurrentLocation Error: %d", DataFetchTypeSearchSimpleGeo);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchSimpleGeo);
+            NSLog(@"DataFetchTypeSearchSimpleGeoCurrentLocationNearbyPlaces Error: %d", DataFetchTypeSearchSimpleGeo);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeSearchYelp:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeSearchYelp);
+            NSLog(@"DataFetchTypeSearchYelp Error: %d", DataFetchTypeSearchYelp);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
         case DataFetchTypeGoogleAddressSearch:
-            NSLog(@"Unhandled Error: %d", DataFetchTypeGoogleAddressSearch);
+            NSLog(@"DataFetchTypeGoogleAddressSearch Error: %d", DataFetchTypeGoogleAddressSearch);
             [searchBar showNetworkActivity:NO];
             if (!alertViewShowing && [Model sharedInstance].currentViewState == ViewStateMap) [self showAlertWithCode:errorType];
             break;
@@ -1498,7 +1498,7 @@ typedef enum {
 
 - (void)showAlertWithCode:(int)code
 {
-    NSString *title = @"Connection Error";
+    NSString *title = @"Uh oh!";
     NSString *message = @"";
     
     switch (code) {
@@ -1648,18 +1648,27 @@ typedef enum {
 
 - (void)addressBookLocationsTVCDidSelectCurrentLocation
 {
+    BOOL locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
+    if (!locationServicesEnabled)
+    {
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You have location services disabled. Please enable them in system preferences." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        [noLocFoundAlert show];
+        return;
+    }
+    
+    
     continueToSearchEnabled = NO;
     [self doShowSearchAgainButton:NO];
     [[ViewController sharedInstance] goBack];
     
     MKUserLocation *myCLLoc = [mapView userLocation];
-    if (myCLLoc)
+    if (myCLLoc.location.coordinate.latitude != 0)
     {
         [self beginCurrentLocationSearchWithCoordinate:myCLLoc.coordinate];
     }
     else
     {
-        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Your location has not been detected yet. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
         [noLocFoundAlert show];
     }
 }
@@ -1676,7 +1685,7 @@ typedef enum {
     }
     else
     {
-        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You location has not been detected. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"Your location has not been detected yet. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
         [noLocFoundAlert show];
     }
 }

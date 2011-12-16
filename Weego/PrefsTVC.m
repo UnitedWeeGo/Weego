@@ -11,6 +11,7 @@
 #import "CellPrefsLoginParticipant.h"
 #import "CellPrefsControls.h"
 #import "CellPrefsLinks.h"
+#import "CellPrefsNoLocation.h"
 
 typedef enum {
     PrefsSectionLoginParticipant = 0,
@@ -26,8 +27,10 @@ typedef enum {
 - (BBTableViewCell *)getCellForControlsWithLabel:(NSString *)aLabel andIndex:(int)index andPrefsKey:(NSString *)key;
 - (BBTableViewCell *)getCellForLinksWithLabel:(NSString *)aLabel andIndex:(int)index;
 - (BBTableViewCell *)getCellForLinksWithLabel:(NSString *)aLabel andInfo:(NSString *)info andIndex:(int)index;
+- (BBTableViewCell *)getCellForNoLocation;
 
 - (void)setUpFooterView;
+- (void)handleNoLocationPressed:(id)sender;
 - (void)handleFacebookPressed:(id)sender;
 - (void)handleHomePress:(id)sender;
 - (void)handleInfoPress:(id)sender;
@@ -35,8 +38,8 @@ typedef enum {
 - (void)handleTermsPress:(id)sender;
 - (void)handlePrivacyPress:(id)sender;
 - (void)initiateLogout:(id)sender;
-
 - (void)presentMailModalViewController;
+- (BOOL)locationServicesEnabled;
 
 @end
 
@@ -79,6 +82,15 @@ typedef enum {
     [self.tableView addSubview:bevelStripe];
     [bevelStripe release];
     [self setUpFooterView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(becomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)becomeActive:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -132,10 +144,10 @@ typedef enum {
 {
     switch (section) {
         case PrefsSectionLoginParticipant:
-            return ([Model sharedInstance].isInTrial) ? 0 : 1;
+            return 1;
             break;
         case PrefsSectionControls:
-            return [Model sharedInstance].isInTrial ? 0 : 2;
+            return [self locationServicesEnabled] ? 2 : 1;
             break;
         case PrefsSectionLinks:
             return 3;
@@ -153,6 +165,11 @@ typedef enum {
     if (indexPath.section == PrefsSectionLoginParticipant) {
         return 68;
     }
+    else if (indexPath.section == PrefsSectionControls && ![self locationServicesEnabled])
+    {
+        return 68;
+    }
+    
     return 44.0;
 }
 
@@ -188,16 +205,23 @@ typedef enum {
         cell = [self getCellForLoginParticipant:[Model sharedInstance].loginParticipant];
         [cell isFirst:YES isLast:YES];
     } else if (indexPath.section == PrefsSectionControls) {
-//        if (indexPath.row == 0) {
-//            cell = [self getCellForControlsWithLabel:@"Mute Alerts" andIndex:0];
-//            [cell isFirst:YES isLast:NO];
-//        } else if (indexPath.row == 1) {
-        if (indexPath.row == 0) {
-            cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:0 andPrefsKey:USER_PREF_ALLOW_TRACKING];
-            [cell isFirst:YES isLast:NO];
-        } else if (indexPath.row == 1) {
-            cell = [self getCellForControlsWithLabel:@"Auto-checkin" andIndex:1 andPrefsKey:USER_PREF_ALLOW_CHECKIN];
-            [cell isFirst:NO isLast:YES];
+        
+        if ([self locationServicesEnabled])
+        {
+            if (indexPath.row == 0) {
+                cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:0 andPrefsKey:USER_PREF_ALLOW_TRACKING];
+                [cell isFirst:YES isLast:NO];
+            } else if (indexPath.row == 1) {
+                cell = [self getCellForControlsWithLabel:@"Auto-checkin" andIndex:1 andPrefsKey:USER_PREF_ALLOW_CHECKIN];
+                [cell isFirst:NO isLast:YES];
+            }
+        }
+        else
+        {
+            if (indexPath.row == 0) {
+                cell = [self getCellForNoLocation];
+                [cell isFirst:YES isLast:YES];
+            }
         }
     } else if (indexPath.section == PrefsSectionLinks) {
         if (indexPath.row == 0) {
@@ -221,6 +245,16 @@ typedef enum {
     }
     
     
+    return cell;
+}
+
+- (BBTableViewCell *)getCellForNoLocation
+{
+    CellPrefsNoLocation *cell = (CellPrefsNoLocation *) [self.tableView dequeueReusableCellWithIdentifier:@"CellPrefsNoLocationCellId"];
+	if (cell == nil) {
+		cell = [[[CellPrefsNoLocation alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellPrefsNoLocationCellId"] autorelease];
+	}
+    cell.cellHostView = CellHostViewHome;
     return cell;
 }
 
@@ -288,6 +322,10 @@ typedef enum {
         } else if (indexPath.row == 1) {
             [self handlePrivacyPress:nil];
         }
+    } 
+    else if (indexPath.section == PrefsSectionControls && ![self locationServicesEnabled])
+    {
+        [self handleNoLocationPressed:nil];
     }
 
 }
@@ -301,6 +339,17 @@ typedef enum {
 }
 
 #pragma mark - Private Methods
+
+- (void)handleNoLocationPressed:(id)sender
+{
+    NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+    BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+    
+    if (canOpenPrefs)
+    {
+       [[UIApplication sharedApplication] openURL:url]; 
+    }
+}
 
 - (void)handleFacebookPressed:(id)sender
 {
@@ -432,6 +481,18 @@ typedef enum {
             break;
     }
     [self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark -
+#pragma mark Util Methods
+- (BOOL)locationServicesEnabled
+{
+    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
 }
 
 @end

@@ -64,16 +64,32 @@ static YelpDataParser *sharedInstance;
     }
     else if ([parsedJSON isKindOfClass:[NSDictionary class]]) // test for return type - YELP RESULTS
     {
-        NSLog(@"Data is yelp result");
-        NSArray *results = [(NSDictionary *)parsedJSON objectForKey:@"businesses"];
+        BOOL isError;
+        NSDictionary *error = [(NSDictionary *)parsedJSON objectForKey:@"error"];
+        isError = error != nil;
         
-        NSMutableArray *locObjects = [[[NSMutableArray alloc] init] autorelease];
-        
-        for (int x=0; x<[results count]; x++) {
-            Location *loc = [[[Location alloc] initWithYelpJsonResultDict:[results objectAtIndex:x]] autorelease];
-            [locObjects addObject:loc];
+        if (isError)
+        {
+            NSLog(@"Data is yelp result, but is an error %@", [error objectForKey:@"text"]);
+//            NSString *title = @"Uh oh!";
+//            NSString *message = [error objectForKey:@"text"];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//            [alert show];
+//            [alert release];
         }
-        [Model sharedInstance].geoSearchResults = locObjects;
+        else
+        {
+            NSLog(@"Data is yelp result, and contains businesses");
+            NSArray *results = [(NSDictionary *)parsedJSON objectForKey:@"businesses"];
+            
+            NSMutableArray *locObjects = [[[NSMutableArray alloc] init] autorelease];
+            
+            for (int x=0; x<[results count]; x++) {
+                Location *loc = [[[Location alloc] initWithYelpJsonResultDict:[results objectAtIndex:x]] autorelease];
+                [locObjects addObject:loc];
+            }
+            [Model sharedInstance].geoSearchResults = locObjects;
+        }
     }
 }
 

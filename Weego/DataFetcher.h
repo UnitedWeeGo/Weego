@@ -131,13 +131,11 @@ typedef NSInteger DataFetchType;
 	id <DataFetcherDelegate> delegate;
 	NSURLConnection *myConnection;
     NSMutableData *myData;
-    BOOL dataFetcherFinished;
 	DataFetchType pendingRequestType;
     NSString *apiURL;
 }
 
 @property (nonatomic, assign) id <DataFetcherDelegate> delegate;
-@property (readonly) BOOL dataFetcherFinished;
 @property (nonatomic, retain) NSString *requestId;
 @property (nonatomic, retain) SimpleGeo *client;
 

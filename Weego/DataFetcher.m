@@ -40,6 +40,7 @@
 - (void)makeSynchronousRequest:(NSString *)urlString;
 - (NSString*) stringWithUUID;
 - (void)handleError:(NSError *)error;
+- (void)cleanUp;
 
 @end
 
@@ -47,7 +48,6 @@
 
 @synthesize delegate;
 @synthesize myData;
-@synthesize dataFetcherFinished;
 @synthesize client;
 @synthesize requestId;
 
@@ -559,9 +559,7 @@
         [self.client getCategoriesWithCallback:[SGCallback callbackWithSuccessBlock:
                                                 ^(id response) {
                                                     NSLog(@"SimpleGeo didLoadCategories");
-                                                    dataFetcherFinished = YES;
                                                     if (delegate) [delegate processSimpleGeoCategoryResponse:response];
-                                                    self.delegate = nil;
                                                     
                                                     NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
                                                     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
@@ -569,6 +567,8 @@
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
                                                     
                                                     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
+                                                    [self cleanUp];
+                                                    
                                                 } failureBlock: ^(NSError *error) {
                                                     [self handleError:error];
                                                 }]];
@@ -602,10 +602,8 @@
                                                       
                                                       NSLog(@"SimpleGeo didLoadPlaces");
                                                       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                                      dataFetcherFinished = YES;
                                                       
                                                       if (delegate) [delegate processSimpleGeoResponse:places];
-                                                      self.delegate = nil;
                                                       
                                                       NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
                                                       NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
@@ -613,7 +611,7 @@
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
                                                       
                                                       [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-                                                      
+                                                      [self cleanUp];
                                                       
                                                   } failureBlock: ^(NSError *error) {
                                                       [self handleError:error];
@@ -634,7 +632,6 @@
         // default to using this as the delegate for potentially helpful error logging
         self.client = [SimpleGeo clientWithConsumerKey:SIMPLE_GEO_CONSUMER_KEY consumerSecret:SIMPLE_GEO_CONSUMER_SECRET];
         self.delegate = myDelegate;
-#warning may need to escape name data as such: [name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
         SGPlacesQuery *query = [[[SGPlacesQuery alloc] initWithEnvelope:envelope] autorelease];
         [query setSearchString:name];
         [query setLimit:SIMPLE_GEO_SEARCH_RESULTS_COUNT];
@@ -649,10 +646,8 @@
                                                       
                                                       NSLog(@"SimpleGeo didLoadPlaces");
                                                       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                                      dataFetcherFinished = YES;
                                                       
                                                       if (delegate) [delegate processSimpleGeoResponse:places];
-                                                      self.delegate = nil;
                                                       
                                                       NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
                                                       NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
@@ -660,7 +655,7 @@
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
                                                       
                                                       [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-                                                      
+                                                      [self cleanUp];
                                                       
                                                   } failureBlock: ^(NSError *error) {
                                                       [self handleError:error];
@@ -688,14 +683,11 @@
                 
         [client getContextForQuery:query callback:[SGCallback callbackWithSuccessBlock:
                                                   ^(id response) {
-                                                      // you've got Places!
-                                                      // to create an array of SGPlace objects...
                                                       
                                                       SGContext *context = [SGContext contextWithDictionary:response];
                                                       
                                                       NSLog(@"SimpleGeo didLoadContext");
                                                       [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                                                      dataFetcherFinished = YES;
                                                       
                                                       if (delegate) [delegate processSimpleGeoContextResponse:context];
                                                       self.delegate = nil;
@@ -706,7 +698,7 @@
                                                       [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_SUCCESS object:nil userInfo:dict];
                                                       
                                                       [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId];
-                                                      
+                                                      [self cleanUp];
                                                       
                                                   } failureBlock: ^(NSError *error) {
                                                       [self handleError:error];
@@ -1030,20 +1022,17 @@
 
 #pragma mark -
 #pragma mark NSURLConnection delegate methods
-
-// The following are delegate methods for NSURLConnection. Similar to callback functions, this is
-// how the connection object, which is working in the background, can asynchronously communicate back
-// to its delegate on the thread from which it was started - in this case, the main thread.
-//
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    // check for HTTP status code for proxy authentication failures
-    // anything in the 200 to 299 range is considered successful,
-    // also make sure the MIMEType is correct:
-    //
+    
+    NSLog(@"didReceiveResponse, do nothing for now...");
+    /*
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    if ((([httpResponse statusCode]/100) == 2)) {
+    if ((([httpResponse statusCode]/100) == 2)) 
+    {
         // all good, do nothing - didReceiveData will collect response data
-    } else {
+    } 
+    else 
+    {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:
                                   NSLocalizedString(@"HTTP Error",
                                                     @"Error message displayed when receving a connection error.")
@@ -1051,14 +1040,22 @@
         NSError *error = [NSError errorWithDomain:@"HTTP" code:[httpResponse statusCode] userInfo:userInfo];
         [self handleError:error];
     }
+     */
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    if (!myData) myData = [[NSMutableData alloc] initWithData:data];
+    if (myData == nil) 
+    {
+        NSLog(@"didReceiveData alloc myData");
+        myData = [[NSMutableData alloc] initWithData:data];
+    }
     else [myData appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    
+    NSLog(@"didFailWithError");
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     if ([error code] == kCFURLErrorNotConnectedToInternet) {
         // if we can identify the error, we can present a more precise message to the user.
@@ -1075,18 +1072,17 @@
         // otherwise handle the error generically
         [self handleError:error];
     }
-    dataFetcherFinished = YES;
-    if (myConnection) [myConnection release];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    dataFetcherFinished = YES;
-	if (delegate) [delegate processServerResponse:myData];
-	self.delegate = nil;
-    [myData release];
-	[myConnection release];
+    NSLog(@"connectionDidFinishLoading");
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+	if (delegate != nil) [delegate processServerResponse:myData];
+    
+    [self cleanUp];
+
     NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -1095,17 +1091,41 @@
 
 
 - (void)handleError:(NSError *)error {
+    NSLog(@"handleError");
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
-    dataFetcherFinished = YES;
-	self.delegate = nil;
     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId]; // will only release if this is a SimpleGeo error
-        
+    
+    if (delegate != nil && myData != nil)
+    {
+        //if (delegate) [delegate processServerErrorResponse:myData];
+        NSLog(@"handleError: DATA and DELEGATE present sending to processServerErrorResponse:myData");
+    }
+    
+    [self cleanUp];
+    
     NSString *errorMessage = [error localizedDescription];
     NSLog(@"DataFetcherDelegate - handleError: %@", errorMessage);
     NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInteger:pendingRequestType], self.requestId, [NSNumber numberWithInteger:error.code], nil];
     NSArray *keys = [NSArray arrayWithObjects:DataFetcherDidCompleteRequestKey, DataFetcherRequestUUIDKey, DataFetcherErrorKey, nil];
     NSDictionary *dict = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
     [[NSNotificationCenter defaultCenter] postNotificationName:DATA_FETCHER_ERROR object:nil userInfo:dict];
+}
+
+- (void)cleanUp
+{
+    NSLog(@"cleanup, releasing myData, myConnection, setting delegate to nil");
+    if (myData != nil) 
+    {
+        [myData release];
+        myData = nil;
+    }
+	if (myConnection != nil) 
+    {
+        [myConnection release];
+        myConnection = nil;
+    }
+    self.delegate = nil;
 }
 
 #pragma mark -
@@ -1119,13 +1139,10 @@
 	return [uuidString autorelease];
 }
 
-- (void) dealloc
+- (void)dealloc
 {
-    //[client release];
-    //client = nil;
+    NSLog(@"Datafetcher dealloc");
     [self.requestId release];
-	self.delegate = nil;
-    myConnection = nil;
 	[super dealloc];
 }
 

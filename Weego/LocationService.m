@@ -28,6 +28,7 @@
 - (BOOL)hasAValidLocation;
 - (void)reportUserLocation:(CLLocation *)location;
 - (void)updateUserLocationForEvents;
+- (void)checkUserLocationServiceStatus;
 
 @end
 
@@ -62,8 +63,19 @@ static LocationService *sharedInstance;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportOneSecondTimerTick) name:SYNCH_ONE_SECOND_TIMER_TICK object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportTenSecondTimerTick) name:SYNCH_TEN_SECOND_TIMER_TICK object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reportThirtySecondTimerTick) name:SYNCH_THIRTY_SECOND_TIMER_TICK object:nil];
+        [self checkUserLocationServiceStatus];
     }
     return self;
+}
+
+- (void)checkUserLocationServiceStatus
+{
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusNotDetermined)
+    {
+        [locationManager startMonitoringSignificantLocationChanges];
+        [locationManager stopMonitoringSignificantLocationChanges];
+    }
 }
 
 - (void)reportNow
@@ -80,7 +92,7 @@ static LocationService *sharedInstance;
 
 - (void)reportTenSecondTimerTick
 {
-    locationServicesEnabled = [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied;
+    locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
     locationTrackingUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
     [self checkLocationReportingDisableRequest];        // check if user has requested a location disable

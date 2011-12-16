@@ -25,9 +25,6 @@
         self.height = CellPrefsLoginParticipantHeight;
         self.backgroundColor = [UIColor clearColor];
         
-        UIColor *titleLabelColor = nil;
-        titleLabelColor = HEXCOLOR(0x333333FF);
-        
         leftMargin = 8;
         [self setUpUI];
         
