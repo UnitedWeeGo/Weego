@@ -490,7 +490,7 @@ typedef enum {
     BOOL locationServicesEnabled;
     if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
     {
-        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
     }
     else 
     {

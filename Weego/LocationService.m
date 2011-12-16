@@ -102,7 +102,7 @@ static LocationService *sharedInstance;
 {
     if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
     {
-        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
     }
     else 
     {

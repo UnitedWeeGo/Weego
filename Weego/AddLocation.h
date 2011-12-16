@@ -81,6 +81,7 @@ typedef enum {
 //    NSArray *allContactsWithAddress;
     
     BOOL alertViewShowing;
+    BOOL alertViewIsNoLocation;
     
     BOOL decidedShowing;
 }

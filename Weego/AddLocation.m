@@ -403,6 +403,9 @@ typedef enum {
     }
     else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
     {
+        // test for map view zoom level
+        
+        
         CLLocationCoordinate2D northEast, southWest;
         northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
         southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
@@ -1523,7 +1526,14 @@ typedef enum {
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+    BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+    if (alertViewIsNoLocation && buttonIndex == 1 && canOpenPrefs)
+    {
+        [[UIApplication sharedApplication] openURL:url];
+    }
     alertViewShowing = NO;
+    alertViewIsNoLocation = NO;
 }
 
 #pragma mark - UIActionSheetDelegate methods
@@ -1651,7 +1661,7 @@ typedef enum {
     BOOL locationServicesEnabled;
     if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
     {
-        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
     }
     else 
     {
@@ -1660,7 +1670,11 @@ typedef enum {
     
     if (!locationServicesEnabled)
     {
-        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You have location services disabled. Please enable them in system preferences." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+        NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+        BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+        
+        alertViewIsNoLocation = YES;
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:(canOpenPrefs ? @"You have location services disabled. Would you like to open your location preferences?":@"You have location services disabled. Please enable them in your system settings.") delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil] autorelease];
         [noLocFoundAlert show];
         return;
     }

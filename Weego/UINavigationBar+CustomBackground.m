@@ -25,7 +25,7 @@
     UIImage *image = [UIImage imageNamed: imagePath];
     [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     
-    NSLog(@"UINavigationBar+CustomBackground.h : %@", imagePath);
+//    NSLog(@"UINavigationBar+CustomBackground.h : %@", imagePath);
 }
 
 @end
