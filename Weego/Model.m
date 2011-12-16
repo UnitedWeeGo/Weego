@@ -15,7 +15,6 @@
 #import "GDataXMLNode.h"
 #import "FeedMessage.h"
 #import "SuggestedTime.h"
-#import "LocationService.h"
 
 @interface Model (Private)
 

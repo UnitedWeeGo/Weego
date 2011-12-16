@@ -14,7 +14,6 @@
 #import "KeychainManager.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "BBDownloadCache.h"
-#import "LocationService.h"
 
 @interface WeegoAppDelegate(Private)
 - (void)initCache;

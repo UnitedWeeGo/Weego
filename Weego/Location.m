@@ -40,7 +40,15 @@
     NSString *uCity = address.city;
     NSString *uState = address.province;
     NSString *uZip = address.postalCode;
-    NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    
+    NSString *uFormatted_address;
+    if (uStreet != nil)
+    {
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    } else {
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@ %@", uCity, uState, uZip];
+    }
+    
     NSString *uPhone = [[place properties] objectForKey:@"phone"];
     NSString *uDealFlag = [[place properties] objectForKey:@"hasDeal"];
     
@@ -70,7 +78,14 @@
     NSString *uCity = address.city;
     NSString *uState = address.province;
     NSString *uZip = address.postalCode;
-    NSString *uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    
+    NSString *uFormatted_address;
+    if (uStreet != nil)
+    {
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
+    } else {
+        uFormatted_address = [NSString stringWithFormat:@"%@, %@ %@", uCity, uState, uZip];
+    }
     
     self.name = @"Current Location";
     self.formatted_address = uFormatted_address;

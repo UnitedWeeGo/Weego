@@ -388,7 +388,11 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
 
-    if (genericSearchFetchId) [genericSearchFetchId release];
+    if (genericSearchFetchId != nil) 
+    {
+        [genericSearchFetchId release];
+        genericSearchFetchId = nil;
+    }
     
     if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
     {
@@ -409,7 +413,41 @@ typedef enum {
         CLLocationCoordinate2D northEast, southWest;
         northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
         southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
-        genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
+        
+        
+        float distanceLatInDegrees = northEast.latitude - southWest.latitude;
+        float numLatMiles = 69.172 * distanceLatInDegrees;
+        
+        float distanceLonInDegrees = northEast.longitude - southWest.longitude;
+        float numLonMiles = 69.172 * distanceLonInDegrees;
+        
+        float numSquareMiles = numLatMiles*numLonMiles;
+        BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
+        NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+        BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+        
+        
+        if (numSquareMiles > 2500) // search area too large!!
+        {
+            if (!locationServicesEnabled)
+            {
+                alertViewIsNoLocation = YES;
+                UIAlertView *areaTooLargeAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:(canOpenPrefs ? @"You have location services disabled. Would you like to open your location preferences? Additionally, you'll need to zoom in to search.":@"You have location services disabled for Weego. Additionally, you'll need to zoom in to search.") delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil] autorelease];
+                [areaTooLargeAlert show]; 
+            }
+            else
+            {
+                UIAlertView *areaTooLargeAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You are zoomed too far out to search. Please zoom the map in a bit and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+                [areaTooLargeAlert show];
+            }
+            [searchBar showNetworkActivity:NO];
+            return;
+            
+        }
+        else
+        {
+            genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
+        }
     }
     
     if (pendingSearchString) [pendingSearchString release];
@@ -428,7 +466,12 @@ typedef enum {
     [self removeAnnotations:mapView includingSaved:false];
     [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     
-    if (genericSearchFetchId) [genericSearchFetchId release];
+    if (genericSearchFetchId != nil) 
+    {
+        [genericSearchFetchId release];
+        genericSearchFetchId = nil;
+    }
+    
     genericSearchFetchId = [[[Controller sharedInstance] searchSimpleGeoForAddressWithCoordinate:coord] retain];
     
     if (pendingSearchString) [pendingSearchString release];
@@ -451,7 +494,11 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
     }
     
-    if (genericSearchFetchId) [genericSearchFetchId release];
+    if (genericSearchFetchId != nil) 
+    {
+        [genericSearchFetchId release];
+        genericSearchFetchId = nil;
+    }
     
     if ([Model sharedInstance].searchAPIType == SearchAPITypeSimpleGeo) 
     {
@@ -469,7 +516,42 @@ typedef enum {
         CLLocationCoordinate2D northEast, southWest;
         northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
         southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
-        genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
+        
+        
+        
+        float distanceLatInDegrees = northEast.latitude - southWest.latitude;
+        float numLatMiles = 69.172 * distanceLatInDegrees;
+        
+        float distanceLonInDegrees = northEast.longitude - southWest.longitude;
+        float numLonMiles = 69.172 * distanceLonInDegrees;
+        
+        float numSquareMiles = numLatMiles*numLonMiles;
+        BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
+        NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+        BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+        
+        
+        if (numSquareMiles > 2500) // search area too large!!
+        {
+            if (!locationServicesEnabled)
+            {
+                alertViewIsNoLocation = YES;
+                UIAlertView *areaTooLargeAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:(canOpenPrefs ? @"You have location services disabled. Would you like to open your location preferences? Additionally, you'll need to zoom in to search.":@"You have location services disabled for Weego. Additionally, you'll need to zoom in to search.") delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil] autorelease];
+                [areaTooLargeAlert show]; 
+            }
+            else
+            {
+                UIAlertView *areaTooLargeAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You are zoomed too far out to search. Please zoom the map in a bit and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];
+                [areaTooLargeAlert show];
+            }
+            [searchBar showNetworkActivity:NO];
+            return;
+            
+        }
+        else
+        {
+            genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
+        }
     }
     
     if (pendingSearchString) [pendingSearchString release];
@@ -1134,7 +1216,11 @@ typedef enum {
     mapView.delegate = nil;
     searchBar.delegate = nil;
     if (participantSelectedOnMap) [participantSelectedOnMap release];
-    [genericSearchFetchId release];
+    if (genericSearchFetchId != nil) 
+    {
+        [genericSearchFetchId release];
+        genericSearchFetchId = nil;
+    }
     [googlePlacesFetchId release];
     [googleGeoFetchId release];
     [pendingSearchString release];
@@ -1530,6 +1616,7 @@ typedef enum {
     BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
     if (alertViewIsNoLocation && buttonIndex == 1 && canOpenPrefs)
     {
+        [[ViewController sharedInstance] goBack];
         [[UIApplication sharedApplication] openURL:url];
     }
     alertViewShowing = NO;
@@ -1658,16 +1745,8 @@ typedef enum {
 
 - (void)addressBookLocationsTVCDidSelectCurrentLocation
 {
-    BOOL locationServicesEnabled;
-    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
-    {
-        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
-    }
-    else 
-    {
-        locationServicesEnabled = [CLLocationManager locationServicesEnabled];
-    }
-    
+    BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
+        
     if (!locationServicesEnabled)
     {
         NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
@@ -1698,11 +1777,25 @@ typedef enum {
 
 - (void)searchCategoryTableDidSelectCurrentLocation
 {
+    BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
+    
+    if (!locationServicesEnabled)
+    {
+        NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
+        BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
+        
+        alertViewIsNoLocation = YES;
+        
+        UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:(canOpenPrefs ? @"You have location services disabled. Would you like to open your location preferences?":@"You have location services disabled. Please enable them in your system settings.") delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes",nil] autorelease];
+        [noLocFoundAlert show];
+        return;
+    }
+    
     continueToSearchEnabled = NO;
     [self doShowSearchAgainButton:NO];
     
     MKUserLocation *myCLLoc = [mapView userLocation];
-    if (myCLLoc)
+    if (myCLLoc.location.coordinate.latitude != 0)
     {
         [self beginCurrentLocationSearchWithCoordinate:myCLLoc.coordinate];
     }

@@ -39,7 +39,6 @@ typedef enum {
 - (void)handlePrivacyPress:(id)sender;
 - (void)initiateLogout:(id)sender;
 - (void)presentMailModalViewController;
-- (BOOL)locationServicesEnabled;
 
 @end
 
@@ -147,7 +146,7 @@ typedef enum {
             return 1;
             break;
         case PrefsSectionControls:
-            return [self locationServicesEnabled] ? 2 : 1;
+            return [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs] ? 2 : 1;
             break;
         case PrefsSectionLinks:
             return 3;
@@ -165,7 +164,7 @@ typedef enum {
     if (indexPath.section == PrefsSectionLoginParticipant) {
         return 68;
     }
-    else if (indexPath.section == PrefsSectionControls && ![self locationServicesEnabled])
+    else if (indexPath.section == PrefsSectionControls && ![[LocationService sharedInstance] locationServicesEnabledInSystemPrefs])
     {
         return 68;
     }
@@ -206,7 +205,7 @@ typedef enum {
         [cell isFirst:YES isLast:YES];
     } else if (indexPath.section == PrefsSectionControls) {
         
-        if ([self locationServicesEnabled])
+        if ([[LocationService sharedInstance] locationServicesEnabledInSystemPrefs])
         {
             if (indexPath.row == 0) {
                 cell = [self getCellForControlsWithLabel:@"Display my location" andIndex:0 andPrefsKey:USER_PREF_ALLOW_TRACKING];
@@ -323,7 +322,7 @@ typedef enum {
             [self handlePrivacyPress:nil];
         }
     } 
-    else if (indexPath.section == PrefsSectionControls && ![self locationServicesEnabled])
+    else if (indexPath.section == PrefsSectionControls && ![[LocationService sharedInstance] locationServicesEnabledInSystemPrefs])
     {
         [self handleNoLocationPressed:nil];
     }
@@ -485,20 +484,6 @@ typedef enum {
 
 #pragma mark -
 #pragma mark Util Methods
-- (BOOL)locationServicesEnabled
-{
-    BOOL locationServicesEnabled;
-    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
-    {
-        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
-    }
-    else 
-    {
-        locationServicesEnabled = [CLLocationManager locationServicesEnabled];
-    }
-    
-    return locationServicesEnabled;
-}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

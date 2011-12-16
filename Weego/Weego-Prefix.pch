@@ -20,4 +20,5 @@
     #import "NavigationSetter.h"
     #import "GANTracker.h"
     #import "SoundManager.h"
+    #import "LocationService.h"
 #endif

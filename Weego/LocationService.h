@@ -27,5 +27,6 @@
 
 + (LocationService *)sharedInstance;
 - (void)reportNow;
+- (BOOL)locationServicesEnabledInSystemPrefs;
 
 @end
