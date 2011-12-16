@@ -1648,7 +1648,16 @@ typedef enum {
 
 - (void)addressBookLocationsTVCDidSelectCurrentLocation
 {
-    BOOL locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
+    BOOL locationServicesEnabled;
+    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
+    {
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+    }
+    else 
+    {
+        locationServicesEnabled = [CLLocationManager locationServicesEnabled];
+    }
+    
     if (!locationServicesEnabled)
     {
         UIAlertView *noLocFoundAlert = [[[UIAlertView alloc] initWithTitle:@"Oops" message:@"You have location services disabled. Please enable them in system preferences." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil] autorelease];

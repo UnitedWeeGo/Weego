@@ -70,8 +70,16 @@ static LocationService *sharedInstance;
 
 - (void)checkUserLocationServiceStatus
 {
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if (status == kCLAuthorizationStatusNotDetermined)
+    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
+    {
+        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+        if (status == kCLAuthorizationStatusNotDetermined)
+        {
+            [locationManager startMonitoringSignificantLocationChanges];
+            [locationManager stopMonitoringSignificantLocationChanges];
+        }
+    }
+    else 
     {
         [locationManager startMonitoringSignificantLocationChanges];
         [locationManager stopMonitoringSignificantLocationChanges];
@@ -92,7 +100,15 @@ static LocationService *sharedInstance;
 
 - (void)reportTenSecondTimerTick
 {
-    locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
+    {
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+    }
+    else 
+    {
+        locationServicesEnabled = [CLLocationManager locationServicesEnabled];
+    }
+    
     locationTrackingUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_TRACKING];
     checkinUserEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:USER_PREF_ALLOW_CHECKIN];
     [self checkLocationReportingDisableRequest];        // check if user has requested a location disable

@@ -107,6 +107,7 @@ static NavigationSetter *sharedInstance;
     UIViewController *vc = target;
     
     [self setNavBarBackgroundForViewController:vc];
+    [vc.navigationController.navigationBar setNeedsDisplay];
     
     switch (state) {
          case ToolbarStateOff:

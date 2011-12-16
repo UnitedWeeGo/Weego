@@ -1017,14 +1017,14 @@
     
     myConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
-	NSLog(@"http request: %@", urlString);
+//	NSLog(@"http request: %@", urlString);
 }
 
 #pragma mark -
 #pragma mark NSURLConnection delegate methods
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     
-    NSLog(@"didReceiveResponse, do nothing for now...");
+//    NSLog(@"didReceiveResponse, do nothing for now...");
     /*
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     if ((([httpResponse statusCode]/100) == 2)) 
@@ -1046,7 +1046,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     if (myData == nil) 
     {
-        NSLog(@"didReceiveData alloc myData");
+//        NSLog(@"didReceiveData alloc myData");
         myData = [[NSMutableData alloc] initWithData:data];
     }
     else [myData appendData:data];
@@ -1054,7 +1054,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     
-    NSLog(@"didFailWithError");
+//    NSLog(@"didFailWithError");
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     if ([error code] == kCFURLErrorNotConnectedToInternet) {
@@ -1075,7 +1075,7 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"connectionDidFinishLoading");
+//    NSLog(@"connectionDidFinishLoading");
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -1090,17 +1090,9 @@
 }
 
 
-- (void)handleError:(NSError *)error {
-    NSLog(@"handleError");
-    
+- (void)handleError:(NSError *)error {    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;   
     [[Controller sharedInstance] releaseSimpleGeoFetcherWithKey:self.requestId]; // will only release if this is a SimpleGeo error
-    
-    if (delegate != nil && myData != nil)
-    {
-        //if (delegate) [delegate processServerErrorResponse:myData];
-        NSLog(@"handleError: DATA and DELEGATE present sending to processServerErrorResponse:myData");
-    }
     
     [self cleanUp];
     
@@ -1114,7 +1106,7 @@
 
 - (void)cleanUp
 {
-    NSLog(@"cleanup, releasing myData, myConnection, setting delegate to nil");
+//    NSLog(@"cleanup, releasing myData, myConnection, setting delegate to nil");
     if (myData != nil) 
     {
         [myData release];
@@ -1141,7 +1133,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"Datafetcher dealloc");
+//    NSLog(@"Datafetcher dealloc");
     [self.requestId release];
 	[super dealloc];
 }

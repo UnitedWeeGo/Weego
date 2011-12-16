@@ -487,7 +487,17 @@ typedef enum {
 #pragma mark Util Methods
 - (BOOL)locationServicesEnabled
 {
-    return [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+    BOOL locationServicesEnabled;
+    if ([[CLLocationManager class] respondsToSelector:@selector(authorizationStatus)])
+    {
+        locationServicesEnabled = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled];
+    }
+    else 
+    {
+        locationServicesEnabled = [CLLocationManager locationServicesEnabled];
+    }
+    
+    return locationServicesEnabled;
 }
 
 - (void)dealloc {
