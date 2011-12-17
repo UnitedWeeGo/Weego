@@ -775,7 +775,22 @@
     primaryInfoLabel.alpha = secondaryInfoLabel.alpha = editNameButton.alpha = 0;
     addButton.alpha = likeButton.alpha = unlikeButton.alpha = winnerButton.alpha = 0;
     getDirectionsButton.hidden = YES;
-    editNameInput.text = @"";
+    
+    
+    NSString *cTitle = currentAnnotation.title;
+    
+    
+    if ([cTitle isEqualToString:@"Current Location"] || [cTitle isEqualToString:@"Name me!"])
+    {
+        editNameInput.text = @"";
+    }
+    else
+    {
+        editNameInput.text = cTitle;
+    }
+    
+    
+    
     [editNameInput becomeFirstResponder];
     CGRect infoViewBGRect = CGRectMake(0, 0, self.bounds.size.width, 40);
     [UIView animateWithDuration:0.20f
