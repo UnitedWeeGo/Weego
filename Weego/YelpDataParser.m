@@ -79,8 +79,9 @@ static YelpDataParser *sharedInstance;
         }
         else
         {
-            NSLog(@"Data is yelp result, and contains businesses");
+            
             NSArray *results = [(NSDictionary *)parsedJSON objectForKey:@"businesses"];
+            NSLog(@"Data is yelp result (no error), and contains %u businesses", [results count]);
             
             NSMutableArray *locObjects = [[[NSMutableArray alloc] init] autorelease];
             
