@@ -436,6 +436,13 @@ static Controller *sharedInstance;
     return fetcher.requestId;
 }
 
+- (id)searchYelpForName:(NSString *)name andCenterCoordinate:(CLLocationCoordinate2D)coord
+{
+    DataFetcher *fetcher = [[[DataFetcher alloc] initAndSearchYelpWithName:name andCenterCoordinate:coord delegate:[YelpDataParser sharedInstance]] autorelease];
+
+    return fetcher.requestId;
+}
+
 - (NSString *)searchGoogleGeoForAddress:(NSString *)address northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest
 {
     NSString *bounds = [NSString stringWithFormat:@"%f,%f|%f,%f", southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude];

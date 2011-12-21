@@ -379,6 +379,17 @@ typedef enum {
 
 - (void)beginLocationSearchWithSearchString:(NSString *)searchString andRemovePreviousResults:(BOOL)removePreviousResults
 {
+    if (pendingSearchString != nil && ![pendingSearchString isEqualToString:searchString])
+    {
+        [pendingSearchString release];
+        pendingSearchString = nil;
+    }
+    if (pendingSearchCategory != nil)
+    {
+        [pendingSearchCategory release];
+        pendingSearchCategory = nil;
+    }
+    
     searchBar.text = searchString;
     [searchBar showNetworkActivity:YES];
     if (removePreviousResults)
@@ -446,7 +457,18 @@ typedef enum {
         }
         else
         {
-            genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
+            NSLog(@"is pendingSearchString nil: %d", pendingSearchString==nil);
+            /*
+             If the user has moved the map to search again, then we will search the bounds of the view.
+             Otherwise, it is a new search and we will search by radius
+             */
+            if (pendingSearchString==nil)
+            {
+                genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString andCenterCoordinate:mapView.centerCoordinate] retain]; 
+            }
+            else {
+                genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
+            }
         }
     }
     
@@ -485,6 +507,18 @@ typedef enum {
 
 - (void)beginLocationSearchWithCategory:(SearchCategory *)searchCategory andRemovePreviousResults:(BOOL)removePreviousResults
 {
+    if (pendingSearchString != nil)
+    {
+        [pendingSearchString release];
+        pendingSearchString = nil;
+    }
+    if (pendingSearchCategory != nil && ![pendingSearchCategory.category isEqualToString:searchCategory.category])
+    {
+        [pendingSearchCategory release];
+        pendingSearchCategory = nil;
+    }
+    
+    
     searchBar.text = searchCategory.search_category;
     [searchBar showNetworkActivity:YES];
     if (removePreviousResults)
@@ -550,7 +584,19 @@ typedef enum {
         }
         else
         {
-            genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
+            NSLog(@"is pendingSearchCategory nil: %d", pendingSearchCategory==nil);
+            
+            /*
+             If the user has moved the map to search again, then we will search the bounds of the view.
+             Otherwise, it is a new search and we will search by radius
+             */
+            if (pendingSearchCategory==nil)
+            {
+                genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category andCenterCoordinate:mapView.centerCoordinate] retain]; 
+            }
+            else {
+                genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
+            }
         }
     }
     
@@ -890,7 +936,7 @@ typedef enum {
     
     if (paddedWidth < 1000)
     {
-        paddedWidth = 3000;
+        paddedWidth = 20000;
     }
     
     zoomRect.origin.x += (origWidth - paddedWidth) / 2;

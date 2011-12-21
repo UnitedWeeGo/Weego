@@ -188,6 +188,7 @@ typedef NSInteger DataFetchType;
 // Yelp
 - (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;
 - (id)initAndGetReviewHMTLDataWithDelegate:(id <DataFetcherDelegate>)myDelegate andURLString:(NSString *)urlString;
+- (id)initAndSearchYelpWithName:(NSString *)name andCenterCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate;
 
 // Google geo
 - (id)initAndSearchGoogleGeoWithAddress:(NSString *)address andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate;

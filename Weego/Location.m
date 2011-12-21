@@ -79,12 +79,23 @@
     NSString *uState = address.province;
     NSString *uZip = address.postalCode;
     
+    BOOL hasStreet = uStreet != nil;
+    BOOL hasZip = uZip != nil;
+    
+    
     NSString *uFormatted_address;
-    if (uStreet != nil)
+    
+    if (hasStreet) // will have the rest always
     {
         uFormatted_address = [NSString stringWithFormat:@"%@, %@, %@ %@", uStreet, uCity, uState, uZip];
-    } else {
+    }
+    else if (hasZip)
+    {
         uFormatted_address = [NSString stringWithFormat:@"%@, %@ %@", uCity, uState, uZip];
+    }
+    else
+    {
+        uFormatted_address = [NSString stringWithFormat:@"%@ %@", uCity, uState];
     }
     
     self.name = @"Current Location";

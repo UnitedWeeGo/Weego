@@ -60,6 +60,7 @@
 
 // Yelp lookup
 - (id)searchYelpForName:(NSString *)name northEastBounds:(CLLocationCoordinate2D)northEast southWestBounds:(CLLocationCoordinate2D)southWest;
+- (id)searchYelpForName:(NSString *)name andCenterCoordinate:(CLLocationCoordinate2D)coord;
 - (id)getYelpCategories;
 
 - (NSString *)setEventAcceptanceForEvent:(Event *)anEvent didAccept:(BOOL)didAccept;

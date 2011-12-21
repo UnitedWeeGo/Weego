@@ -708,6 +708,26 @@
     return self;
 }
 
+- (id)initAndSearchYelpWithName:(NSString *)name andCenterCoordinate:(CLLocationCoordinate2D)coord delegate:(id <DataFetcherDelegate>)myDelegate
+{
+    self = [self init];
+	if (self != nil) {
+        self.requestId = [self stringWithUUID];
+        pendingRequestType = DataFetchTypeSearchYelp;
+        self.delegate = myDelegate;
+        
+        NSString *latLng = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
+        
+        NSString *urlString = [[[NSString alloc] initWithFormat:@"%@?term=%@&ll=%@&radius_filter=6000",
+                                YELP_API_V2,
+                                [self urlencode:name],
+                                [self urlencode:latLng]] autorelease];
+        
+        [self makeYelpRequest:urlString];
+    }
+    return self;
+}
+
 - (id)initAndSearchYelpWithName:(NSString *)name andBoundsString:(NSString *)bounds delegate:(id <DataFetcherDelegate>)myDelegate
 {
     self = [self init];
