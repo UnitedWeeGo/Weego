@@ -40,6 +40,8 @@
 - (void)showDeal;
 - (void)hideDeal;
 - (void)hideDealImage;
+
+- (void)clearNoLocationState;
 @end
 
 @implementation LocationDetailWidget
@@ -457,6 +459,7 @@
 #pragma mark public methods
 - (void)updateInfoViewWithReportedLocationAnnotation:(ReportedLocationAnnotation *)annotation
 {
+    [self clearNoLocationState];
     Model *model = [Model sharedInstance];
     UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Semibold" size:12];
     UIFont *secondaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
@@ -469,6 +472,8 @@
     getDirectionsButton.hidden = YES;
     ratingImage.hidden = YES;
     reviewCountLabel.hidden = YES;
+    primaryInfoLabel.hidden = NO;
+    secondaryInfoLabel.hidden = NO;
     
     currentReportedLocationAnnotation = nil;
     currentReportedLocationAnnotation = annotation;
@@ -540,6 +545,7 @@
 
 - (void)updateInfoViewWithLocationAnnotation:(LocAnnotation *)annotation
 {
+    [self clearNoLocationState];
     self.hasDeal = annotation.hasDeal;
     self.featureId = annotation.featureId;
     if (avatarImage) [avatarImage removeFromSuperview];
@@ -548,6 +554,8 @@
     distanceIconView.hidden = YES;
     userActionButton.hidden = YES;
     getDirectionsButton.hidden = NO;
+    primaryInfoLabel.hidden = NO;
+    secondaryInfoLabel.hidden = NO;
     
     UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:18];
     UIFont *secondaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
@@ -769,8 +777,44 @@
     [delegate winnerButtonPressed];
 }
 
+// NO LOCATION
+- (void)transitionToNoLocationState
+{
+    UIColor *col = HEXCOLOR(0xFF3300D9);
+    self.backgroundColor = col;
+    
+    // hide any action buttons
+    primaryInfoLabel.hidden = secondaryInfoLabel.hidden = editNameButton.hidden = YES;
+    addButton.hidden = likeButton.hidden = unlikeButton.hidden = winnerButton.hidden = YES;
+    getDirectionsButton.hidden = YES;
+    
+    CGRect infoViewBGRect = CGRectMake(0, 41, self.bounds.size.width, 65);
+    nlv = [[[NoLocationView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 65)] autorelease];
+    [self addSubview:nlv];
+    
+    [UIView animateWithDuration:0.20f
+                          delay:0
+                        options:(UIViewAnimationOptionBeginFromCurrentState)
+                     animations:^(void){
+                         self.frame = infoViewBGRect;
+                         
+                     }
+                     completion:NULL];
+}
+- (void)clearNoLocationState
+{
+    self.backgroundColor = [UIColor colorWithWhite:0 alpha:.7];
+    if (nlv != nil)
+    {
+        [nlv removeFromSuperview];
+        nlv = nil;
+    }
+}
+
+// EDIT NAME
 - (void)transitionToEditNameState
 {
+    [self clearNoLocationState];
     // hide any action buttons
     primaryInfoLabel.alpha = secondaryInfoLabel.alpha = editNameButton.alpha = 0;
     addButton.alpha = likeButton.alpha = unlikeButton.alpha = winnerButton.alpha = 0;

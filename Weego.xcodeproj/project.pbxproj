@@ -591,6 +591,9 @@
 		01A3E57214880B98000B7DC3 /* topbar_yelp_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E57014880B98000B7DC3 /* topbar_yelp_default.png */; };
 		01A3E57314880B98000B7DC3 /* topbar_yelp_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A3E57114880B98000B7DC3 /* topbar_yelp_default@2x.png */; };
 		01A3E576148834C2000B7DC3 /* YelpReviewDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A3E575148834C2000B7DC3 /* YelpReviewDataParser.m */; };
+		01B8892014A25A7000FB51AE /* icon_iOS_Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B8891E14A25A7000FB51AE /* icon_iOS_Settings.png */; };
+		01B8892114A25A7000FB51AE /* icon_iOS_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01B8891F14A25A7000FB51AE /* icon_iOS_Settings@2x.png */; };
+		01B8892414A262C900FB51AE /* NoLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B8892314A262C900FB51AE /* NoLocationView.m */; };
 		01BB3F7413E89CE600E491FB /* icon_addfrom_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */; };
 		01BB3F7513E89CE600E491FB /* icon_addfrom_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */; };
 		01BB3F7613E89CE600E491FB /* icon_time_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 01BB3F7013E89CE600E491FB /* icon_time_01.png */; };
@@ -1373,6 +1376,10 @@
 		01A3E57114880B98000B7DC3 /* topbar_yelp_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topbar_yelp_default@2x.png"; sourceTree = "<group>"; };
 		01A3E574148834C2000B7DC3 /* YelpReviewDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpReviewDataParser.h; sourceTree = "<group>"; };
 		01A3E575148834C2000B7DC3 /* YelpReviewDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpReviewDataParser.m; sourceTree = "<group>"; };
+		01B8891E14A25A7000FB51AE /* icon_iOS_Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_iOS_Settings.png; sourceTree = "<group>"; };
+		01B8891F14A25A7000FB51AE /* icon_iOS_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_iOS_Settings@2x.png"; sourceTree = "<group>"; };
+		01B8892214A262C900FB51AE /* NoLocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoLocationView.h; sourceTree = "<group>"; };
+		01B8892314A262C900FB51AE /* NoLocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoLocationView.m; sourceTree = "<group>"; };
 		01BB3F6E13E89CE600E491FB /* icon_addfrom_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_addfrom_01.png; sourceTree = "<group>"; };
 		01BB3F6F13E89CE600E491FB /* icon_addfrom_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_addfrom_01@2x.png"; sourceTree = "<group>"; };
 		01BB3F7013E89CE600E491FB /* icon_time_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_time_01.png; sourceTree = "<group>"; };
@@ -1822,6 +1829,8 @@
 		017610ED13BE753D00324EF9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				01B8891E14A25A7000FB51AE /* icon_iOS_Settings.png */,
+				01B8891F14A25A7000FB51AE /* icon_iOS_Settings@2x.png */,
 				01E2C01F149AE83100CC96BE /* Settings.png */,
 				01E2C020149AE83100CC96BE /* Settings@2x.png */,
 				012CC49014895859002BCA26 /* icon_more_white.png */,
@@ -2497,6 +2506,8 @@
 				017EE6AC13D6369F00CB7904 /* WildcardGestureRecognizer.m */,
 				01377C7F1485D0DE0046A48E /* YelpReview.h */,
 				01377C801485D0DF0046A48E /* YelpReview.m */,
+				01B8892214A262C900FB51AE /* NoLocationView.h */,
+				01B8892314A262C900FB51AE /* NoLocationView.m */,
 			);
 			name = "Location Mgmt";
 			sourceTree = "<group>";
@@ -3228,6 +3239,8 @@
 				012CC49314895859002BCA26 /* icon_more_white@2x.png in Resources */,
 				01E2C021149AE83100CC96BE /* Settings.png in Resources */,
 				01E2C022149AE83100CC96BE /* Settings@2x.png in Resources */,
+				01B8892014A25A7000FB51AE /* icon_iOS_Settings.png in Resources */,
+				01B8892114A25A7000FB51AE /* icon_iOS_Settings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3386,6 +3399,7 @@
 				01377C811485D0DF0046A48E /* YelpReview.m in Sources */,
 				01A3E576148834C2000B7DC3 /* YelpReviewDataParser.m in Sources */,
 				01E2C025149AE91400CC96BE /* CellPrefsNoLocation.m in Sources */,
+				01B8892414A262C900FB51AE /* NoLocationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

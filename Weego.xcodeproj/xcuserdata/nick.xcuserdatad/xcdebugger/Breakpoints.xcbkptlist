@@ -7,14 +7,28 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/AddLocation.m"
-         timestampString = "346140950.414993"
+         isPathRelative = "0"
+         filePath = "/Weego/AddLocation.m"
+         timestampString = "346148169.860389"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1792"
-         endingLineNumber = "1792"
-         landmarkName = "-addressBookLocationsTVCDidSelectCurrentLocation"
+         startingLineNumber = "1878"
+         endingLineNumber = "1878"
+         landmarkName = "-loadView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "0"
+         filePath = "/Weego/AddLocation.m"
+         timestampString = "346147086.079216"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "471"
+         endingLineNumber = "471"
+         landmarkName = "-mapZoomLevelAppropriateForSearch"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -23,27 +37,22 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Weego/AddLocation.m"
-         timestampString = "346140950.414993"
+         timestampString = "346202333.45013"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1824"
-         endingLineNumber = "1824"
-         landmarkName = "-searchCategoryTableDidSelectCurrentLocation"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Weego/LocationDetailWidget.m"
-         timestampString = "345773789.002805"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "794"
-         endingLineNumber = "794"
-         landmarkName = "-transitionToEditNameState"
+         startingLineNumber = "1892"
+         endingLineNumber = "1892"
+         landmarkName = "-loadView"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
+   <ExceptionBreakpoints>
+      <ExceptionBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         scope = "0"
+         stopOnStyle = "0">
+      </ExceptionBreakpoint>
+   </ExceptionBreakpoints>
 </Bucket>

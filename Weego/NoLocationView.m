@@ -1,54 +1,48 @@
 //
-//  CellPrefsNoLocation.m
+//  NoLocationView.m
 //  Weego
 //
-//  Created by Nicholas Velloff on 12/15/11.
+//  Created by Nicholas Velloff on 12/21/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CellPrefsNoLocation.h"
+#import "NoLocationView.h"
 
-@interface CellPrefsNoLocation (Private)
+@interface NoLocationView ()
 
-- (void)setUpUI;
+- (void)setupUI;
 
 @end
 
-@implementation CellPrefsNoLocation
+@implementation NoLocationView
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if (self) {
-        self.height = CellPrefsNoLocationHeight;
-        
-        [self setUpUI];
-        
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.frame = CGRectMake(0, 0, 300, CellPrefsNoLocationHeight);
-        
-        
+        [self setupUI];
     }
     return self;
 }
 
-- (void)setUpUI
+- (void)setupUI
 {
-	self.backgroundColor = [UIColor clearColor];
-
+    self.backgroundColor = [UIColor clearColor];
+    
+    // add the icon
     UIImage *icon = [UIImage imageNamed:@"icon_iOS_Settings.png"];
     UIImageView *iconView = [[[UIImageView alloc] initWithImage:icon] autorelease];
-    iconView.frame = CGRectMake(18, 9, icon.size.width, icon.size.height);
+    iconView.frame = CGRectMake(7, 7, icon.size.width, icon.size.height);
     [self addSubview:iconView];
     
-    UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Semibold" size:14];
+    UIFont *primaryFont = [UIFont fontWithName:@"MyriadPro-Semibold" size:16];
     UIFont *secondaryFont = [UIFont fontWithName:@"MyriadPro-Regular" size:12];
     
-    int labelLeftPos = 76;
+    int labelLeftPos = 65;
     
-    primaryInfoLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos, 14, 0, 0)] autorelease];
+    primaryInfoLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos, 12, 0, 0)] autorelease];
     primaryInfoLabel.backgroundColor = [UIColor clearColor];
-    primaryInfoLabel.textColor = HEXCOLOR(0x333333FF);
+    primaryInfoLabel.textColor = [UIColor whiteColor];
     [primaryInfoLabel setFont:primaryFont];
     primaryInfoLabel.text = @"iOS \"Location Services\":";
     primaryInfoLabel.lineBreakMode = UILineBreakModeTailTruncation; 
@@ -56,9 +50,9 @@
     [primaryInfoLabel sizeToFit];
     [self addSubview:primaryInfoLabel];
     
-    primaryInfoLabel2 = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos + primaryInfoLabel.frame.size.width + 3, 14, 0, 0)] autorelease];
+    primaryInfoLabel2 = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos + primaryInfoLabel.frame.size.width + 3, 12, 0, 0)] autorelease];
     primaryInfoLabel2.backgroundColor = [UIColor clearColor];
-    primaryInfoLabel2.textColor = [UIColor redColor];
+    primaryInfoLabel2.textColor = [UIColor blackColor];
     [primaryInfoLabel2 setFont:primaryFont];
     primaryInfoLabel2.text = @"Disabled";
     primaryInfoLabel2.lineBreakMode = UILineBreakModeTailTruncation; 
@@ -68,7 +62,7 @@
     
     secondaryInfoLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos, primaryInfoLabel.frame.origin.y + primaryInfoLabel.frame.size.height, 0, 0)] autorelease];
     secondaryInfoLabel.backgroundColor = [UIColor clearColor];
-    secondaryInfoLabel.textColor = HEXCOLOR(0x666666FF);
+    secondaryInfoLabel.textColor = [UIColor blackColor];
     [secondaryInfoLabel setFont:secondaryFont];
     secondaryInfoLabel.text = @"Open iOS \"Settings\" and then \"Enable\"";
     secondaryInfoLabel.lineBreakMode = UILineBreakModeTailTruncation; 
@@ -78,7 +72,7 @@
     
     tertiaryInfoLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftPos, secondaryInfoLabel.frame.origin.y + secondaryInfoLabel.frame.size.height - 2, 0, 0)] autorelease];
     tertiaryInfoLabel.backgroundColor = [UIColor clearColor];
-    tertiaryInfoLabel.textColor = HEXCOLOR(0x666666FF);
+    tertiaryInfoLabel.textColor = [UIColor blackColor];
     [tertiaryInfoLabel setFont:secondaryFont];
     tertiaryInfoLabel.text = @"\"Location Services\" for Weego";
     tertiaryInfoLabel.lineBreakMode = UILineBreakModeTailTruncation; 
@@ -87,16 +81,15 @@
     [self addSubview:tertiaryInfoLabel];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
-}
 
-- (void)dealloc
+
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
 {
-    [super dealloc];
+    // Drawing code
 }
+*/
 
 @end

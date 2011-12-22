@@ -10,6 +10,7 @@
 #import "LocAnnotation.h"
 #import "ReportedLocationAnnotation.h"
 #import "UIImageViewAsyncLoader.h"
+#import "NoLocationView.h"
 
 typedef enum {
 	WidgetStateClosed = 0,
@@ -69,6 +70,8 @@ typedef enum {
     
     UIImageViewAsyncLoader *avatarImage;
     UIImageView *distanceIconView;
+    
+    NoLocationView *nlv;
 }
 
 @property (readonly,assign) Boolean iAmShowing;
@@ -83,5 +86,6 @@ typedef enum {
 - (void)transitionToEditNameState;
 - (void)recoverFromEditNameState;
 - (void)handleEditingNameSubmit;
+- (void)transitionToNoLocationState;
 
 @end

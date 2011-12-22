@@ -25,7 +25,8 @@ typedef enum {
 	SearchAndDetailStateDetail,
     SearchAndDetailStateBoth,
 	SearchAndDetailStateNone,
-    SearchAndDetailStateEditName
+    SearchAndDetailStateEditName,
+    SearchAndDetailStateNoLocation
 } SearchAndDetailState;
 
 @interface AddLocation ()
@@ -58,6 +59,7 @@ typedef enum {
 - (void)reportTimerTick;
 - (void)checkReportedLocations;
 - (void)resetMapViewFrameWithState:(SearchAndDetailState)state andShowsToolbarButton:(BOOL)showsToolbarButton;
+- (BOOL)mapZoomLevelAppropriateForSearch;
 @end
 
 @implementation AddLocation
@@ -175,6 +177,14 @@ typedef enum {
                 [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateDetails withTarget:self withFeedCount:[detail.unreadMessageCount intValue]];
             }
             [self resetMapViewFrameWithState:SearchAndDetailStateEditName andShowsToolbarButton:!isTemp];
+            break;
+            
+        case SearchAndDetailStateNoLocation:
+            [self showSearchBar:true withAnimationDelay:0];
+            [locWidget transitionToNoLocationState];
+            [[NavigationSetter sharedInstance] setNavState:searchOnState withTarget:self];
+            [[NavigationSetter sharedInstance] setToolbarState:ToolbarStateOff withTarget:self];
+            [self resetMapViewFrameWithState:SearchAndDetailStateBoth andShowsToolbarButton:NO];
             break;
         default:
             break;
@@ -417,28 +427,13 @@ typedef enum {
         genericSearchFetchId = [[[Controller sharedInstance] searchSimpleGeoWithEnvelope:envelope andName:searchString] retain];
     }
     else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
-    {
-        // test for map view zoom level
-        
-        
-        CLLocationCoordinate2D northEast, southWest;
-        northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
-        southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
-        
-        
-        float distanceLatInDegrees = northEast.latitude - southWest.latitude;
-        float numLatMiles = 69.172 * distanceLatInDegrees;
-        
-        float distanceLonInDegrees = northEast.longitude - southWest.longitude;
-        float numLonMiles = 69.172 * distanceLonInDegrees;
-        
-        float numSquareMiles = numLatMiles*numLonMiles;
+    {        
         BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
         NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
         BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
         
         
-        if (numSquareMiles > 2500) // search area too large!!
+        if (![self mapZoomLevelAppropriateForSearch]) // search area too large!!
         {
             if (!locationServicesEnabled)
             {
@@ -467,6 +462,9 @@ typedef enum {
                 genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString andCenterCoordinate:mapView.centerCoordinate] retain]; 
             }
             else {
+                CLLocationCoordinate2D northEast, southWest;
+                northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+                southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
                 genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchString northEastBounds:northEast southWestBounds:southWest] retain];
             }
         }
@@ -477,6 +475,24 @@ typedef enum {
     
     if (pendingSearchCategory) [pendingSearchCategory release];
     pendingSearchCategory = nil;
+}
+
+- (BOOL)mapZoomLevelAppropriateForSearch
+{
+    CLLocationCoordinate2D northEast, southWest;
+    northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+    southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
+    
+    
+    float distanceLatInDegrees = northEast.latitude - southWest.latitude;
+    float numLatMiles = 69.172 * distanceLatInDegrees;
+    
+    float distanceLonInDegrees = northEast.longitude - southWest.longitude;
+    float numLonMiles = 69.172 * distanceLonInDegrees;
+    
+    float numSquareMiles = numLatMiles*numLonMiles;
+    
+    return numSquareMiles < 2500;
 }
 
 - (void)beginCurrentLocationSearchWithCoordinate:(CLLocationCoordinate2D)coord
@@ -547,25 +563,12 @@ typedef enum {
     }
     else if ([Model sharedInstance].searchAPIType == SearchAPITypeYelp)
     {
-        CLLocationCoordinate2D northEast, southWest;
-        northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
-        southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
-        
-        
-        
-        float distanceLatInDegrees = northEast.latitude - southWest.latitude;
-        float numLatMiles = 69.172 * distanceLatInDegrees;
-        
-        float distanceLonInDegrees = northEast.longitude - southWest.longitude;
-        float numLonMiles = 69.172 * distanceLonInDegrees;
-        
-        float numSquareMiles = numLatMiles*numLonMiles;
         BOOL locationServicesEnabled = [[LocationService sharedInstance] locationServicesEnabledInSystemPrefs];
         NSURL *url = [NSURL URLWithString:@"prefs:root=LOCATION_SERVICES"];
         BOOL canOpenPrefs = [[UIApplication sharedApplication] canOpenURL:url];
         
         
-        if (numSquareMiles > 2500) // search area too large!!
+        if (![self mapZoomLevelAppropriateForSearch]) // search area too large!!
         {
             if (!locationServicesEnabled)
             {
@@ -595,6 +598,9 @@ typedef enum {
                 genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category andCenterCoordinate:mapView.centerCoordinate] retain]; 
             }
             else {
+                CLLocationCoordinate2D northEast, southWest;
+                northEast = [mapView convertPoint:CGPointMake(mapView.frame.size.width, 0) toCoordinateFromView:mapView];
+                southWest = [mapView convertPoint:CGPointMake(0, mapView.frame.size.height) toCoordinateFromView:mapView];
                 genericSearchFetchId = [[[Controller sharedInstance] searchYelpForName:searchCategory.category northEastBounds:northEast southWestBounds:southWest] retain];
             }
         }
@@ -648,22 +654,13 @@ typedef enum {
 
 #pragma mark - SearchCategoryTable
 - (void)enableSearchCategoryTable
-{
-//    CGRect viewRect = CGRectMake(0, 40, self.view.bounds.size.width, 160);
-//    if (categoryTable == nil) categoryTable = [[[SearchCategoryTable alloc] initWithFrame:viewRect] autorelease];
-//    categoryTable.delegate = self;
-//    [self.view addSubview:categoryTable];
-    
+{    
     categoryTable.hidden = NO;
     [categoryTable updateSearchContentsWithSearchString:@""];
     [self.view bringSubviewToFront:categoryTable];
-    
 }
 - (void)disableSearchCategoryTable
-{
-//    if (categoryTable != nil) [categoryTable removeFromSuperview];
-//    categoryTable = nil;
-    
+{    
     categoryTable.hidden = YES;
 }
 
@@ -1530,7 +1527,6 @@ typedef enum {
         case DataFetchTypeGoogleAddressSearch:
             if ( [fetchId isEqualToString:googleGeoFetchId] )
             {
-                [savedSearchResultsDict removeAllObjects];
                 NSMutableArray *locations = [Model sharedInstance].geoSearchResults;
                                 
                 for (int i=0; i<[locations count]; i++)
@@ -1888,7 +1884,18 @@ typedef enum {
     [self setupInfoView];
     [self setupSearchBar];
     [self setupSearchCatView];
-    if (initState == AddLocationInitStateFromNewEvent)
+    
+    
+    Event *detail = [Model sharedInstance].currentEvent;
+    int searchResults = [[detail getLocations] count];
+    
+    if (searchResults == 0 && ![[LocationService sharedInstance]locationServicesEnabledInSystemPrefs])
+    {
+        // location services are off in system preferences and there are no locations to zoom into
+        [self doGoToSearchAndDetailState:SearchAndDetailStateNoLocation];
+        currentState = AddLocationStateView;
+    }
+    else if (initState == AddLocationInitStateFromNewEvent)
     {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
         currentState = AddLocationStateView;
@@ -1898,14 +1905,11 @@ typedef enum {
         [self doGoToSearchAndDetailState:SearchAndDetailStateSearch];
         currentState = AddLocationStateSearch;
     }
-    
-    [self addSavedLocationAnnotations];
-    
-    if (initState == AddLocationInitStateFromExistingEventSelectedLocation) 
+    else if (initState == AddLocationInitStateFromExistingEventSelectedLocation) 
     {
         currentState = AddLocationStateView;
     }
-    
+    [self addSavedLocationAnnotations];
     
     [self.view setClipsToBounds:YES];
 }
